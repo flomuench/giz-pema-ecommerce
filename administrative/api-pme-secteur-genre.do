@@ -15,3 +15,14 @@ graph hbar (count) , ///
 		note("Source: API et calculs des auteurs.  Droits d'auteurs: Florian Münch & Amira Bouziri.", size(vsmall)) ///
 		caption("En total, il y a 3214 PME ayant un adresse email dont 415 avec gérante femme et 2799 avec gérant homme.", size(vsmall))
 graph export "api-pme-secteur-genre.png", replace
+
+
+graph hbar (count) if export == "TOTALEMENT EXPORTATRICE" , ///
+		over(Gender, label(labsize(vsmall))) ///
+		ytitle("nombre des entreprises") ///
+		blabel(bar) ///
+		title("{bf: PME tunisiennes totalement exportatrices selon secteur et genre}") ///
+		subtitle("en 2020") ///
+		note("Source: API et calculs des auteurs.  Droits d'auteurs: Florian Münch & Amira Bouziri.", size(vsmall)) ///
+		caption("En total, il y a 3214 PME ayant un adresse email dont 415 avec gérante femme et 2799 avec gérant homme.", size(vsmall))
+graph export "api-pme-genre-export.png", replace
