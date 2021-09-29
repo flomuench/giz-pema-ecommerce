@@ -10,7 +10,7 @@
 *	2)
 *	3)																  
 *																	 																      *
-*	Author:  														  
+*	Author:  	Teo Firpo													  
 *	ID variable: 				  									  
 *	Requires:			´
 *	Creates:														  
