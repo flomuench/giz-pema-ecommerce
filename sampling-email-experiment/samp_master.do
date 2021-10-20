@@ -74,7 +74,7 @@ if (1) do "${samp_github}/samp_import.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_clean.do"
+if (1) do "${samp_github}/samp_clean.do"
 
 
 /* --------------------------------------------------------------------
@@ -83,21 +83,14 @@ if (0) do "${samp_github}/samp_clean.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_correct.do"
+if (1) do "${samp_github}/samp_correct.do"
 
 
-/* --------------------------------------------------------------------
-	PART 3.4: Merge different data bases
-	NOTE: requires common id, e.g. email?
-	Requires: 
-	Creates: 
-----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_merge.do"
 
 /* --------------------------------------------------------------------
-	PART 3.5: Generate variables for analysis or implementation
+	PART 3.4: Generate variables for analysis or implementation
 	NOTE: email_id etc.
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_gen.do"
+if (1) do "${samp_github}/samp_generate.do"

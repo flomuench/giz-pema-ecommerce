@@ -2,52 +2,32 @@
 * 			sampling email experiment import						
 ***********************************************************************
 *																	   
-*	PURPOSE: 						  								  
-*																	  
+*	PURPOSE: import the GIZ-API contact list as prepared					  								  
+*	by Teo			  
 *																	  
 *	OUTLINE:														  
-*	1)																  
-*	2)
-*	3)																  
+*	1)	import contact list as Excel or CSV														  
+*	2)	save the contact list as dta file in intermediate folder
 *																	 																      *
-*	Author:  														  
-*	ID variable: 				  									  
-*	Requires:			´
-*	Creates:														  
+*	Author: Florian  														  
+*	ID variable: no id variable defined			  									  
+*	Requires:	giz_contact_list.xlsx or .csv
+*	Creates:	giz_contact_list.dta						  
 *																	  
 ***********************************************************************
-* 	PART START: define the settings as necessary 				  										  *
+* 	PART 1: import the giz contact list as Excel or csv				  										  *
 ***********************************************************************
-* either import Excel raw 
-import excel "${ml_raw}/samp_raw.xlsx", firstrow clear
+* import giz-api contact list cleaned and merged by Teo
+	* as Excel
+import excel "${samp_final}/giz_contact_list.xlsx", firstrow clear
 
-* or use intermediate dta
-use "${samp_intermediate}/samp_inter", clear
-
-
-
-
-***********************************************************************
-* 	PART 1: 				  										  
-***********************************************************************
-
+	* as csv
+*import delimited "${samp_final}/giz_contact_list.csv", varn(1) clear
 
 
 ***********************************************************************
-* 	PART 2: 				  										  
+* 	PART 2: save the contact list as dta file in intermediate folder			  						
 ***********************************************************************
-
-
-
-***********************************************************************
-* 	PART END: save the dta file				  						
-***********************************************************************
-* either save raw
-cd "$samp_raw"
-save "samp_raw", replace
 * or save intermediate
 cd "$samp_intermediate"
-save "samp_inter", replace
-* or save final
-cd "$samp_final"
-save "samp_final", replace
+save "giz_contact_list_inter", replace
