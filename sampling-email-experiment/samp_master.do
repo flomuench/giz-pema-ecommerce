@@ -24,7 +24,7 @@ clear all
 graph drop _all
 scalar drop _all
 set more off
-set graphics off /* switch off to on to display graphs */
+set graphics on /* switch off to on to display graphs */
 capture program drop zscore /* drops the program programname */
 qui cap log c
 
@@ -34,13 +34,13 @@ qui cap log c
 *ssc install betterbar 
 
 	* define graph scheme for visual outputs
-*set scheme plotplain
+set scheme plotplain
 
 ***********************************************************************
 * 	PART 2: 	Prepare dynamic folder paths & globals			  	  *
 ***********************************************************************
 
-		* dynamic folder paths for windows & mac
+		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 if c(os) == "Windows" {
 	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
@@ -51,12 +51,15 @@ else if c(os) == "MacOSX" {
 	global samp_github = "Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
-		* dynamic folder globals
+		* paths within gdrive
+			* data
 global samp_raw = "${samp_gdrive}/raw"
 global samp_intermediate "${samp_gdrive}/intermediate"
-global samp_output = "${samp_gdrive}/output"
 global samp_final = "${samp_gdrive}/final"
-	
+			* output (regression tables, figures)
+global samp_output = "${samp_gdrive}/output"
+global samp_figures = "${samp_output}/descriptive-statistics-figures"
+
 		* global for *type* variables
 ***********************************************************************
 * 	PART 3: 	Run midline do-files			  	 				  *

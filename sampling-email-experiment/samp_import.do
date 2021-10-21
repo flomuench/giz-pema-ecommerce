@@ -19,7 +19,7 @@
 ***********************************************************************
 * import giz-api contact list cleaned and merged by Teo
 	* as Excel
-import excel "${samp_final}/giz_contact_list.xlsx", firstrow clear
+import excel "${samp_intermediate}/giz_contact_list.xlsx", firstrow clear
 
 	* as csv
 *import delimited "${samp_final}/giz_contact_list.csv", varn(1) clear

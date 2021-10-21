@@ -47,12 +47,14 @@ label define sector_name 1 "Autres industries extractives" ///
 	13 "Industries textiles et habillement" ///
 	14 "Métallurgie et travail des métaux" ///
 	15 "Travail du bois et fabrication d'articles en bois" ///
+format %-60s sector
 
 	* sector
 tempvar Sector
 encode sector, gen(`Sector') label(sector_name) noextend
 drop sector
 rename `Sector' sector
+
 
 	* gender
 label define sex 1 "female" 0 "male"
@@ -87,6 +89,17 @@ foreach x of varlist gender export sector governorate {
 tab `x', gen(`x')
 }
 
+***********************************************************************
+* 	PART 4: gen firm size variable				  										  
+***********************************************************************
+gen size = .
+replace size = 1 if fte <= 30
+replace size = 2 if fte > 30 & fte <= 100
+replace size = 3 if fte > 100 & fte <= 240
+replace size = 4 if fte > 240 & fte < .
+
+lab def size_categories 1 "small" 2 "medium" 3 "large" 4 "big"
+lab values size size_categories
 
 ***********************************************************************
 * 	PART END: save the dta file				  						
