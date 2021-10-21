@@ -38,7 +38,7 @@ putdocx begin
 sum fte, d
 display "Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."
 putdocx paragraph
-putdocx text("Sample full time equivalent employees descriptive statistics"), bold linebreak(1)
+putdocx text ("Sample full time equivalent employees descriptive statistics"), linebreak(1) bold
 putdocx text ("Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."), linebreak(1)
 mdesc fte
 display "We miss employee information for `r(miss)' (`r(percent)'%) out of `r(total)'."
@@ -84,14 +84,14 @@ graph bar (percent), over(size) ///
 gr combine fte_hist_abs fte_hist_perc fte_bar_abs fte_bar_perc
 graph export fte_hist_bar.png, replace
 	putdocx paragraph, halign(center)
-	putdocx image fte_histogram_90p.png, width(4)
+	putdocx image fte_hist_bar.png, width(4)
 	
 	* sectors
 		* firms per sector - absolute number 
 mdesc sector
 display "We miss sector information for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
-putdocx text("Sector descriptive statistics"), bold linebreak(1)
+putdocx text ("Sector descriptive statistics"), bold linebreak(1)
 putdocx text ("We miss sector information for `r(miss)' (`r(percent)'%) out of `r(total)'.")
 	
 graph hbar (count), over(sector) ///
@@ -105,10 +105,17 @@ graph hbar (percent), over(sector) ///
 	title("Firm distribution across sectors") ///
 	blabel(bar, format(%4.0f) size(vsmall)) ///
 	ylabel(, labsize(minuscule) format(%-100s)) ///
-	name(sectors_bar_abs)
+	name(sectors_bar_perc)
+	
+gr combine sectors_bar_abs sectors_bar_perc
+graph export sectors.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image sectors.png, width(4)
 	
 	* combinations of variables
 		* fte by sector
+putdocx paragraph
+putdocx text ("Conditional distribution of variables"), bold linebreak(1)
 
 histogram fte if fte <= 240, by(sector) frequency ///
 	title("Sample firm employees") ///
@@ -116,12 +123,18 @@ histogram fte if fte <= 240, by(sector) frequency ///
 	addl addlabopts(yvarformat(%-4.0f) mlabsize(vsmall)) ///
 	bin(24) xlabel(10(10)240, labsize(vsmall)) ///
 	legend(off)
+graph export hist_by_sect.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image hist_by_sect.png, width(4)
+
+	
 ***********************************************************************
 * 	PART 1: create dummy variables for each category of factor variables				  										  
 ***********************************************************************
-foreach x of varlist sector size governorate gender {
+/* foreach x of varlist sector size governorate gender {
 tab `x', gen(`x')
 }
+*/
 ***********************************************************************
 * 	PART 2: gen stratification dummy				  										  
 ***********************************************************************
@@ -133,22 +146,28 @@ label define sector_name 16 "undefined", add
 lab values Sector sector_name
 			
 			* gender
-gen Gender = gender
+/* gen Gender = gender
 replace Gender = 2 if gender == .
 label def sex 2 "undefined", add
 lab val Gender gender
+*/
 			
 		* stratas option 1
-egen strata1 = group(sector size sex)
+egen strata1 = group(sector size gender)
 
 
 ***********************************************************************
 * 	PART 3: visualise number of observations per strata				  										  
 ***********************************************************************#
 * how many strata? Depending on number of strata, decide on visualisation
-* graph bar (sum), over(strata)
-graph bar (count), over(strata1)
-
+graph bar (count), over(strata1, sort(1) label(labs(half_tiny))) ///
+	title("Number of firms per strata") ///
+	subtitle("Strata option 1") ///
+	blabel(bar, format(%4.0f) size(tiny)) ///
+	ytitle("Number of firms")
+graph export firms_per_strata1.png, replace
+	putdocx paragraph, halign(center)
+	putdocx firms_per_strata1.png, width(4)
 
 
 ***********************************************************************
