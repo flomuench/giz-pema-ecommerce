@@ -22,7 +22,7 @@
 import excel "${samp_intermediate}/giz_contact_list.xlsx", firstrow clear
 
 	* as csv
-*import delimited "${samp_final}/giz_contact_list.csv", varn(1) clear
+*import delimited "${samp_intermediate}/giz_contact_list.csv", varn(1) clear
 
 
 ***********************************************************************

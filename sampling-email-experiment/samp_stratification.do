@@ -71,20 +71,42 @@ graph bar (count), over(size) ///
 	title("Firms per size category") ///
 	ytitle("Number of employees (fte)") ///
 	blabel(bar, format(%-4.0f) size(vsmall)) ///
-	note("Small = 10-30 fte, medium = 30-100 fte, large = 100-240, big > 240 fte.", size(vsmall)) ///
+	note("Small = 10-30 fte, medium = 31-100 fte, large = 101-240, big > 240 fte.", size(vsmall)) ///
 	name(fte_bar_abs)
 	
 graph bar (percent), over(size) ///
 	title("Firms per size category") ///
 	ytitle("Percent of firms") ///
 	blabel(bar, format(%-4.1f) size(vsmall)) ///
-	note("Small = 10-30 fte, medium = 30-100 fte, large = 100-240, big > 240 fte.", size(vsmall)) ///
+	note("Small = 10-30 fte, medium = 31-100 fte, large = 101-240, big > 240 fte.", size(vsmall)) ///
 	name(fte_bar_perc)
 	
 gr combine fte_hist_abs fte_hist_perc fte_bar_abs fte_bar_perc
 graph export fte_hist_bar.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image fte_hist_bar.png, width(4)
+	
+	* gender
+		* abs number of (fe-) male firms
+graph bar (count) , over(gender) ///
+	title("(Fe-) male firms") ///
+	ytitle("Number of firms") ///
+	blabel(bar, format(%-4.0f) size(vsmall)) ///
+	name(gender_firms_bar_abs)
+graph export gender_firms_bar_abs.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image gender_firms_bar_abs.png, width(4)	
+
+		* female firms by sector
+graph hbar (count) if gender == 1, over(sector) ///
+	title("Number of female firms across sectors") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(female_firm_sector)	
+	
+graph export female_firm_sector.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image female_firm_sector.png, width(4)
 	
 	* sectors
 		* firms per sector - absolute number 
@@ -114,19 +136,42 @@ graph export sectors.png, replace
 	
 	* combinations of variables
 		* fte by sector
+putdocx pagebreak
 putdocx paragraph
 putdocx text ("Conditional distribution of variables"), bold linebreak(1)
 
-histogram fte if fte <= 240, by(sector) frequency ///
-	title("Sample firm employees") ///
+histogram fte if fte <= 240, by(sector, title("{bf:sample firm employees") legend(off)) frequency ///
 	note("Sample limited to firms with <= 240 employees", size(vsmall)) ///
 	addl addlabopts(yvarformat(%-4.0f) mlabsize(vsmall)) ///
-	bin(24) xlabel(10(10)240, labsize(vsmall)) ///
-	legend(off)
+	bin(24) xlabel(10(10)240, labsize(vsmall))
 graph export hist_by_sect.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image hist_by_sect.png, width(4)
+	
+		* gender by sector
+			* abs values
+graph hbar (count), over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))) ///
+	title("(Fe-) Male firms by sector") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(sectors_gender_bar_abs1)
+	
+			* percentage values
+graph hbar (percent), over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))) ///
+	title("(Fe-) Male firms by sector") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-75s)) ///
+	name(sectors_gender_bar_perc1)	
 
+		* gender, sector, size
+graph hbar (count), over(size) over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))) ///
+	title("(Fe-) Male firms by size & sector") ///
+	blabel(bar, format(%4.0f) size(half_tiny)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(sectors_gender_size)
+graph export sectors_gender_size.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image sectors_gender_size.png, width(4)
 	
 ***********************************************************************
 * 	PART 1: create dummy variables for each category of factor variables				  										  
@@ -145,15 +190,70 @@ replace Sector = 16 if sector == .
 label define sector_name 16 "undefined", add
 lab values Sector sector_name
 			
-			* gender
-/* gen Gender = gender
-replace Gender = 2 if gender == .
-label def sex 2 "undefined", add
-lab val Gender gender
-*/
-			
+	
+		* redo visualisation of gender-sector
+			* abs values
+graph hbar (count), over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))) ///
+	title("(Fe-) Male firms by sector") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(sectors_gender_bar_abs2)
+	
+			* percentage values
+graph hbar (percent), over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))) ///
+	title("(Fe-) Male firms by sector") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-75s)) ///
+	name(sectors_gender_bar_perc2)	
+	
+gr combine sectors_gender_bar_abs1 sectors_gender_bar_perc1 sectors_gender_bar_abs2 sectors_gender_bar_perc2
+graph export sector_gender.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image sector_gender.png, width(4)
+	
+			* female firms by sector
+graph hbar (count) if gender == 1, over(Sector) ///
+	title("Number of female firms across sectors") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(female_firm_Sector)	
+	
+graph export female_firm_Sector.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image female_firm_Sector.png, width(4)
+	
+				* male firms by sector
+graph hbar (count) if gender == 0, over(Sector) ///
+	title("Number of male firms across sectors") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(male_firm_Sector)	
+	
+graph export male_firm_Sector.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image male_firm_Sector.png, width(4)
+	
+	
+			* sectors, gender, firm size
+graph hbar (count), over(size) over(gender, lab(labs(tiny))) over(Sector, lab(labs(tiny))) ///
+	title("(Fe-) Male firms by size & sector") ///
+	blabel(bar, format(%4.0f) size(half_tiny)) ///
+	ylabel(, labsize(minuscule) format(%-100s)) ///
+	name(gender_Sector_size)
+graph export gender_Sector_size.png, replace
+	putdocx paragraph, halign(center)
+	putdocx image gender_Sector_size.png, width(4)
+	
+	
+	
+	
 		* stratas option 1
-egen strata1 = group(sector size gender)
+egen strata1 = group(Sector size gender)
+
+
+		* stratas option 2 --> manually define strata such that minimum
+			* strata size = 
+
 
 
 ***********************************************************************
@@ -166,8 +266,10 @@ graph bar (count), over(strata1, sort(1) label(labs(half_tiny))) ///
 	blabel(bar, format(%4.0f) size(tiny)) ///
 	ytitle("Number of firms")
 graph export firms_per_strata1.png, replace
+	putdocx pagebreak
+	putdocx text ("Visualisation of strata size"), bold linebreak(1)
 	putdocx paragraph, halign(center)
-	putdocx firms_per_strata1.png, width(4)
+	putdocx image firms_per_strata1.png, width(4)
 
 
 ***********************************************************************

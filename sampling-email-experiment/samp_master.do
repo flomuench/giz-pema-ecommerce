@@ -24,7 +24,8 @@ clear all
 graph drop _all
 scalar drop _all
 set more off
-set graphics on /* switch off to on to display graphs */
+set graphics off
+ /* switch off to on to display graphs */
 capture program drop zscore /* drops the program programname */
 qui cap log c
 
@@ -97,3 +98,12 @@ if (1) do "${samp_github}/samp_correct.do"
 	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_generate.do"
+
+
+/* --------------------------------------------------------------------
+	PART 3.5: Stratification
+	NOTE: email_id etc.
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${samp_github}/samp_stratification.do"

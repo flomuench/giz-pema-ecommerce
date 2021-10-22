@@ -56,7 +56,7 @@ rename `Sector' sector
 
 
 	* gender
-label define sex 1 "female" 0 "male"
+label define sex 2 "unknown" 1 "female" 0 "male"
 tempvar Gender
 encode gender, gen(`Gender') label(sex) noextend
 drop gender

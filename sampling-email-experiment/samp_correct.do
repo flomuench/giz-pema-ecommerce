@@ -26,7 +26,7 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 ***********************************************************************
 * 	PART 1: correct observation values			  										  
 ***********************************************************************
-
+replace sector = "" if sector == "N.C"
 
 
 ***********************************************************************
@@ -40,13 +40,14 @@ format fte %-9.0fc
 ***********************************************************************
 	* firm-email same
 duplicates tag firmname email, gen(dup_fname_email)
-browse if dup_fname_email > 0 /* suggest no firm-email duplicates */
+*browse if dup_fname_email > 0 /* suggest no firm-email duplicates */
+	
 	* firmname
 duplicates list firmname
 duplicates tag firmname, gen(dupfirmname)
 codebook firmname /* 598 firm names are missing */
 sort firmname
-browse if dupfirmname > 0 & firmname != "" /* 121 firms with several email adresses */
+*browse if dupfirmname > 0 & firmname != "" /* 121 firms with several email adresses */
 
 
 
