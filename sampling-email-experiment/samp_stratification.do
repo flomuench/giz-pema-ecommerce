@@ -283,20 +283,28 @@ replace strata2 = 10 if Sector == 8 & gender == 0  /* "Industrie chimique" */
 replace strata2 = 11 if Sector == 9 & gender == 0   /* "Industrie du caoutchouc et des plastiques" */
 replace strata2 = 12 if Sector == 10 & gender == 0    /* "Industrie du papier et du carton, édition et imprimerie" */
 replace strata2 = 13 if Sector == 14 & gender == 0    /* "Métallurgie et travail des métaux" */
+replace strata2 = 14 if Sector == 13 & gender == 0    /* "Industries textiles et habillement" */
+replace strata2 = 15 if Sector == 12 & gender == 0    /* "Industries du cuir et de la chaussure" */
+					
+					* unknown
+replace strata2 = 16 if Sector == 16 & gender == 1    /* "Undefined" */
+replace strata2 = 17 if Sector == 16 & gender == 0    /* "Undefined" */
+
 
 label define strata2_categories 1 "Women - Textiles, leather & shoes" ///
 	2 "Women - Primary goods" 3 "Women - Chemical industry"  4 "Women - Metals & Manufacturing" ///
 	5 "Men - Extracting industries" 6 "Men - Agriculture" 7 "Men - Manufacturing" ////
 	8 "Men - Non-metal products" 9 "Men - Electronics" 10 "Men - Chemical industry" ///
-	11 "Men - Plastics" 12 "Men - Paper" 13 "Men - metals"
+	11 "Men - Plastics" 12 "Men - Paper" 13 "Men - metals" 14 "Men - textiles" 15 "Men - Leather & shoes" ///
+	16 "Women - undefined" 17 "Men - undefined"
 	
 lab values strata2 strata2_categories
 
 
 ***********************************************************************
 * 	PART 3: visualise number of observations per strata				  										  
-***********************************************************************#
-* how many strata? Depending on number of strata, decide on visualisation
+***********************************************************************
+		* strata option 1
 graph bar (count), over(strata1, sort(1) label(labs(half_tiny))) ///
 	title("Number of firms per strata") ///
 	subtitle("Strata option 1") ///
@@ -308,6 +316,18 @@ graph export firms_per_strata1.png, replace
 	putdocx text ("Visualisation of strata size"), bold linebreak(1)
 	putdocx image firms_per_strata1.png, width(4)
 
+	
+		* strata option 1
+graph hbar (count), over(strata2, sort(1) label(labs(vsmall))) ///
+	title("Number of firms per strata") ///
+	subtitle("Strata option 2") ///
+	blabel(bar, format(%4.0f) size(vsmall)) ///
+	ytitle("Number of firms")
+graph export firms_per_strata2.png, replace
+	putdocx pagebreak
+	putdocx paragraph, halign(center)
+	putdocx text ("Visualisation of strata size"), bold linebreak(1)
+	putdocx image firms_per_strata2.png, width(4)
 
 ***********************************************************************
 * 	PART END: save the dta file				  						
