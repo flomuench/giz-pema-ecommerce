@@ -91,8 +91,8 @@ graph export fte_hist_bar.png, replace
 graph bar (count) , over(gender) ///
 	title("(Fe-) male firms") ///
 	ytitle("Number of firms") ///
-	blabel(bar, format(%-4.0f) size(vsmall)) ///
-	name(gender_firms_bar_abs)
+	blabel(bar, format(%-4.0f) size(vsmall))
+	
 graph export gender_firms_bar_abs.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image gender_firms_bar_abs.png, width(4)	
@@ -101,8 +101,7 @@ graph export gender_firms_bar_abs.png, replace
 graph hbar (count) if gender == 1, over(sector) ///
 	title("Number of female firms across sectors") ///
 	blabel(bar, format(%4.0f) size(vsmall)) ///
-	ylabel(, labsize(minuscule) format(%-100s)) ///
-	name(female_firm_sector)	
+	ylabel(, labsize(minuscule) format(%-100s))
 	
 graph export female_firm_sector.png, replace
 	putdocx paragraph, halign(center)
@@ -167,8 +166,7 @@ graph hbar (percent), over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))
 graph hbar (count), over(size) over(gender, lab(labs(tiny))) over(sector, lab(labs(tiny))) ///
 	title("(Fe-) Male firms by size & sector") ///
 	blabel(bar, format(%4.0f) size(half_tiny)) ///
-	ylabel(, labsize(minuscule) format(%-100s)) ///
-	name(sectors_gender_size)
+	ylabel(, labsize(minuscule) format(%-100s))
 graph export sectors_gender_size.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image sectors_gender_size.png, width(4)
@@ -216,7 +214,6 @@ graph hbar (count) if gender == 1, over(Sector) ///
 	title("Number of female firms across sectors") ///
 	blabel(bar, format(%4.0f) size(vsmall)) ///
 	ylabel(, labsize(minuscule) format(%-100s)) ///
-	name(female_firm_Sector)	
 	
 graph export female_firm_Sector.png, replace
 	putdocx paragraph, halign(center)
@@ -227,7 +224,6 @@ graph hbar (count) if gender == 0, over(Sector) ///
 	title("Number of male firms across sectors") ///
 	blabel(bar, format(%4.0f) size(vsmall)) ///
 	ylabel(, labsize(minuscule) format(%-100s)) ///
-	name(male_firm_Sector)	
 	
 graph export male_firm_Sector.png, replace
 	putdocx paragraph, halign(center)
@@ -238,19 +234,18 @@ graph export male_firm_Sector.png, replace
 graph hbar (count), over(size) over(gender, lab(labs(tiny))) over(Sector, lab(labs(tiny))) ///
 	title("(Fe-) Male firms by size & sector") ///
 	blabel(bar, format(%4.0f) size(half_tiny)) ///
-	ylabel(, labsize(minuscule) format(%-100s)) ///
-	name(gender_Sector_size)
+	ylabel(, labsize(minuscule) format(%-100s))
+	
 graph export gender_Sector_size.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image gender_Sector_size.png, width(4)
 	
-	
-	
+
 	
 		* stratas option 1
 egen strata1 = group(Sector size gender)
 
-
+/*
 		* stratas option 2 --> manually define strata such that minimum
 			* strata size = 
 gen strata2 = .
@@ -272,7 +267,18 @@ replace strata2 = 4 if Sector ==  "Fabrication de machines et équipements" & ge
 replace strata2 = 4 if Sector ==  "Métallurgie et travail des métaux" & gender == 1
 replace strata2 = 4 if Sector ==  "Fabrication d'autres produits non métalliques" & gender == 1
 
-				
+label define strata2_categories 1 "Textiles, leather & shoes" ///
+	2 "Beja" 3 "Ben Arous"  4 "Bizerte" 5 "Gabes" 6 "Gafsa" ///
+	7 "Jendouba" 8 "Kairouan" 9 "Kasserine" 10 "Kebili" ///
+	11 "Le Kef" 12 "Mahdia" 13 "Manouba" 14 "Medenine" 15 "Monastir" ///
+	16 "Nabeul" 17 "Sfax" 18 "Sidi Bouzid" 19 "Siliana" 20 "Sousse" ///
+	21 "Tataouine" 22 "Tunis" 23 "Zaghouan"
+	
+tempvar Strata2
+encode strata2, gen(`Strata2') label(strata2_categories) noextend
+drop strata2
+rename `Strata2' strata2
+
 				* define male categories
 
 replace strata2 = 5 if Sector ==  & gender == 0
@@ -288,7 +294,7 @@ replace strata2 = 14 if Sector ==  & gender == 0
 
 lab def strata2_categories 
 
-
+*/
 
 ***********************************************************************
 * 	PART 3: visualise number of observations per strata				  										  
@@ -301,8 +307,8 @@ graph bar (count), over(strata1, sort(1) label(labs(half_tiny))) ///
 	ytitle("Number of firms")
 graph export firms_per_strata1.png, replace
 	putdocx pagebreak
-	putdocx text ("Visualisation of strata size"), bold linebreak(1)
 	putdocx paragraph, halign(center)
+	putdocx text ("Visualisation of strata size"), bold linebreak(1)
 	putdocx image firms_per_strata1.png, width(4)
 
 
