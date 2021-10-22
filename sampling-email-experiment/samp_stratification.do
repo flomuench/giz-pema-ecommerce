@@ -240,61 +240,58 @@ graph export gender_Sector_size.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image gender_Sector_size.png, width(4)
 	
-
-	
 		* stratas option 1
 egen strata1 = group(Sector size gender)
 
-/*
 		* stratas option 2 --> manually define strata such that minimum
 			* strata size = 
 gen strata2 = .
 				* define female categories
-replace strata2 = 1 if Sector == "Industries textiles et habillement"  & gender == 1
-replace strata2 = 1 if Sector == "Industries du cuir et de la chaussure"  & gender == 1
+replace strata2 = 1 if Sector == 13 & gender == 1 /* "Industries textiles et habillement" */
+replace strata2 = 1 if Sector == 12 & gender == 1  /* "Industries du cuir et de la chaussure" */
 
-replace strata2 = 2 if Sector == "Autres industries extractives" & gender == 1
-replace strata2 = 2 if Sector == "Industries agricoles et alimentaires" & gender == 1
-replace strata2 = 2 if Sector == "Travail du bois et fabrication d'articles en bois" & gender == 1
+replace strata2 = 2 if Sector == 1 & gender == 1   /* "Autres industries extractives" */
+replace strata2 = 2 if Sector == 11 & gender == 1 /* "Industries agricoles et alimentaires" */
+replace strata2 = 2 if Sector == 15 & gender == 1 /* "Travail du bois et fabrication d'articles en bois" */
 
-replace strata2 = 3 if Sector == "Industrie du caoutchouc et des plastiques" & gender == 1
-replace strata2 = 3 if Sector == "Industrie chimique" & gender == 1
-replace strata2 = 3 if Sector == "Industrie du papier et du carton, édition et imprimerie" & gender == 1
+replace strata2 = 3 if Sector == 9  & gender == 1 /* "Industrie du caoutchouc et des plastiques" */
+replace strata2 = 3 if Sector == 8  & gender == 1 /* "Industrie chimique" */
+replace strata2 = 3 if Sector == 10 & gender == 1 /* "Industrie du papier et du carton, édition et imprimerie" */
 
-replace strata2 = 4 if Sector ==  "Autres industries manufacturières" & gender == 1
-replace strata2 = 4 if Sector ==  "Fabrication d'equipements électriques et électroniques" & gender == 1
-replace strata2 = 4 if Sector ==  "Fabrication de machines et équipements" & gender == 1
-replace strata2 = 4 if Sector ==  "Métallurgie et travail des métaux" & gender == 1
-replace strata2 = 4 if Sector ==  "Fabrication d'autres produits non métalliques" & gender == 1
-
-label define strata2_categories 1 "Textiles, leather & shoes" ///
-	2 "Beja" 3 "Ben Arous"  4 "Bizerte" 5 "Gabes" 6 "Gafsa" ///
-	7 "Jendouba" 8 "Kairouan" 9 "Kasserine" 10 "Kebili" ///
-	11 "Le Kef" 12 "Mahdia" 13 "Manouba" 14 "Medenine" 15 "Monastir" ///
-	16 "Nabeul" 17 "Sfax" 18 "Sidi Bouzid" 19 "Siliana" 20 "Sousse" ///
-	21 "Tataouine" 22 "Tunis" 23 "Zaghouan"
-	
-tempvar Strata2
-encode strata2, gen(`Strata2') label(strata2_categories) noextend
-drop strata2
-rename `Strata2' strata2
+replace strata2 = 4 if Sector ==  2 & gender == 1  /* "Autres industries manufacturières" */
+replace strata2 = 4 if Sector ==  5 & gender == 1  /* "Fabrication d'equipements électriques et électroniques" */
+replace strata2 = 4 if Sector ==  6 & gender == 1  /* "Fabrication de machines et équipements" */
+replace strata2 = 4 if Sector ==  14 & gender == 1 /* "Métallurgie et travail des métaux" */
+replace strata2 = 4 if Sector ==  4  & gender == 1 /* "Fabrication d'autres produits non métalliques" */
 
 				* define male categories
+					* aggregated male categories
+replace strata2 = 5 if Sector == 1 & gender == 0 /* "Autres industries extractives" */
+replace strata2 = 5 if Sector == 3 & gender == 0 /* "Cokefaction, raffinage, industries nucléaires" */
 
-replace strata2 = 5 if Sector ==  & gender == 0
-replace strata2 = 6 if Sector ==  & gender == 0
-replace strata2 = 7 if Sector ==  & gender == 0
-replace strata2 = 8 if Sector ==  & gender == 0
-replace strata2 = 9 if Sector ==  & gender == 0
-replace strata2 = 10 if Sector ==  & gender == 0
-replace strata2 = 11 if Sector ==  & gender == 0
-replace strata2 = 12 if Sector ==  & gender == 0
-replace strata2 = 13 if Sector ==  & gender == 0
-replace strata2 = 14 if Sector ==  & gender == 0
+replace strata2 = 6 if Sector == 11 & gender == 0 /*  Industries agricoles et alimentaires*/
+replace strata2 = 6 if Sector == 15 & gender == 0 /* Travail du bois et fabrication d'articles en bois */
 
-lab def strata2_categories 
+replace strata2 = 7 if Sector == 2 & gender == 0 /* "Autres industries manufacturières" */
+replace strata2 = 7 if Sector == 6 & gender == 0 /* "Fabrication de machines et équipements" */
+replace strata2 = 7 if Sector == 7 & gender == 0 /* "Fabrication de matériel de transport" */
 
-*/
+					* simple male categories
+replace strata2 = 8 if Sector == 4  & gender == 0  /* "Fabrication d'autres produits non métalliques" */
+replace strata2 = 9 if Sector == 5 & gender == 0   /* "Fabrication d'equipements électriques et électroniques" */
+replace strata2 = 10 if Sector == 8 & gender == 0  /* "Industrie chimique" */
+replace strata2 = 11 if Sector == 9 & gender == 0   /* "Industrie du caoutchouc et des plastiques" */
+replace strata2 = 12 if Sector == 10 & gender == 0    /* "Industrie du papier et du carton, édition et imprimerie" */
+replace strata2 = 13 if Sector == 14 & gender == 0    /* "Métallurgie et travail des métaux" */
+
+label define strata2_categories 1 "Women - Textiles, leather & shoes" ///
+	2 "Women - Primary goods" 3 "Women - Chemical industry"  4 "Women - Metals & Manufacturing" ///
+	5 "Men - Extracting industries" 6 "Men - Agriculture" 7 "Men - Manufacturing" ////
+	8 "Men - Non-metal products" 9 "Men - Electronics" 10 "Men - Chemical industry" ///
+	11 "Men - Plastics" 12 "Men - Paper" 13 "Men - metals"
+	
+lab values strata2 strata2_categories
+
 
 ***********************************************************************
 * 	PART 3: visualise number of observations per strata				  										  
