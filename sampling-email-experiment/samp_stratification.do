@@ -253,6 +253,40 @@ egen strata1 = group(Sector size gender)
 
 		* stratas option 2 --> manually define strata such that minimum
 			* strata size = 
+gen strata2 = .
+				* define female categories
+replace strata2 = 1 if Sector == "Industries textiles et habillement"  & gender == 1
+replace strata2 = 1 if Sector == "Industries du cuir et de la chaussure"  & gender == 1
+
+replace strata2 = 2 if Sector == "Autres industries extractives" & gender == 1
+replace strata2 = 2 if Sector == "Industries agricoles et alimentaires" & gender == 1
+replace strata2 = 2 if Sector == "Travail du bois et fabrication d'articles en bois" & gender == 1
+
+replace strata2 = 3 if Sector == "Industrie du caoutchouc et des plastiques" & gender == 1
+replace strata2 = 3 if Sector == "Industrie chimique" & gender == 1
+replace strata2 = 3 if Sector == "Industrie du papier et du carton, édition et imprimerie" & gender == 1
+
+replace strata2 = 4 if Sector ==  "Autres industries manufacturières" & gender == 1
+replace strata2 = 4 if Sector ==  "Fabrication d'equipements électriques et électroniques" & gender == 1
+replace strata2 = 4 if Sector ==  "Fabrication de machines et équipements" & gender == 1
+replace strata2 = 4 if Sector ==  "Métallurgie et travail des métaux" & gender == 1
+replace strata2 = 4 if Sector ==  "Fabrication d'autres produits non métalliques" & gender == 1
+
+				
+				* define male categories
+
+replace strata2 = 5 if Sector ==  & gender == 0
+replace strata2 = 6 if Sector ==  & gender == 0
+replace strata2 = 7 if Sector ==  & gender == 0
+replace strata2 = 8 if Sector ==  & gender == 0
+replace strata2 = 9 if Sector ==  & gender == 0
+replace strata2 = 10 if Sector ==  & gender == 0
+replace strata2 = 11 if Sector ==  & gender == 0
+replace strata2 = 12 if Sector ==  & gender == 0
+replace strata2 = 13 if Sector ==  & gender == 0
+replace strata2 = 14 if Sector ==  & gender == 0
+
+lab def strata2_categories 
 
 
 
