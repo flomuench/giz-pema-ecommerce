@@ -7,10 +7,8 @@
 *																	  
 *	OUTLINE:														  
 *	1)		visualisation of candidate strata variables														  
-*	2)		gen stratification dummy
+*	2)		gen stratification dummy alternatives
 *	3)		visualise number of observations per strata														  
-*	4)
-*   5) 
 *
 *																 																      *
 *	Author:  	Florian													  
@@ -171,13 +169,6 @@ graph export sectors_gender_size.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image sectors_gender_size.png, width(4)
 	
-***********************************************************************
-* 	PART 1: create dummy variables for each category of factor variables				  										  
-***********************************************************************
-/* foreach x of varlist sector size governorate gender {
-tab `x', gen(`x')
-}
-*/
 ***********************************************************************
 * 	PART 2: gen stratification dummy				  										  
 ***********************************************************************

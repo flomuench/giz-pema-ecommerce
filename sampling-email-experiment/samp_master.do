@@ -30,7 +30,9 @@ capture program drop zscore /* drops the program programname */
 qui cap log c
 
 	* install packages
-*ssc install blindschemes, replace
+*ssc install ietoolkit /* for iebaltab */
+*ssc install randtreat /* for randtreat --> random allocation */
+*ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
 *net install http://www.stata.com/users/kcrow/tab2docx
 *ssc install betterbar 
 
@@ -107,3 +109,12 @@ if (1) do "${samp_github}/samp_generate.do"
 	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_stratification.do"
+
+/* --------------------------------------------------------------------
+	PART 3.6: Randomisation
+	NOTE: email_id etc.
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${samp_github}/samp_randomisation.do"
+
