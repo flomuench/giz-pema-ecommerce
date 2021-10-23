@@ -38,7 +38,7 @@ tostring `id1', replace
 gen `id2' = "e"
 egen id_email = concat(`id2' `id1')
 order id_email n, first /* eyeballing the data confirms that id_email != n */
-drop n
+drop n `id1'
 
 ***********************************************************************
 * 	PART 2: create factor variables from categorical string variables				  										  
