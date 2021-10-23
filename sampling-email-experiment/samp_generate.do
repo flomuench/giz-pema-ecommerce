@@ -25,8 +25,20 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 ***********************************************************************
 * 	PART 1: generate an id			  										  
 ***********************************************************************
+	* randomly order firms
+gen n = _n
+gen rand = runiform()
+sort rand
 
-
+	* generate a new id for the email experiment
+tempvar id1 id2
+gen `id1' = _n
+replace `id1' = `id1' + 1000 /* start the count at 4001 such that all ids have the same length*/
+tostring `id1', replace
+gen `id2' = "e"
+egen id_email = concat(`id2' `id1')
+order id_email n, first /* eyeballing the data confirms that id_email != n */
+drop n
 
 ***********************************************************************
 * 	PART 2: create factor variables from categorical string variables				  										  
@@ -99,6 +111,13 @@ replace size = 4 if fte > 240 & fte < .
 
 lab def size_categories 1 "small" 2 "medium" 3 "large" 4 "big"
 lab values size size_categories
+
+tab size, gen(Size)
+
+***********************************************************************
+* 	PART 5: gen firm contact origin dummy				  										  
+***********************************************************************
+tab origin, gen(Origin)
 
 ***********************************************************************
 * 	PART END: save the dta file				  						

@@ -95,7 +95,7 @@ if (1) do "${samp_github}/samp_correct.do"
 
 /* --------------------------------------------------------------------
 	PART 3.4: Generate variables for analysis or implementation
-	NOTE: email_id etc.
+	NOTE: id_email
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
@@ -104,7 +104,6 @@ if (1) do "${samp_github}/samp_generate.do"
 
 /* --------------------------------------------------------------------
 	PART 3.5: Stratification
-	NOTE: email_id etc.
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
@@ -112,9 +111,8 @@ if (1) do "${samp_github}/samp_stratification.do"
 
 /* --------------------------------------------------------------------
 	PART 3.6: Randomisation
-	NOTE: email_id etc.
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_randomisation.do"
+if (0) do "${samp_github}/samp_randomisation.do"
 
