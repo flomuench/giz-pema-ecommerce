@@ -118,7 +118,7 @@ gen n = _n
 export excel `emaillistvar' using "control1" if n <= 400, firstrow(var) replace
 export excel `emaillistvar' using "control2" if n > 400 & n <= 800, firstrow(var) replace
 export excel `emaillistvar' using "control3" if n > 800 & n <= 1200, firstrow(var) replace
-export excel `emaillistvar' using "control4" if n <= 1500, firstrow(var) replace
+export excel `emaillistvar' using "control4" if n > 1200 & n <= 1500, firstrow(var) replace
 restore
 
 	* export for treatment group / garde d'enfant
@@ -128,7 +128,7 @@ gen n = _n
 export excel `emaillistvar' using "garde_enfant1" if n <= 400, firstrow(var) replace
 export excel `emaillistvar' using "garde_enfant2" if n > 400 & n <= 800, firstrow(var) replace
 export excel `emaillistvar' using "garde_enfant3" if n > 800 & n <= 1200, firstrow(var) replace
-export excel `emaillistvar' using "garde_enfant4" if n <= 1500, firstrow(var) replace
+export excel `emaillistvar' using "garde_enfant4" if n > 1200 & n <= 1500, firstrow(var) replace
 restore	
 	
 	* export for treatment group / video influenceuse
@@ -138,7 +138,7 @@ gen n = _n
 export excel `emaillistvar' using "video_influenceuse1" if n <= 400, firstrow(var) replace
 export excel `emaillistvar' using "video_influenceuse2" if n > 400 & n <= 800, firstrow(var) replace
 export excel `emaillistvar' using "video_influenceuse3" if n > 800 & n <= 1200, firstrow(var) replace
-export excel `emaillistvar' using "video_influenceuse4" if n <= 1500, firstrow(var) replace
+export excel `emaillistvar' using "video_influenceuse4" if n > 1200 & n <= 1500, firstrow(var) replace
 restore	
 
 ***********************************************************************
