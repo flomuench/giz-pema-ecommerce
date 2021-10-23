@@ -22,6 +22,11 @@
 	* import the data
 use "${samp_intermediate}/giz_contact_list_inter", clear
 
+	* continue word export
+putdocx begin
+putdocx paragraph
+putdocx text ("Results of randomisation"), bold linebreak(1)
+
 ***********************************************************************
 * 	PART 1: set the seed + sort the data
 ***********************************************************************
@@ -101,7 +106,7 @@ cd "$samp_final"
 	
 	* check number of observations per treatment group
 tab treatment, missing
-sort treatment email_id 
+sort treatment id_email
 	
 	* define the list of variables to included in each email list
 local emaillistvar "id_email treatment firmname name email"
@@ -140,7 +145,7 @@ restore
 * 	PART END: save the dta file				  						
 ***********************************************************************
 	* save word document with visualisations
-putdocx save descriptive-statistics-strata-variables.docx, replace
+putdocx save results_randomisation.docx, replace
 
 	* save dta file with stratas
 save "giz_contact_list_final", replace

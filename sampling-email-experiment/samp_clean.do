@@ -6,10 +6,12 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1)																  
-*	2)	
-*	3)																  
-*																	 																      *
+*	1)		format string & numerical variables														  
+*	2)		drop unneeded variables
+*	3)		rename variables								  
+*	4) 		change capitalisation of observations								 																      *
+*	5) 
+*
 *	Author:  	Florian													  
 *	ID variable: 				  									  
 *	Requires:			´
@@ -39,9 +41,14 @@ format %-9.0fc `numvars'
 ***********************************************************************
 drop A
 
+***********************************************************************
+* 	PART 3: rename variables			  										  
+***********************************************************************
+rename I town
+label var town "city where firm is located"
 
 ***********************************************************************
-* 	PART 3: Change capitalisation of variables		  										  
+* 	PART 4: Change capitalisation of variables		  										  
 ***********************************************************************
 	* name, governorate
 foreach x of varlist name governorate {

@@ -327,4 +327,5 @@ graph export firms_per_strata2.png, replace
 putdocx save descriptive-statistics-strata-variables.docx, replace
 
 	* save dta file with stratas
+cd "$samp_intermediate"
 save "giz_contact_list_inter", replace

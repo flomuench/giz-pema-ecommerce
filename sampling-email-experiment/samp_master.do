@@ -114,5 +114,5 @@ if (1) do "${samp_github}/samp_stratification.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_randomisation.do"
+if (1) do "${samp_github}/samp_randomisation.do"
 
