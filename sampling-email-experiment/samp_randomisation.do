@@ -36,13 +36,13 @@ putdocx text ("Results of randomisation"), bold linebreak(1)
 set seed 503152734
 
 	* sort the data by email_id (stable sort --> randomisation rule 2)
-sort id_email
+isid id_email, sort
 
 ***********************************************************************
 * 	PART 2: random allocation
 ***********************************************************************
 	* random allocation
-randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(wstrata)
+randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(strata)
 			/*
 			14 missing values generated
 			assignment produces 17 misfits
