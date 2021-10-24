@@ -42,8 +42,7 @@ isid id_email, sort
 * 	PART 2: random allocation
 ***********************************************************************
 	* random allocation, with seed (randomisation rule 1) generated random number on random.org between 1 million & 1 billion
-
-randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(wstrata) setseed(503152734)
+randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(strata) setseed(503152734)
 			/*
 			14 missing values generated
 			assignment produces 17 misfits
@@ -104,10 +103,10 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(Sector, lab(labs(vsmal
 ***********************************************************************			 	
 	* check number of observations per treatment group
 tab treatment, missing
-sort treatment id_email
+sort treatment email
 	
 	* define the list of variables to included in each email list
-local emaillistvar "id_email treatment firmname name email"
+local emaillistvar "treatment firmname email"
 	
 	* export for control group / neutral email
 preserve 
