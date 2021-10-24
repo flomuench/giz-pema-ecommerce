@@ -34,7 +34,8 @@ qui cap log c
 *ssc install randtreat /* for randtreat --> random allocation */
 *ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
 *net install http://www.stata.com/users/kcrow/tab2docx
-*ssc install betterbar 
+*ssc install betterbar
+*ssc install mdesc 
 
 	* define graph scheme for visual outputs
 set scheme plotplain
