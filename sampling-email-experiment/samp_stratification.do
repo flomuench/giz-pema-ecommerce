@@ -36,8 +36,8 @@ putdocx begin
 sum fte, d
 display "Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."
 putdocx paragraph
-putdocx text ("Sample full time equivalent employees descriptive statistics"), linebreak(1) bold
-putdocx text ("Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."), linebreak(1)
+putdocx text ("Sample full time equivalent employees descriptive statistics"), linebreak bold
+putdocx text ("Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."), linebreak
 mdesc fte
 display "We miss employee information for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx text ("We miss employee information for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
@@ -110,7 +110,7 @@ graph export female_firm_sector.png, replace
 mdesc sector
 display "We miss sector information for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
-putdocx text ("Sector descriptive statistics"), bold linebreak(1)
+putdocx text ("Sector descriptive statistics"), bold linebreak
 putdocx text ("We miss sector information for `r(miss)' (`r(percent)'%) out of `r(total)'.")
 	
 graph hbar (count), over(sector) ///
@@ -135,7 +135,7 @@ graph export sectors.png, replace
 		* fte by sector
 putdocx pagebreak
 putdocx paragraph
-putdocx text ("Conditional distribution of variables"), bold linebreak(1)
+putdocx text ("Conditional distribution of variables"), bold linebreak
 
 histogram fte if fte <= 240, by(sector, title("{bf:sample firm employees") legend(off)) frequency ///
 	note("Sample limited to firms with <= 240 employees", size(vsmall)) ///
@@ -304,7 +304,7 @@ graph bar (count), over(strata1, sort(1) label(labs(half_tiny))) ///
 graph export firms_per_strata1.png, replace
 	putdocx pagebreak
 	putdocx paragraph, halign(center)
-	putdocx text ("Visualisation of strata size"), bold linebreak(1)
+	putdocx text ("Visualisation of strata size"), bold linebreak
 	putdocx image firms_per_strata1.png, width(4)
 
 	
@@ -317,7 +317,7 @@ graph hbar (count), over(strata2, sort(1) label(labs(vsmall))) ///
 graph export firms_per_strata2.png, replace
 	putdocx pagebreak
 	putdocx paragraph, halign(center)
-	putdocx text ("Visualisation of strata size"), bold linebreak(1)
+	putdocx text ("Visualisation of strata size"), bold linebreak
 	putdocx image firms_per_strata2.png, width(4)
 
 ***********************************************************************

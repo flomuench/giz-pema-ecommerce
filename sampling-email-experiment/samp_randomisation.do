@@ -25,15 +25,15 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 	* continue word export
 putdocx begin
 putdocx paragraph
-putdocx text ("Results of randomisation"), bold linebreak(1)
+putdocx text ("Results of randomisation"), bold linebreak
+
+	* change directory to final folder
+cd "$samp_final"
 
 ***********************************************************************
 * 	PART 1: set the seed + sort the data
 ***********************************************************************
 
-	* set the seed (randomisation rule 1)
-		* generated random number on random.org between 1 million & 1 billion
-set seed 503152734
 
 	* sort the data by email_id (stable sort --> randomisation rule 2)
 sort id_email
@@ -41,8 +41,8 @@ sort id_email
 ***********************************************************************
 * 	PART 2: random allocation
 ***********************************************************************
-	* random allocation
-randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(wstrata)
+	* random allocation, with seed (randomisation rule 1) generated random number on random.org between 1 million & 1 billion
+randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(wstrata) setseed(503152734)
 			/*
 			14 missing values generated
 			assignment produces 17 misfits
@@ -100,10 +100,7 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(Sector, lab(labs(vsmal
 	
 ***********************************************************************
 * 	PART 4: email lists by treatment status
-***********************************************************************			 
-	* change directory to final folder
-cd "$samp_final"
-	
+***********************************************************************			 	
 	* check number of observations per treatment group
 tab treatment, missing
 sort treatment id_email
