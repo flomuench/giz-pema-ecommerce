@@ -26,6 +26,9 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 ***********************************************************************
 replace sector = "" if sector == "N.C"
 
+	* drop obs with unknown gender
+drop if gender == "unknown"
+
 
 ***********************************************************************
 * 	PART 2: destring numerical variables imported as string		  										  

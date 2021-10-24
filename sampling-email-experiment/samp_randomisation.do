@@ -37,12 +37,11 @@ cd "$samp_final"
 	* sort the data by email_id (stable sort --> randomisation rule 2)
 isid id_email, sort
 
-
 ***********************************************************************
 * 	PART 2: random allocation
 ***********************************************************************
 	* random allocation, with seed (randomisation rule 1) generated random number on random.org between 1 million & 1 billion
-randtreat, gen(treatment) replace strata(strata2) multiple(3) misfits(strata) setseed(503152734)
+randtreat, gen(treatment) strata(strata2) multiple(3) misfits(missing) setseed(63500114)
 			/*
 			14 missing values generated
 			assignment produces 17 misfits
@@ -137,6 +136,9 @@ export excel `emaillistvar' using "video_influenceuse2" if n > 400 & n <= 800, f
 export excel `emaillistvar' using "video_influenceuse3" if n > 800 & n <= 1200, firstrow(var) replace
 export excel `emaillistvar' using "video_influenceuse4" if n > 1200 & n <= 1500, firstrow(var) replace
 restore	
+
+	* check whether replicable (same allocation)
+export excel rand id_email firmname treatment using "test_replicable", replace firstrow(var)
 
 ***********************************************************************
 * 	PART END: save the dta file				  						

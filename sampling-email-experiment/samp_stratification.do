@@ -254,6 +254,8 @@ replace strata2 = 4 if Sector ==  5 & gender == 1  /* "Fabrication d'equipements
 replace strata2 = 4 if Sector ==  6 & gender == 1  /* "Fabrication de machines et équipements" */
 replace strata2 = 4 if Sector ==  14 & gender == 1 /* "Métallurgie et travail des métaux" */
 replace strata2 = 4 if Sector ==  4  & gender == 1 /* "Fabrication d'autres produits non métalliques" */
+replace strata2 = 4 if Sector ==  7  & gender == 1 /* "Fabrication d'autres produits non métalliques" */
+
 
 				* define male categories
 					* aggregated male categories
@@ -277,9 +279,10 @@ replace strata2 = 13 if Sector == 14 & gender == 0    /* "Métallurgie et travai
 replace strata2 = 14 if Sector == 13 & gender == 0    /* "Industries textiles et habillement" */
 replace strata2 = 15 if Sector == 12 & gender == 0    /* "Industries du cuir et de la chaussure" */
 					
-					* unknown
+					* sector unknown
 replace strata2 = 16 if Sector == 16 & gender == 1    /* "Undefined" */
 replace strata2 = 17 if Sector == 16 & gender == 0    /* "Undefined" */
+
 
 
 label define strata2_categories 1 "Women - Textiles, leather & shoes" ///
