@@ -11,7 +11,7 @@
 *																	  
 *																	  
 *	Author:  	Florian Münch, Teo Firpo							    
-*	ID variable: 	?			  					  
+*	ID variable: id_email		  					  
 *	Requires: ?.dta 	  										  
 *	Creates:  *.dta			                                  
 ***********************************************************************
@@ -75,7 +75,7 @@ set seed 8413195
 set sortseed 8413195
 		
 ***********************************************************************
-* 	PART 3: 	Run midline do-files			  	 				  *
+* 	PART 3: 	Run do-files for population data preparation
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 3.1: Import & raw data
@@ -100,7 +100,6 @@ if (1) do "${samp_github}/samp_clean.do"
 	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_correct.do"
-
 
 
 /* --------------------------------------------------------------------
@@ -132,3 +131,5 @@ if (0) do "${samp_github}/samp_randomisation.do"
 	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_randomisation_manual.do"
+
+

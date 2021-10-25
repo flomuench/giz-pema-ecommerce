@@ -142,11 +142,13 @@ lab values treatment treat_status
 tab treatment, missing
 
 	* visualising size of each treatment group
+sum treatment
+local N = r(N)
 graph bar (count), over(treatment) ///
 	title("Firms per treatment group") ///
 	ytitle("Number of firms") ///
 	blabel(bar, format(%-4.0f) size(vsmall)) ///
-	note("Total sample size = 4343.", size(vsmall))
+	note("Total sample size = `N'.", size(vsmall))
 graph export firms_per_treatmentgroup.png, replace
 	putdocx paragraph, halign(center)
 	putdocx image firms_per_treatmentgroup.png, width(4)
@@ -192,7 +194,7 @@ tab treatment, missing
 sort treatment id_email, stable
 	
 	* define the list of variables to included in each email list
-local emaillistvar "treatment *name email"
+local emaillistvar "treatment id_email firmname email"
 	
 	* export for control group / neutral email
 preserve 
