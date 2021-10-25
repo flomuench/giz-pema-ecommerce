@@ -1,14 +1,90 @@
+***********************************************************************
+* 			master do file regisling, email experiment e-commerce 									  
+***********************************************************************
+*																	  
+*	PURPOSE: make all data work reproducible from first import to analysis
+* 	for all team members & outsiders								  
+*																	  
+*	OUTLINE: 	PART 1: Set standard settings & install packages	  
+*				PART 2: Prepare dynamic folder paths & globals		  
+*				PART 3: Run all do-files                          
+*																	  
+*																	  
+*	Author:  	Florian Münch							    
+*	ID variable: id_email		  					  
+*	Requires:  	  										  
+*	Creates:  master-data-ecommerce; emailexperiment_population_regisle.dta		                                  
+***********************************************************************
+* 	PART 1: 	Set standard settings & install packages			  
+***********************************************************************
 
+	* set standard settings
+version 15
+clear all
+graph drop _all
+scalar drop _all
+set more off
+set graphics off /* switch off to on to display graphs */
+capture program drop zscore /* drops the program programname */
+qui cap log c
+
+	* install packages
+*ssc install ietoolkit /* for iebaltab */
+*ssc install randtreat, replace /* for randtreat --> random allocation */
+*ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
+*net install http://www.stata.com/users/kcrow/tab2docx
+*ssc install betterbar
+*ssc install mdesc 
+*ssc install reclink
+*ssc install dm0082 /* for reclink2 */
+*ssc install matchit
+*ssc install strgroup
+
+	* define graph scheme for visual outputs
+set scheme plotplain
 
 ***********************************************************************
-* 	PART 4: 	Run do-files for sample population (registered) firms
+* 	PART 2: 	Prepare dynamic folder paths & globals			  	  *
+***********************************************************************
+
+		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
+if c(os) == "Windows" {
+	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
+	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+else if c(os) == "MacOSX" {
+	global regis_gdrive = "Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_github = "Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
+	global regis_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+		* paths within gdrive
+			* data
+global regis_raw = "${regis_gdrive}/raw"
+global regis_intermediate "${regis_gdrive}/intermediate"
+global regis_final = "${regis_gdrive}/final"
+
+			* output (regression tables, figures)
+global regis_output = "${regis_gdrive}/output"
+global regis_figures = "${regis_output}/descriptive-statistics-figures"
+
+		* global for *type* variables
+		
+		
+		* set seeds for replication
+set seed 8413195
+set sortseed 8413195
+		
+
+***********************************************************************
+* 	PART 4: 	Run do-files for regisle population (registered) firms
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 4.1: Import & raw data
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/		
-if (1) do "${samp_github}/reg_import.do"
+if (0) do "${regis_github}/reg_import.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Clean raw data & save as intermediate data
@@ -16,7 +92,7 @@ if (1) do "${samp_github}/reg_import.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_clean.do"
+if (0) do "${regis_github}/regis_clean.do"
 
 
 /* --------------------------------------------------------------------
@@ -25,24 +101,21 @@ if (1) do "${samp_github}/samp_clean.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_correct.do"
-
-
-
+if (0) do "${regis_github}/regis_correct.do"
 
 
 /* --------------------------------------------------------------------
-	PART 4.4: Generate variables for analysis or implementation
+	PART 4.5: Generate variables for analysis or implementation
 	NOTE: id_email
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_generate.do"
+if (0) do "${regis_github}/regis_generate.do"
 
 
 /* --------------------------------------------------------------------
-	PART 4.5: Stratification
+	PART 4.6: Stratification
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_merge.do"
+if (0) do "${regis_github}/regis_merge.do"

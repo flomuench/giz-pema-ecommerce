@@ -10,10 +10,10 @@
 *				PART 3: Run all do-files                          
 *																	  
 *																	  
-*	Author:  	Florian Münch, Teo Firpo							    
+*	Author:  	Florian Münch						    
 *	ID variable: id_email		  					  
-*	Requires: ?.dta 	  										  
-*	Creates:  *.dta			                                  
+*	Requires: giz_contact_list_inter.dta	  										  
+*	Creates:  giz_contact_list_final.dta			                                  
 ***********************************************************************
 * 	PART 1: 	Set standard settings & install packages			  
 ***********************************************************************
