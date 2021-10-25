@@ -57,6 +57,22 @@ replace `x' = proper(`x')
 
 	* export
 replace export = lower(export)
+
+	* email
+replace email = lower(email)
+
+	* firmname
+replace firmname = lower(firmname)
+
+***********************************************************************
+* 	PART 5: remove blanks from string variables
+***********************************************************************
+ds, has(type string) 
+local strvars "`r(varlist)'"
+foreach x of local strvars {
+replace `x' = strtrim(strtrim(`x'))
+}
+
 ***********************************************************************
 * 	PART END: save the dta file				  						
 ***********************************************************************

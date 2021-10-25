@@ -92,7 +92,6 @@ if (1) do "${samp_github}/samp_import.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_clean.do"
 
-
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 	NOTE: observational values are changed, observations are dropped
@@ -101,7 +100,6 @@ if (1) do "${samp_github}/samp_clean.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_correct.do"
 
-
 /* --------------------------------------------------------------------
 	PART 3.4: Generate variables for analysis or implementation
 	NOTE: id_email
@@ -109,7 +107,6 @@ if (1) do "${samp_github}/samp_correct.do"
 	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_generate.do"
-
 
 /* --------------------------------------------------------------------
 	PART 3.5: Stratification
@@ -123,13 +120,6 @@ if (1) do "${samp_github}/samp_stratification.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_randomisation.do"
-
-/* --------------------------------------------------------------------
-	PART 3.6: Randomisation
-	Requires: 
-	Creates: 
-----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_randomisation_manual.do"
+if (0) do "${samp_github}/samp_randomisation_manual.do"
 
 

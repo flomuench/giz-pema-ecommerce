@@ -26,7 +26,7 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 ***********************************************************************
 replace sector = "" if sector == "N.C"
 
-	* drop obs with unknown gender
+	* drop obs with unknown gender (10 obs)
 drop if gender == "unknown"
 
 
@@ -41,17 +41,22 @@ format fte %-9.0fc
 ***********************************************************************
 	* firm-email same
 duplicates tag firmname email, gen(dup_fname_email)
-*browse if dup_fname_email > 0 /* suggest no firm-email duplicates */
+*browse if dup_fname_email > 0 /* suggest 1 firm-email dup = "masmoudi" */
+duplicates report firmname email
+duplicates drop firmname email, force /* 1 obs deleted */
 
 	* email
-duplicates list email /* suggests 0 observations are duplicates */
-	
+duplicates list email
+duplicates tag email, gen(dup_email)
+duplicates report email /* 18 surplus obs (18 contacts with 2 emails) */
+sort email origin, stable
+duplicates drop email, force /* 18 obs deleted */
+duplicates list email 
+
 	* firmname
 duplicates list firmname
+duplicates report firmname /* surplus 59 with 1 dup,  */
 duplicates tag firmname, gen(dupfirmname)
-codebook firmname /* 598 firm names are missing */
-sort firmname, stable
-*browse if dupfirmname > 0 & firmname != "" /* 121 firms with several email adresses */
 sort firmname origin, stable 
 		/* duplicates come either from
 		1: same firm in pema & api contact list
@@ -61,9 +66,9 @@ sort firmname origin, stable
 		
 		Decision: remove pema 
 		*/
-duplicates drop firmname, force		/* corresponds to 658 contacts */
+drop if dupfirmname < 3 & dupfirmname > 0 /* 121 */
 *browse if dupfirmname > 0 & firmname != "" /* only one ober per firm */
-duplicates list firmname
+duplicates report firmname /* only obs with missing firm name */
 
 
 ***********************************************************************

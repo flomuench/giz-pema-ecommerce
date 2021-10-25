@@ -29,24 +29,9 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 		* seed set in master file number generated on random.org 
 sort firmname, stable
 gen rand = runiform()
-*sort rand
-isid rand, sort
 sort rand, stable
-
 	* generate a new id for the email experiment
-*tempvar id1 id2
-*sort rand
 gen id_email = _n
-
-export excel rand id_email firmname using id_test1, replace firstrow(var)
-
-/* replace `id1' = `id1' + 1000 /* start the count at 4001 such that all ids have the same length*/
-tostring `id1', replace
-gen `id2' = "e"
-egen id_email = concat(`id2' `id1')
-drop `id1'
-*/
-
 
 ***********************************************************************
 * 	PART 2: create factor variables from categorical string variables				  										  
