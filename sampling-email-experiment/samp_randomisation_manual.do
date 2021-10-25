@@ -177,7 +177,7 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(Sector, lab(labs(vsmal
 	
 	
 	* export to verify replicability
-export excel id_email firmname strata2 tot_obs random* rank* using test_replicable, replace firstrow(var)
+export excel id_email treatment firmname strata2 tot_obs random* rank* using test_replicable, replace firstrow(var)
 
 	
 ***********************************************************************
