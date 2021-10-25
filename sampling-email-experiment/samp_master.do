@@ -60,11 +60,20 @@ else if c(os) == "MacOSX" {
 global samp_raw = "${samp_gdrive}/raw"
 global samp_intermediate "${samp_gdrive}/intermediate"
 global samp_final = "${samp_gdrive}/final"
+
 			* output (regression tables, figures)
 global samp_output = "${samp_gdrive}/output"
 global samp_figures = "${samp_output}/descriptive-statistics-figures"
+global samp_randomisation = "${samp_output}/randomisation_results"
+global samp_emaillists = "${samp_output}/email_lists"
 
 		* global for *type* variables
+		
+		
+		* set seeds for replication
+set seed 8413195
+set sortseed 8413195
+		
 ***********************************************************************
 * 	PART 3: 	Run midline do-files			  	 				  *
 ***********************************************************************
@@ -115,5 +124,11 @@ if (1) do "${samp_github}/samp_stratification.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_randomisation.do"
+if (0) do "${samp_github}/samp_randomisation.do"
 
+/* --------------------------------------------------------------------
+	PART 3.6: Randomisation
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${samp_github}/samp_randomisation_manual.do"

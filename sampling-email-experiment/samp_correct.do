@@ -50,9 +50,9 @@ duplicates list email /* suggests 0 observations are duplicates */
 duplicates list firmname
 duplicates tag firmname, gen(dupfirmname)
 codebook firmname /* 598 firm names are missing */
-sort firmname
+sort firmname, stable
 *browse if dupfirmname > 0 & firmname != "" /* 121 firms with several email adresses */
-sort firmname origin 
+sort firmname origin, stable 
 		/* duplicates come either from
 		1: same firm in pema & api contact list
 			Ex: alpha etiquettes, berg life sciences, bioservice tunisie, cerealis etc.

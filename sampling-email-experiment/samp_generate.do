@@ -26,12 +26,12 @@ use "${samp_intermediate}/giz_contact_list_inter", clear
 * 	PART 1: generate an id			  										  
 ***********************************************************************
 	* randomly order firms
-		* seed number generated on random.org 
-set seed 503152734
-sort firmname
+		* seed set in master file number generated on random.org 
+sort firmname, stable
 gen rand = runiform()
 *sort rand
 isid rand, sort
+sort rand, stable
 
 	* generate a new id for the email experiment
 *tempvar id1 id2
