@@ -64,20 +64,20 @@ tab div3
 browse id_email firmname strata2 tot_obs random rank div3
 
 		/* suggests that the  following strata are divisible by 3:
-		8, 14, 15
+		2, 3, 12, 13, 17
 		
 		Rest of 1:
-		2, 3, 4, 5, 12, 10, 11, 9, 7
+		4, 8, 9, 14
 		
 		Rest of 2:
-		16, 1, 13, 17, 6
+		5, 15, 10, 11, 1, 7, 16, 6
 		
 		in total there are: 1*9 + 5 * 2 = 19 misfits
 		
 		*/
 	* gen dummies for stratas with misfit
-gen misfit1 = (inlist(strata2, 2,3,4,5,12,10,11,9,7))
-gen misfit2 = (inlist(strata2, 16,1,13,17,6))
+gen misfit1 = (inlist(strata2, 4,8,9,14))
+gen misfit2 = (inlist(strata2, 5,15,10,11,1,7,16,6))
 codebook strata2 if misfit1 == 1
 codebook strata2 if misfit2 == 1
 browse id_email firmname strata2 misfit* tot_obs random rank div3
@@ -102,7 +102,8 @@ by strata2: replace treatment = 2 if rank > 2*(tot_obs1 / 3) & rank <= tot_obs1
 tab treatment if strata2 == 2, missing
 
 	* create a dummy to identify observations with misfit
-gen misfits = (treatment == .) /* should be 19 misfits */
+gen misfits = (treatment == .) /* should be 20 misfits */
+
 
 	* allocate misfits randomly within each strata
 		* sort the observations by strata2 and rank
@@ -120,15 +121,16 @@ replace treatment = 1 if rank2 > 6 & rank2 <= 12
 replace treatment = 2 if rank2 > 12 & rank2 <= 18
 		
 		* allocate last remaining observation based on the value of its random number
-replace treatment = 0 if rank2 == 19 & random2 <= 0.33
-replace treatment = 1 if rank2 == 19 & random2 > .33 & random2 <= 0.66
-replace treatment = 2 if rank2 == 19 & random2 > .66 & random2 < .
+forvalues i = 19(1)20{
+replace treatment = 0 if random2 <= 0.33 & rank2 == `i'
+replace treatment = 1 if random2 > .33 & random2 <= 0.66 & rank2 == `i'
+replace treatment = 2 if random2 > .66 & random2 < . & rank2 == `i'
+}
 
 ***********************************************************************
 * 	PART 3: visualize randomisation results
 ***********************************************************************
 tab treatment, missing
-			/* for some reasons, 2 obs are not allocated */
 
 	* generate treatment dummies
 tab treatment, gen(Treatment)
