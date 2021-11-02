@@ -1,8 +1,8 @@
 ***********************************************************************
-* 			baseline clean									  		  
+* 			Registration clean									  		  
 ***********************************************************************
 *																	  
-*	PURPOSE: clean baseline raw data					  	  			
+*	PURPOSE: clean Registration raw data					  	  			
 *																	  
 *																	  
 *	OUTLINE:														  
@@ -15,14 +15,14 @@
 *   7) 		Label variable values 								 
 *   8) 		Removing trailing & leading spaces from string variables										 
 *																	  													      
-*	Author:  	Florian Muench & Kais Jomaa							    
-*	ID variable: 	id (example: f101)			  					  
+*	Author:  	Florian Muench & Kais Jomaa & Teo Firpo						    
+*	ID variable: 	id (identifiant)			  					  
 *	Requires: bl_raw.dta 	  										  
 *	Creates:  bl_inter.dta			                                  
 ***********************************************************************
 * 	PART 1: 	Format string & numerical variables		  			
 ***********************************************************************
-use "${bl_raw}/bl_raw", clear
+use "${regis_raw}/regis_raw", clear
 
 {
 	* format numerical & string variables
@@ -44,9 +44,7 @@ replace `x'= lower(`x')
 * 	PART 2: 	Drop all text windows from the survey		  			
 ***********************************************************************
 {
-drop text* Text* TEXT* refurl seed Q14A1* Q17A1*
-drop AR-AY
-drop Q11 Q11Time
+*drop VARNAMES
 }
 
 ***********************************************************************
@@ -62,19 +60,52 @@ rename *, lower
 }
 
 ***********************************************************************
-* 	PART 5: 	Rename the variables		  			
+* 	PART 5: 	Rename the variables in line with GIZ contact list final	  			
 ***********************************************************************
 {
-	* Section eligibility
+	* Section identification
+rename identifiant id_plateforme
+
+	* Section informations personnelles répresentantes
+rename nometprénom rg_nom
+rename titre rg_position 
+rename sexe rg_gender
+rename télparticipante rg_telrep 
+rename emailparticipante rg_emailrep
+rename télgérante rg_telpdg
+rename emailgérante rg_emailpdg
+rename adresse rg_adresse 
+rename raisonsociale rg_firmname 
+
+	* Section présence en ligne
+rename siteweb rg_siteweb 
+rename réseausocial rg_media 
+
+	* Section firm characteristics
+			* Legal
+rename formejuridique rg_legalstatus
+rename matriculecnss rg_matricule 
+rename codedouane rg_codedouane
+rename entreprise rg_onshore 
+			* Controls
+rename effectiftotal rg_fte
+rename nbrdefemmessalariée rg_fte_femmes 
+rename capitalsocial rg_capital 
+rename domaine sector
+rename secteurdactivité subsector
+			* Export
+rename régime rg_exportstatus
+rename opérationdexport rg_export
+rename produitserviceexportable rg_exportable 
+rename intentiondexporterdansles12 rg_intexp
 	
-	* Section contact data
 }
 ***********************************************************************
 * 	PART 6: 	Label the variables		  			
 ***********************************************************************
 {
 		* Section contact details
-lab var X ""
+*lab var X ""
 
 		* Section eligibility
 
@@ -86,8 +117,10 @@ lab var X ""
 * 	PART 7: 	Label variables values	  			
 ***********************************************************************
 {
+/*
 lab def labelname 1 "" 2 "" 3 ""
 lab val variablename labelname
+*/
 }
 
 ***********************************************************************

@@ -6,14 +6,14 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1)	search for duplicates based on email & firmname														  
-*	2)
-*	3)																  
+*	1)	correct observation values														  
+*	2)	destring numerical variables
+*	3)	search & remove duplicates														  
 *																	 																      *
 *	Author:  Florian												  
-*	ID variable: 				  									  
-*	Requires:			´
-*	Creates:														  
+*	ID variable: 	no id - each line corresponds to one contact in principle	  									  
+*	Requires:		giz_contact_list_inter.dta	´
+*	Creates:		giz_contact_list_inter.dta								  
 *																	  
 ***********************************************************************
 * 	PART START: import the data				  										  *

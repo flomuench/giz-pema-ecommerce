@@ -1,5 +1,5 @@
 ***********************************************************************
-* 			master do file regisling, email experiment e-commerce 									  
+* 			master do file registration, email experiment e-commerce 									  
 ***********************************************************************
 *																	  
 *	PURPOSE: make all data work reproducible from first import to analysis
@@ -84,7 +84,7 @@ set sortseed 8413195
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/		
-if (0) do "${regis_github}/reg_import.do"
+if (1) do "${regis_github}/regis_import.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Clean raw data & save as intermediate data
@@ -92,7 +92,7 @@ if (0) do "${regis_github}/reg_import.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_clean.do"
+if (1) do "${regis_github}/regis_clean.do"
 
 
 /* --------------------------------------------------------------------

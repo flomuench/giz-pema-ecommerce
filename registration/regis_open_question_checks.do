@@ -36,15 +36,6 @@ tab2docx `x'
 putdocx pagebreak
 }
 
-***********************************************************************
-* 	PART 3: Questions for categorisation	  			
-***********************************************************************	
-global regis_categories VARLIST
-foreach x of global regis_categories {
-putdocx paragraph, halign(center)
-tab2docx `x'
-putdocx pagebreak
-}
 
 ***********************************************************************
 * 	End:  save dta, word file		  			

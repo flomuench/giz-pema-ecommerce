@@ -14,8 +14,7 @@
 *	6)  	Traduction reponses en arabe au francais				  
 *   7)      Rename and homogenize the observed values                   
 *	8)		Import categorisation for opend ended QI questions
-*	9) 		Replace interview time with minutes instead of seconds
-*	10) 	Remove leading & trailing spaces
+*	9)		Remove duplicates
 *
 *																	  															      
 *	Author:  	Florian Muench & Kais Jomaa							  
@@ -27,48 +26,16 @@
 * 	PART 1:  Define non-response categories  			
 ***********************************************************************
 use "${regis_intermediate}/regis_inter", clear
+
 {
-	
-	* did not know == 7777777777 (16x7)
-	* refused to answer == 999999999 (16x9)
-	* answer should be checked either through tape or re-call == 88888888888888888 (16x8)
+/*	
 scalar not_know    = 77777777777777777
 scalar refused     = 99999999999999999
 scalar check_again = 88888888888888888
 
-* replace string with numerical values for "je ne sais pas"
-	* investissement annuel
-replace q46 = not_know if q8 == "je ne sais pas (une estimation approximative est suffisante)"
-replace smq_defauts_pourc = not_know if q7q2b1 == "je ne sais pas"
-
-*generate corrected variaregises*
-gen q391_corrige = q391	
-label var q391_corrige "ventes en export en 2021 en dinar"
-gen q392_corrige = q392	
-label var q392_corrige "ventes en Tunisie en 2021 en dinar"
-gen q393_corrige = q393
-label var q393_corrige "bénéfice en 2021 1er 6 mois en dinar"
-gen regis_prix_corrige = regis_prix
-label var regis_prix_corrige
-gen q46_corrige = q46
-label var q46_corrige "investissment assurance qualité en 2022"
-
-
-* Code for other response categories for text variables
-ds, has(type numeric) 
-local numvars "`r(varlist)'"
-foreach x of local numvars {
-replace `x' = "$not_know" if `x' == "98"
-replace `x' = "$refused" if `x' == "99"
-}
-
-* Code for other response categories for numeric variaregises *
-local varcode q46 q46_corrige
-foreach x of local varcode {
-replace `x' = not_know if `x' == 98
-replace `x'  = refused if `x' == 99
-}
-
+	* replace, gen, label
+	
+*/
 }
 
 ***********************************************************************
@@ -144,8 +111,8 @@ replace q05="directeur des ventes"  if q05=="مدير المبيعات"
 ***********************************************************************
 {
 	* Sectionname
-replace regis_unite = "pièce"  if regis_unite=="par piece"
-replace regis_unite = "pièce"  if regis_unite=="Pièce" 
+*replace regis_unite = "pièce"  if regis_unite=="par piece"
+*replace regis_unite = "pièce"  if regis_unite=="Pièce" 
 
 }
 
@@ -154,6 +121,7 @@ replace regis_unite = "pièce"  if regis_unite=="Pièce"
 * 	PART 8:  Import categorisation for opend ended QI questions
 ***********************************************************************
 {
+/*
 	* the manually handed categories are in the folder data/AQE/surveys/midline/categorisation/copies
 			* q42, q15c5, q18m5, q10n5, q10r5, q21example
 local categories "argument-vente source-informations-conformité source-informations-metrologie source-normes source-reglements-techniques verification-intrants-fournisseurs"
@@ -195,15 +163,19 @@ graph hbar (count), over(q10n5c, lab(labs(tiny)))
 
 	* label variable categories
 lab var q42f "(in-) formel argument de vente"
-
-
+*/
 }
 
 ***********************************************************************
-* 	PART 9:  Replace interview time with minutes instead of seconds
+* 	PART 9:  Remove duplicates
 ***********************************************************************
-replace interviewtime = interviewtime/60
+	* id_plateform
+	
+	* email
+*duplicates report rg_email
+*duplicates tag rg_email, gen(dup_email)
 
+	* firmname
 
 ***********************************************************************
 * 	Save the changes made to the data		  			
