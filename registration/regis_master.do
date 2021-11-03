@@ -63,6 +63,8 @@ else if c(os) == "MacOSX" {
 global regis_raw = "${regis_gdrive}/raw"
 global regis_intermediate "${regis_gdrive}/intermediate"
 global regis_final = "${regis_gdrive}/final"
+global regis_checks = "${regis_gdrive}/checks"
+
 
 			* output (regression tables, figures)
 global regis_output = "${regis_gdrive}/output"
@@ -77,7 +79,7 @@ set sortseed 8413195
 		
 
 ***********************************************************************
-* 	PART 4: 	Run do-files for regisle population (registered) firms
+* 	PART 4: 	Run do-files for data cleaning & registration progress
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 4.1: Import & raw data
@@ -105,6 +107,15 @@ if (0) do "${regis_github}/regis_correct.do"
 
 
 /* --------------------------------------------------------------------
+	PART 4.5: Correct & save intermediate data
+	NOTE: observational values are changed, observations are dropped
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${regis_github}/regis_open_question_checks.do"
+
+
+/* --------------------------------------------------------------------
 	PART 4.5: Generate variables for analysis or implementation
 	NOTE: id_email
 	Requires: 
@@ -114,8 +125,38 @@ if (0) do "${regis_github}/regis_generate.do"
 
 
 /* --------------------------------------------------------------------
-	PART 4.6: Stratification
+	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_merge.do"
+if (0) do "${regis_github}/regis_progress_eligibility.do"
+
+
+***********************************************************************
+* 	PART 5: 	Run do-files for email experiment
+***********************************************************************
+
+/* --------------------------------------------------------------------
+	PART 5.1: Fuzze merge registered with sameple firms
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (0) do "${regis_github}/regis_merge_identification_emailexperiment.do"
+
+
+/* --------------------------------------------------------------------
+	PART 4.6: Balance after registration, descriptive statistics
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (0) do "${regis_github}/regis_emailexp_descriptive_statistics.do"
+
+
+/* --------------------------------------------------------------------
+	PART 4.6: Regression analysis
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (0) do "${regis_github}/regis_emailexp_regressions.do"
+
+

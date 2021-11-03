@@ -75,7 +75,7 @@ rename emailparticipante rg_emailrep
 rename télgérante rg_telpdg
 rename emailgérante rg_emailpdg
 rename adresse rg_adresse 
-rename raisonsociale rg_firmname 
+rename raisonsociale firmname 
 
 	* Section présence en ligne
 rename siteweb rg_siteweb 
@@ -88,6 +88,7 @@ rename matriculecnss rg_matricule
 rename codedouane rg_codedouane
 rename entreprise rg_onshore 
 			* Controls
+rename datedecréation date_created
 rename effectiftotal rg_fte
 rename nbrdefemmessalariée rg_fte_femmes 
 rename capitalsocial rg_capital 
