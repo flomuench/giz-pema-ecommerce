@@ -1,8 +1,8 @@
 ***********************************************************************
-* 			baseline corrections									  	  
+* 			registration corrections									  	  
 ***********************************************************************
 *																	    
-*	PURPOSE: replace					  							  
+*	PURPOSE: correct all incoherent responses				  							  
 *																	  
 *																	  
 *	OUTLINE:														  
