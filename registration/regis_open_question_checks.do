@@ -1,5 +1,5 @@
 ***********************************************************************
-* 			baseline string checks									  	
+* 			registration checks of string/open questions
 ***********************************************************************
 *																	   
 *	PURPOSE: 		check whether string answer to open questions are 														 

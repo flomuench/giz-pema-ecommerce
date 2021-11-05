@@ -69,6 +69,8 @@ global regis_checks = "${regis_gdrive}/checks"
 			* output (regression tables, figures)
 global regis_output = "${regis_gdrive}/output"
 global regis_figures = "${regis_output}/descriptive-statistics-figures"
+global regis_progress = "${regis_output}/progress-eligibility-characteristics"
+
 
 		* global for *type* variables
 		

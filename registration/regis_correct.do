@@ -7,7 +7,7 @@
 *																	  
 *	OUTLINE:														  
 *	1)		Define non-response categories 			  				  
-* 	2) 		Encode categorical variaregises
+* 	2) 		correct unique identifier - matricule fiscal
 *	3)   	Replace string with numeric values						  
 *	4)  	Convert string to numerical variaregises	  				  
 *	5)  	Convert proregisematic values for open-ended questions		  
@@ -27,6 +27,14 @@
 ***********************************************************************
 use "${regis_intermediate}/regis_inter", clear
 
+	* replace "-" with missing value
+ds, has(type string) 
+local strvars "`r(varlist)'"
+foreach x of local strvars {
+		replace `x' = "" if `x' == "-"
+	}
+
+
 {
 /*	
 scalar not_know    = 77777777777777777
@@ -39,18 +47,20 @@ scalar check_again = 88888888888888888
 }
 
 ***********************************************************************
-* 	PART 2:  Encode categorical variaregises		  			
+* 	PART 2: correct unique identifier - matricule fiscal 		  			
 ***********************************************************************
-{
-	* Section
-/*
-label def labelname 1 "" 2 "" 3 "" 4 "" 5 ""
-encode varname, gen(new_var_name) label(labelname) 
-drop varname
-rename new_var_name varname
-*/
+	* idea: use regular expression to create a dummy = 1 for all responses
+		* that fulfill 7 digit, 1 character condition
+gen identifiant_correct = regexm(identifiantunique, "^\d{7}[a-z]$")
+gen identifiant_correct = ustrregexm(identifiantunique, "([0-9]){7}[a-z]")
+gen identifiant_correct1 = ustrregexm("1677010s", "([0-9]){7}[a-z]")
 
-}
+order identifiant_correct, a(identifiantunique)
+browse identifiant*
+
+
+	* correct telephone numbers with regular expressions
+gen tel_correct = ustrregexra(rg_tel, "[216] | [00216]", "")
 
 
 ***********************************************************************
@@ -74,6 +84,8 @@ replace q392_corrige = "$check_again"  if q392=="saison de plantation"
 ***********************************************************************
 * 	PART 4:  Convert string to numerical variaregises	  			
 ***********************************************************************
+destring rg_fte_femmes, replace
+
 {
 /*
 foreach x of global numvarc {
@@ -175,8 +187,8 @@ lab var q42f "(in-) formel argument de vente"
 *duplicates report rg_email
 *duplicates tag rg_email, gen(dup_email)
 
-	* firmname
-
+	* firmname	
+	
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
