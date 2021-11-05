@@ -33,7 +33,7 @@ local strvars "`r(varlist)'"
 foreach x of local strvars {
 		replace `x' = "" if `x' == "-"
 	}
-
+	
 
 {
 /*	
@@ -51,16 +51,19 @@ scalar check_again = 88888888888888888
 ***********************************************************************
 	* idea: use regular expression to create a dummy = 1 for all responses
 		* that fulfill 7 digit, 1 character condition
-gen identifiant_correct = regexm(identifiantunique, "^\d{7}[a-z]$")
 gen identifiant_correct = ustrregexm(identifiantunique, "([0-9]){7}[a-z]")
-gen identifiant_correct1 = ustrregexm("1677010s", "([0-9]){7}[a-z]")
-
 order identifiant_correct, a(identifiantunique)
 browse identifiant*
 
 
 	* correct telephone numbers with regular expressions
-gen tel_correct = ustrregexra(rg_tel, "[216] | [00216]", "")
+		* representative
+gen rg_telrep_cor = ustrregexra(rg_telrep, "^216", "")
+gen diff = length(rg_telrep) - length(rg_telrep_cor)
+order rg_telrep_cor diff, a(rg_telrep)
+browse rg_telrep* diff
+drop rg_telrep diff
+rename rg_telrep_cor rg_telrep
 
 
 ***********************************************************************

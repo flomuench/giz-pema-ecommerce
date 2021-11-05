@@ -86,29 +86,44 @@ replace rg_gender = 0 if rg_gender == 2
 lab values rg_gender sex
 
 ******************** onshore
+lab def onshore 1 "résidente" 0 "non résidente"
 encode rg_onshore, gen(rg_resident)
+replace rg_resident = 0 if rg_resident == 1
+replace rg_resident = 1 if rg_resident == 2
 drop rg_onshore
+lab val rg_resident onshore
 lab var rg_resident "HQ en Tunisie"
 
 ******************** produit exportable
+lab def exportable 1 "produit exportable" 0 "produit non exportable"
 encode rg_exportable, gen(rg_produitexp)
+replace rg_produitexp = 0 if rg_produitexp == 1
+replace rg_produitexp = 1 if rg_produitexp == 2
 drop rg_exportable
+lab val rg_produitexp exportable
 lab var rg_produitexp "Entreprise pense avoir un produit exportable"
 
 ******************** intention exporter
+lab def intexp 1 "intention export" 0 "pas d'intention à exporter"
 encode rg_intexp, gen(rg_intention)
+replace rg_intention = 0 if rg_intention == 1
+replace rg_intention = 1 if rg_intention == 2
 drop rg_intexp
+lab val rg_intention intexp
 lab var rg_intention "Entreprise a l'intention d'exporter dans les prochains 12 mois"
 
 ******************** une opération d'export
+lab def oper_exp 1 "Opération d'export" 0 "Pas d'opération d'export"
 encode rg_export, gen(rg_oper_exp)
+replace rg_oper_exp = 0 if rg_oper_exp == 1
+replace rg_oper_exp = 1 if rg_oper_exp == 2
 drop rg_export
-lab var rg_oper_exp "Entreprise exprime avoir réalisé au moins une opération d'export"
+lab val rg_oper_exp oper_exp
+lab var rg_oper_exp "Entreprise a realisé une opération d'export"
 
 
-	* export status
-label def total_export 1 "totalement exportatrice" 0 "non totalement exportatrice"
-tempvar Export
-encode export, gen(`export_status) label(total_export) noextend
-drop export
-rename `Export' export
+
+******************** export regimeencode rg_exportstatus, gen(rg_expstatus)
+encode rg_exportstatus, gen(rg_expstatus)
+drop rg_exportstatus
+lab var rg_expstatus "Régime d'export de l'entreprise"
