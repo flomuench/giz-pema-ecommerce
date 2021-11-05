@@ -36,7 +36,7 @@ putdocx text ("Quality checks open question variables: registration E-commerce t
 sort firmname, stable
 
 		* define all the variables where respondent had to enter text
-global regis_open rg_nom rg_position rg_telrep rg_emailrep rg_telpdg rg_emailpdg rg_adresse ///
+global regis_open rg_position rg_telrep rg_emailrep rg_telpdg rg_emailpdg rg_adresse ///
 		rg_legalstatus rg_matricule rg_codedouane rg_fte rg_fte_femmes rg_capital
 		
 		/* also add date de création */

@@ -23,9 +23,9 @@ use "${regis_intermediate}/regis_inter", clear
 cd "$regis_progress"
 
 	* create word document
-putdocx begin 
-putdocx paragraph
-putdocx text ("E-commerce training: registration progress, elibility, firm characteristics"), bold 
+putpdf begin 
+putpdf paragraph
+putpdf text ("E-commerce training: registration progress, elibility, firm characteristics"), bold 
 
 
 ***********************************************************************
@@ -35,14 +35,7 @@ putdocx text ("E-commerce training: registration progress, elibility, firm chara
 	* total number of firms registered
 graph bar (count) id_plateforme, blabel(total) ///
 	title("Number of registered firms") note("Date: `c(current_date)'") ///
-graph export responserate.png, replace
-putpdf paragraph, halign(center)
-putpdf image responserate.png
-putpdf pagebreak
-
-	* total number of firms registered
-graph bar (count) id_plateforme, blabel(total) ///
-	title("Number of registered firms") note("Date: `c(current_date)'") ///
+	ytitle("nombre d'enregistrement")
 graph export responserate.png, replace
 putpdf paragraph, halign(center)
 putpdf image responserate.png
@@ -110,12 +103,15 @@ quietly graph bar (count), over(`x') blabel(total) ///
 gr combine `exportquestions', ///
 	title("{bf:Questions export}") ///
 	subtitle("{it: Produit exportable (haute gauche), Intention d'exporter (haute droite), Operation d'export (bas gauche) et Régime export (bas droite)}", size(vsmall))
+gr export export.png, replace
 putpdf paragraph, halign(center) 
 putpdf image export.png
 putpdf pagebreak
 	
 	* éligible vs. not éligible
 gen eligible = (identifiant_correct == 1 & rg_resident == 1 & rg_fte > 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1)
+lab def eligible 1 "éligible" 0 "inéligible"
+lab val eligible eligible
 
 graph bar (count), over(eligible) blabel(total) ///
 	title("Entreprises eligibles") ///
@@ -139,8 +135,14 @@ putpdf pagebreak
 	* statut legal
 	
 	* nombre employés féminins rélatif à employés masculins
-graph bar rg_fte rg_fte_femmes
+*graph bar rg_fte rg_fte_femmes
 	
 	* 
 	
-	
+***********************************************************************
+* 	PART 5:  save pdf
+***********************************************************************
+	* change directory to progress folder
+cd "$regis_progress"
+	* pdf
+putpdf save "progress-eligibility-characteristics", replace

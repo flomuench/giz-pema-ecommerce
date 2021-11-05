@@ -127,3 +127,11 @@ lab var rg_oper_exp "Entreprise a realisé une opération d'export"
 encode rg_exportstatus, gen(rg_expstatus)
 drop rg_exportstatus
 lab var rg_expstatus "Régime d'export de l'entreprise"
+
+
+
+***********************************************************************
+* 	Save the changes made to the data		  			
+***********************************************************************
+cd "$regis_intermediate"
+save "regis_inter", replace

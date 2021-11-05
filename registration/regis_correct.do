@@ -53,7 +53,9 @@ scalar check_again = 88888888888888888
 		* that fulfill 7 digit, 1 character condition
 gen identifiant_correct = ustrregexm(identifiantunique, "([0-9]){7}[a-z]")
 order identifiant_correct, a(identifiantunique)
-browse identifiant*
+lab def correct 1 "correct" 0 "incorrect"
+lab val identifiant_correct correct
+*browse identifiant*
 
 
 	* correct telephone numbers with regular expressions
@@ -61,7 +63,7 @@ browse identifiant*
 gen rg_telrep_cor = ustrregexra(rg_telrep, "^216", "")
 gen diff = length(rg_telrep) - length(rg_telrep_cor)
 order rg_telrep_cor diff, a(rg_telrep)
-browse rg_telrep* diff
+*browse rg_telrep* diff
 drop rg_telrep diff
 rename rg_telrep_cor rg_telrep
 
@@ -195,5 +197,5 @@ lab var q42f "(in-) formel argument de vente"
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
-
+cd "$regis_intermediate"
 save "regis_inter", replace

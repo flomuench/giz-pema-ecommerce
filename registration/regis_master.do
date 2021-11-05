@@ -105,7 +105,8 @@ if (1) do "${regis_github}/regis_clean.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_correct.do"
+if (1
+) do "${regis_github}/regis_correct.do"
 
 
 /* --------------------------------------------------------------------
@@ -123,7 +124,7 @@ if (1) do "${regis_github}/regis_open_question_checks.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_generate.do"
+if (1) do "${regis_github}/regis_generate.do"
 
 
 /* --------------------------------------------------------------------
@@ -131,7 +132,7 @@ if (0) do "${regis_github}/regis_generate.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_progress_eligibility.do"
+if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 
 
 ***********************************************************************
