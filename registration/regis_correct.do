@@ -47,14 +47,14 @@ scalar check_again = 88888888888888888
 }
 
 ***********************************************************************
-* 	PART 2: correct unique identifier - matricule fiscal 		  			
+* 	PART 2: use regular expressions to correct variables 		  			
 ***********************************************************************
 	* idea: use regular expression to create a dummy = 1 for all responses
-		* that fulfill 7 digit, 1 character condition
-gen identifiant_correct = ustrregexm(identifiantunique, "([0-9]){7}[a-z]")
-order identifiant_correct, a(identifiantunique)
+		* with correct fiscal number that fulfill 7 digit, 1 character condition
+gen id_admin_correct = ustrregexm(id_admin, "([0-9]){7}[a-z]")
+order id_admin_correct, a(id_admin)
 lab def correct 1 "correct" 0 "incorrect"
-lab val identifiant_correct correct
+lab val id_admin_correct correct
 *browse identifiant*
 
 
@@ -187,7 +187,8 @@ lab var q42f "(in-) formel argument de vente"
 * 	PART 9:  Remove duplicates
 ***********************************************************************
 	* id_plateform
-	
+*duplicates report id_plateform
+
 	* email
 *duplicates report rg_email
 *duplicates tag rg_email, gen(dup_email)

@@ -71,27 +71,29 @@ rename *, lower
 
 {
 	* Section identification
-rename identifiant id_plateforme
+rename id id_plateforme
 
 	* Section informations personnelles répresentantes
-rename nometprénom rg_nom
-rename titre rg_position 
-rename sexe rg_gender
-rename télparticipante rg_telrep 
-rename emailparticipante rg_emailrep
-rename télgérante rg_telpdg
-rename emailgérante rg_emailpdg
-rename adresse rg_adresse 
+rename nometprénomdudelaparticipa rg_nom_rep
+rename qualitéfonction rg_position_rep
+rename sexe rg_gender_rep
+rename téléphonedudelaparticipante rg_telrep 
+rename adressemaildudelaparticipan rg_emailrep
+rename téléphonedudelagérante rg_telpdg
+rename adressemaildudelagérante rg_emailpdg
+rename sexedudelagérante rg_sex_pdg
+rename adressesiègesociale rg_adresse 
 rename raisonsociale firmname 
 
 	* Section présence en ligne
-rename siteweb rg_siteweb 
-rename réseausocial rg_media 
+rename sitedelentreprise rg_siteweb 
+rename réseausocialdelentreprise rg_media 
 
 	* Section firm characteristics
 			* Legal
 rename formejuridique rg_legalstatus
 rename matriculecnss rg_matricule 
+rename identifiantunique id_admin
 rename codedouane rg_codedouane
 rename entreprise rg_onshore 
 			* Controls
@@ -103,9 +105,15 @@ rename domaine sector
 rename secteurdactivité subsector
 			* Export
 rename régime rg_exportstatus
-rename opérationdexport rg_export
-rename produitserviceexportable rg_exportable 
-rename intentiondexporterdansles12 rg_intexp
+rename avezvousentaméuneopérationd rg_export
+rename estcequevousavezunproduit rg_exportable 
+rename avezvouslintentiondexporter rg_intexp
+
+	* Section suivi
+rename commentavezvousapprisdelex moyen_com
+rename politiquedeconfidentialité rg_confidentialite
+rename partagerutiliserlesdonnéesco rg_partage_donnees
+rename enregistrermescoordonnéessur rg_enregistrement_coordonnees
 	
 }
 ***********************************************************************

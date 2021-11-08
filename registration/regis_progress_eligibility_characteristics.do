@@ -49,7 +49,7 @@ putpdf pagebreak
 ***********************************************************************
 
 	* identifiant unique correct (oui ou non)
-graph bar (count), over(identifiant_correct) blabel(total) ///
+graph bar (count), over(id_admin_correct) blabel(total) ///
 	title("Identifiant unique/matricule fiscal format correct") ///
 	ytitle("nombre d'enregistrement")
 graph export identifiant_correct.png, replace
@@ -108,10 +108,7 @@ putpdf paragraph, halign(center)
 putpdf image export.png
 putpdf pagebreak
 	
-	* éligible vs. not éligible
-gen eligible = (identifiant_correct == 1 & rg_resident == 1 & rg_fte > 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1)
-lab def eligible 1 "éligible" 0 "inéligible"
-lab val eligible eligible
+	* eligibility
 
 graph bar (count), over(eligible) blabel(total) ///
 	title("Entreprises eligibles") ///

@@ -85,52 +85,31 @@ set sortseed 8413195
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 4.1: Import & raw data
-	Requires: 
-	Creates: 
 ----------------------------------------------------------------------*/		
 if (1) do "${regis_github}/regis_import.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Clean raw data & save as intermediate data
-	NOTE: no observation values are changed
-	Requires: 
-	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_clean.do"
 
-
 /* --------------------------------------------------------------------
 	PART 4.4: Correct & save intermediate data
-	NOTE: observational values are changed, observations are dropped
-	Requires: 
-	Creates: 
 ----------------------------------------------------------------------*/	
-if (1
-) do "${regis_github}/regis_correct.do"
-
+if (1) do "${regis_github}/regis_correct.do"
 
 /* --------------------------------------------------------------------
 	PART 4.5: Correct & save intermediate data
-	NOTE: observational values are changed, observations are dropped
-	Requires: 
-	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_open_question_checks.do"
 
-
 /* --------------------------------------------------------------------
-	PART 4.5: Generate variables for analysis or implementation
-	NOTE: id_email
-	Requires: 
-	Creates: 
+	PART 4.6: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_generate.do"
 
-
 /* --------------------------------------------------------------------
 	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
-	Requires: 
-	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 
@@ -148,7 +127,7 @@ if (0) do "${regis_github}/regis_merge_identification_emailexperiment.do"
 
 
 /* --------------------------------------------------------------------
-	PART 4.6: Balance after registration, descriptive statistics
+	PART 5.2: Balance after registration, descriptive statistics
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
@@ -156,7 +135,7 @@ if (0) do "${regis_github}/regis_emailexp_descriptive_statistics.do"
 
 
 /* --------------------------------------------------------------------
-	PART 4.6: Regression analysis
+	PART 5.3: Regression analysis
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	

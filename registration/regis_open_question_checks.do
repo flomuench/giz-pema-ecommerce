@@ -27,26 +27,54 @@ cd "$regis_checks"
 	* create word document
 putdocx begin 
 putdocx paragraph
-putdocx text ("Quality checks open question variables: registration E-commerce training"), bold 
+putdocx text ("Quality checks open question variables: registration E-commerce training"), bold
 
 ***********************************************************************
-* 	PART 2:  Open question variaregises		  			
+* 	PART 2:  Check for & visualise duplicates		  			
+***********************************************************************
+		* put all variables to for which we want to check for duplicates into a local
+local dupcontrol id_admin firmname rg_nom_rep rg_telrep rg_emailrep rg_telpdg rg_emailpdg
+
+		* generate a variable = 1 if the observation of the variable has a duplicate
+foreach x of local dupcontrol {
+duplicates tag `x', gen(dup_`x')
+}
+		* visualise and save the visualisations
+foreach x of local dupcontrol {
+gr bar (count), over(dup_`x') ///
+		name(`x') ///
+		title(`x') ///
+		ytitle("Nombre des observations") ///
+		blabel(bar)
+}
+		* combine all the graphs into one figure
+gr combine `dupcontrol'
+gr export duplicates.png, replace
+		
+		* put the figure into the pdf
+putdocx paragraph, halign(center)
+putdocx image duplicates.png
+putdocx pagebreak
+
+***********************************************************************
+* 	PART 3:  Open question variaregises		  			
 ***********************************************************************
 		* sort stable by firmname to identify duplicates by eyeballing based on firmname
 sort firmname, stable
 
 		* define all the variables where respondent had to enter text
-global regis_open rg_position rg_telrep rg_emailrep rg_telpdg rg_emailpdg rg_adresse ///
-		rg_legalstatus rg_matricule rg_codedouane rg_fte rg_fte_femmes rg_capital
-		
-		/* also add date de création */
-		
+local regis_open rg_fte rg_fte_femmes date_created rg_capital rg_position rg_legalstatus /// /* firm characteristics */
+	   firmname rg_nom_rep rg_telrep rg_telpdg rg_emailrep rg_emailpdg rg_adresse /// /* personal */
+	   rg_matricule rg_codedouane 
+				
 		* export all the variables into a word document
-foreach x of global regis_open {
+foreach x of local regis_open {
 putdocx paragraph, halign(center)
 tab2docx `x'
 putdocx pagebreak
 }
+
+
 
 ***********************************************************************
 * 	End:  save dta, word file		  			

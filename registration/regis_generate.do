@@ -6,17 +6,14 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1)		 create factor variables
-							* sector
-							* gender
-							* onshore / offshore
-* 	2) 		
-*	3)   							  
-*	4)  		  				  
-*	5)  			  
-*	6)  					  
-*   7)                         
-*	8)		
+*	1) sector
+* 	2) gender
+* 	3) onshore / offshore  							  
+*	4) produit exportable  
+*	5) intention d'exporter 			  
+*	6) une opération d'export				  
+*   7) export status  
+*	8) eligibility
 *	9)		
 *
 *																	  															      
@@ -32,10 +29,8 @@ use "${regis_intermediate}/regis_inter", clear
 
 
 ***********************************************************************
-* 	PART 2: create factor variables from categorical string variables				  										  
+* 	PART 2: factor variable sector & subsector 			  										  
 ***********************************************************************
-
-******************** sector & subsector 
 label define sector_name 1 "Agriculture & Peche" ///
 	2 "Artisanat" ///
 	3 "Commerce international" ///
@@ -76,7 +71,9 @@ lab values subsector subsector_name
 
 format %-25.0fc *sector
 
-******************** gender
+***********************************************************************
+* 	PART 2: factor variable gender 			  										  
+***********************************************************************
 label define sex 1 "female" 0 "male"
 tempvar Gender
 encode rg_gender, gen(`Gender')
@@ -85,7 +82,9 @@ rename `Gender' rg_gender
 replace rg_gender = 0 if rg_gender == 2
 lab values rg_gender sex
 
-******************** onshore
+***********************************************************************
+* 	PART 3: factor variable onshore 			  										  
+***********************************************************************
 lab def onshore 1 "résidente" 0 "non résidente"
 encode rg_onshore, gen(rg_resident)
 replace rg_resident = 0 if rg_resident == 1
@@ -94,7 +93,9 @@ drop rg_onshore
 lab val rg_resident onshore
 lab var rg_resident "HQ en Tunisie"
 
-******************** produit exportable
+***********************************************************************
+* 	PART 4: factor variable produit exportable		  										  
+***********************************************************************
 lab def exportable 1 "produit exportable" 0 "produit non exportable"
 encode rg_exportable, gen(rg_produitexp)
 replace rg_produitexp = 0 if rg_produitexp == 1
@@ -103,7 +104,9 @@ drop rg_exportable
 lab val rg_produitexp exportable
 lab var rg_produitexp "Entreprise pense avoir un produit exportable"
 
-******************** intention exporter
+***********************************************************************
+* 	PART 5: factor variable intention exporter			  										  
+***********************************************************************
 lab def intexp 1 "intention export" 0 "pas d'intention à exporter"
 encode rg_intexp, gen(rg_intention)
 replace rg_intention = 0 if rg_intention == 1
@@ -112,7 +115,9 @@ drop rg_intexp
 lab val rg_intention intexp
 lab var rg_intention "Entreprise a l'intention d'exporter dans les prochains 12 mois"
 
-******************** une opération d'export
+***********************************************************************
+* 	PART 6: dummy une opération d'export			  										  
+***********************************************************************
 lab def oper_exp 1 "Opération d'export" 0 "Pas d'opération d'export"
 encode rg_export, gen(rg_oper_exp)
 replace rg_oper_exp = 0 if rg_oper_exp == 1
@@ -121,13 +126,20 @@ drop rg_export
 lab val rg_oper_exp oper_exp
 lab var rg_oper_exp "Entreprise a realisé une opération d'export"
 
-
-
-******************** export regimeencode rg_exportstatus, gen(rg_expstatus)
+***********************************************************************
+* 	PART 7: factor variable export status		  										  
+***********************************************************************
 encode rg_exportstatus, gen(rg_expstatus)
 drop rg_exportstatus
 lab var rg_expstatus "Régime d'export de l'entreprise"
 
+
+***********************************************************************
+* 	PART 8: eligibiliy dummy
+***********************************************************************
+gen eligible = (id_admin_correct == 1 & rg_resident == 1 & rg_fte > 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1)
+lab def eligible 1 "éligible" 0 "inéligible"
+lab val eligible eligible
 
 
 ***********************************************************************
