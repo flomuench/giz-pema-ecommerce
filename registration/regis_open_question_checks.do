@@ -54,6 +54,10 @@ gr export duplicates.png, replace
 		* put the figure into the pdf
 putdocx paragraph, halign(center)
 putdocx image duplicates.png
+
+		* indicate to RA's where to write code to search & remove duplicates
+putdocx paragraph
+putdocx text ("Go to do-file 'regis_correct part' 9 'remove duplicates' to examine & potentially remove duplicates."), bold
 putdocx pagebreak
 
 ***********************************************************************
