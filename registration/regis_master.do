@@ -155,7 +155,7 @@ if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 /* --------------------------------------------------------------------
 	PART 5.1: Fuzzy merge registered with sameple firms
 	NOTE: After this is run, the excel spreadsheet needs to be manually checked
-	Requires: regis_inter.dta, giz_contact_list_final 
+	Requires: regis_inter.dta, giz_contact_list_final.dta 
 	Creates: regis_match_intermediate.xls	
 ----------------------------------------------------------------------*/	
 if (0) do "${regis_github}/regis_match.do"
