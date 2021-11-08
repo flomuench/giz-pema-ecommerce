@@ -40,6 +40,14 @@ foreach x of local dupcontrol {
 duplicates tag `x', gen(dup_`x')
 }
 		* visualise and save the visualisations
+/*
+alternative code for jitter dot plots instead of bar plots which allow to identify the id of the duplicate response:
+gen duplabel = .
+replace duplabel = id_plateforme if dup_id_admin > 0 | dup_firmname > 0 | dup_rg_nom_rep > 0 | dup_rg_telrep > 0 | dup_rg_emailrep > 0 | dup_rg_telpdg > 0 | dup_rg_emailpdg > 0
+stripplot id_plateforme, over(dup_firmname) jitter(4) vertical mlabel(duplabel) /* alternative: scatter id_plateforme dup_firmname, jitter(4) mlabel(duplabel) */
+
+*/		
+
 foreach x of local dupcontrol {
 gr bar (count), over(dup_`x') ///
 		name(`x') ///
