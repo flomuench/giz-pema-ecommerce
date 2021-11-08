@@ -102,6 +102,9 @@ format `x' %25.0fc
 replace q393_corrige = q393_normalval * c_a if q393_corrige < 1
 */
 }	
+
+destring id_plateforme, replace
+
 ***********************************************************************
 * 	PART 5:  Convert problematic values for open-ended questions  			
 ***********************************************************************

@@ -15,17 +15,9 @@
 *	Author:  	Teo Firpo						  
 *	ID variable: no id variable defined				  
 *	Requires: regis_inter.dta, giz_contact_list_final 	  								  
-*	Creates:  regis_matched.dta, regis_done.dta		                          
+*	Creates:  regis_match_intermediate.xls	                          
 *									
-/*
-NOTES BEFORE GOING LIVE
 
-1. For this dofile to work, we need to use giz_contact_list_final which is in the 'samp' folder. So we have to change the Master file (regis_master) to include the paths to the samp folders. 
-
-2. Currently I don't have the unique identifying code in the original mailist list file (giz_contact_list_final). So I can't perform the merge in Part 2. Once I get it it might require cleaning the var name (ideally in regis_clean)
-
-3. To make things easier, let's change all the id names to reflect the file they identify – so regis_inter should have a rg_id, giz_contact_list_final should have a samp_id
-*/
 								  
 ***********************************************************************
 * 	PART 1: Load regis_inter (list of registrations)  			
@@ -34,42 +26,31 @@ NOTES BEFORE GOING LIVE
 	cd "$regis_intermediate"
 
 	******************** Only the first time the matching is run:
+	
+	/*
 	******************** Create an regis_done.dta file that includes
 	******************** all previously correct matches (which includes the 
 	******************** id_plateforme and id_email) so that they don't have to 
 	******************** be checked again. 
 	
-	/*
 	gen id_plateforme = ""
 	gen id_email = ""
+	destring id_plateforme, replace
+	destring id_email, replace
 	save regis_done.dta
+	
+	******************** You also need a regis_matched to be created once
+	******************** Otherwise the 'save regist_matched, replace' later 
+	******************** won't work
+	clear 
+	save regis_matched.dta
 	*/
 
 	use "regis_inter", clear
-*																	  
-***********************************************************************
-* 	PART 2: Merge with original mailing list (giz_contact_list_final) 
-*  on identifying code (identifiantunique)
-***********************************************************************
-
-	merge m:m identifiantunique using "${samp_gdrive}/final/giz_contact_list_final"
-
-	keep if _merge==3
-
-	keep id_plateforme id_email
-
-	******************** Tag these obs based on what they were matched 
-
-	gen matchedon = "code"
-
-	save "regis_matched", replace
-
 
 ***********************************************************************
-* 	PART 3: Fuzzy matching on the email of the main rep (rg_emailrep)
+* 	PART 2: Fuzzy matching on the email of the main rep (rg_emailrep)
 ***********************************************************************
-
-	use "regis_inter", clear
 
 	******************** To use the fuzzy matching package, we need the two
 	******************** email vars to be called the same; so we create a 
@@ -97,7 +78,7 @@ NOTES BEFORE GOING LIVE
 	save "regis_matched", replace
 	
 ***********************************************************************
-* 	PART 4: Fuzzy matching on the email of the CEO/PDG (rg_emailpdg)
+* 	PART 3: Fuzzy matching on the email of the CEO/PDG (rg_emailpdg)
 ***********************************************************************
 	
 	use "regis_inter", clear
@@ -142,7 +123,7 @@ NOTES BEFORE GOING LIVE
 	lab var dup "Duplicates (in order from top scoring)"
 
 ***********************************************************************
-* 	PART 5: Merge with original files to allow manual verification 
+* 	PART 4: Merge with original files to allow manual verification 
 *	of results
 ***********************************************************************	
 	
@@ -189,9 +170,12 @@ NOTES BEFORE GOING LIVE
 	gsort id_plateforme -score id_email
 	
 ***********************************************************************
-* 	PART 6: Save results
+* 	PART 5: Export results to manually check
 ***********************************************************************	
 	
+	putexcel set "$regis_intermediate/regis_match_inter", firstrow(variables)
+
+
 	save "regis_matched", replace
 	
 	******************** Save only ids, scores and 'matched on' as regis_done:
