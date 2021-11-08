@@ -54,9 +54,20 @@ if c(os) == "Windows" {
 	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
 else if c(os) == "MacOSX" {
-	global regis_gdrive = "Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 	global regis_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+
+if c(os) == "Windows" {
+	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
+	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
+	global samp_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+else if c(os) == "MacOSX" {
+	global samp_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
+	global samp_github = "Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
+	global samp_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
 		* paths within gdrive
 			* data
@@ -64,7 +75,9 @@ global regis_raw = "${regis_gdrive}/raw"
 global regis_intermediate "${regis_gdrive}/intermediate"
 global regis_final = "${regis_gdrive}/final"
 global regis_checks = "${regis_gdrive}/checks"
-
+global samp_raw = "${samp_gdrive}/raw"
+global samp_intermediate "${samp_gdrive}/intermediate"
+global samp_final = "${samp_gdrive}/final"
 
 			* output (regression tables, figures)
 global regis_output = "${regis_gdrive}/output"
@@ -140,26 +153,20 @@ if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 ***********************************************************************
 
 /* --------------------------------------------------------------------
-	PART 5.1: Fuzze merge registered with sameple firms
-	Requires: 
-	Creates: 
+	PART 5.1: Fuzzy merge registered with sameple firms
+	NOTE: After this is run, the excel spreadsheet needs to be manually checked
+	Requires: regis_inter.dta, giz_contact_list_final 
+	Creates: regis_match_intermediate.xls	
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_merge_identification_emailexperiment.do"
+if (0) do "${regis_github}/regis_match.do"
 
 
 /* --------------------------------------------------------------------
-	PART 4.6: Balance after registration, descriptive statistics
-	Requires: 
-	Creates: 
+	PART 5.2: 
+	NOTE: Before running this the excel spreadsheet needs to be manually checked
+	Requires: regis_match_intermediate.xls
+	Creates: regis_matched.dta, regis_done.dta		 
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_emailexp_descriptive_statistics.do"
-
-
-/* --------------------------------------------------------------------
-	PART 4.6: Regression analysis
-	Requires: 
-	Creates: 
-----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_emailexp_regressions.do"
+if (0) do "${regis_github}/regis_saving_match.do"
 
 
