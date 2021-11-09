@@ -43,6 +43,22 @@ putpdf pagebreak
 
 
 	* nombre d'enregistremnet par jour 
+	
+	
+	* communication channels
+graph bar (count), over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
+	title("Enregistrement selon les moyens de communication") ///
+	ytitle("nombre d'enregistrement") 
+graph export moyen_com.png, replace
+putpdf paragraph, halign(center) 
+putpdf image moyen_com.png
+putpdf pagebreak
+
+	* taille des entreprises selon chaines de com
+graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
+	title("Nombre des employés des entreprises selon moyen de communication") ///
+	ytitle("Nombre des employés")
+
 
 ***********************************************************************
 * 	PART 3:  Eligibility		  			
@@ -107,12 +123,39 @@ gr export export.png, replace
 putpdf paragraph, halign(center) 
 putpdf image export.png
 putpdf pagebreak
+
+	* age
+stripplot rg_age, jitter(4) vertical yline(2, lcolor(red)) ///
+	ytitle("Age de l'entreprise") ///
+	name(age_strip)
+histogram rg_age if rg_age >= 0, frequency addl ///
+	ytitle("Age de l'entreprise") ///
+	xlabel(0(2)80,  labsize(tiny) format(%20.0fc)) ///
+	bin(40) ///
+	xline(2, lcolor(red)) ///
+	color(%30) ///
+	name(age_hist)	
+gr combine age_strip age_hist, title("Age des entreprises") ///
+	note("La ligne rouge répresente la valeur minimale pour être éligible.", size(vsmall))
+graph export age.png, replace
+putpdf paragraph, halign(center) 
+putpdf image age.png
+putpdf pagebreak
+
+	* online presence
+graph bar (count), over(presence_enligne) blabel(total) ///
+	title("Présence enligne") ///
+	ytitle("nombre d'enregistrement")
+graph export presence_enligne.png, replace
+putpdf paragraph, halign(center) 
+putpdf image presence_enligne.png
+putpdf pagebreak
 	
 	* eligibility
-
 graph bar (count), over(eligible) blabel(total) ///
 	title("Entreprises eligibles") ///
-	ytitle("nombre d'enregistrement")
+	ytitle("nombre d'enregistrement") ///
+	note(`"Chaque entreprise est éligible qui a fourni un matricul fiscal correct, a >= 6 & < 200 employés, une produit exportable, "' `"l'intention d'exporter, >= 1 opération d'export, existe pour >= 2 ans et est résidente tunisienne."', size(vsmall) color(red))
 graph export eligibles.png, replace
 putpdf paragraph, halign(center) 
 putpdf image eligibles.png

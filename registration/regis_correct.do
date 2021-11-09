@@ -199,6 +199,12 @@ lab var q42f "(in-) formel argument de vente"
 	* firmname	
 	
 ***********************************************************************
+* 	PART 10:  autres / miscallaneous adjustments
+***********************************************************************
+replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
+replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
+
+***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
 cd "$regis_intermediate"

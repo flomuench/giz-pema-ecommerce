@@ -20,24 +20,30 @@
 *	Requires: bl_raw.dta 	  										  
 *	Creates:  bl_inter.dta			                                  
 ***********************************************************************
-* 	PART 1: 	Format string & numerical variables		  			
+* 	PART 1: 	Format string & numerical & date variables		  			
 ***********************************************************************
 use "${regis_raw}/regis_raw", clear
 
 {
-	* format numerical & string variables
+	* string
 ds, has(type string) 
 local strvars "`r(varlist)'"
 format %-20s `strvars'
-
-ds, has(type numeric) 
-local numvars "`r(varlist)'"
-format %-25.0fc `numvars'
 
 	* make all string obs lower case
 foreach x of local strvars {
 replace `x'= lower(`x')
 }
+	* numeric 
+ds, has(type numeric) 
+local numvars "`r(varlist)'"
+format %-25.0fc `numvars'
+
+	* date
+gen datedecréation = date(Datedecréation, "MDY")
+order datedecréation, a(Datedecréation)
+format datedecréation %td
+drop Datedecréation
 }
 	
 ***********************************************************************
@@ -62,13 +68,6 @@ rename *, lower
 ***********************************************************************
 * 	PART 5: 	Rename the variables in line with GIZ contact list final	  			
 ***********************************************************************
-	* identifiant unique correct (oui ou non)
-	
-				
-	* opération d'export
-	
-	* éligible vs. not éligible
-
 {
 	* Section identification
 rename id id_plateforme

@@ -37,7 +37,10 @@ local dupcontrol id_admin firmname rg_nom_rep rg_telrep rg_emailrep rg_telpdg rg
 
 		* generate a variable = 1 if the observation of the variable has a duplicate
 foreach x of local dupcontrol {
+gen duplabel`x' = .
 duplicates tag `x', gen(dup_`x')
+replace duplabel`x' = id_plateforme if dup_`x' > 0
+
 }
 		* visualise and save the visualisations
 /*
@@ -45,15 +48,20 @@ alternative code for jitter dot plots instead of bar plots which allow to identi
 gen duplabel = .
 replace duplabel = id_plateforme if dup_id_admin > 0 | dup_firmname > 0 | dup_rg_nom_rep > 0 | dup_rg_telrep > 0 | dup_rg_emailrep > 0 | dup_rg_telpdg > 0 | dup_rg_emailpdg > 0
 stripplot id_plateforme, over(dup_firmname) jitter(4) vertical mlabel(duplabel) /* alternative: scatter id_plateforme dup_firmname, jitter(4) mlabel(duplabel) */
-
-*/		
-
-foreach x of local dupcontrol {
+code for bar plot:
 gr bar (count), over(dup_`x') ///
 		name(`x') ///
 		title(`x') ///
 		ytitle("Nombre des observations") ///
 		blabel(bar)
+*/		
+
+foreach x of local dupcontrol {
+stripplot id_plateforme, over(dup_`x') jitter(4) vertical  ///
+		name(`x') ///
+		title(`x') ///
+		ytitle("ID des observations") ///
+		mlabel(duplabel`x')
 }
 		* combine all the graphs into one figure
 gr combine `dupcontrol'

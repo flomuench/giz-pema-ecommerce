@@ -13,8 +13,8 @@
 *	5) intention d'exporter 			  
 *	6) une opération d'export				  
 *   7) export status  
-*	8) eligibility
-*	9)		
+*	8) age
+*	9) eligibility	
 *
 *																	  															      
 *	Author:  	Florian Muench & Kais Jomaa							  
@@ -135,9 +135,22 @@ lab var rg_expstatus "Régime d'export de l'entreprise"
 
 
 ***********************************************************************
-* 	PART 8: eligibiliy dummy
+* 	PART 8: age
 ***********************************************************************
-gen eligible = (id_admin_correct == 1 & rg_resident == 1 & rg_fte > 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1)
+gen rg_age = round((td(30nov2021)-date_created)/365.25,2)
+order rg_age, a(date_created)
+
+***********************************************************************
+* 	PART 8: dummy site web ou réseau social
+***********************************************************************
+gen presence_enligne = (rg_siteweb != "" | rg_media != ""), b(rg_siteweb)
+lab def enligne 1 "présente enligne" 0 "ne pas présente enligne"
+lab values presence_enligne enligne
+
+***********************************************************************
+* 	PART 10: eligibiliy dummy
+***********************************************************************
+gen eligible = (id_admin_correct == 1 & rg_resident == 1 & rg_fte > 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1 & rg_age>=2)
 lab def eligible 1 "éligible" 0 "inéligible"
 lab val eligible eligible
 
