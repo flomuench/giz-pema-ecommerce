@@ -20,7 +20,7 @@
 
 	cd "$regis_intermediate"
 
-	import excel "$regis_intermediate/regis_match_intermediate.xls", sheet("Sheet1") firstrow
+	import excel "$regis_intermediate/regis_corrected_matches_inter.xls", sheet("Sheet1") firstrow
 
 	
 ***********************************************************************

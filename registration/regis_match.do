@@ -61,7 +61,8 @@
 
 	******************** Now do fuzzy matching
 
-	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final", idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_done")
+	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final", ///
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_done")
 
 	******************** Don't keep those that did not match at all:
 	
@@ -69,7 +70,7 @@
 	
 	keep id_plateforme id_email score
 	
-	gen matchedon = "rep_name"
+	gen matchedon = "rep_email"
 		
 	******************** Add to existing data 
 
@@ -97,7 +98,7 @@
 	
 	keep id_plateforme id_email score
 
-	gen matchedon = "pdf_name"
+	gen matchedon = "pdg_email"
 		
 	append using "regis_matched"
 	
@@ -173,17 +174,9 @@
 * 	PART 5: Export results to manually check
 ***********************************************************************	
 	
-	putexcel set "$regis_intermediate/regis_match_inter", firstrow(variables)
+	putexcel set "$regis_intermediate/regis_potential_match_inter", firstrow(variables)
 
 
-	save "regis_matched", replace
-	
-	******************** Save only ids, scores and 'matched on' as regis_done:
-	
-	keep id_plateforme id_email score matchedon
-	
-	save "regis_done", replace
-	
 
 
 
