@@ -36,12 +36,12 @@ label define sector_name 1 "Agriculture & Peche" ///
 	3 "Commerce international" ///
 	4 "Industrie" ///
 	5 "Services" ///
-	6 "TIC" ///
+	6 "TIC" 
 
 label define subsector_name 1 "agriculture" ///
 	2 "architecture" ///
 	3 "artisanat" ///
-	4 "assitance" ///
+	4 "assistance" ///
 	5 "audit" ///
 	6 "autres" ///
 	7 "centre d'appel" ///
@@ -49,12 +49,16 @@ label define subsector_name 1 "agriculture" ///
 	9 "développement informatique" ///
 	10 "enseignement" ///
 	11 "environnement et formation" ///
-	12 "industries chimiques" ///
-	13 "industries des matériaux de construction, de la céramique et du verre" ///
-	14 "stries du cuir et de la chaussure" ///
-	15 "industries du textile et de l'habillement" ///
-	16 "pêche" ///
-	17 "réseaux et télécommunication" 
+	12 "industries diverses" ///
+	13 "industries mécaniques et électriques" ///
+	14 "industries agro-alimentaires" ///
+	15 "industries chimiques" ///
+	16 "industries des matériaux de construction, de la céramique et du verre" ///
+	17 "industries du cuir et de la chaussure" ///
+	18 "industries du textile et de l'habillement" ///
+	19 "pêche" ///
+	20 "réseaux et télécommunication" ///
+	21 "services et études dans le domaine de batîment"
 
 tempvar Sector
 encode sector, gen(`Sector')
@@ -78,9 +82,16 @@ label define sex 1 "female" 0 "male"
 tempvar Gender
 encode rg_gender, gen(`Gender')
 drop rg_gender
-rename `Gender' rg_gender
+rename `Gender' rg_gender_rep
 replace rg_gender = 0 if rg_gender == 2
 lab values rg_gender sex
+
+tempvar Genderpdg
+encode rg_sex_pdg, gen(`Genderpdg')
+drop rg_sex_pdg
+rename `Genderpdg' rg_gender_pdg
+replace rg_gender_pdg = 0 if rg_gender_pdg == 2
+lab values rg_gender_pdg sex
 
 ***********************************************************************
 * 	PART 3: factor variable onshore 			  										  
@@ -150,10 +161,13 @@ lab values presence_enligne enligne
 ***********************************************************************
 * 	PART 10: eligibiliy dummy
 ***********************************************************************
-gen eligible = (id_admin_correct == 1 & rg_resident == 1 & rg_fte > 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1 & rg_age>=2)
+gen eligible = (id_admin_correct == 1 & rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1 & rg_age>=2)
 lab def eligible 1 "éligible" 0 "inéligible"
 lab val eligible eligible
 
+gen eligible_sans_matricule = (rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1 & rg_age>=2)
+lab def eligible2 1 "éligible sans matricule" 0 "inéligible sans matricule"
+lab val eligible_sans_matricule eligible2
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

@@ -201,8 +201,12 @@ lab var q42f "(in-) formel argument de vente"
 ***********************************************************************
 * 	PART 10:  autres / miscallaneous adjustments
 ***********************************************************************
+	* correct the response categories for moyen de communication
 replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
 replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
+
+	* correct wrong response categories for subsectors
+replace subsector = "industries chimiques" if subsector == "industrie chimique"
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

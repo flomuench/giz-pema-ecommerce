@@ -25,13 +25,17 @@ cd "$regis_progress"
 	* create word document
 putpdf begin 
 putpdf paragraph
-putpdf text ("E-commerce training: registration progress, elibility, firm characteristics"), bold 
+putpdf text ("E-commerce training: registration progress, elibility, firm characteristics"), bold linebreak(1)
+putpdf text ("Date: `c(current_date)'"), bold linebreak(1)
 
 
 ***********************************************************************
 * 	PART 2:  Registration progress		  			
 ***********************************************************************
+putpdf paragraph, halign(center) 
+putpdf text ("E-commerce training: registration progress")
 
+{
 	* total number of firms registered
 graph bar (count) id_plateforme, blabel(total) ///
 	title("Number of registered firms") note("Date: `c(current_date)'") ///
@@ -59,11 +63,15 @@ graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 	title("Nombre des employés des entreprises selon moyen de communication") ///
 	ytitle("Nombre des employés")
 
+}
 
 ***********************************************************************
 * 	PART 3:  Eligibility		  			
 ***********************************************************************
+putpdf paragraph, halign(center) 
+putpdf text ("E-commerce training: eligibility"), bold linebreak(1)
 
+{
 	* identifiant unique correct (oui ou non)
 graph bar (count), over(id_admin_correct) blabel(total) ///
 	title("Identifiant unique/matricule fiscal format correct") ///
@@ -153,19 +161,73 @@ putpdf pagebreak
 	
 	* eligibility
 graph bar (count), over(eligible) blabel(total) ///
-	title("Entreprises eligibles") ///
+	title("Entreprises actuellement eligibles") ///
 	ytitle("nombre d'enregistrement") ///
+	name(eligibles) ///
 	note(`"Chaque entreprise est éligible qui a fourni un matricul fiscal correct, a >= 6 & < 200 employés, une produit exportable, "' `"l'intention d'exporter, >= 1 opération d'export, existe pour >= 2 ans et est résidente tunisienne."', size(vsmall) color(red))
+graph bar (count), over(eligible_sans_matricule) blabel(total) ///
+	title("Entreprises potentiellement éligibles") ///
+	ytitle("nombre d'enregistrement") ///
+	name(potentiellement_eligible)
+gr combine eligibles potentiellement_eligible, title("{bf:Eligibilité des entreprises}")
 graph export eligibles.png, replace
 putpdf paragraph, halign(center) 
 putpdf image eligibles.png
 putpdf pagebreak
 
-
+}
 ***********************************************************************
 * 	PART 4:  Characteristics
 ***********************************************************************
+	* create a heading for the section in the pdf
+putpdf paragraph, halign(center) 
+putpdf text ("E-commerce training: firm characteristics"), bold linebreak(1)
 
+	* secteurs
+graph hbar (count), over(sector, sort(1)) blabel(total) ///
+	title("Sector - Toutes les entreprises") ///
+	ytitle("nombre d'entreprises") ///
+	name(sector_tous)
+graph hbar (count) if eligible == 1, over(sector, sort(1)) blabel(total) ///
+	title("Sector - Entreprises eligibles") ///
+	ytitle("nombre d'entreprises") ///
+	name(sector_eligible)
+graph hbar (count), over(subsector, sort(1) label(labsize(tiny))) blabel(total, size(tiny)) ///
+	title("Subsector - Toutes les entreprises") ///
+	ytitle("nombre d'entreprises") ///
+	name(subsector_tous)
+graph hbar (count) if eligible == 1, over(subsector, sort(1) label(labsize(tiny))) blabel(total, size(tiny)) ///
+	title("Subsector - Toutes les entreprises") ///
+	ytitle("nombre d'entreprises") ///
+	name(subsector_eligible)
+gr combine sector_tous sector_eligible subsector_tous subsector_eligible , title("{bf: Distribution sectorielle}")
+graph export sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image sector.png
+putpdf pagebreak
+	
+	* gender
+graph bar (count), over(rg_gender_rep) blabel(total) ///
+	title("Gender of firm representative") ///
+	ytitle("nombre d'enregistrement") ///
+	name(gender_rep_abs, replace)
+graph bar (percent), over(rg_gender_rep) over(eligible) blabel(total, format(%-9.2fc)) ///
+	title("Gender of firm representative") ///
+	ytitle("pourcentage des entreprises") ///
+	name(gender_rep_perc, replace)
+graph bar (count), over(rg_gender_pdg) blabel(total) ///
+	title("Gender of firm CEO") ///
+	ytitle("nombre d'enregistrement") ///
+	name(gender_ceo_abs, replace)
+graph bar (percent), over(rg_gender_pdg) over(eligible) blabel(total, format(%-9.2fc)) ///
+	title("Gender of firm CEO") ///
+	ytitle("pourcentage des entreprises") ///
+	name(gender_ceo_perc, replace)
+gr combine gender_rep_abs gender_rep_perc gender_ceo_abs gender_ceo_perc, title("{bf:Genre des réprésentantes et des PDG}")
+graph export gender.png, replace
+putpdf paragraph, halign(center) 
+putpdf image gender.png
+putpdf pagebreak
 
 	* position du répresentant --> hbar
 	
