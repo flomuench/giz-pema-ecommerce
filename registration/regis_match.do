@@ -61,8 +61,7 @@
 
 	******************** Now do fuzzy matching
 
-	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final", ///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_done")
+	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_done")
 
 	******************** Don't keep those that did not match at all:
 	
@@ -92,7 +91,7 @@
 	
 	drop if email==""
 	
-	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final", idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_done")
+	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_done")
 
 	drop if score==.
 	
@@ -108,6 +107,8 @@
 	******************** and identify the duplicates
 	
 	gsort id_plateforme -score id_email
+	
+	drop dup
 	
 	gen dup = 0
 	replace dup = 1 if id_plateforme[_n]==id_plateforme[_n+1] & id_email[_n]==id_email[_n+1] & score[_n]==score[_n+1]
@@ -153,7 +154,7 @@
 	
 	keep if _merge==3 
 	
-	keep id_plateforme id_email score matchedon dup rg_emailpdg rg_emailrep rg_firmname rg_adresse identifiantunique rg_fte rg_sector rg_expstatus firmname name email fte treatment sector export town  
+	keep id_plateforme id_email score matchedon dup rg_emailpdg rg_emailrep	rg_firmname rg_adresse identifiantunique rg_fte rg_sector rg_expstatus firmname name email fte treatment sector export town  
 	
 	rename firmname samp_firmname
 	rename sector samp_sector
@@ -174,7 +175,7 @@
 * 	PART 5: Export results to manually check
 ***********************************************************************	
 	
-	putexcel set "$regis_intermediate/regis_potential_match_inter", firstrow(variables)
+	export excel using "$regis_intermediate/regis_potential_match_inter", firstrow(variables) replace
 
 
 

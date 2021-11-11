@@ -20,6 +20,8 @@
 
 	cd "$regis_intermediate"
 
+	clear 
+	
 	import excel "$regis_intermediate/regis_corrected_matches_inter.xls", sheet("Sheet1") firstrow
 
 	
@@ -42,3 +44,5 @@
 	keep id_plateforme id_email score matchedon
 	
 	save "regis_done", replace
+	
+	clear
