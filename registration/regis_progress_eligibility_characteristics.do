@@ -25,7 +25,9 @@ cd "$regis_progress"
 	* create word document
 putpdf begin 
 putpdf paragraph
-putpdf text ("E-commerce training: registration progress, elibility, firm characteristics")
+
+putpdf text ("E-commerce training: registration progress, elibility, firm characteristics"), bold linebreak(1)
+
 putpdf text ("Date: `c(current_date)'"), bold linebreak(1)
 
 

@@ -1,5 +1,5 @@
 ***********************************************************************
-* 			sampling email experiment import						
+* 			regisling email experiment import						
 ***********************************************************************
 *																	   
 *	PURPOSE: import the GIZ-API contact list as prepared					  								  
@@ -11,23 +11,17 @@
 *																	 																      *
 *	Author: Florian  														  
 *	ID variable: no id variable defined			  									  
-*	Requires:	giz_contact_list.xlsx or .csv
-*	Creates:	giz_contact_list.dta						  
+*	Requires:	
+*	Creates:							  
 *																	  
 ***********************************************************************
-* 	PART 1: import the giz contact list as Excel or csv				  										  *
+* 	PART 1: import the list of registered firms as Excel				  										  *
 ***********************************************************************
-* import giz-api contact list cleaned and merged by Teo
-	* as Excel
-import excel "${samp_intermediate}/giz_contact_list.xlsx", firstrow clear
-
-	* as csv
-*import delimited "${samp_intermediate}/giz_contact_list.csv", varn(1) clear
+cd "$regis_raw"
+import excel "${regis_raw}/regis_raw.xlsx", firstrow clear
 
 
 ***********************************************************************
-* 	PART 2: save the contact list as dta file in intermediate folder			  						
+* 	PART 2: save list of registered firms in registration raw 			  						
 ***********************************************************************
-* or save intermediate
-cd "$samp_intermediate"
-save "giz_contact_list_inter", replace
+save "regis_raw", replace

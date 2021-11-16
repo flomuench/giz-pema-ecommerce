@@ -10,10 +10,10 @@
 *				PART 3: Run all do-files                          
 *																	  
 *																	  
-*	Author:  	Florian Münch, Teo Firpo							    
-*	ID variable: 	?			  					  
-*	Requires: ?.dta 	  										  
-*	Creates:  *.dta			                                  
+*	Author:  	Florian Münch						    
+*	ID variable: id_email		  					  
+*	Requires: giz_contact_list_inter.dta	  										  
+*	Creates:  giz_contact_list_final.dta			                                  
 ***********************************************************************
 * 	PART 1: 	Set standard settings & install packages			  
 ***********************************************************************
@@ -24,23 +24,27 @@ clear all
 graph drop _all
 scalar drop _all
 set more off
-set graphics off /* switch off to on to display graphs */
+set graphics off
+ /* switch off to on to display graphs */
 capture program drop zscore /* drops the program programname */
 qui cap log c
 
 	* install packages
-*ssc install blindschemes, replace
+*ssc install ietoolkit /* for iebaltab */
+*ssc install randtreat, replace /* for randtreat --> random allocation */
+*ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
 *net install http://www.stata.com/users/kcrow/tab2docx
-*ssc install betterbar 
+*ssc install betterbar
+*ssc install mdesc 
 
 	* define graph scheme for visual outputs
-*set scheme plotplain
+set scheme plotplain
 
 ***********************************************************************
 * 	PART 2: 	Prepare dynamic folder paths & globals			  	  *
 ***********************************************************************
 
-		* dynamic folder paths for windows & mac
+		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 if c(os) == "Windows" {
 	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
@@ -51,15 +55,27 @@ else if c(os) == "MacOSX" {
 	global samp_github = "Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
-		* dynamic folder globals
+		* paths within gdrive
+			* data
 global samp_raw = "${samp_gdrive}/raw"
 global samp_intermediate "${samp_gdrive}/intermediate"
-global samp_output = "${samp_gdrive}/output"
 global samp_final = "${samp_gdrive}/final"
-	
+
+			* output (regression tables, figures)
+global samp_output = "${samp_gdrive}/output"
+global samp_figures = "${samp_output}/descriptive-statistics-figures"
+global samp_randomisation = "${samp_output}/randomisation_results"
+global samp_emaillists = "${samp_output}/email_lists"
+
 		* global for *type* variables
+		
+		
+		* set seeds for replication
+set seed 8413195
+set sortseed 8413195
+		
 ***********************************************************************
-* 	PART 3: 	Run midline do-files			  	 				  *
+* 	PART 3: 	Run do-files for population data preparation
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 3.1: Import & raw data
@@ -74,8 +90,7 @@ if (1) do "${samp_github}/samp_import.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_clean.do"
-
+if (1) do "${samp_github}/samp_clean.do"
 
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
@@ -83,21 +98,35 @@ if (0) do "${samp_github}/samp_clean.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_correct.do"
-
+if (1) do "${samp_github}/samp_correct.do"
 
 /* --------------------------------------------------------------------
-	PART 3.4: Merge different data bases
-	NOTE: requires common id, e.g. email?
+	PART 3.4: Generate variables for analysis or implementation
+	NOTE: id_email
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_merge.do"
+if (1) do "${samp_github}/samp_generate.do"
 
 /* --------------------------------------------------------------------
-	PART 3.5: Generate variables for analysis or implementation
-	NOTE: email_id etc.
+	PART 3.5: Stratification
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_gen.do"
+if (1) do "${samp_github}/samp_stratification.do"
+
+/* --------------------------------------------------------------------
+	PART 3.6: Randomisation
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${samp_github}/samp_randomisation_manual.do"
+
+/* --------------------------------------------------------------------
+	PART 3.7: identify hand-coded email adresses with bounce message
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${samp_github}/samp_bounce.do"
+
+

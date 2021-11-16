@@ -36,7 +36,7 @@ foreach x of local strvars {
 	
 
 {
-	
+
 scalar not_know    = 77777777777777777
 scalar refused     = 99999999999999999
 scalar check_again = 88888888888888888

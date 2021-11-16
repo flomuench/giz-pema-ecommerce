@@ -125,6 +125,7 @@ if (1) do "${regis_github}/regis_generate.do"
 /* --------------------------------------------------------------------
 	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
 ----------------------------------------------------------------------*/	
+
 if (0) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 
 /* --------------------------------------------------------------------
