@@ -22,27 +22,16 @@
 
 	clear 
 	
-	import excel "$regis_intermediate/regis_corrected_matches_inter.xls", sheet("Sheet1") firstrow
+	import excel "$regis_intermediate/regis_corrected_matches.xls", sheet("Sheet1") firstrow
 
 	
 ***********************************************************************
-* 	PART 2: Save  			
+* 	PART 2: Save list with corrected matches in the final folder		
 ***********************************************************************
 
 	******************** Save date as it is in the final folder
 	
 	cd "$regis_final"
 	
-	save "regis_matched", replace
+	save "regis_matched_contacts", replace
 	
-	******************** Save only ids, scores and 'matched on' as regis_done:
-	******************** This avoids them being matched again in the next round
-	******************** Which means they don't have to be manually cleaned
-	
-	cd "$regis_intermediate"
-	
-	keep id_plateforme id_email score matchedon
-	
-	save "regis_done", replace
-	
-	clear

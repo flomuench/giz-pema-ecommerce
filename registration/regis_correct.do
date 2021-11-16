@@ -53,6 +53,7 @@ scalar check_again = 88888888888888888
 		* with correct fiscal number that fulfill 7 digit, 1 character condition
 gen id_admin_correct = ustrregexm(id_admin, "([0-9]){7}[a-z]")
 order id_admin_correct, a(id_admin)
+*replace id_admin_corrige = $check_again if id_admin_correct == 1
 lab def correct 1 "correct" 0 "incorrect"
 lab val id_admin_correct correct
 *browse identifiant*

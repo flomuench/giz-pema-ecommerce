@@ -134,7 +134,7 @@ if (0) do "${regis_github}/export_list_recontacter.do"
 
 
 ***********************************************************************
-* 	PART 5: 	Run do-files for email experiment
+* 	PART 5: 	Run do-files for fuzzy merge/matching email adresses
 ***********************************************************************
 
 /* --------------------------------------------------------------------
@@ -142,9 +142,9 @@ if (0) do "${regis_github}/export_list_recontacter.do"
 PART 5.1: Fuzzy merge registered with sameple firms
 	NOTE: After this is run, the excel spreadsheet needs to be manually checked
 	Requires: regis_inter.dta, giz_contact_list_final 
-	Creates: regis_match_intermediate.xls
+	Creates: regis_potential_matches.xls & dta, regis_fuzzy_merge_done.dta
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_match.do"
+if (1) do "${regis_github}/regis_match.do"
 
 /* --------------------------------------------------------------------
 PART 5.2: 
