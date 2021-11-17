@@ -110,10 +110,15 @@ destring id_plateforme, replace
 * 	PART 5:  Convert problematic values for open-ended questions  			
 ***********************************************************************
 {
-/*
+
 	* Sectionname
-replace q04 ="Hors sujet" if q04 == "OUI" 
-*/
+*replace q04 ="Hors sujet" if q04 == "OUI" 
+
+*Correction nom du representant
+gen rg_nom_rep_corr= rg_nom_rep            
+replace rg_nom_rep_corr="$check_again" if rg_nom_rep == "Études géomatiques." 
+
+ 
 }
 
 ***********************************************************************
