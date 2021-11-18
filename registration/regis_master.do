@@ -40,6 +40,7 @@ ssc install reclink
 *ssc install matchit
 *ssc install strgroup
 ssc install stripplot
+net install http://www.stata.com/users/kcrow/tab2docx
 
 	* define graph scheme for visual outputs
 set scheme plotplain

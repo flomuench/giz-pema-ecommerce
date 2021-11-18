@@ -43,6 +43,7 @@ format %-25.0fc `numvars'
 gen datedecréation = date(Datedecréation, "MDY")
 order datedecréation, a(Datedecréation)
 format datedecréation %td
+rename Datedecréation date_created_str
 }
 	
 ***********************************************************************
