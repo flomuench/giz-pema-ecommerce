@@ -31,14 +31,15 @@ qui cap log c
 	* install packages
 *ssc install ietoolkit /* for iebaltab */
 *ssc install randtreat, replace /* for randtreat --> random allocation */
-*ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
+ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
 *net install http://www.stata.com/users/kcrow/tab2docx
 *ssc install betterbar
 *ssc install mdesc 
-*ssc install reclink
+ssc install reclink
 *ssc install dm0082 /* for reclink2 */
 *ssc install matchit
 *ssc install strgroup
+ssc install stripplot
 
 	* define graph scheme for visual outputs
 set scheme plotplain
@@ -145,7 +146,7 @@ PART 5.1: Fuzzy merge registered with sameple firms
 	Requires: regis_inter.dta, giz_contact_list_final 
 	Creates: regis_potential_matches.xls & dta, regis_fuzzy_merge_done.dta
 ----------------------------------------------------------------------*/	
-if (1) do "${regis_github}/regis_match.do"
+if (0) do "${regis_github}/regis_match.do"
 
 /* --------------------------------------------------------------------
 PART 5.2: 

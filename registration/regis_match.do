@@ -24,6 +24,7 @@
 
 	cd "$regis_intermediate"
 	
+	/*
 	******************** Only the first time the matching is run:
 	
 	
@@ -39,7 +40,7 @@
 	destring id_email, replace
 	
 	save "regis_fuzzy_merge_done", replace
-	
+	*/
 	******************** You also need a regis_matched to be created once
 	******************** Otherwise the 'save regis_matched, replace' later 
 	******************** won't work

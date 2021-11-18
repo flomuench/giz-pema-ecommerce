@@ -26,9 +26,9 @@ cd "$regis_progress"
 putpdf begin 
 putpdf paragraph
 
-putpdf text ("E-commerce training: registration progress, elibility, firm characteristics"), bold linebreak(1)
+putpdf text ("E-commerce training: registration progress, elibility, firm characteristics"), bold linebreak
 
-putpdf text ("Date: `c(current_date)'"), bold linebreak(1)
+putpdf text ("Date: `c(current_date)'"), bold linebreak
 
 
 ***********************************************************************
@@ -71,7 +71,7 @@ graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 * 	PART 3:  Eligibility		  			
 ***********************************************************************
 putpdf paragraph, halign(center) 
-putpdf text ("E-commerce training: eligibility"), bold linebreak(1)
+putpdf text ("E-commerce training: eligibility"), bold linebreak
 
 {
 	* identifiant unique correct (oui ou non)
@@ -183,7 +183,7 @@ putpdf pagebreak
 ***********************************************************************
 	* create a heading for the section in the pdf
 putpdf paragraph, halign(center) 
-putpdf text ("E-commerce training: firm characteristics"), bold linebreak(1)
+putpdf text ("E-commerce training: firm characteristics"), bold linebreak
 
 	* secteurs
 graph hbar (count), over(sector, sort(1)) blabel(total) ///
