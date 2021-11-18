@@ -116,7 +116,7 @@ if (1) do "${regis_github}/regis_correct.do"
 /* --------------------------------------------------------------------
 	PART 4.5: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_open_question_checks.do"
+if (1) do "${regis_github}/regis_open_question_checks.do"
 
 /* --------------------------------------------------------------------
 	PART 4.6: Generate variables for analysis or implementation
