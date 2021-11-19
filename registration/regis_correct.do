@@ -50,13 +50,63 @@ drop varname
 rename new_var_name varname
 */
 
+<<<<<<< Updated upstream
 }
+=======
+	* correct telephone numbers with regular expressions
+		* representative
+gen rg_telrep_cor = ustrregexra(rg_telrep, "^216", "")
+replace rg_telrep_cor = ustrregexra( rg_telrep_cor,"[a-z]","")
+replace rg_telrep_cor = ustrregexra( rg_telrep_cor," ","")
+replace rg_telrep_cor = ustrregexra( rg_telrep_cor,"00216","")
+replace rg_telrep_cor = "29939431" if rg_telrep_cor == "+21629939431"
+replace rg_telrep_cor = "22161622" if rg_telrep_cor == "(+216)22161622"
+replace rg_telrep_cor = "$check_again" if strlen( rg_telrep_cor ) != 8
+
+gen diff = length(rg_telrep) - length(rg_telrep_cor)
+order rg_telrep_cor diff, a(rg_telrep)
+*browse rg_telrep* diff
+drop rg_telrep diff
+rename rg_telrep_cor rg_telrep
+>>>>>>> Stashed changes
 
 
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
+*** cleaning capital social ***
+gen capitalsocial_corr = rg_capital
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,",","")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr," ","")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"dinars","")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"dt","")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"millions","000")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"mill","000")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"tnd","")
+replace capitalsocial_corr = "10000" if capitalsocial_corr == "10.000"
+replace capitalsocial_corr = "1797000" if capitalsocial_corr == "1.797.000"
+replace capitalsocial_corr = "50000" if capitalsocial_corr == "50.000"
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"e","")
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"m","")
+replace capitalsocial_corr = "30000" if capitalsocial_corr == "30000n"
+
+replace capitalsocial_corr = ustrregexra( capitalsocial_corr,"000","") if strlen( capitalsocial_corr) >= 9
+replace capitalsocial_corr = "$check_again" if strlen( capitalsocial_corr) == 1
+replace capitalsocial_corr = "$check_again" if strlen( capitalsocial_corr) == 2
+
+
+replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "tunis"
+
+*Test logical values*
+
+* In Tunisia, SCA and SA must have a minimum of 5000 TND of capital social
+
+*All values having a too small capital social (less than 100)
+replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "0"
+replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "o"
+destring capitalsocial_corr, replace
+
 /*
 	* q391: ventes en export 
 replace q391_corrige = "254000000" if id == "f247"
