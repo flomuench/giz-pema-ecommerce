@@ -122,4 +122,11 @@ if (1) do "${samp_github}/samp_stratification.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_randomisation_manual.do"
 
+/* --------------------------------------------------------------------
+	PART 3.7: identify hand-coded email adresses with bounce message
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/	
+if (1) do "${samp_github}/samp_bounce.do"
+
 

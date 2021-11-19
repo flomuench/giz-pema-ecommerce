@@ -1,13 +1,13 @@
 ***********************************************************************
-* 			baseline corrections									  	  
+* 			registration corrections									  	  
 ***********************************************************************
 *																	    
-*	PURPOSE: replace					  							  
+*	PURPOSE: correct all incoherent responses				  							  
 *																	  
 *																	  
 *	OUTLINE:														  
 *	1)		Define non-response categories 			  				  
-* 	2) 		Encode categorical variaregises
+* 	2) 		correct unique identifier - matricule fiscal
 *	3)   	Replace string with numeric values						  
 *	4)  	Convert string to numerical variaregises	  				  
 *	5)  	Convert proregisematic values for open-ended questions		  
@@ -27,8 +27,16 @@
 ***********************************************************************
 use "${regis_intermediate}/regis_inter", clear
 
+	* replace "-" with missing value
+ds, has(type string) 
+local strvars "`r(varlist)'"
+foreach x of local strvars {
+		replace `x' = "" if `x' == "-"
+	}
+	
+
 {
-/*	
+
 scalar not_know    = 77777777777777777
 scalar refused     = 99999999999999999
 scalar check_again = 88888888888888888
@@ -39,20 +47,18 @@ scalar check_again = 88888888888888888
 }
 
 ***********************************************************************
-* 	PART 2:  Encode categorical variaregises		  			
+* 	PART 2: use regular expressions to correct variables 		  			
 ***********************************************************************
-{
-	* Section
-/*
-label def labelname 1 "" 2 "" 3 "" 4 "" 5 ""
-encode varname, gen(new_var_name) label(labelname) 
-drop varname
-rename new_var_name varname
-*/
+	* idea: use regular expression to create a dummy = 1 for all responses
+		* with correct fiscal number that fulfill 7 digit, 1 character condition
+gen id_admin_correct = ustrregexm(id_admin, "([0-9]){7}[a-z]")
+order id_admin_correct, a(id_admin)
+*replace id_admin_corrige = $check_again if id_admin_correct == 1
+lab def correct 1 "correct" 0 "incorrect"
+lab val id_admin_correct correct
+*browse identifiant*
 
-<<<<<<< Updated upstream
-}
-=======
+
 	* correct telephone numbers with regular expressions
 		* representative
 gen rg_telrep_cor = ustrregexra(rg_telrep, "^216", "")
@@ -61,14 +67,16 @@ replace rg_telrep_cor = ustrregexra( rg_telrep_cor," ","")
 replace rg_telrep_cor = ustrregexra( rg_telrep_cor,"00216","")
 replace rg_telrep_cor = "29939431" if rg_telrep_cor == "+21629939431"
 replace rg_telrep_cor = "22161622" if rg_telrep_cor == "(+216)22161622"
+
+*Check all phone numbers having more or less than 8 digits
 replace rg_telrep_cor = "$check_again" if strlen( rg_telrep_cor ) != 8
 
+*Check phone number
 gen diff = length(rg_telrep) - length(rg_telrep_cor)
 order rg_telrep_cor diff, a(rg_telrep)
 *browse rg_telrep* diff
 drop rg_telrep diff
 rename rg_telrep_cor rg_telrep
->>>>>>> Stashed changes
 
 
 ***********************************************************************
@@ -124,6 +132,8 @@ replace q392_corrige = "$check_again"  if q392=="saison de plantation"
 ***********************************************************************
 * 	PART 4:  Convert string to numerical variaregises	  			
 ***********************************************************************
+destring rg_fte_femmes, replace
+
 {
 /*
 foreach x of global numvarc {
@@ -135,14 +145,22 @@ format `x' %25.0fc
 replace q393_corrige = q393_normalval * c_a if q393_corrige < 1
 */
 }	
+
+destring id_plateforme, replace
+
 ***********************************************************************
 * 	PART 5:  Convert problematic values for open-ended questions  			
 ***********************************************************************
 {
-/*
+
 	* Sectionname
-replace q04 ="Hors sujet" if q04 == "OUI" 
-*/
+*replace q04 ="Hors sujet" if q04 == "OUI" 
+
+*Correction nom du representant
+gen rg_nom_rep_corr= rg_nom_rep            
+replace rg_nom_rep_corr="$check_again" if rg_nom_rep == "Études géomatiques." 
+
+ 
 }
 
 ***********************************************************************
@@ -220,15 +238,26 @@ lab var q42f "(in-) formel argument de vente"
 * 	PART 9:  Remove duplicates
 ***********************************************************************
 	* id_plateform
-	
+*duplicates report id_plateform
+
 	* email
 *duplicates report rg_email
 *duplicates tag rg_email, gen(dup_email)
 
-	* firmname
+	* firmname	
+	
+***********************************************************************
+* 	PART 10:  autres / miscallaneous adjustments
+***********************************************************************
+	* correct the response categories for moyen de communication
+replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
+replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
+
+	* correct wrong response categories for subsectors
+replace subsector = "industries chimiques" if subsector == "industrie chimique"
 
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
-
+cd "$regis_intermediate"
 save "regis_inter", replace
