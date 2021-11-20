@@ -57,7 +57,17 @@ order id_admin_correct, a(id_admin)
 lab def correct 1 "correct" 0 "incorrect"
 lab val id_admin_correct correct
 *browse identifiant*
-
+    * Correct Nom et prénom du/de la participant.e à l’activité
+gen rg_nom_rep_cor = rg_nom_rep
+replace rg_nom_rep_cor = ustrregexra( rg_nom_rep_cor ,"mr ","")
+replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "Études géomatiques."
+replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "tunisie"
+replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "société internet soft erp"
+replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "medianet"
+replace rg_nom_rep_cor = "salhi elhem" if rg_nom_rep_cor == "inspiration design salhi elhem"
+replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "bilel"
+replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "haddad"
+replace rg_nom_rep_cor = "aymen bahri" if rg_nom_rep_cor == "أيمن البحري"
 
 	* correct telephone numbers with regular expressions
 		* representative
