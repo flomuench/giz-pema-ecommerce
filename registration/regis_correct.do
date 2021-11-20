@@ -87,6 +87,16 @@ replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "......"
 replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "."
 replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "620.004w"
 *We a have a duplicate for the same code de douane 220711z ; count if rg_codedouane_cor == "220711z" returns 2
+    * correction de la variable autres
+gen autres_cor = autres
+replace autres_cor = "conseil" if ustrregexm( autres_cor ,"conseil")== 1
+replace autres_cor = "consulting" if ustrregexm( autres_cor ,"consulting")== 1
+replace autres_cor = "services informatiques" if ustrregexm( autres_cor ,"informatique")== 1
+replace autres_cor = "communication" if ustrregexm( autres_cor ,"communication")== 1
+replace autres_cor = "marketing digital" if ustrregexm( autres_cor ,"marketing digital")== 1
+replace autres_cor = "bureau d'études" if ustrregexm( autres_cor ,"bureau d'études")== 1
+replace autres_cor = "design" if ustrregexm( autres_cor ,"design")== 1
+****** pas encore terminée
 
 	* correct telephone numbers with regular expressions
 		* representative
