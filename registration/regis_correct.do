@@ -69,6 +69,25 @@ replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "bilel"
 replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "haddad"
 replace rg_nom_rep_cor = "aymen bahri" if rg_nom_rep_cor == "أيمن البحري"
 
+    * correct code de la douane
+gen rg_codedouane_cor = rg_codedouane
+replace rg_codedouane_cor = ustrregexra( rg_codedouane_cor ," ","")
+replace rg_codedouane_cor = "0555082b" if rg_codedouane_cor == "0555082b/a/m/000"
+replace rg_codedouane_cor = "1721444v" if rg_codedouane_cor == "000ma1721444/v"
+replace rg_codedouane_cor = "1149015h" if rg_codedouane_cor == "1149015/h000"
+replace rg_codedouane_cor = ustrregexra( rg_codedouane_cor ,"/","")
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "d"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "n"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "n2ant"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "na"
+replace rg_codedouane_cor = "$refused" if rg_codedouane_cor == "non"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "pasencore"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "0"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "......"
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "."
+replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "620.004w"
+*We a have a duplicate for the same code de douane 220711z ; count if rg_codedouane_cor == "220711z" returns 2
+
 	* correct telephone numbers with regular expressions
 		* representative
 gen rg_telrep_cor = ustrregexra(rg_telrep, "^216", "")
