@@ -55,7 +55,7 @@ putpdf pagebreak
 graph bar (count), over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 	title("Enregistrement selon les moyens de communication") ///
 	ytitle("nombre d'enregistrement") 
-graph export moyen_com.png, replace
+graph export moyen_com.png, replace width(3000) height(1500)
 putpdf paragraph, halign(center) 
 putpdf image moyen_com.png
 putpdf pagebreak
@@ -112,7 +112,7 @@ histogram rg_fte if rg_fte <= 200, frequency addl ///
 	name(fte_200, replace)
 	
 gr combine fte_full fte_200
-graph export fte.png, replace
+graph export fte.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image fte.png
 putpdf pagebreak
@@ -147,7 +147,7 @@ histogram rg_age if rg_age >= 0, frequency addl ///
 	name(age_hist, replace)	
 gr combine age_strip age_hist, title("Age des entreprises") ///
 	note("La ligne rouge répresente la valeur minimale pour être éligible.", size(vsmall))
-graph export age.png, replace
+graph export age.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image age.png
 putpdf pagebreak
@@ -172,7 +172,7 @@ graph bar (count), over(eligible_sans_matricule) blabel(total) ///
 	ytitle("nombre d'enregistrement") ///
 	name(potentiellement_eligible, replace)
 gr combine eligibles potentiellement_eligible, title("{bf:Eligibilité des entreprises}")
-graph export eligibles.png, replace
+graph export eligibles.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image eligibles.png
 putpdf pagebreak
@@ -203,7 +203,7 @@ graph hbar (count) if eligible == 1, over(subsector, sort(1) label(labsize(tiny)
 	ytitle("nombre d'entreprises") ///
 	name(subsector_eligible, replace)
 gr combine sector_tous sector_eligible subsector_tous subsector_eligible , title("{bf: Distribution sectorielle}")
-graph export sector.png, replace
+graph export sector.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image sector.png
 putpdf pagebreak
@@ -226,7 +226,7 @@ graph bar (count), over(rg_gender_pdg) over(eligible) blabel(total, format(%-9.0
 	ytitle("pourcentage des entreprises") ///
 	name(gender_ceo_eligible, replace)
 gr combine gender_rep_tot gender_rep_eligible gender_ceo_tot gender_ceo_eligible, title("{bf:Genre des réprésentantes et des PDG}")
-graph export gender.png, replace
+graph export gender.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image gender.png
 putpdf pagebreak
@@ -241,7 +241,7 @@ graph hbar (count) if eligible == 1, over(subsector, sort(1) label(labsize(tiny)
 	ytitle("nombre d'entreprises") ///
 	name(gender_ssector_eligible, replace)
 gr combine gender_ssector_tot gender_ssector_eligible, title("{bf:Genre des réprésentantes selon secteur}")
-graph export gender_sector.png, replace
+graph export gender_sector.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image gender_sector.png
 putpdf pagebreak
@@ -276,7 +276,7 @@ graph bar (count), over(eligible_alternative) blabel(total) ///
 	note(`"Chaque entreprise est éligible qui a fourni un matricul fiscal correct, a >= 6 & < 200 employés, une produit exportable, "' `"l'intention d'exporter, existe pour >= 2 ans et est résidente tunisienne."', size(vsmall) color(green)) ///
 	name(eligibles_alt, replace)
 gr combine eligibles eligibles_alt, title("{bf:Eligibilité des entreprises sans opération d'export}")
-graph export eligibles_alt.png, replace
+graph export eligibles_alt.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image eligibles_alt.png
 putpdf pagebreak
@@ -291,7 +291,7 @@ graph hbar (count) if eligible_alternative == 1, over(subsector, sort(1) label(l
 	ytitle("nombre d'entreprises") ///
 	name(gender_ssector_eligible_alt, replace)
 gr combine gender_ssector_eligible gender_ssector_eligible_alt, title("{bf:Eligibilité des entreprises sans opération d'export}")
-graph export gender_sector_eligible_alt.png, replace
+graph export gender_sector_eligible_alt.png, replace width(6000) height(4500)
 putpdf paragraph, halign(center) 
 putpdf image gender_sector_eligible_alt.png
 	
