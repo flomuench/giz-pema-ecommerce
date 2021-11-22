@@ -32,6 +32,9 @@ putdocx text ("Quality checks open question variables: registration E-commerce t
 ***********************************************************************
 * 	PART 2:  Check for & visualise duplicates		  			
 ***********************************************************************
+		* keep only potentially eligible firms
+preserve
+keep if eligible_sans_matricule == 1
 		* put all variables to for which we want to check for duplicates into a local
 local dupcontrol id_admin firmname rg_nom_rep rg_telrep rg_emailrep rg_telpdg rg_emailpdg
 
@@ -102,7 +105,6 @@ putdocx pagebreak
 	* word file
 cd "$regis_checks"
 putdocx save "regis-checks-question-ouvertes.docx", replace
+	* restore all the observations
+restore
 
-	* dta file
-cd "$regis_intermediate"
-save "regis_inter", replace
