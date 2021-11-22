@@ -29,16 +29,15 @@ capture program drop zscore /* drops the program programname */
 qui cap log c
 
 	* install packages
-*ssc install ietoolkit /* for iebaltab */
-*ssc install randtreat, replace /* for randtreat --> random allocation */
+ssc install ietoolkit /* for iebaltab */
+ssc install randtreat, replace /* for randtreat --> random allocation */
 ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
-*net install http://www.stata.com/users/kcrow/tab2docx
-*ssc install betterbar
-*ssc install mdesc 
+net install http://www.stata.com/users/kcrow/tab2docx
+ssc install betterbar
+ssc install mdesc 
 ssc install reclink
-*ssc install dm0082 /* for reclink2 */
-*ssc install matchit
-*ssc install strgroup
+ssc install matchit
+ssc install strgroup
 ssc install stripplot
 net install http://www.stata.com/users/kcrow/tab2docx
 
@@ -103,33 +102,26 @@ set sortseed 8413195
 	PART 4.1: Import & raw data
 ----------------------------------------------------------------------*/		
 if (1) do "${regis_github}/regis_import.do"
-
 /* --------------------------------------------------------------------
 	PART 4.2: Clean raw data & save as intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_clean.do"
-
 /* --------------------------------------------------------------------
 	PART 4.4: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_correct.do"
-
-/* --------------------------------------------------------------------
-	PART 4.5: Correct & save intermediate data
-----------------------------------------------------------------------*/	
-if (1) do "${regis_github}/regis_open_question_checks.do"
-
 /* --------------------------------------------------------------------
 	PART 4.6: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_generate.do"
-
+/* --------------------------------------------------------------------
+	PART 4.5: Correct & save intermediate data
+----------------------------------------------------------------------*/	
+if (1) do "${regis_github}/regis_open_question_checks.do"
 /* --------------------------------------------------------------------
 	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
 ----------------------------------------------------------------------*/	
-
 if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
-
 /* --------------------------------------------------------------------
 	PART 4.8: Export of contacts that should be recontacted to complete information
 ----------------------------------------------------------------------*/	
