@@ -117,6 +117,19 @@ order rg_telrep_cor diff, a(rg_telrep)
 drop rg_telrep diff
 rename rg_telrep_cor rg_telrep
 
+* variable: Téléphonedudelagérante
+gen rg_telpdg_cor = ustrregexra( rg_telpdg, "^216", "")
+replace rg_telpdg_cor = subinstr(rg_telpdg_cor, " ", "", .)
+replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"[a-z]","")
+replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"00216","")
+order rg_telpdg_cor, a(rg_telpdg)
+replace rg_telpdg_cor = "98412425" if rg_telpdg_cor == "+21698412425"
+replace rg_telpdg_cor = "$check_again" if rg_telpdg_cor == "nasralichakroun"
+drop rg_telpdg 
+rename rg_telpdg_cor rg_telpdg
+browse
+
+
 
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
@@ -177,7 +190,7 @@ local stringvar "rg_fte_femmes id_plateforme rg_fte"
 foreach x of local stringvar {
 destring `x', replace
 format `x' %9.1fc
-} 
+}  
 
 
 * calculate absolute profit if profit was provided as a percentage
