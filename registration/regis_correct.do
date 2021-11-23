@@ -127,7 +127,6 @@ replace rg_telpdg_cor = "98412425" if rg_telpdg_cor == "+21698412425"
 replace rg_telpdg_cor = "$check_again" if rg_telpdg_cor == "nasralichakroun"
 drop rg_telpdg 
 rename rg_telpdg_cor rg_telpdg
-browse
 
 
 
