@@ -171,21 +171,21 @@ replace q392_corrige = "$check_again"  if q392=="saison de plantation"
 ***********************************************************************
 * 	PART 4:  Convert string to numerical variaregises	  			
 ***********************************************************************
-destring rg_fte_femmes, replace
 
+local stringvar "rg_fte_femmes id_plateforme rg_fte"
 {
-/*
-foreach x of global numvarc {
+
+foreach x of local stringvar {
 destring `x', replace
-format `x' %25.0fc
+format `x' %9.1fc
 }
 
+{
 * calculate absolute profit if profit was provided as a percentage
 replace q393_corrige = q393_normalval * c_a if q393_corrige < 1
 */
 }	
 
-destring id_plateforme, replace
 
 ***********************************************************************
 * 	PART 5:  Convert problematic values for open-ended questions  			
