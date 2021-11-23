@@ -173,18 +173,15 @@ replace q392_corrige = "$check_again"  if q392=="saison de plantation"
 ***********************************************************************
 
 local stringvar "rg_fte_femmes id_plateforme rg_fte"
-{
 
 foreach x of local stringvar {
 destring `x', replace
 format `x' %9.1fc
-}
+} 
 
-{
+
 * calculate absolute profit if profit was provided as a percentage
-replace q393_corrige = q393_normalval * c_a if q393_corrige < 1
-*/
-}	
+*replace q393_corrige = q393_normalval * c_a if q393_corrige < 1
 
 
 ***********************************************************************
