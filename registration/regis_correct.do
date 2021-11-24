@@ -117,6 +117,71 @@ order rg_telrep_cor diff, a(rg_telrep)
 drop rg_telrep diff
 rename rg_telrep_cor rg_telrep
 
+*****Correct the website ******
+gen rg_siteweb_cor = rg_siteweb
+replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"https://","")
+replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"http://","")
+replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"/","")
+
+{
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "je n ai pas encore"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "coming soon"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "kebili"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "bni khalled nabeul"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "zone industruelle 2 bouarada siliana"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "zone industrielle la poudriere 1 rue du 13 aout 3002 sfax tunisie"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "médenine"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www@ttls.tn"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "tunis"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www@ttls.tn"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.vibestrip@gmail.com"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cours"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "pema"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "non"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "nabeul"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "pas de site"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "11 bis rue ali ben khalifa el menzah 9a tunis"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "none"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "tunis"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "km5 rte de raoued 2083 ariana"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "engineering & machining precision, rue jawdet elhayet,113,2036 chotrana1, ariana"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "ol"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "sotudex"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "55 av al maghreb ala arabi hazoua 2223 tozeur 2200"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "...."
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "contact@portyasmine.com.tn"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cours de préparation"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "gda assalna"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "rue ennasria, immeuble tej, bloc b , 5ème étage, bureau n°4"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "dengry 619.com (site en cours de réalisation)"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "port yasmine hammamet"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "fb.comdhm.sarl - linkedin.comcompanydhm"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "zone industrielle poudrière 2"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "gda assalna"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "gdfhms@hotmail.com"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "rte de gabes km 2.5 zi sidi salem sfax"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "gda assalna"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.sweetbroderie@gmail.com"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "app 0.3,res tej ezzahra,rue fattouma bourguiba, la soukra"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "med'in outlook, app 03,res tej ezzahra,la soukra,ariena"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "le site webe est en cours de constriction"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "entreprise bourbeh"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "soccomi"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cours"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "sodaq"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "ste.tnfrentreprisehuilerie-el-yousser"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cour"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "artizana mechy production"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.youtube.comwatch?v=duwgz6munuu"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "résidence les jasmins , 21 , avenue des etats unis , belvédère 1002 tunis , tunisie"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "hagguiadel07@gmail.com"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "texpro-corp"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "sfax"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "tunisie gafsa"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "rue malek ibn anes 8030 grombalia"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "texpro"
+}
+
 
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
