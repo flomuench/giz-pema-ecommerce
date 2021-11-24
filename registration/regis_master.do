@@ -29,16 +29,17 @@ capture program drop zscore /* drops the program programname */
 qui cap log c
 
 	* install packages
-*ssc install ietoolkit /* for iebaltab */
-*ssc install randtreat, replace /* for randtreat --> random allocation */
-*ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
-*net install http://www.stata.com/users/kcrow/tab2docx
-*ssc install betterbar
-*ssc install mdesc 
-*ssc install reclink
-*ssc install dm0082 /* for reclink2 */
-*ssc install matchit
-*ssc install strgroup
+ssc install ietoolkit /* for iebaltab */
+ssc install randtreat, replace /* for randtreat --> random allocation */
+ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
+net install http://www.stata.com/users/kcrow/tab2docx
+ssc install betterbar
+ssc install mdesc 
+ssc install reclink
+ssc install matchit
+ssc install strgroup
+ssc install stripplot
+net install http://www.stata.com/users/kcrow/tab2docx
 
 	* define graph scheme for visual outputs
 set scheme plotplain
@@ -101,41 +102,31 @@ set sortseed 8413195
 	PART 4.1: Import & raw data
 ----------------------------------------------------------------------*/		
 if (1) do "${regis_github}/regis_import.do"
-
 /* --------------------------------------------------------------------
 	PART 4.2: Clean raw data & save as intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_clean.do"
-
 /* --------------------------------------------------------------------
 	PART 4.4: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_correct.do"
-
-/* --------------------------------------------------------------------
-	PART 4.5: Correct & save intermediate data
-----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_open_question_checks.do"
-
 /* --------------------------------------------------------------------
 	PART 4.6: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_generate.do"
-
+/* --------------------------------------------------------------------
+	PART 4.5: Correct & save intermediate data
+----------------------------------------------------------------------*/	
+if (1) do "${regis_github}/regis_open_question_checks.do"
 /* --------------------------------------------------------------------
 	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
 ----------------------------------------------------------------------*/	
-
 if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 
-/* --------------------------------------------------------------------
-	PART 4.8: Export of contacts that should be recontacted to complete information
-----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/export_list_recontacter.do"
 
 
 ***********************************************************************
-* 	PART 5: 	Run do-files for email experiment
+* 	PART 5: 	Run do-files for fuzzy merge/matching email adresses
 ***********************************************************************
 
 /* --------------------------------------------------------------------
@@ -143,7 +134,7 @@ if (0) do "${regis_github}/export_list_recontacter.do"
 PART 5.1: Fuzzy merge registered with sameple firms
 	NOTE: After this is run, the excel spreadsheet needs to be manually checked
 	Requires: regis_inter.dta, giz_contact_list_final 
-	Creates: regis_match_intermediate.xls
+	Creates: regis_potential_matches.xls & dta, regis_fuzzy_merge_done.dta
 ----------------------------------------------------------------------*/	
 if (0) do "${regis_github}/regis_match.do"
 
