@@ -121,9 +121,50 @@ rename enregistrermescoordonnéessur rg_enregistrement_coordonnees
 {
 		* Section contact details
 *lab var X ""
+label variable rg_nom_rep "nom et prénom du representant"
+label variable rg_position_rep "qualité & fonction du representant"
+label variable rg_gender_rep "sexe du representant"
+label variable rg_telrep "téléphone du representant"
+label variable rg_emailrep "adresse mail du representant"
+label variable rg_telpdg "téléphone du PDG"
+label variable rg_emailpdg "adresse mail du PDG"
+label variable rg_sex_pdg "sexe du PDG"
+label variable rg_adresse "adresse du siège social"
+label variable firmname "nom de l'entreprise"
+
+	* Section présence en ligne
+label variable rg_siteweb "site web de l'entreprise"
+label variable rg_media "réseau  social de l'entreprise"
+
+	* Section firm characteristics
+			* Legal
+label variable rg_legalstatus "forme juridique"
+label variable rg_matricule "matricule CNSS"
+label variable id_admin "matricule fiscale"
+label variable rg_codedouane "code douane"
+label variable rg_onshore "entreprise résidente en Tunisie"
+
+			* Controls
+label variable date_created "Date création de l'entreprise"
+label variable rg_fte "nombre d'employés de l'entreprise"
+label variable rg_fte_femmes "nombre d'employées féminin de l'entreprise"
+label variable rg_capital "capital social"
+label variable sector "domaine"
+label variable subsector " secteur d'acvitivté"
+
+			* Export
+label variable rg_exportstatus "régime d'exportation"
+label variable rg_export "est-ce que l'entreprise a au moins une opération d'export"
+label variable rg_exportable "est ce que l'entreprise a un produit exportable"
+label variable rg_intexp "intention d'exporter ou non"
+
+	* Section suivi
+label variable moyen_com "moyen de communication ayant permis de découvrir l'existence du programme"
+label variable rg_confidentialite "Partager utiliser les données confidentielles"
+label variable rg_partage_donnees "Partager/utiliser les données collectées et anonymisées"
+label variable rg_enregistrement_coordonnees "Enregistrer mes coordonnées sur sa base de données"
 
 		* Section eligibility
-
 }
 
 
