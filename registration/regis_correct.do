@@ -180,6 +180,14 @@ drop t1 t2 t3 t4
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "02877-62"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "1342aam000"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "17"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "1548345"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "276297"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "2828-50"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "3212417"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "405216"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5524552"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5643390"
+
 /*
 replace rg_matricule_cor = "$check_again" if length(rg_matricule_cor) >= 12 | length(rg_matricule_cor) <= 7
 */
