@@ -187,6 +187,9 @@ replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "3212417"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "405216"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5524552"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5643390"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "01755t"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "7260852"
+
 
 /*
 replace rg_matricule_cor = "$check_again" if length(rg_matricule_cor) >= 12 | length(rg_matricule_cor) <= 7
