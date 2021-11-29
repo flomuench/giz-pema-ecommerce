@@ -220,38 +220,18 @@ replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "0"
 replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "o"
 destring capitalsocial_corr, replace
 
-/*
-	* q391: ventes en export 
-replace q391_corrige = "254000000" if id == "f247"
-replace q391_corrige = "1856000"  if q391=="1milliard856" 
-replace q391_corrige = "1500000"  if q391=="1milliard500"
-
-	* q391: Values to be checked
-replace q392_corrige = "$check_again"  if q392=="2millions100"  /*Notez les ID concernés*/
-replace q392_corrige = "$check_again"  if q392=="saison de plantation"  
 
 
-*/
 
 }
 ***********************************************************************
 * 	PART 4:  Convert string to numerical variaregises	  			
 ***********************************************************************
-destring rg_fte_femmes, replace
-
-{
-/*
-foreach x of global numvarc {
+local destrvar "rg_fte rg_fte_femmes id_plateforme"
+foreach x of local destrvar { 
 destring `x', replace
-format `x' %25.0fc
 }
 
-* calculate absolute profit if profit was provided as a percentage
-replace q393_corrige = q393_normalval * c_a if q393_corrige < 1
-*/
-}	
-
-destring id_plateforme, replace
 
 ***********************************************************************
 * 	PART 5:  Convert problematic values for open-ended questions  			
