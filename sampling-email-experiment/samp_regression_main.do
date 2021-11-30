@@ -25,7 +25,7 @@ use "${samp_final}/email_experiment", clear
 cd "$samp_regressions"
 
 ***********************************************************************
-* 	PART 1:
+* 	PART 1: main effect
 ***********************************************************************
 logit registered i.treatment, vce(robust)
 outreg2 using main_effect, excel replace ctitle(logit)

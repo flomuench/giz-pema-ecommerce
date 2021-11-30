@@ -30,3 +30,9 @@ cd "$samp_descriptive"
 
 graph bar (sum) registered, over(treatment) blabel(bar)
 graph bar (sum) registered, over(treatment, lab(labsize(vsmall))) over(gender) blabel(bar)
+
+
+***********************************************************************
+* 	PART 1: registrations per sector
+***********************************************************************
+graph hbar (sum) registered, over(sector, lab(labsize(vsmall))) blabel(bar) 
