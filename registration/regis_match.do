@@ -6,11 +6,12 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1) Load data		 
-*	2) Match on registration emails (rg_emailrep) and append results to  regis_matched 							  
-*	3) Match on pdg/ceo email (rg_emailpdg) and and append results to  regis_matched 							    		  				  
-*	5) Merge result with original regis_inter to enable manual verification 			  
-*	6) Save as both 'regis_matched' (final file) and 'regis_done' (intermediate only file for further matching ) 																						  															      
+*	1) import corrected matches & save as dta		 
+*	2) Load regis_inter (list of registrations) 							  
+*	3) Fuzzy matching on the email of the main rep (rg_emailrep) 							    		  				  
+*	4) Fuzzy matching on the email of the CEO/PDG (rg_emailpdg) 
+*	5) Merge with original files to allow manual verification			  
+*	6) save & export potential matches for manual check 																						  															      
 *	Author:  	Teo Firpo						  
 *	ID variable: no id variable defined				  
 *	Requires: regis_inter.dta, giz_contact_list_final 	  								  
@@ -19,38 +20,26 @@
 
 								  
 ***********************************************************************
-* 	PART 1: Load regis_inter (list of registrations)  			
+* 	PART 1: import corrected matches & save as dta  			
 ***********************************************************************
 
 	cd "$regis_intermediate"
 	
-	/*
-	******************** Only the first time the matching is run:
-	
-	
-	******************** Create an regis_done.dta file that includes
-	******************** all previously correct matches (which includes the 
-	******************** id_plateforme and id_email) so that they don't have to 
-	******************** be checked again. 
-	clear 
-	
-	gen id_plateforme = ""
-	gen id_email = ""
-	destring id_plateforme, replace
-	destring id_email, replace
-	
-	save "regis_fuzzy_merge_done", replace
-	*/
-	******************** You also need a regis_matched to be created once
-	******************** Otherwise the 'save regis_matched, replace' later 
-	******************** won't work
+		* import corrected observations
+import excel "${regis_intermediate}/regis_corrected_matches.xlsx", firstrow clear
 
-	
-	use "regis_inter", clear
-
+		* save as dta file
+save "regis_corrected_matches", replace
 
 ***********************************************************************
-* 	PART 2: Fuzzy matching on the email of the main rep (rg_emailrep)
+* 	PART 2: Load regis_inter (list of registrations)
+***********************************************************************
+
+use "regis_inter", clear
+
+	
+***********************************************************************
+* 	PART 3: Fuzzy matching on the email of the main rep (rg_emailrep)
 ***********************************************************************
 
 	******************** To use the fuzzy matching package, we need the two
@@ -63,7 +52,7 @@
 	******************** Now do fuzzy matching
 
 	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude(regis_fuzzy_merge_done)
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_corrected_matches")
 
 	******************** Don't keep those that did not match at all:
 	
@@ -80,7 +69,7 @@
 	save "regis_potential_matches", replace
 	
 ***********************************************************************
-* 	PART 3: Fuzzy matching on the email of the CEO/PDG (rg_emailpdg)
+* 	PART 4: Fuzzy matching on the email of the CEO/PDG (rg_emailpdg)
 ***********************************************************************
 	
 	use "regis_inter", clear
@@ -94,7 +83,7 @@
 	drop if email==""
 	
 	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude(regis_fuzzy_merge_done)
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_corrected_matches")
 
 	drop if score==.
 	
@@ -128,8 +117,7 @@
 	lab var dup "Duplicates (in order from top scoring)"
 
 ***********************************************************************
-* 	PART 4: Merge with original files to allow manual verification 
-*	of results
+* 	PART 5: Merge with original files to allow manual verification
 ***********************************************************************	
 	
 	******************** First append matches done previously:
@@ -182,29 +170,12 @@
 	
 	
 ***********************************************************************
-* 	PART 5: save & export potential matches for manual check
+* 	PART 6: save & export potential matches for manual check
 ***********************************************************************	
 	* save list of potential matches as dta file & export as Excel for manuel check
 	
 	save "regis_potential_matches", replace
 	
 	export excel using "$regis_intermediate/regis_potential_matches", firstrow(variables) replace
-
-
-***********************************************************************
-* 	PART 6: define list of already merged firms not to be merged in next round
-***********************************************************************	
-	
-	******************** Save only ids, scores and 'matched on' as regis_done:
-	******************** This avoids them being matched again in the next round
-	******************** Which means they don't have to be manually cleaned
-	
-	
-	keep id_plateforme id_email score matchedon
-	
-	save "regis_fuzzy_merge_done", replace
-
-
-
 
 
