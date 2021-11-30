@@ -44,16 +44,21 @@ duplicates drop id_plateforme, force
 rename treatment treat
 lab var treat "treatment indicator as in regis_corrected_matches"
 
+	* save as dta in samp_final folder
+save "regis_corrected_matches", replace
+
 ***********************************************************************
 * 	PART 1: merge matches with initial population (giz_contact_list_final) based on id_email				  										  *
 ***********************************************************************
-merge 1:1 id_email using "giz_contact_list_final"
+use "${samp_final}/giz_contact_list_final", clear
+
+merge 1:1 id_email using "regis_corrected_matches"
 
 	* generate a dummy to indicate
 gen sample = .
 replace sample = 1 if _merge == 3
-replace sample = 2 if _merge == 2
-
+replace sample = 2 if _merge == 1
+drop if _merge == 2
 	* drop merge variable & rg_expstatus (due to solve format mismatch for matching)
 drop _merge rg_expstatus
 
@@ -69,7 +74,7 @@ merge m:m id_plateforme using "email_experiment"
 	
 	* define categories for company origin
 replace sample = 3 if _merge == 1
-lab def subsample 1 "matched & registered" 2 "contacted & not registered" 3 "registered & contacted"
+lab def subsample 1 "contacted & registered" 2 "contacted & not registered" 3 "not contacted & registered"
 lab values sample subsample
 
 

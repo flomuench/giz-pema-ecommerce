@@ -30,12 +30,15 @@ capture program drop zscore /* drops the program programname */
 qui cap log c
 
 	* install packages
-*ssc install ietoolkit /* for iebaltab */
-*ssc install randtreat, replace /* for randtreat --> random allocation */
-*ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
-*net install http://www.stata.com/users/kcrow/tab2docx
-*ssc install betterbar
-*ssc install mdesc 
+/*
+ssc install ietoolkit /* for iebaltab */
+ssc install randtreat, replace /* for randtreat --> random allocation */
+ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
+net install http://www.stata.com/users/kcrow/tab2docx
+ssc install betterbar
+ssc install mdesc
+ssc install groups
+*/ 
 
 	* define graph scheme for visual outputs
 set scheme plotplain
@@ -101,7 +104,7 @@ set sortseed 8413195
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/		
-if (1) do "${samp_github}/samp_import.do"
+if (0) do "${samp_github}/samp_import.do"
 
 /* --------------------------------------------------------------------
 	PART 3.2: Clean raw data & save as intermediate data
@@ -109,7 +112,7 @@ if (1) do "${samp_github}/samp_import.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_clean.do"
+if (0) do "${samp_github}/samp_clean.do"
 
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
@@ -117,7 +120,7 @@ if (1) do "${samp_github}/samp_clean.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_correct.do"
+if (0) do "${samp_github}/samp_correct.do"
 
 /* --------------------------------------------------------------------
 	PART 3.4: Generate variables for analysis or implementation
@@ -125,28 +128,30 @@ if (1) do "${samp_github}/samp_correct.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_generate.do"
+if (0) do "${samp_github}/samp_generate.do"
 
 /* --------------------------------------------------------------------
 	PART 3.5: Stratification
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_stratification.do"
+if (0) do "${samp_github}/samp_stratification.do"
 
 /* --------------------------------------------------------------------
 	PART 3.6: Randomisation
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_randomisation_manual.do"
+if (0) do "${samp_github}/samp_randomisation_manual.do"
 
 /* --------------------------------------------------------------------
 	PART 3.7: identify hand-coded email adresses with bounce message
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/	
-if (1) do "${samp_github}/samp_bounce.do"
+if (0) do "${samp_github}/samp_bounce.do"
+
+
 
 ***********************************************************************
 * 	PART 4: 	Run do-files for data
@@ -156,34 +161,31 @@ if (1) do "${samp_github}/samp_bounce.do"
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/merge_registration.do"
-
+if (1) do "${samp_github}/samp_merge_registration.do"
 /* --------------------------------------------------------------------
-	PART 4.2: descriptive statistics
+	PART 4.2: merge with matches & registration data
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/descriptive_statistics.do"
-
+if (1) do "${samp_github}/samp_correct_generate.do"
 /* --------------------------------------------------------------------
-	PART 4.1: merge with matches & registration data
+	PART 4.3: descriptive statistics
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/correct_generate.do"
-
+if (1) do "${samp_github}/samp_descriptive_statistics.do"
 /* --------------------------------------------------------------------
-	PART 4.3: regression analysis - main effect
+	PART 4.4: regression analysis - main effect
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/regressions_main.do"
+if (1) do "${samp_github}/samp_regression_main.do"
 
 /* --------------------------------------------------------------------
-	PART 4.4: regression analysis - subgroup analysis
+	PART 4.5: regression analysis - subgroup analysis
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/regressions_subgroup.do"
+if (0) do "${samp_github}/samp_regressions_subgroup.do"
 
 

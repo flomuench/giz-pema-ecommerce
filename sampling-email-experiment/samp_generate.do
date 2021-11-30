@@ -51,7 +51,7 @@ label define sector_name 1 "Autres industries extractives" ///
 	12 "Industries du cuir et de la chaussure" ///
 	13 "Industries textiles et habillement" ///
 	14 "Métallurgie et travail des métaux" ///
-	15 "Travail du bois et fabrication d'articles en bois" ///
+	15 "Travail du bois et fabrication d'articles en bois"
 
 	* sector
 tempvar Sector
