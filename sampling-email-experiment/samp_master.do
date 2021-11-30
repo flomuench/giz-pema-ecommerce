@@ -45,6 +45,7 @@ set scheme plotplain
 ***********************************************************************
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
+			* to sampling folder
 if c(os) == "Windows" {
 	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
@@ -55,21 +56,39 @@ else if c(os) == "MacOSX" {
 	global samp_github = "Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
-		* paths within gdrive
-			* data
+				* paths within gdrive
+					* data
 global samp_raw = "${samp_gdrive}/raw"
 global samp_intermediate "${samp_gdrive}/intermediate"
 global samp_final = "${samp_gdrive}/final"
 
-			* output (regression tables, figures)
+					* output (regression tables, figures)
 global samp_output = "${samp_gdrive}/output"
 global samp_figures = "${samp_output}/descriptive-statistics-figures"
 global samp_randomisation = "${samp_output}/randomisation_results"
 global samp_emaillists = "${samp_output}/email_lists"
 
-		* global for *type* variables
-		
-		
+						* within output
+global samp_regressions = "${samp_output}/regression-tables"
+global samp_descriptive = "${samp_output}/descriptive-statistics-figures"
+
+		* to registration folder
+if c(os) == "Windows" {
+	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
+	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+else if c(os) == "MacOSX" {
+	global regis_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
+	global regis_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+			* subfolders within registration folder
+global regis_raw = "${regis_gdrive}/raw"
+global regis_intermediate "${regis_gdrive}/intermediate"
+global regis_final = "${regis_gdrive}/final"
+global regis_checks = "${regis_gdrive}/checks"
+
 		* set seeds for replication
 set seed 8413195
 set sortseed 8413195
@@ -128,5 +147,43 @@ if (1) do "${samp_github}/samp_randomisation_manual.do"
 	Creates: 
 ----------------------------------------------------------------------*/	
 if (1) do "${samp_github}/samp_bounce.do"
+
+***********************************************************************
+* 	PART 4: 	Run do-files for data
+***********************************************************************
+/* --------------------------------------------------------------------
+	PART 4.1: merge with matches & registration data
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/
+if (0) do "${samp_github}/merge_registration.do"
+
+/* --------------------------------------------------------------------
+	PART 4.2: descriptive statistics
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/
+if (0) do "${samp_github}/descriptive_statistics.do"
+
+/* --------------------------------------------------------------------
+	PART 4.1: merge with matches & registration data
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/
+if (0) do "${samp_github}/correct_generate.do"
+
+/* --------------------------------------------------------------------
+	PART 4.3: regression analysis - main effect
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/
+if (0) do "${samp_github}/regressions_main.do"
+
+/* --------------------------------------------------------------------
+	PART 4.4: regression analysis - subgroup analysis
+	Requires: 
+	Creates: 
+----------------------------------------------------------------------*/
+if (0) do "${samp_github}/regressions_subgroup.do"
 
 
