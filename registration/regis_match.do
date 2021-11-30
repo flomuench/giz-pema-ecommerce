@@ -63,7 +63,7 @@
 	******************** Now do fuzzy matching
 
 	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_fuzzy_merge_done")
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude(regis_fuzzy_merge_done)
 
 	******************** Don't keep those that did not match at all:
 	
@@ -94,7 +94,7 @@
 	drop if email==""
 	
 	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_fuzzy_merge_done")
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude(regis_fuzzy_merge_done)
 
 	drop if score==.
 	
