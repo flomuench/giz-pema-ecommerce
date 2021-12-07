@@ -176,6 +176,65 @@ gen eligible_alternative = (rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_
 lab val eligible_alternative eligible
 
 ***********************************************************************
+* 	PART 10: Surplus contact information from registration
+***********************************************************************
+* telephone numbers
+
+gen rg_telephone2 = ""
+replace rg_telephone2 = "21698218074" if id_plateforme == 886
+replace rg_telephone2 = "71380080" if id_plateforme == 190
+replace rg_telephone2 = "29610014" if id_plateforme == 602
+replace rg_telephone2 = "29352797" if id_plateforme == 724
+replace rg_telephone2 = "29352797" if id_plateforme == 547
+replace rg_telephone2 = "53115533" if id_plateforme == 640
+replace rg_telephone2 = "20445577" if id_plateforme == 157
+
+
+	* email adresses
+gen rg_email2 = ""
+replace rg_email2 = "intissarmersni1987@gmail.com" if id_plateforme == 777
+replace rg_email2 = "anoha.consulting@gmail.com" if id_plateforme == 886
+replace rg_email2 = "karim.architecte@yahoo.fr" if id_plateforme == 673
+replace rg_email2 = "ccf.jeridi@planet.tn" if id_plateforme == 630
+replace rg_email2 = "majdi.ameur@colmar.tn" if id_plateforme == 602
+replace rg_email2 = "nejla.khadraoui@fameinternational.tn" if id_plateforme == 771
+replace rg_email2 = "bilel.ghediri@allianceone.tn" if id_plateforme == 724
+replace rg_email2 = "alaeddine.reguii@emcgroup.tn" if id_plateforme == 547
+replace rg_email2 = "slim.tounsi@texpro-kgroup.com.tn" if id_plateforme == 564
+replace rg_email2 = "eya.bs.bensalem@gmail.com" if id_plateforme == 157
+
+
+	
+	* physical adress
+gen rg_adresse2 = ""
+
+	* Other corrections
+replace rg_position_rep= "senior consultant" if id_plateforme == 886
+
+
+
+	* drop duplicates
+drop if id_plateforme == 357
+drop if id_plateforme == 610
+drop if id_plateforme == 133
+drop if id_plateforme == 149
+drop if id_plateforme == 809
+drop if id_plateforme == 468
+drop if id_plateforme == 605
+drop if id_plateforme == 828
+drop if id_plateforme == 684
+drop if id_plateforme == 534
+drop if id_plateforme == 639
+drop if id_plateforme == 638
+drop if id_plateforme == 641
+drop if id_plateforme == 622
+drop if id_plateforme == 621
+drop if id_plateforme == 585
+drop if id_plateforme == 159
+
+
+
+***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
 cd "$regis_intermediate"
