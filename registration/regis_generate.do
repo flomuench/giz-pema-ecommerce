@@ -176,6 +176,22 @@ gen eligible_alternative = (rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_
 lab val eligible_alternative eligible
 
 ***********************************************************************
+* 	PART 10: Surplus contact information from registration
+***********************************************************************
+	* telephone numbers
+
+gen rg_telephone2 = ""
+*replace rg_telephone2 = "phonenumber" if id_plateforme == 886
+
+	* email adresses
+gen rg_email2 = ""
+*replace rg_email2 = "anoha.consulting@gmail.com" if id_plateforme == 886
+
+	* physical adress
+gen rg_adresse2 = ""
+
+
+***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
 cd "$regis_intermediate"

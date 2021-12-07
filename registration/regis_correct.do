@@ -27,6 +27,7 @@
 ***********************************************************************
 use "${regis_intermediate}/regis_inter", clear
 
+{
 	* replace "-" with missing value
 ds, has(type string) 
 local strvars "`r(varlist)'"
@@ -35,7 +36,7 @@ foreach x of local strvars {
 	}
 	
 
-{
+
 
 scalar not_know    = 77777777777777777
 scalar refused     = 99999999999999999
@@ -49,6 +50,7 @@ scalar check_again = 88888888888888888
 ***********************************************************************
 * 	PART 2: use regular expressions to correct variables 		  			
 ***********************************************************************
+
 	* idea: use regular expression to create a dummy = 1 for all responses
 		* with correct fiscal number that fulfill 7 digit, 1 character condition
 gen id_admin_correct = ustrregexm(id_admin, "([0-9]){6,7}[a-z]")
@@ -124,7 +126,7 @@ replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"https://","")
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"http://","")
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"/","")
 
-{
+
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "je n ai pas encore"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "coming soon"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "kebili"
@@ -181,7 +183,7 @@ replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "sfax"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "tunisie gafsa"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "rue malek ibn anes 8030 grombalia"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "texpro"
-}
+
 
 
 ***********************************************************************
@@ -300,7 +302,7 @@ foreach x of local categories {
 	drop if _merge == 2 /* drops all non matched rows from coded categories */
 	
 	drop _merge
-}
+	}
 	* format variables
 
 format %-25s q42 q42c q15c5 q18m5 q10n5 q10r5 q21example q15c5c q18m5c q10n5c q10r5c q21examplec
@@ -319,18 +321,31 @@ lab var q42f "(in-) formel argument de vente"
 */
 }
 
+
 ***********************************************************************
 * 	PART 9:  Remove duplicates
 ***********************************************************************
+	* formating the variables for whcih we check duplicates
+format firmname rg_emailrep rg_emailpdg %-35s
+format id_plateforme %9.0g
+sort firmname
+	
 	* id_plateform
-*duplicates report id_plateform
+duplicates report id_plateform
 
 	* email
-*duplicates report rg_email
-*duplicates tag rg_email, gen(dup_email)
+duplicates report rg_emailrep
+duplicates report rg_emailpdg
+duplicates tag rg_emailpdg, gen(dup_emailpdg)
 
 	* firmname	
-	
+duplicates report firmname
+duplicates tag firmname, gen(dup_firmname)
+
+	* show all the different duplicates that are also eligible (requires running gen.do first)
+browse if dup_firmname > 0 | dup_emailpdg > 0 & eligible_sans_matricule == 1
+
+
 ***********************************************************************
 * 	PART 10:  autres / miscallaneous adjustments
 ***********************************************************************
