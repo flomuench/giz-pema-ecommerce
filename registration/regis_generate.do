@@ -197,8 +197,13 @@ replace rg_telephone2 = "92554016" if id_plateforme == 521
 replace rg_telephone2 = "29360507" if id_plateforme == 451
 replace rg_telephone2 = "58440115" if id_plateforme == 315
 replace rg_telephone2 = "23268260" if id_plateforme == 546
-
-
+replace rg_telephone2 = "71409236" if id_plateforme == 254
+replace rg_telephone2 = "51799006" if id_plateforme == 785
+replace rg_telephone2 = "50163772" if id_plateforme == 340	
+replace rg_telephone2 = "29333280" if id_plateforme == 725
+replace rg_telephone2 = "98774548" if id_plateforme == 768
+replace rg_telephone2 = "28841100" if id_plateforme == 748	
+		
 	* email adresses
 gen rg_email2 = ""
 replace rg_email2 = "intissarmersni1987@gmail.com" if id_plateforme == 777
@@ -227,12 +232,22 @@ replace rg_email2 = "sami.habbachi.28@gmail.com" if id_plateforme == 754
 replace rg_email2 = "hassen.bt@oliveoiltunisia.com" if id_plateforme == 546	
 replace rg_email2 = "meskini.sihem@live.fr" if id_plateforme == 654
 replace rg_email2 = "o.chamakhi@tuniship.net" if id_plateforme == 757
-	
+replace rg_email2 = "oriwoodtn@gmail.com" if id_plateforme == 865	
+replace rg_email2 = "nourmedini76@gmail.com" if id_plateforme == 785
+replace rg_email2 = "shayma.rahmeni@smarteo.tn" if id_plateforme == 340
+replace rg_email2 = "azizaglass1@gmail.com" if id_plateforme == 725
+replace rg_email2 = "asma.besbes2018@gmail.com" if id_plateforme == 768
+replace rg_email2 = "lilnvfgng@gmail.com" if id_plateforme == 748
 
+
+
+	
 	
 	* physical adress
 gen rg_adresse2 = ""
 replace rg_adresse2 = "av ahmed mrad, cité des pins boumhel bassatine 2097" if id_plateforme == 497
+replace rg_adresse2 = "rue de l'usine charguia2" if id_plateforme == 768
+replace rg_adresse2 = "000, zi ettaamir, sousse 4003" if id_plateforme == 748
 
 
 	* Other corrections
@@ -276,6 +291,19 @@ drop if id_plateforme == 685
 drop if id_plateforme == 272
 drop if id_plateforme == 653
 drop if id_plateforme == 811
+drop if id_plateforme == 342
+drop if id_plateforme == 155
+drop if id_plateforme == 171
+drop if id_plateforme == 278
+drop if id_plateforme == 654
+drop if id_plateforme == 817
+drop if id_plateforme == 751
+
+*Notes: 
+*id_plateforme 398/414 are not duplicates (different companies belong to the same group)
+*id_plateforme 503/515 are not duplicates (different companies belong to the same group)
+*id_plateforme 658/675 are not duplicates (different companies belong to the same group)
+
 
 ***********************************************************************
 * 	Save the changes made to the data		  			
