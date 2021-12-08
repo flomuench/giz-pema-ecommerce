@@ -185,7 +185,86 @@ replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "rue malek ibn anes
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "texpro"
 
 
+* variable: Téléphonedudelagérante
+gen rg_telpdg_cor = ustrregexra( rg_telpdg, "^216", "")
+replace rg_telpdg_cor = subinstr(rg_telpdg_cor, " ", "", .)
+replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"[a-z]","")
+replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"00216","")
+order rg_telpdg_cor, a(rg_telpdg)
+replace rg_telpdg_cor = "98412425" if rg_telpdg_cor == "+21698412425"
+replace rg_telpdg_cor = "$check_again" if rg_telpdg_cor == "nasralichakroun"
+drop rg_telpdg 
+rename rg_telpdg_cor rg_telpdg
 
+
+
+* variable: Qualité/fonction
+{
+gen rg_position_repcor = ustrlower(rg_position_rep)
+replace rg_position_repcor = "account manager" if rg_position_rep == "acount manager"
+replace rg_position_repcor = "business development manager" if rg_position_rep == "business développement manager"
+replace rg_position_repcor = "gérant" if rg_position_rep == "gerant"
+replace rg_position_repcor = "gérante" if rg_position_rep == "gerante"
+replace rg_position_repcor = "gérant" if rg_position_rep == "gerant"
+replace rg_position_repcor = "responsable commercial" if rg_position_rep == "res commercial"
+replace rg_position_repcor = "responsable financier" if rg_position_rep == "resp.financier"
+replace rg_position_repcor = "responsable commercial" if rg_position_rep == "responsables commercials"
+replace rg_position_repcor = "financière" if rg_position_rep == "financiere"
+replace rg_position_repcor = "gestionnaire des opérations" if rg_position_rep == "gestionnaire des operations"
+replace rg_position_repcor = "directeur technique" if rg_position_rep == "directeur techique"
+replace rg_position_repcor = "coo" if rg_position_rep == "c.o.o"
+order rg_position_repcor, a(rg_position_rep)
+drop rg_position_rep 
+rename rg_position_repcor rg_position_rep
+}
+
+* variable: Matricule CNSS
+{
+gen rg_matricule_cor = ustrregexra(rg_matricule, "[ ]", "")
+replace rg_matricule_cor = ustrregexra(rg_matricule_cor, "[/]", "-")
+replace rg_matricule_cor = ustrregexra(rg_matricule_cor, "[_]", "-")
+
+* Format CNSS Number:
+gen t1 = ustrregexs(0) if ustrregexm(rg_matricule_cor, "\d{8}")
+gen t2 = ustrregexs(0) if ustrregexm(t1, "[0-9][0-9][0-9][0-9][0-9][0-9]")
+gen t3 = ustrregexs(0) if ustrregexm(t1, "[0-9][0-9]$") 
+gen t4 = t2 + "-" + t3
+replace t4 = ustrregexra(t4, "[-]", "") if length(t4)==1
+replace rg_matricule_cor = t4 if length(rg_matricule_cor)==8
+order rg_matricule_cor , a(rg_matricule)
+drop t1 t2 t3 t4 
+
+* Format CNRPS Number:
+
+gen t1 = ustrregexs(0) if ustrregexm(rg_matricule_cor, "\d{10}")
+gen t2 = ustrregexs(0) if ustrregexm(t1, "[0-9][0-9][0-9][0-9][0-9][0-9][0-9][0-9]")
+gen t3 = ustrregexs(0) if ustrregexm(t1, "[0-9][0-9]$") 
+gen t4 = t2 + "-" + t3
+replace t4 = ustrregexra(t4, "[-]", "") if length(t4)==1
+replace rg_matricule_cor = t4 if length(rg_matricule_cor)==10
+order rg_matricule_cor , a(rg_matricule)
+drop t1 t2 t3 t4 
+
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "02877-62"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "1342aam000"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "17"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "1548345"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "276297"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "2828-50"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "3212417"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "405216"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5524552"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5643390"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "01755t"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "7260852"
+
+
+/*
+replace rg_matricule_cor = "$check_again" if length(rg_matricule_cor) >= 12 | length(rg_matricule_cor) <= 7
+*/
+drop rg_matricule
+rename rg_matricule_cor rg_matricule
+}
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
