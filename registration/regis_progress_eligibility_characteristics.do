@@ -241,9 +241,9 @@ graph hbar (count) if eligible == 1, over(subsector, sort(1) label(labsize(tiny)
 	ytitle("nombre d'entreprises") ///
 	name(gender_ssector_eligible, replace)
 gr combine gender_ssector_tot gender_ssector_eligible, title("{bf:Genre des réprésentantes selon secteur}")
-graph export gender_sector.png, replace
+graph export gender_sector.tif, as(tif) width(1500) height(1500) replace
 putpdf paragraph, halign(center) 
-putpdf image gender_sector.png
+putpdf image gender_sector.tif
 putpdf pagebreak
 	* position du répresentant --> hbar
 	
