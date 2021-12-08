@@ -23,7 +23,7 @@
 * 	PART 1: import corrected matches & save as dta  			
 ***********************************************************************
 
-	cd "$regis_intermediate"
+	cd "$regis_inter"
 	
 		* import corrected observations
 import excel "${regis_intermediate}/regis_corrected_matches.xlsx", firstrow clear

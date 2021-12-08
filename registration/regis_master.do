@@ -111,15 +111,15 @@ if (1) do "${regis_github}/regis_import.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_clean.do"
 /* --------------------------------------------------------------------
-	PART 4.4: Correct & save intermediate data
+	PART 4.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_correct.do"
 /* --------------------------------------------------------------------
-	PART 4.6: Generate variables for analysis or implementation
+	PART 4.4: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_generate.do"
 /* --------------------------------------------------------------------
-	PART 4.5: Correct & save intermediate data
+	PART 4.6: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_open_question_checks.do"
 /* --------------------------------------------------------------------

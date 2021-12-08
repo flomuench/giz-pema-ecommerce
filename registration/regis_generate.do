@@ -317,9 +317,13 @@ drop if id_plateforme == 775
 *id_plateforme 205/274 are not duplicates (missing values)
 
 
-
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
-cd "$regis_intermediate"
+	* export file with potentially eligible companies
+export excel ecommerce_eligibes_pme, firstrow(var) replace
+
+	* save dta file
+
+cd "$regis_inter"
 save "regis_inter", replace
