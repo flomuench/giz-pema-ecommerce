@@ -320,10 +320,13 @@ drop if id_plateforme == 775
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
+	* set export directory
+cd "$regis_inter"
+
 	* export file with potentially eligible companies
-export excel ecommerce_eligibes_pme, firstrow(var) replace
+gen check = 0
+replace check = 1 if id_admin_correct == 0 | presence_enligne == 0
+export excel ecommerce_eligibes_pme if eligible_sans_matricule == 1, firstrow(var) replace
 
 	* save dta file
-
-cd "$regis_inter"
 save "regis_inter", replace
