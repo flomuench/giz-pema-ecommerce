@@ -175,10 +175,11 @@ lab val eligible_sans_matricule eligible2
 gen eligible_alternative = (rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_age>=2)
 lab val eligible_alternative eligible
 
+
 ***********************************************************************
 * 	PART 10: Surplus contact information from registration
 ***********************************************************************
-* telephone numbers
+	* telephone numbers
 
 gen rg_telephone2 = ""
 replace rg_telephone2 = "21698218074" if id_plateforme == 886
@@ -188,6 +189,14 @@ replace rg_telephone2 = "29352797" if id_plateforme == 724
 replace rg_telephone2 = "29352797" if id_plateforme == 547
 replace rg_telephone2 = "53115533" if id_plateforme == 640
 replace rg_telephone2 = "20445577" if id_plateforme == 157
+replace rg_telephone2 = "24813364" if id_plateforme == 122
+replace rg_telephone2 = "20727887" if id_plateforme == 238
+replace rg_telephone2 = "29753145" if id_plateforme == 833
+replace rg_telephone2 = "29522462" if id_plateforme == 98
+replace rg_telephone2 = "92554016" if id_plateforme == 521
+replace rg_telephone2 = "29360507" if id_plateforme == 451
+replace rg_telephone2 = "58440115" if id_plateforme == 315
+replace rg_telephone2 = "23268260" if id_plateforme == 546
 
 
 	* email adresses
@@ -202,11 +211,29 @@ replace rg_email2 = "bilel.ghediri@allianceone.tn" if id_plateforme == 724
 replace rg_email2 = "alaeddine.reguii@emcgroup.tn" if id_plateforme == 547
 replace rg_email2 = "slim.tounsi@texpro-kgroup.com.tn" if id_plateforme == 564
 replace rg_email2 = "eya.bs.bensalem@gmail.com" if id_plateforme == 157
-
+replace rg_email2 = "ramzihamdi.ab@gmail.com" if id_plateforme == 801
+replace rg_email2 = "emnacheikrouhou1@gmail.com" if id_plateforme == 122
+replace rg_email2 = "benslimenjihed@gmail.com" if id_plateforme == 238	
+replace rg_email2 = "harizisondes@gmail.com" if id_plateforme == 783		
+replace rg_email2 = "saima.bousselmi@medivet.com.tn" if id_plateforme == 833	
+replace rg_email2 = "sondeble@yahoo.fr" if id_plateforme == 762
+replace rg_email2 = "a.abeidi@plastiform.com.tn" if id_plateforme == 98	
+replace rg_email2 = "walid.elbenna@cuisina.com" if id_plateforme == 521	
+replace rg_email2 = "110709ns@gmail.com" if id_plateforme == 451		
+replace rg_email2 = "rh@portyasmine.com.tn" if id_plateforme == 408
+replace rg_email2 = "commerciale@mahamoden.com.tn" if id_plateforme == 315
+replace rg_email2 = "hana.hakim@outlook.com" if id_plateforme == 658
+replace rg_email2 = "sami.habbachi.28@gmail.com" if id_plateforme == 754
+replace rg_email2 = "hassen.bt@oliveoiltunisia.com" if id_plateforme == 546	
+replace rg_email2 = "meskini.sihem@live.fr" if id_plateforme == 654
+replace rg_email2 = "o.chamakhi@tuniship.net" if id_plateforme == 757
+	
 
 	
 	* physical adress
 gen rg_adresse2 = ""
+replace rg_adresse2 = "av ahmed mrad, cité des pins boumhel bassatine 2097" if id_plateforme == 497
+
 
 	* Other corrections
 replace rg_position_rep= "senior consultant" if id_plateforme == 886
@@ -231,8 +258,24 @@ drop if id_plateforme == 622
 drop if id_plateforme == 621
 drop if id_plateforme == 585
 drop if id_plateforme == 159
-
-
+drop if id_plateforme == 502
+drop if id_plateforme == 881
+drop if id_plateforme == 607
+drop if id_plateforme == 236
+drop if id_plateforme == 249
+drop if id_plateforme == 835
+drop if id_plateforme == 907
+drop if id_plateforme == 362
+drop if id_plateforme == 100
+drop if id_plateforme == 173
+drop if id_plateforme == 750
+drop if id_plateforme == 348
+drop if id_plateforme == 314
+drop if id_plateforme == 659
+drop if id_plateforme == 685
+drop if id_plateforme == 272
+drop if id_plateforme == 653
+drop if id_plateforme == 811
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

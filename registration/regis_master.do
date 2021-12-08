@@ -137,7 +137,7 @@ PART 5.1: Fuzzy merge registered with sameple firms
 	Requires: regis_inter.dta, giz_contact_list_final 
 	Creates: regis_potential_matches.xls & dta, regis_fuzzy_merge_done.dta
 ----------------------------------------------------------------------*/	
-if (1) do "${regis_github}/regis_match.do"
+if (0) do "${regis_github}/regis_match.do"
 
 /* --------------------------------------------------------------------
 PART 5.2: 
