@@ -203,6 +203,7 @@ replace rg_telephone2 = "50163772" if id_plateforme == 340
 replace rg_telephone2 = "29333280" if id_plateforme == 725
 replace rg_telephone2 = "98774548" if id_plateforme == 768
 replace rg_telephone2 = "28841100" if id_plateforme == 748	
+replace rg_telephone2 = "29210384" if id_plateforme == 658	
 		
 	* email adresses
 gen rg_email2 = ""
@@ -238,10 +239,11 @@ replace rg_email2 = "shayma.rahmeni@smarteo.tn" if id_plateforme == 340
 replace rg_email2 = "azizaglass1@gmail.com" if id_plateforme == 725
 replace rg_email2 = "asma.besbes2018@gmail.com" if id_plateforme == 768
 replace rg_email2 = "lilnvfgng@gmail.com" if id_plateforme == 748
-
+replace rg_email2 = "mouna.guermazi@soteca.com.tn" if id_plateforme == 658
 
 
 	
+
 	
 	* physical adress
 gen rg_adresse2 = ""
@@ -298,11 +300,13 @@ drop if id_plateforme == 278
 drop if id_plateforme == 654
 drop if id_plateforme == 817
 drop if id_plateforme == 751
+drop if id_plateforme == 775
 
 *Notes: 
 *id_plateforme 398/414 are not duplicates (different companies belong to the same group)
 *id_plateforme 503/515 are not duplicates (different companies belong to the same group)
 *id_plateforme 658/675 are not duplicates (different companies belong to the same group)
+*id_plateforme 205/274 are not duplicates (missing values)
 
 
 ***********************************************************************
