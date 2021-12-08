@@ -49,7 +49,29 @@ putpdf pagebreak
 
 
 	* nombre d'enregistremnet par jour 
+/*
+gen datestring = string(dateinscription, "%td")
+labmask dateinscription, values(datestring)
+graph bar (count), over(dateinscription, label(angle(60) labsize(vsmall))) ///
+	blabel(bar) ///
+	ytitle("nombre d'enregistrement") ///
+	xline(22586,  lpat(dash) lcolor(red)) ///
+	addlabel addlabopts(mlabposition(12))
+*/
 	
+format %-td dateinscription 
+graph twoway histogram dateinscription, frequency width(1) ///
+		tlabel(02nov2021(1)07dec2021, angle(60) labsize(vsmall)) ///
+		ytitle("nombre d'enregistrement") ///
+		title("{bf:Campagne de communication: Enregistrement par jour}") ///
+		subtitle("{it: Envoie des emails en rouge}") ///
+		tline(22586 22592 22600 22609 22613, lcolor(red) lpattern(dash)) 
+gr export enregistrement_par_jour.png, replace
+putpdf paragraph, halign(center) 
+putpdf image enregistrement_par_jour.png
+putpdf pagebreak
+		
+		
 	
 	* communication channels
 graph bar (count), over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
@@ -177,6 +199,22 @@ putpdf paragraph, halign(center)
 putpdf image eligibles.png
 putpdf pagebreak
 
+	* eligibility online presence
+graph bar (count), over(eligible) blabel(total) ///
+	title("Entreprises actuellement eligibles") ///
+	ytitle("nombre d'enregistrement") ///
+	name(eligibles, replace) ///
+	note(`"Chaque entreprise est éligible qui a fourni un matricul fiscal correct, a >= 6 & < 200 employés, une produit exportable, "' `"l'intention d'exporter, >= 1 opération d'export, existe pour >= 2 ans et est résidente tunisienne."', size(vsmall) color(red))
+graph bar (count), over(eligible_presence_enligne) blabel(total) ///
+	title("Entreprises potentiellement éligibles") ///
+	ytitle("nombre d'enregistrement") ///
+	name(eligible_enligne, replace)
+gr combine eligibles eligible_enligne, title("{bf:Eligibilité des entreprises}")
+graph export eligibles_enligne.png, replace
+putpdf paragraph, halign(center) 
+putpdf image eligibles_enligne.png
+putpdf pagebreak
+
 }
 ***********************************************************************
 * 	PART 4:  Characteristics
@@ -241,9 +279,9 @@ graph hbar (count) if eligible == 1, over(subsector, sort(1) label(labsize(tiny)
 	ytitle("nombre d'entreprises") ///
 	name(gender_ssector_eligible, replace)
 gr combine gender_ssector_tot gender_ssector_eligible, title("{bf:Genre des réprésentantes selon secteur}")
-graph export gender_sector.tif, as(tif) width(1500) height(1500) replace
+graph export gender_sector.png, width(1500) height(1500) replace
 putpdf paragraph, halign(center) 
-putpdf image gender_sector.tif
+putpdf image gender_sector.png
 putpdf pagebreak
 	* position du répresentant --> hbar
 	
