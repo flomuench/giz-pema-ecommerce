@@ -175,10 +175,18 @@ lab val eligible_sans_matricule eligible2
 gen eligible_alternative = (rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_age>=2)
 lab val eligible_alternative eligible
 
+		* eligibility including also no webpage or social network
+gen eligible_presence_enligne = (presence_enligne == 1 & id_admin_correct == 1 & rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1 & rg_age>=2)
+lab def eligible_enligne 1 "éligible avec présence en ligne" 0 "éligible sans présence en ligne"
+lab val eligible_presence_enligne eligible_enligne
+
 
 ***********************************************************************
 * 	PART 10: Surplus contact information from registration
 ***********************************************************************
+	* show all the different duplicates that are also eligible (requires running gen.do first)
+*browse if dup_firmname > 0 | dup_emailpdg > 0 & eligible_sans_matricule == 1
+
 	* telephone numbers
 
 gen rg_telephone2 = ""
@@ -308,21 +316,6 @@ drop if id_plateforme == 775
 *id_plateforme 658/675 are not duplicates (different companies belong to the same group)
 *id_plateforme 205/274 are not duplicates (missing values)
 
-
-***********************************************************************
-* 	PART 10: Surplus contact information from registration
-***********************************************************************
-	* telephone numbers
-
-gen rg_telephone2 = ""
-*replace rg_telephone2 = "phonenumber" if id_plateforme == 886
-
-	* email adresses
-gen rg_email2 = ""
-*replace rg_email2 = "anoha.consulting@gmail.com" if id_plateforme == 886
-
-	* physical adress
-gen rg_adresse2 = ""
 
 
 ***********************************************************************

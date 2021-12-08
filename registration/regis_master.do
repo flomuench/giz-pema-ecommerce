@@ -41,7 +41,10 @@ ssc install matchit
 ssc install strgroup
 ssc install stripplot
 net install http://www.stata.com/users/kcrow/tab2docx
+ssc install labutil
 */
+
+
 	* define graph scheme for visual outputs
 set scheme plotplain
 
@@ -118,11 +121,11 @@ if (1) do "${regis_github}/regis_generate.do"
 /* --------------------------------------------------------------------
 	PART 4.5: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_open_question_checks.do"
+if (1) do "${regis_github}/regis_open_question_checks.do"
 /* --------------------------------------------------------------------
 	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_progress_eligibility_characteristics.do"
+if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 
 
 

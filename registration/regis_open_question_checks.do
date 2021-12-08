@@ -41,8 +41,8 @@ local dupcontrol id_admin firmname rg_nom_rep rg_telrep rg_emailrep rg_telpdg rg
 		* generate a variable = 1 if the observation of the variable has a duplicate
 foreach x of local dupcontrol {
 gen duplabel`x' = .
-duplicates tag `x', gen(dup_`x')
-replace duplabel`x' = id_plateforme if dup_`x' > 0
+duplicates tag `x', gen(dup`x')
+replace duplabel`x' = id_plateforme if dup`x' > 0
 
 }
 		* visualise and save the visualisations
@@ -60,7 +60,7 @@ gr bar (count), over(dup_`x') ///
 */		
 
 foreach x of local dupcontrol {
-stripplot id_plateforme, over(dup_`x') jitter(4) vertical  ///
+stripplot id_plateforme, over(dup`x') jitter(4) vertical  ///
 		name(`x') ///
 		title(`x') ///
 		ytitle("ID des observations") ///

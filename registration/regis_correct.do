@@ -402,7 +402,7 @@ lab var q42f "(in-) formel argument de vente"
 
 
 ***********************************************************************
-* 	PART 9:  Remove duplicates
+* 	PART 9:  Identify duplicates (for removal see regis_generate)
 ***********************************************************************
 	* formating the variables for whcih we check duplicates
 format firmname rg_emailrep rg_emailpdg %-35s
@@ -420,9 +420,6 @@ duplicates tag rg_emailpdg, gen(dup_emailpdg)
 	* firmname	
 duplicates report firmname
 duplicates tag firmname, gen(dup_firmname)
-
-	* show all the different duplicates that are also eligible (requires running gen.do first)
-browse if dup_firmname > 0 | dup_emailpdg > 0 & eligible_sans_matricule == 1
 
 
 ***********************************************************************
