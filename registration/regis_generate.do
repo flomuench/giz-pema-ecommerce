@@ -321,12 +321,30 @@ drop if id_plateforme == 775
 * 	Save the changes made to the data		  			
 ***********************************************************************
 	* set export directory
-cd "$regis_inter"
+cd "$regis_intermediate"
 
 	* export file with potentially eligible companies
 gen check = 0
 replace check = 1 if id_admin_correct == 0 | presence_enligne == 0
-export excel ecommerce_eligibes_pme if eligible_sans_matricule == 1, firstrow(var) replace
+
+preserve
+	keep if eligible_sans_matricule == 1
+	rename rg_siteweb site_web 
+	rename rg_media reseaux_sociaux
+	rename id_admin matricule_fiscale
+	rename rg_resident onshore
+	rename rg_fte employes
+	rename rg_produitexp produit_exportable
+	rename rg_intention intention_export
+	rename rg_oper_exp operation_export
+	rename date_created_str date_creation
+	rename firmname nom_entreprise
+	rename rg_codedouane code_douane
+	rename rg_matricule matricule_cnss
+	order nom_entreprise date_creation matricule_fiscale code_douane matricule_cnss operation_export 
+	local varlist "nom_entreprise date_creation matricule_fiscale code_douane matricule_cnss operation_export site_web reseaux_sociaux onshore employes produit_exportable intention_export"
+	export excel `varlist' using ecommerce_eligibes_pme if eligible_sans_matricule == 1, firstrow(var) replace
+restore
 
 	* save dta file
 save "regis_inter", replace
