@@ -163,7 +163,7 @@ if (0) do "${samp_github}/samp_bounce.do"
 ----------------------------------------------------------------------*/
 if (1) do "${samp_github}/samp_merge_registration.do"
 /* --------------------------------------------------------------------
-	PART 4.2: merge with matches & registration data
+	PART 4.2: clean as necessary after merge with registration data
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
