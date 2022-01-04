@@ -41,7 +41,7 @@ coefplot main_effect, drop(_cons) ///
 	graphr(color(white)) bgcol(white) plotr(color(white)) ///
 	title("{bf:How to attract (female) firms to an export support program?}") ///
 	subtitle("Full sample", size(small)) ///
-	note("Sample size = ?", size(vsmall))
+	note("Sample size = 4848 SMEs out of which 177 registered.", size(vsmall))
 gr export main_effect.png, replace
 logit registered i.treatment##i.gender i.strata2, vce(robust)
 outreg2 using main_effect, excel append ctitle(logit)
