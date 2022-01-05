@@ -73,25 +73,25 @@ tab registered
 
 
 logit registered i.treatment if not_delivered == 0, vce(robust)
-outreg2 using main_effect, excel replace ctitle(logit)
+outreg2 using robust_undelivered, excel replace ctitle(logit)
 margins i.treatment, post
-outreg2 using main_effect, excel append ctitle(predicted probability)
+outreg2 using robust_undelivered, excel append ctitle(predicted probability)
 logit registered i.treatment##i.gender if not_delivered == 0, vce(robust)
-outreg2 using main_effect, excel append ctitle(logit)
+outreg2 using robust_undelivered, excel append ctitle(logit)
 margins i.treatment##i.gender, post
-outreg2 using main_effect, excel append ctitle(predicted probability)
-estimates store main_effect, title("Main effect")
-coefplot main_effect, drop(_cons) ///
+outreg2 using robust_undelivered, excel append ctitle(predicted probability)
+estimates store robust_undelivered, title("Main effect")
+coefplot robust_undelivered, drop(_cons) ///
 	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.1) ///
 	graphr(color(white)) bgcol(white) plotr(color(white)) ///
 	title("{bf:How to attract (female) firms to an export support program?}") ///
-	subtitle("Full sample", size(small)) ///
+	subtitle("Full sample (excluding contacts with undelivered emails)", size(small)) ///
 	note("Sample size = 4403 SMEs out of which 162 registered.", size(vsmall))
-gr export main_effect.png, replace
+gr export robust_undelivered.png, replace
 logit registered i.treatment##i.gender i.strata2 if not_delivered == 0, vce(robust)
-outreg2 using main_effect, excel append ctitle(logit)
+outreg2 using robust_undelivered, excel append ctitle(logit)
 margins i.treatment##i.gender, post
-outreg2 using main_effect, excel append ctitle(predicted probability)
+outreg2 using robust_undelivered, excel append ctitle(predicted probability)
 
 
 
