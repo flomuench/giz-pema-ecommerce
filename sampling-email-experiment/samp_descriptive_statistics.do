@@ -52,6 +52,11 @@ graph bar (percent) if registered == 1, over(treatment, lab(labsize(vsmall))) ov
 graph bar (sum) registered, over(treatment) blabel(bar)
 graph bar (sum) registered, over(treatment, lab(labsize(vsmall))) over(gender) blabel(bar)
 
+***********************************************************************
+* 	PART 1: bounce rate in the three treatment groups
+***********************************************************************
+
+
 
 ***********************************************************************
 * 	PART 1: registrations per sector
