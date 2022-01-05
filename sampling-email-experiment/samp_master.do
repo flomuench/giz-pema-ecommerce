@@ -74,6 +74,7 @@ global samp_emaillists = "${samp_output}/email_lists"
 						* within output
 global samp_regressions = "${samp_output}/regression-tables"
 global samp_descriptive = "${samp_output}/descriptive-statistics-figures"
+global samp_emaillists = "${samp_output}/email_lists"
 
 		* to registration folder
 if c(os) == "Windows" {
