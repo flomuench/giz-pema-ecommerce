@@ -84,7 +84,7 @@ save "regis_corrected_matches", replace
 use "${samp_final}/giz_contact_list_final", clear
 sort id_email
 	* contains 4847 firms
-
+	
 merge 1:m id_email using "regis_corrected_matches"
 	* all 177 corrected matches were matched
 	* after matching: 4848 firms

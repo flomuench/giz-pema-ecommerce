@@ -44,8 +44,17 @@ gr export gender_population_sample.png, replace
 
 graph bar (percent) if registered == 1, over(treatment, lab(labsize(vsmall))) over(gender) ///
 	blabel(bar, format(%9.2fc) gap(.5)) ///
-	title("{it:Registered firms by gender & treatment status}") ///
+	title("{bf:Registered firms by gender & treatment status}") ///
+	subtitle("{it: Gender based on administrative data}") ///
 	name(gender_registered_treatment, replace)
+gr export gender_registered_by_treatment.png,replace
+
+graph bar (percent) if registered == 1, over(treatment, lab(labsize(vsmall))) over(gender_rep) ///
+	blabel(bar, format(%9.2fc) gap(.5)) ///
+	title("{bf:Registered firms by gender & treatment status}") ///
+	subtitle("{it: Gender based on registration data}") ///
+	name(genderrep_registered_treatment, replace)
+gr export genderrep_registered_by_treatment.png,replace
 
 
 

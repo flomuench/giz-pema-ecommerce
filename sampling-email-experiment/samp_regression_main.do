@@ -86,7 +86,7 @@ coefplot robust_undelivered, drop(_cons) ///
 	graphr(color(white)) bgcol(white) plotr(color(white)) ///
 	title("{bf:How to attract (female) firms to an export support program?}") ///
 	subtitle("Full sample (excluding contacts with undelivered emails)", size(small)) ///
-	note("Sample size = 4403 SMEs out of which 162 registered.", size(vsmall))
+	note("Sample size = 3895 SMEs out of which 166 registered.", size(vsmall))
 gr export robust_undelivered.png, replace
 logit registered i.treatment##i.gender i.strata2 if not_delivered == 0, vce(robust)
 outreg2 using robust_undelivered, excel append ctitle(logit)
@@ -130,13 +130,13 @@ logit registered i.treatment##i.gender_rep if not_delivered == 0, vce(robust)
 outreg2 using robust_gender_rep2, excel append ctitle(logit)
 margins i.treatment##i.gender_rep, post
 outreg2 using robust_gender_rep2, excel append ctitle(predicted probability)
-estimates store robust_gender_rep, title("Main effect")
-coefplot robust_gender_rep_rep, drop(_cons) ///
+estimates store robust_gender_rep2, title("Main effect")
+coefplot robust_gender_rep2, drop(_cons) ///
 	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.20) ///
 	graphr(color(white)) bgcol(white) plotr(color(white)) ///
 	title("{bf:How to attract (female) firms to an export support program?}") ///
 	subtitle("Full sample (gender of firm representative, not CEO)", size(small)) ///
-	note("Initial gender replaced with firm representative gender. All contacts with bounce/no delivery dropped. Sample size = 4403 SMEs out of which 162 registered.", size(vsmall))
+	note("Initial gender replaced with firm representative gender. All contacts with bounce/no delivery dropped." "Sample size = 3895 SMEs out of which 162 registered.", size(vsmall))
 gr export robust_gender_rep2.png, replace
 logit registered i.treatment##i.gender_rep i.strata2 if not_delivered == 0, vce(robust)
 outreg2 using robust_gender_rep2, excel append ctitle(logit)
