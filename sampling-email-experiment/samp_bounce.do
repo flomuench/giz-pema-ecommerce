@@ -21,12 +21,17 @@
 ***********************************************************************
 cd "$samp_final"
 	* import the data
-import excel "${samp_final}/giz_contact_list_bounce.xlsx", firstrow clear
-
+*import excel "${samp_final}/giz_contact_list_bounce.xlsx", firstrow clear
+import excel "${samp_emaillists}/bounced_emails.xlsx", firstrow clear
+	drop A
+	keep in 1/953
+	duplicates report id_email
+save "bounced_emails", replace
 
 ***********************************************************************
 * 	PART 1: format all string & numerical variables				  										  
 ***********************************************************************
+/*
 	* define format for string variables
 ds, has(type string) 
 local strvars "`r(varlist)'"
@@ -39,27 +44,29 @@ format %-9.0fc `numvars'
 
 	* 
 destring fte, replace
+*/
 
 ***********************************************************************
 * 	PART 2: drop variables that we do not need			  										  
 ***********************************************************************
 *drop A
-keep email Nonexistencedumail
+*keep email Nonexistencedumail
 
 ***********************************************************************
 * 	PART 3: remove blanks from string variables
 ***********************************************************************
+/*
 ds, has(type string) 
 local strvars "`r(varlist)'"
 foreach x of local strvars {
 replace `x' = strtrim(strtrim(`x'))
 }
-
+*/
 
 ***********************************************************************
 * 	PART 4: remove blanks from string variables
 ***********************************************************************
-rename Nonexistencedumail not_delivered
+*rename Nonexistencedumail not_delivered
 
 
 ***********************************************************************
@@ -81,9 +88,17 @@ save "giz_contact_list_bounce", replace
 ***********************************************************************
 * 	PART 6: merge
 ***********************************************************************	
-	* import data base
+		* import data base
 use "${samp_final}/giz_contact_list_final", clear
 
+
+merge 1:1 id_email using "bounced_emails"
+
+gen not_delivered = .
+replace not_delivered = 0 if _merge == 1
+replace not_delivered = 1 if _merge == 3
+
+/*
 merge 1:m email using giz_contact_list_bounce, update replace
 	
 	* drop obs that are only in giz contact list final
@@ -100,6 +115,9 @@ sort firmname
 browse if dupemail > 0
 duplicates drop email, force
 	* drop
+*/
+	
+	
 drop _merge
 
 

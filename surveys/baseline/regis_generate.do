@@ -212,12 +212,6 @@ replace rg_telephone2 = "29333280" if id_plateforme == 725
 replace rg_telephone2 = "98774548" if id_plateforme == 768
 replace rg_telephone2 = "28841100" if id_plateforme == 748	
 replace rg_telephone2 = "29210384" if id_plateforme == 658	
-replace rg_telephone2 = "99672762" if id_plateforme == 800
-replace rg_telephone2 = "92517961" if id_plateforme == 631
-replace rg_telephone2 = "24290070" if id_plateforme == 478
-replace rg_telephone2 = "98708858" if id_plateforme == 324
-
-
 		
 	* email adresses
 gen rg_email2 = ""
@@ -254,16 +248,11 @@ replace rg_email2 = "azizaglass1@gmail.com" if id_plateforme == 725
 replace rg_email2 = "asma.besbes2018@gmail.com" if id_plateforme == 768
 replace rg_email2 = "lilnvfgng@gmail.com" if id_plateforme == 748
 replace rg_email2 = "mouna.guermazi@soteca.com.tn" if id_plateforme == 658
-replace rg_email2 = "c.benabdallah@riadatrade.com" if id_plateforme == 823
-replace rg_email2 = "nejla.khadraoui@fameinternational.tn" if id_plateforme == 771
-replace rg_email2 = "mouna.laifa@evey.live" if id_plateforme == 800	
-replace rg_email2 = "docallani@hotmail.com" if id_plateforme == 631	
-replace rg_email2 = "contact@elkhabia.com" if id_plateforme == 478	
-replace rg_email2 = "soumaya.chouikha@yahoo.com" if id_plateforme == 410	
-replace rg_email2 = "yosri.bensaad@deltacuisine.com" if id_plateforme == 324	
+
+
 	
 
-
+	
 	* physical adress
 gen rg_adresse2 = ""
 replace rg_adresse2 = "av ahmed mrad, cité des pins boumhel bassatine 2097" if id_plateforme == 497
@@ -320,14 +309,12 @@ drop if id_plateforme == 654
 drop if id_plateforme == 817
 drop if id_plateforme == 751
 drop if id_plateforme == 775
-drop if id_plateforme == 611
-drop if id_plateforme == 606
-drop if id_plateforme == 770
-drop if id_plateforme == 312
-drop if id_plateforme == 590
-drop if id_plateforme == 343
-drop if id_plateforme == 215
-drop if id_plateforme == 150
+
+*Notes: 
+*id_plateforme 398/414 are not duplicates (different companies belong to the same group)
+*id_plateforme 503/515 are not duplicates (different companies belong to the same group)
+*id_plateforme 658/675 are not duplicates (different companies belong to the same group)
+*id_plateforme 205/274 are not duplicates (missing values)
 
 
 ***********************************************************************

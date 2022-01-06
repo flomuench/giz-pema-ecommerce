@@ -74,6 +74,7 @@ global samp_emaillists = "${samp_output}/email_lists"
 						* within output
 global samp_regressions = "${samp_output}/regression-tables"
 global samp_descriptive = "${samp_output}/descriptive-statistics-figures"
+global samp_emaillists = "${samp_output}/email_lists"
 
 		* to registration folder
 if c(os) == "Windows" {
@@ -163,7 +164,7 @@ if (0) do "${samp_github}/samp_bounce.do"
 ----------------------------------------------------------------------*/
 if (1) do "${samp_github}/samp_merge_registration.do"
 /* --------------------------------------------------------------------
-	PART 4.2: merge with matches & registration data
+	PART 4.2: clean as necessary after merge with registration data
 	Requires: 
 	Creates: 
 ----------------------------------------------------------------------*/
