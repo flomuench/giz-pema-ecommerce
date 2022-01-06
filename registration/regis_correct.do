@@ -192,6 +192,9 @@ replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"[a-z]","")
 replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"00216","")
 order rg_telpdg_cor, a(rg_telpdg)
 replace rg_telpdg_cor = "98412425" if rg_telpdg_cor == "+21698412425"
+replace rg_telpdg_cor = "20316210" if rg_telpdg_cor == "+21620316210"
+replace rg_telpdg_cor = "70146260" if rg_telpdg_cor == "+21670146260"
+replace rg_telpdg_cor = "71156000" if rg_telpdg_cor == "071156000"
 replace rg_telpdg_cor = "$check_again" if rg_telpdg_cor == "nasralichakroun"
 drop rg_telpdg 
 rename rg_telpdg_cor rg_telpdg
@@ -257,7 +260,12 @@ replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5524552"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5643390"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "01755t"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "7260852"
-
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "1156010"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "249121"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "278779010"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "536281997"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "7544677"
+replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "xx"
 
 /*
 replace rg_matricule_cor = "$check_again" if length(rg_matricule_cor) >= 12 | length(rg_matricule_cor) <= 7
@@ -413,13 +421,29 @@ sort firmname
 duplicates report id_plateform
 
 	* email
-duplicates report rg_emailrep
+
 duplicates report rg_emailpdg
-duplicates tag rg_emailpdg, gen(dup_emailpdg)
+duplicates tag rg_emailpdg, gen(dup_email)
+
+*Notes: 
+*id_plateforme 398/414 are not duplicates (different companies belong to the same group)
+*id_plateforme 503/515 are not duplicates (different companies belong to the same group)
+*id_plateforme 658/675 are not duplicates (different companies belong to the same group)
+*id_plateforme 205/274 are not duplicates (missing values)
 
 	* firmname	
 duplicates report firmname
-duplicates tag firmname, gen(dup_firmname)
+duplicates tag firmname, gen(dup_firm)	
+
+*Notes: 
+*id_plateforme 192/245/332/509/572/708/788/890 are not duplicates (different companies belong to the same group)
+*id_plateforme 123/274/283/350/762 are not duplicates (independent)
+*id_plateforme 128/842 are not duplicates (association)
+*id_plateforme 61/224 are not duplicates (have the same name but everything else is different)
+*id_plateforme 789/518 are not duplicates (services agricoles)
+*id_plateforme 790/95 are not duplicates (have the same name but everything else is different)
+
+ 
 
 
 ***********************************************************************
