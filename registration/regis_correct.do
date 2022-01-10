@@ -61,6 +61,7 @@ lab val id_admin_correct correct
 
 *browse identifiant*
     * Correct Nom et prénom du/de la participant.e à l’activité
+{
 gen rg_nom_rep_cor = rg_nom_rep
 replace rg_nom_rep_cor = ustrregexra( rg_nom_rep_cor ,"mr ","")
 replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "Études géomatiques."
@@ -71,8 +72,9 @@ replace rg_nom_rep_cor = "salhi elhem" if rg_nom_rep_cor == "inspiration design 
 replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "bilel"
 replace rg_nom_rep_cor = "$check_again" if rg_nom_rep_cor == "haddad"
 replace rg_nom_rep_cor = "aymen bahri" if rg_nom_rep_cor == "أيمن البحري"
-
+}
     * correct code de la douane
+{
 gen rg_codedouane_cor = rg_codedouane
 replace rg_codedouane_cor = ustrregexra( rg_codedouane_cor ," ","")
 replace rg_codedouane_cor = "0555082b" if rg_codedouane_cor == "0555082b/a/m/000"
@@ -90,7 +92,9 @@ replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "......"
 replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "."
 replace rg_codedouane_cor = "$check_again" if rg_codedouane_cor == "620.004w"
 *We a have a duplicate for the same code de douane 220711z ; count if rg_codedouane_cor == "220711z" returns 2
+}
     * correction de la variable autres
+{
 gen autres_cor = autres
 replace autres_cor = "conseil" if ustrregexm( autres_cor ,"conseil")== 1
 replace autres_cor = "consulting" if ustrregexm( autres_cor ,"consulting")== 1
@@ -99,6 +103,7 @@ replace autres_cor = "communication" if ustrregexm( autres_cor ,"communication")
 replace autres_cor = "marketing digital" if ustrregexm( autres_cor ,"marketing digital")== 1
 replace autres_cor = "bureau d'études" if ustrregexm( autres_cor ,"bureau d'études")== 1
 replace autres_cor = "design" if ustrregexm( autres_cor ,"design")== 1
+}
 ****** pas encore terminée
 
 	* correct telephone numbers with regular expressions
@@ -121,7 +126,7 @@ drop rg_telrep diff
 rename rg_telrep_cor rg_telrep
 
 *****Correct the website ******
-gen rg_siteweb_cor = rg_siteweb
+{gen rg_siteweb_cor = rg_siteweb
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"https://","")
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"http://","")
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"/","")
@@ -183,7 +188,94 @@ replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "sfax"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "tunisie gafsa"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "rue malek ibn anes 8030 grombalia"
 replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "texpro"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "haffouz"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "al"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "b02 residence el jine 2046 sidi daoued"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "al"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comquincaillerie.benabdallah.31"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comrafiahandmade"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comblastycoworking"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "sté cerealis, les berges du lac1, tunis"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.compagescategorycomputer-companychaniour-informatique-solution-tataouine-105490917973601"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cours de création"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "_"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "ariana"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comdoukali.formation.continue"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comelite.academy.mhamedia?ref=pages_you_manage"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "adsopafi@topnet.tn"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.combodylove-cosmetics-104607768332102"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comfikradesign.tn"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cours de réalisation"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "borj cedria"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "gouvernerat medenine ,sidi makhloof"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "manouba"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "jendouba"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "en cours de développement"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comol%c3%a9a-amiri-113583540352584"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "pas"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comcactuskairouanais"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "l.facebook.coml.php?u=https%3a%2f%2fwww.jumia.com.tn%2fagromatica%2f%3ffbclid%3diwar1trbpqs4ajjcqr8re4htjxkykjakyl0d10sih1pjn8sde67vkst1r4su8&h=at1hy0i_qjalwn49kmsniwfliwwqzmvu1mrjolztgqmt7ah1m4kp0a6w7octqdwgljpbfcbiqobikxfyh9-iupnouloifuckr8pwoldmm7re0ev5txmfrneasxwy608gsw3cpw"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "neferis@neferis.com"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "www.facebook.comprofile.php?id=100063505572661"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "nezzeddine@steg.com.tn"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "abssfaxexport@gmail.com"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "av al maghreb el arabi hazoua"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "pas encore"
+replace rg_siteweb_cor = "$check_again" if rg_siteweb_cor == "kébili"
 
+}
+
+****Correct the social network ******
+{
+gen rg_media_cor = rg_media
+replace rg_media_cor = ustrregexra(rg_media_cor ,"https://","")
+replace rg_media_cor = ustrregexra(rg_media_cor ,"http://","")
+replace rg_media_cor = "$check_again" if rg_media_cor == "route sidi-bouzid .km 5 maknassy nord 9140"
+replace rg_media_cor = "$check_again" if rg_media_cor == "1 rue turkana, imb prince du lac, n°1, lac 1, 1053 tunis"
+replace rg_media_cor = "$check_again" if rg_media_cor == "polygom.com.tn"
+replace rg_media_cor = "$check_again" if rg_media_cor == "www.gil-swimwear.com"
+replace rg_media_cor = "$check_again" if rg_media_cor == "www.generaleindustrie.com"
+replace rg_media_cor = "$check_again" if rg_media_cor == "polygom.com.tn"
+replace rg_media_cor = "$check_again" if rg_media_cor == "laperlaoliveoil.com"
+replace rg_media_cor = "$check_again" if rg_media_cor == "12, rue du caire nabeul 8000"
+replace rg_media_cor = "$check_again" if rg_media_cor == "sarl"
+replace rg_media_cor = "$check_again" if rg_media_cor == "www.tpadoffice.com"
+replace rg_media_cor = "$check_again" if rg_media_cor == "58 rue de martyrs sidi bouzid 9100"
+replace rg_media_cor = "$check_again" if rg_media_cor == "société anonyme"
+replace rg_media_cor = "$check_again" if rg_media_cor == "معصرة الهاشمي قوادرية البيولوجية"
+replace rg_media_cor = "$check_again" if rg_media_cor == "39, avenue de japon, immeuble safsaf, bloc a 3 eme etage a-3.1, montplaisir tunis."
+replace rg_media_cor = "$check_again" if rg_media_cor == "jerba"
+replace rg_media_cor = "$check_again" if rg_media_cor == "www.groupebismuth.com"
+replace rg_media_cor = "$check_again" if rg_media_cor == "sfax"
+replace rg_media_cor = "$check_again" if rg_media_cor == "rue du safran, cité loulija, ezzahra, ben aous"
+replace rg_media_cor = "$check_again" if rg_media_cor == "lot n°11 rue de nabeul zone industrielle el mghira ii, fouchena, ben arous"
+replace rg_media_cor = "$check_again" if rg_media_cor == "ecole ennajeh, centre de formation ennajeh monastir"
+replace rg_media_cor = "$check_again" if rg_media_cor == "agencement, fabrication de meuble et ameublement"
+replace rg_media_cor = "$check_again" if rg_media_cor == "moknine route manzel fersi km 2"
+replace rg_media_cor = "$check_again" if rg_media_cor == "sfax"
+replace rg_media_cor = "$check_again" if rg_media_cor == "sfax"
+replace rg_media_cor = "$check_again" if rg_media_cor == "sfax"
+}
+*****Correct the firm name ******
+{gen firmname_cor = firmname
+replace firmname_cor = "$check_again" if firmname_cor == "06 rue khalil materane cité ettadhamen"
+replace firmname_cor = "$check_again" if firmname_cor == "32, avenue habib bourguiba-bureau 3-4 nouvelle ariana 2080 tunisie"
+replace firmname_cor = "$check_again" if firmname_cor == "lif africa à pour objectif de développer le marché de l’emploi en afrique dans ses différentes succursales"
+replace firmname_cor = "$check_again" if firmname_cor == "sarl"
+replace firmname_cor = "$check_again" if firmname_cor == "sa"
+replace firmname_cor = "$check_again" if firmname_cor == "suarl"
+replace firmname_cor = "$check_again" if firmname_cor == "zi jebel el ouest bp n°36-1111-zaghouan- tunisie"
+replace firmname_cor = "$check_again" if firmname_cor == "مخازن التبريد بالوسط"
+replace firmname_cor = "$check_again" if firmname_cor == "suarl"
+replace firmname_cor = "$check_again" if firmname_cor == "rue med negra kairouan"
+replace firmname_cor = "$check_again" if firmname_cor == "société anonyme"
+replace firmname_cor = "$check_again" if firmname_cor == "16558554/m/a/m/000"
+replace firmname_cor = "$check_again" if firmname_cor == "_"
+replace firmname_cor = "$check_again" if firmname_cor == "association"
+replace firmname_cor = "$check_again" if firmname_cor == "industrielle"
+replace firmname_cor = "$check_again" if firmname_cor == "rue med negra kairouan"
+
+}
 
 * variable: Téléphonedudelagérante
 gen rg_telpdg_cor = ustrregexra( rg_telpdg, "^216", "")
@@ -192,9 +284,6 @@ replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"[a-z]","")
 replace rg_telpdg_cor = ustrregexra( rg_telpdg_cor,"00216","")
 order rg_telpdg_cor, a(rg_telpdg)
 replace rg_telpdg_cor = "98412425" if rg_telpdg_cor == "+21698412425"
-replace rg_telpdg_cor = "20316210" if rg_telpdg_cor == "+21620316210"
-replace rg_telpdg_cor = "70146260" if rg_telpdg_cor == "+21670146260"
-replace rg_telpdg_cor = "71156000" if rg_telpdg_cor == "071156000"
 replace rg_telpdg_cor = "$check_again" if rg_telpdg_cor == "nasralichakroun"
 drop rg_telpdg 
 rename rg_telpdg_cor rg_telpdg
@@ -260,12 +349,7 @@ replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5524552"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "5643390"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "01755t"
 replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "7260852"
-replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "1156010"
-replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "249121"
-replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "278779010"
-replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "536281997"
-replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "7544677"
-replace rg_matricule_cor  = "$check_again" if rg_matricule_cor == "xx"
+
 
 /*
 replace rg_matricule_cor = "$check_again" if length(rg_matricule_cor) >= 12 | length(rg_matricule_cor) <= 7
@@ -421,29 +505,13 @@ sort firmname
 duplicates report id_plateform
 
 	* email
-
+duplicates report rg_emailrep
 duplicates report rg_emailpdg
-duplicates tag rg_emailpdg, gen(dup_email)
-
-*Notes: 
-*id_plateforme 398/414 are not duplicates (different companies belong to the same group)
-*id_plateforme 503/515 are not duplicates (different companies belong to the same group)
-*id_plateforme 658/675 are not duplicates (different companies belong to the same group)
-*id_plateforme 205/274 are not duplicates (missing values)
+duplicates tag rg_emailpdg, gen(dup_emailpdg)
 
 	* firmname	
 duplicates report firmname
-duplicates tag firmname, gen(dup_firm)	
-
-*Notes: 
-*id_plateforme 192/245/332/509/572/708/788/890 are not duplicates (different companies belong to the same group)
-*id_plateforme 123/274/283/350/762 are not duplicates (independent)
-*id_plateforme 128/842 are not duplicates (association)
-*id_plateforme 61/224 are not duplicates (have the same name but everything else is different)
-*id_plateforme 789/518 are not duplicates (services agricoles)
-*id_plateforme 790/95 are not duplicates (have the same name but everything else is different)
-
- 
+duplicates tag firmname, gen(dup_firmname)
 
 
 ***********************************************************************
