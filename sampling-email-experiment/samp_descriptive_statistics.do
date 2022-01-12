@@ -61,6 +61,25 @@ gr export genderrep_registered_by_treatment.png,replace
 graph bar (sum) registered, over(treatment) blabel(bar)
 graph bar (sum) registered, over(treatment, lab(labsize(vsmall))) over(gender) blabel(bar)
 
+
+		* descriptive statistics with estout
+bysort treatment gender: eststo: estpost tab registered
+esttab, cells("mean sd") csv
+
+			* for registered firms
+cd "$samp_regressions"
+eststo clear
+estpost tab treatment gender if registered == 1
+esttab using resultstable.csv, cells("b(lab(n)) pct(fmt(2) lab(% of total)) colpct(fmt(2) lab(% of group))") ///
+ nomtitle nonumber noobs replace
+
+			* for unregistered firms
+eststo clear
+estpost tab treatment gender if registered == 0
+esttab using resultstable0.csv, cells("b(lab(n)) pct(fmt(2) lab(% of total)) colpct(fmt(2) lab(% of group))") ///
+ nomtitle nonumber noobs replace
+
+			
 ***********************************************************************
 * 	PART 1: bounce rate in the three treatment groups
 ***********************************************************************
