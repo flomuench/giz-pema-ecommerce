@@ -42,27 +42,42 @@ scalar refused     = 99999999999999999
 scalar check_again = 88888888888888888
 
 	* replace, gen, label
-	
-*/
+gen needs_check = 0
+gen questions_needing_checks = ""
+
 }
+
+
 
 ***********************************************************************
 * 	PART 2: use regular expressions to correct variables 		  			
 ***********************************************************************
 /* for reference and guidance, regularly these commands are used in this section
 gen XXX = ustrregexra(XXX, "^216", "")
-gen id_admin_correct = ustrregexm(id_admin, "([0-9]){6,7}[a-z]")
+gen id_adminrect = ustrregexm(id_admin, "([0-9]){6,7}[a-z]")
 
-*replace id_admin_corrige = $check_again if id_admin_correct == 1
+*replace id_adminrige = $check_again if id_adminrect == 1
 lab def correct 1 "correct" 0 "incorrect"
-lab val id_admin_correct correct
+lab val id_adminrect correct
 
 */
+
+replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
+replace investcom_futur = ustrregexra( investcom_futur,"dinars","")
+replace investcom_futur = ustrregexra( investcom_futur,"dt","")
+replace investcom_futur = ustrregexra( investcom_futur,"k","000")
+
 
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
+
+replace investcom_2021 = "100000" if investcom_2021== "100000dt"
+replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
+replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
+replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
+replace investcom_futur = "20000" if investcom_futur == "vingt mille dinars"
 
 
 *Test logical values*
@@ -70,9 +85,9 @@ lab val id_admin_correct correct
 * 
 
 *All values having a too small capital social (less than 100)
-replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "0"
-replace capitalsocial_corr = "$check_again" if capitalsocial_corr == "o"
-destring capitalsocial_corr, replace
+*replace capitalsocialr = "$check_again" if capitalsocialr == "0"
+*replace capitalsocialr = "$check_again" if capitalsocialr == "o"
+*destring capitalsocialr, replace
 
 
 
@@ -82,9 +97,9 @@ destring capitalsocial_corr, replace
 * 	PART 4:  Convert string to numerical variaregises	  			
 ***********************************************************************
 * local destrvar XX
-foreach x of local destrvar { 
-destring `x', replace
-}
+*foreach x of local destrvar { 
+*destring `x', replace
+
 
 
 ***********************************************************************
@@ -96,8 +111,8 @@ destring `x', replace
 *replace q04 ="Hors sujet" if q04 == "OUI" 
 
 *Correction nom du representant
-gen rg_nom_rep_corr= rg_nom_rep            
-replace rg_nom_rep_corr="$check_again" if rg_nom_rep == "Études géomatiques." 
+*gen rg_nom_repr= rg_nom_rep            
+*replace rg_nom_repr="$check_again" if rg_nom_rep == "Études géomatiques." 
 
  
 }
@@ -178,32 +193,32 @@ lab var q42f "(in-) formel argument de vente"
 * 	PART 9:  Identify duplicates (for removal see bl_generate)
 ***********************************************************************
 	* formating the variables for whcih we check duplicates
-format firmname rg_emailrep rg_emailpdg %-35s
-format id_plateforme %9.0g
-sort firmname
+*format firmname rg_emailrep rg_emailpdg %-35s
+*format id_plateforme %9.0g
+*sort firmname
 	
 	* id_plateform
-duplicates report id_plateform
+*duplicates report id_plateform
 
 	* email
-duplicates report rg_emailrep
-duplicates report rg_emailpdg
-duplicates tag rg_emailpdg, gen(dup_emailpdg)
+*duplicates report rg_emailrep
+*duplicates report rg_emailpdg
+*duplicates tag rg_emailpdg, gen(dup_emailpdg)
 
 	* firmname	
-duplicates report firmname
-duplicates tag firmname, gen(dup_firmname)
+*duplicates report firmname
+*duplicates tag firmname, gen(dup_firmname)
 
 
 ***********************************************************************
 * 	PART 10:  autres / miscallaneous adjustments
 ***********************************************************************
 	* correct the response categories for moyen de communication
-replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
-replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
+*replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
+*replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
 
 	* correct wrong response categories for subsectors
-replace subsector = "industries chimiques" if subsector == "industrie chimique"
+*replace subsector = "industries chimiques" if subsector == "industrie chimique"
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

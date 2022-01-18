@@ -41,12 +41,12 @@ format %-25.0fc `numvars'
 
 	* dates
 		* creation
-gen datedecréation = date(Date, "MDY")
-order datedecréation, a(Date)
-format datedecréation %td
-rename Datedecréation date_created_str
+*gen datedecréation = date(Date, "MDY")
+*order datedecréation, a(Date)
+*format datedecréation %td
+*rename Datedecréation date_created_str
 		* registration
-format Dateinscription %td
+*format Dateinscription %td
 
 }
 	
