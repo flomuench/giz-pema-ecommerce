@@ -42,18 +42,9 @@ scalar refused     = 99999999999999999
 scalar check_again = 88888888888888888
 
 	* replace, gen, label
-gen investcom_2021_cor = investcom_2021
-gen investcom_futur_cor = investcom_futur	
+	
 */
 }
-
-
-* Needs check
-replace needs_check = 1 if investcom_2021_cor== "a"
-* Questions needing check
-replace questions_needing_check = "investcom_2021" if investcom_2021_cor== "a"
-
-
 
 ***********************************************************************
 * 	PART 2: use regular expressions to correct variables 		  			
@@ -67,20 +58,12 @@ lab def correct 1 "correct" 0 "incorrect"
 lab val id_admin_correct correct
 
 */
-replace investcom_2021_cor = ustrregexra( investcom_2021_cor ,"k","000")
-replace investcom_futur_cor = ustrregexra( investcom_futur_cor ,"dinars","")
-replace investcom_futur_cor = ustrregexra( investcom_futur_cor ,"dt","")
-replace investcom_futur_cor = ustrregexra( investcom_futur_cor ,"k","000")
 
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
-replace investcom_2021_cor = "100000" if investcom_2021_cor== "100000dt"
-replace investcom_2021_cor = "18000" if investcom_2021_cor== "huit mille dinars"
-replace investcom_futur_cor = "77777777777777777" if investcom_futur_cor == "je sais pas encore"
-replace investcom_futur_cor = "77777777777777777" if investcom_futur_cor == "ne sais pas"
-replace investcom_futur_cor = "20000" if investcom_futur_cor == "vingt mille dinars"
+
 
 *Test logical values*
 
