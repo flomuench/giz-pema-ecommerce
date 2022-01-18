@@ -76,9 +76,9 @@ replace investcom_futur_cor = ustrregexra( investcom_futur_cor ,"k","000")
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
-replace investcom_2021_cor = "100000" if investcom_2021_cor== "100000dt"
-replace investcom_2021_cor = "18000" if investcom_2021_cor== "huit mille dinars"
-replace investcom_futur_cor = "77777777777777777" if investcom_futur_cor == "je sais pas encore"
+replace investcom_2021 = "100000" if investcom_2021_cor== "100000dt"
+replace investcom_2021 = "18000" if investcom_2021_cor== "huit mille dinars"
+replace investcom_futur = "77777777777777777" if investcom_futur_cor == "je sais pas encore"
 replace investcom_futur_cor = "77777777777777777" if investcom_futur_cor == "ne sais pas"
 replace investcom_futur_cor = "20000" if investcom_futur_cor == "vingt mille dinars"
 
