@@ -44,8 +44,16 @@ scalar check_again = 88888888888888888
 	* replace, gen, label
 gen needs_check = 0
 gen questions_needing_checks = ""
-
+*/
 }
+
+
+* Needs check
+replace needs_check = 1 if investcom_2021== "a"
+replace needs_check = 1 if investcom_futur == "aa"
+* Questions needing check
+replace questions_needing_check = "investcom_2021" if investcom_2021== "a"
+replace questions_needing_check = "investcom_2021" if investcom_futur == "aa"
 
 
 
@@ -61,24 +69,20 @@ lab def correct 1 "correct" 0 "incorrect"
 lab val id_adminrect correct
 
 */
-
 replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
 replace investcom_futur = ustrregexra( investcom_futur,"dinars","")
 replace investcom_futur = ustrregexra( investcom_futur,"dt","")
 replace investcom_futur = ustrregexra( investcom_futur,"k","000")
 
-
 ***********************************************************************
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
-
 replace investcom_2021 = "100000" if investcom_2021== "100000dt"
 replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
 replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
 replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
 replace investcom_futur = "20000" if investcom_futur == "vingt mille dinars"
-
 
 *Test logical values*
 
@@ -121,11 +125,9 @@ replace investcom_futur = "20000" if investcom_futur == "vingt mille dinars"
 * 	PART 6:  Traduction reponses en arabe au francais		  			
 ***********************************************************************
 {
-* Sectionname
-/*
-replace q05="directeur des ventes"  if q05=="مدير المبيعات" 
-*/
-
+replace entr_produit1 = "Farine à la tomate" if entr_produit1 == "فارينة طماطم"
+replace entr_produit2 = "Farine aux oignons" if entr_produit2 == "فارينة بصل"
+replace entr_produit3 = "farine à l'ail" if entr_produit3 == "فارينة ثوم"
 }
 
 ***********************************************************************
