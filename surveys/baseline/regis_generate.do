@@ -29,6 +29,51 @@ use "${regis_intermediate}/regis_inter", clear
 
 
 ***********************************************************************
+* 	PART 1:  Index calculation based on z-score		
+***********************************************************************
+/*
+calculation of indeces is based on Kling et al. 2007 and adopted from Mckenzie et al. 2018
+JDE pre-analysis publication:
+1: calculate z-score for each individual outcome
+2: average the z-score of all individual outcomes --> this is the index value
+	--> implies: no absolute evaluation but relative to all other firms
+	--> requires: firms w/o missing values
+3: average the three index values to get the QI index for firms
+	--> implies: same weight for all three dimensions
+*/
+
+	* calculate z-score for each individual outcome
+		* write a program calculates the z-score
+* capture program drop zscore
+program define zscore /* opens a program called zscore */
+	sum `1'
+	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
+end
+
+	* calculate z score for all variables that are part of the index
+local qiki_std "q10r1 q10r2c q10r3c q10r4c q10r5f"
+local qiki_reg "q10n1 q10n2c q10n3c q10n4c q10n5f q12_correct"
+local qiki_caa "q15c1 q15c2c q15c3c q15c4c q15c5f q16_compris"
+local qiki_met "q18m1 q18m2c q18m3c q18m4c q18m5f q20b_compris"
+foreach z in qiki_std qiki_reg qiki_caa qiki_met {
+	foreach x of local `z'  {
+			zscore `x'
+		}
+}	
+
+		* calculate the index value: average of zscores 
+
+egen qiki_std = rowmean(q10n1z q10n2cz q10n3cz q10n4cz q10n5fz q12_correctz)
+egen qiki_reg = rowmean(q10r1z q10r2cz q10r3cz q10r4cz q10r5fz q12_correctz)
+egen qiki_caa = rowmean(q15c1z q15c2cz q15c3cz q15c4cz q15c5f q16_comprisz)
+egen qiki_met = rowmean(q18m1z q18m2cz q18m3cz q18m4cz q18m5fz q20b_comprisz)
+
+label var qiki_std "QI knowledge standards"
+label var qiki_reg "QI knowledge technical regulation"
+label var qiki_caa "QI knowledge conformity assessment & accreditation"
+label var qiki_met "QI knowledge metrology"
+
+***********************************************************************
 * 	PART 2: factor variable sector & subsector 			  										  
 ***********************************************************************
 label define sector_name 1 "Agriculture & Peche" ///

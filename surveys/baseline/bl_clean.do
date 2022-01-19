@@ -47,6 +47,7 @@ format datedecréation %td
 rename date date_created_str
 		* registration
 
+
 }
 	
 ***********************************************************************

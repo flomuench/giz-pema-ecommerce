@@ -126,7 +126,14 @@ if (1) do "${regis_github}/regis_open_question_checks.do"
 	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_progress_eligibility_characteristics.do"
-
+/* --------------------------------------------------------------------
+	PART 4.8: merge-in administrative information on export behaviour + list for baseline
+----------------------------------------------------------------------*/
+if (1) do "${regis_github}/regis_verification.do"
+/* --------------------------------------------------------------------
+	PART 4.9: master data + deidentified regis_final for analysis
+----------------------------------------------------------------------*/
+if (1) do "${regis_github}/deidentify.do"
 
 
 ***********************************************************************
