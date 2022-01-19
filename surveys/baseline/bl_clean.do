@@ -41,14 +41,11 @@ format %-25.0fc `numvars'
 
 	* dates
 		* creation
-gen datedecréation = date(date, "DMY")
-order datedecréation, a(date)
-format datedecréation %td
-rename date date_created_str
-		* registration
+format Date %td
 
 
 }
+	
 	
 ***********************************************************************
 * 	PART 2: 	Drop all text windows from the survey		  			

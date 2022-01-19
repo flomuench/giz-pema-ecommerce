@@ -13,7 +13,7 @@
 *	Author:  	Teo Firpo & Florian Münch							    
 *	ID variable: id_email		  					  
 *	Requires:  	  										  
-*	Creates:  master-data-ecommerce; emailexperiment_population_regisle.dta		                                  
+*	Creates:  master-data-ecommerce; 
 ***********************************************************************
 * 	PART 1: 	Set standard settings & install packages			  
 ***********************************************************************
@@ -100,7 +100,9 @@ set sortseed 8413195
 		
 
 ***********************************************************************
+
 * 	PART 3: 	Run do-files for data cleaning & survey progress
+
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 3.1: Import & raw data
@@ -126,6 +128,7 @@ if (1) do "${bl_github}/bl_clean.do"
 	PART 3.6: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
 //if (1) do "${bl_github}/bl_progress_statistics.do"
+
 
 /* 
 add to existing do files
