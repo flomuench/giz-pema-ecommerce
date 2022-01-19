@@ -11,15 +11,15 @@
 *																	 																      *
 *	Author: Teo Firpo  														  
 *	ID variable: no id variable defined			  									  
-*	Requires:	
-*	Creates:							  
+*	Requires: bl_raw.xlsx 	
+*	Creates: bl_raw.dta							  
 *																	  
 ***********************************************************************
 * 	PART 1: import the list of registered firms as Excel				  										  *
 ***********************************************************************
 cd "$bl_raw"
-import excel "${bl_raw}/bl_raw.xlsx", firstrow clear
 
+import excel "${bl_raw}/bl_raw.xlsx", sheet("Feuil1") cellrange(A7:DZ116) firstrow
 
 ***********************************************************************
 * 	PART 2: save 						
