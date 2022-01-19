@@ -16,7 +16,7 @@
 *   8) 		Removing trailing & leading spaces from string variables										 
 *																	  													      
 *	Author:  	Teo Firpo						    
-*	ID variable: 	id (identifiant)			  					  
+*	ID variable: 	id_plateforme (identifiant)			  					  
 *	Requires: bl_raw.dta 	  										  
 *	Creates:  bl_inter.dta			                                  
 ***********************************************************************
@@ -41,14 +41,10 @@ format %-25.0fc `numvars'
 
 	* dates
 		* creation
-*gen datedecréation = date(Date, "MDY")
-*order datedecréation, a(Date)
-*format datedecréation %td
-*rename Datedecréation date_created_str
-		* registration
-*format Dateinscription %td
+format Date %td
 
 }
+	
 	
 ***********************************************************************
 * 	PART 2: 	Drop all text windows from the survey		  			

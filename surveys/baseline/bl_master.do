@@ -13,7 +13,7 @@
 *	Author:  	Florian Münch							    
 *	ID variable: id_email		  					  
 *	Requires:  	  										  
-*	Creates:  master-data-ecommerce; emailexperiment_population_regisle.dta		                                  
+*	Creates:  master-data-ecommerce; 
 ***********************************************************************
 * 	PART 1: 	Set standard settings & install packages			  
 ***********************************************************************
@@ -100,32 +100,32 @@ set sortseed 8413195
 		
 
 ***********************************************************************
-* 	PART 4: 	Run do-files for data cleaning & registration progress
+* 	PART 3: 	Run do-files for data cleaning & registration progress
 ***********************************************************************
 /* --------------------------------------------------------------------
-	PART 4.1: Import & raw data
+	PART 3.1: Import & raw data
 ----------------------------------------------------------------------*/		
 if (1) do "${bl_github}/bl_import.do"
 /* --------------------------------------------------------------------
-	PART 4.2: Clean raw data & save as intermediate data
+	PART 3.2: Clean raw data & save as intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_clean.do"
 /* --------------------------------------------------------------------
-	PART 4.3: Correct & save intermediate data
+	PART 3.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_correct.do"
+//if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
-	PART 4.4: Generate variables for analysis or implementation
+	PART 3.4: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_generate.do"
+//if (1) do "${bl_github}/bl_generate.do"
 /* --------------------------------------------------------------------
-	PART 4.6: export open text or number variables for RA check
+	PART 3.6: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_open_question_checks.do"
+//if (1) do "${bl_github}/bl_open_question_checks.do"
 /* --------------------------------------------------------------------
-	PART 4.7: Export pdf with number, characteristics & eligibility of registered firms
+	PART 3.7: Export pdf with number, characteristics & eligibility of registered firms
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_progress_eligibility_characteristics.do"
+//if (1) do "${bl_github}/bl_progress_eligibility_characteristics.do"
 
 /* 
 add to existing do files
