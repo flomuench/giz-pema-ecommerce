@@ -10,6 +10,7 @@
 *	2)	save the contact list as dta file in intermediate folder
 *																	 																      *
 *	Author: Teo Firpo  														  
+
 *	ID variable: id_plateforme			  									  
 *	Requires: bl_raw.xlsx	
 *	Creates: bl_raw.dta							  
@@ -19,8 +20,6 @@
 ***********************************************************************
 cd "$bl_raw"
 import excel "${bl_raw}/bl_raw.xlsx", sheet("Feuil1") cellrange (A7:DZ116) firstrow
-
-
 
 ***********************************************************************
 * 	PART 2: save 						
