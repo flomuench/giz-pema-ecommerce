@@ -92,7 +92,7 @@ global bl_progress = "${bl_output}/progress-eligibility-characteristics"
 
 
 		* global for *type* variables
-		
+
 		
 		* set seeds for replication
 set seed 8413195
@@ -115,7 +115,7 @@ if (1) do "${bl_github}/bl_clean.do"
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-//if (1) do "${bl_github}/bl_correct.do"
+if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
