@@ -120,6 +120,8 @@ replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
 replace investcom_2021 = "0" if investcom_2021== "zéro"
 replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
 replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
+replace investcom_2021 = "0" if investcom_2021 == "zero"
+replace investcom_2021 = "10000" if investcom_2021 == "10 000"
 
 *Remplacer les textes de la variable investcom_futur
 replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
@@ -129,12 +131,16 @@ replace investcom_futur = "20000" if investcom_futur == "vingt mille "
 replace investcom_futur = "10000" if investcom_futur == "dix milles"
 replace investcom_futur = "15000" if investcom_futur == "10 000 à 20 000"
 replace investcom_futur = "7000" if investcom_futur == "sept milles  (7000)"
+replace investcom_futur = "10000" if investcom_futur == "10 000"
+replace investcom_futur = "20000" if investcom_futur == "20 000"
+replace investcom_futur = "20000" if investcom_futur == "20000 "
 
 *Correction de la variable compexp_2020
 replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
 replace compexp_2020 = "110000" if compexp_2020== "110 000"
 replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
 replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
+replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
 
 *Correction de la variable comp_ca2020
 replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
@@ -144,6 +150,9 @@ replace comp_ca2020 = "7628248" if comp_ca2020== "7628248000"
 replace comp_ca2020 = "3039336" if comp_ca2020== "3 039 336"
 replace comp_ca2020 = "5351160" if comp_ca2020== "5.351.160"
 replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
+replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
+replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
+replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
 
 *Correction de la variable dig_revenues_ecom
 replace dig_revenues_ecom = "200000" if dig_revenues_ecom== "200 000"
@@ -155,6 +164,9 @@ replace comp_benefice2020 = "317887,923" if comp_benefice2020== "317 887,923"
 replace comp_benefice2020 = "28929" if comp_benefice2020== "28 929"
 replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
 replace comp_benefice2020 = "191805" if comp_benefice2020== "191805000"
+replace comp_benefice2020 = "317888" if comp_benefice2020 == "317887,923"
+replace comp_benefice2020 = "41000" if comp_benefice2020 == "41 000"
+replace comp_benefice2020 = "46000" if comp_benefice2020 == "46000 quarante six mille dinar"
 
 
 }
@@ -182,6 +194,7 @@ replace comp_benefice2020 = "191805" if comp_benefice2020== "191805000"
 * Correction de la variable investcom_2021
 replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
 
+* correction de lavariable comp_benefice2020
 
 
 
@@ -215,6 +228,7 @@ replace investcom_benefit3_3 = "Améliorer la notoriété de la marque de l'entr
 *Traduction des produits exportés en 2021
 replace exp_produit_services21 = "farine" if exp_produit_services21 == "فارينة"
 replace exp_produit_services21 = "Matériel électrique" if exp_produit_services21 == "مواد كهربائية"
+replace exp_produit_services21 = "Chapelet de prière à l'ambre" if exp_produit_services21 == "سبحة العنبر"
 
 *Traduction attente du projet
 replace car_attend1 = "Apprendre de nouvelles méthodes en améliorant notre présence en ligne"  if car_attend1 == "تعلم أساليب جديدة من خلال و تعزيز الحضور على الإنترنت"
