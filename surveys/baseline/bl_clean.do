@@ -48,13 +48,14 @@ format Date %td
 	
 	
 ***********************************************************************
-* 	PART 2: 	Drop all text windows from the survey		  			
+* 	PART 2: 	Drop all unneeded columns and rows from the survey		  			
 ***********************************************************************
 {
 *drop VARNAMES
 
 }
 
+drop if id_plateforme==.
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			
 ***********************************************************************
