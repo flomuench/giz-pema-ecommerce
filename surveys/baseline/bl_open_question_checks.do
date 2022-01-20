@@ -1,5 +1,5 @@
 ***********************************************************************
-* 			registration checks of string/open questions
+* 			baseline survey checks of string/open questions
 ***********************************************************************
 *																	   
 *	PURPOSE: 		check whether string answer to open questions are 														 
@@ -12,27 +12,27 @@
 *	6)  			
 *																	  
 *	ID variaregise: 	id (example: f101)			  					  
-*	Requires: regis_inter.dta & regis_checks_survey_progress.do 	  
-*	Creates:  regis_inter.dta			  
+*	Requires: bl_inter.dta & bl_checks_survey_progress.do 	  
+*	Creates:  bl_inter.dta			  
 *																	  
 ***********************************************************************
 * 	PART 1:  create word file for export		  			
 ***********************************************************************
 	* import file
-use "${regis_intermediate}/regis_inter", clear
+use "${bl_intermediate}/bl_inter", clear
 
 	* set directory to checks folder
-cd "$regis_checks"
+cd "$bl_checks"
 
 	* create word document
 putdocx begin 
 putdocx paragraph
-putdocx text ("Quality checks open question variables: registration E-commerce training"), bold
+putdocx text ("Quality checks open question variables: baseline E-commerce training"), bold
 
 ***********************************************************************
 * 	PART 2:  Check for & visualise duplicates		  			
 ***********************************************************************
-		* keep only potentially eligible firms
+		* k eep only potentially eligible firms
 preserve
 keep if eligible_sans_matricule == 1
 		* put all variables to for which we want to check for duplicates into a local
@@ -76,7 +76,7 @@ putdocx image duplicates.png
 
 		* indicate to RA's where to write code to search & remove duplicates
 putdocx paragraph
-putdocx text ("Go to do-file 'regis_correct' part 9 'remove duplicates' to examine & potentially remove duplicates manually/via code."), bold
+putdocx text ("Go to do-file 'bl_correct' part 9 'remove duplicates' to examine & potentially remove duplicates manually/via code."), bold
 putdocx pagebreak
 
 ***********************************************************************
@@ -86,12 +86,12 @@ putdocx pagebreak
 sort firmname, stable
 
 		* define all the variables where respondent had to enter text
-local regis_open rg_fte rg_fte_femmes date_created_str rg_capital rg_position rg_legalstatus /// /* firm characteristics */
+local bl_open rg_fte rg_fte_femmes date_created_str rg_capital rg_position rg_legalstatus /// /* firm characteristics */
 	   firmname rg_nom_rep rg_telrep rg_telpdg rg_emailrep rg_emailpdg rg_adresse /// /* personal */
 	   rg_matricule rg_codedouane 
 				
 		* export all the variables into a word document
-foreach x of local regis_open {
+foreach x of local bl_open {
 putdocx paragraph, halign(center)
 tab2docx `x'
 putdocx pagebreak
@@ -103,7 +103,7 @@ putdocx pagebreak
 * 	End:  save dta, word file		  			
 ***********************************************************************
 	* word file
-cd "$regis_checks"
+cd "$bl_checks"
 putdocx save "regis-checks-question-ouvertes.docx", replace
 	* restore all the observations
 restore
