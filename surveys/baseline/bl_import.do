@@ -19,8 +19,7 @@
 * 	PART 1: import the list of registered firms as Excel				  										  *
 ***********************************************************************
 cd "$bl_raw"
-import excel "${bl_raw}/bl_raw.xlsx", sheet("Feuil1") cellrange (A7:DZ116) firstrow
-
+import excel "${bl_raw}/bl_raw.xlsx", sheet("Feuil1") firstrow clear
 ***********************************************************************
 * 	PART 2: save 						
 ***********************************************************************
