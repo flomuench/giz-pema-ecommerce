@@ -88,8 +88,8 @@ rename *, lower
 *rename var an dig_presence3_etsy
 *rename var ao dig_presence3_little_jneina
 *rename var autres dig_presence3_autres
-rename au dig_miseajour2
-rename av dig_miseajour3
+*rename au dig_miseajour2
+*rename av dig_miseajour3
 
 rename bl dig_marketing_num_autres
 rename ck exp_produit_services_avant21
@@ -101,7 +101,7 @@ rename carsoutien_gouvern car_soutien_gouvern
 rename car_carempl_dive4 car_carempl_div3
 rename acceptezvousdevalidervosré accord_validation
 rename jattestequetouteslesinform attestation_info
-rename dig_miseajou dig_miseajour1
+*rename dig_miseajou dig_miseajour1
 }
 ***********************************************************************
 * 	PART 6: 	Label the variables		  			
