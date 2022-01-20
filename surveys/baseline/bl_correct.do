@@ -44,13 +44,14 @@ scalar check_again = 88888888888888888
 	* replace, gen, label
 gen needs_check = 0
 gen questions_needing_checks = ""
+gen commentsmsb = ""
 */
 }
 
 
 * Needs check
-replace needs_check = 1 if id_plateforme = 572== "a"
-replace needs_check = 1 if id_plateforme = 572 == "aa"
+//replace needs_check = 1 if id_plateforme = 572== "a"
+//replace needs_check = 1 if id_plateforme = 572 == "aa"
 replace needs_check = 1 if comp_benefice2020 == "§§"
 replace needs_check = 1 if comp_benefice2020 == "na"
 replace needs_check = 1 if exp_pays_21 ==200
@@ -335,3 +336,11 @@ lab var q42f "(in-) formel argument de vente"
 ***********************************************************************
 cd "$bl_intermediate"
 save "bl_inter", replace
+
+***********************************************************************
+* 	Export an excel sheet with needs_check variables  			
+***********************************************************************
+
+cd "$bl_checks"
+
+export excel id_plateforme needs_check questions_needing_check date-dz using "fiche_correction" if needs_check==1, firstrow(variables) replace

@@ -32,11 +32,9 @@ putdocx text ("Quality checks open question variables: baseline E-commerce train
 ***********************************************************************
 * 	PART 2:  Check for & visualise duplicates		  			
 ***********************************************************************
-		* k eep only potentially eligible firms
-preserve
-keep if eligible_sans_matricule == 1
+
 		* put all variables to for which we want to check for duplicates into a local
-local dupcontrol id_admin firmname rg_nom_rep rg_telrep rg_emailrep rg_telpdg rg_emailpdg
+local dupcontrol id_plateforme commentvousappelezvous adresseéléctronique
 
 		* generate a variable = 1 if the observation of the variable has a duplicate
 foreach x of local dupcontrol {
@@ -61,7 +59,7 @@ gr bar (count), over(dup_`x') ///
 
 foreach x of local dupcontrol {
 stripplot id_plateforme, over(dup`x') jitter(4) vertical  ///
-		name(`x') ///
+		name(`x', replace) ///
 		title(`x') ///
 		ytitle("ID des observations") ///
 		mlabel(duplabel`x')
@@ -82,13 +80,12 @@ putdocx pagebreak
 ***********************************************************************
 * 	PART 3:  Open question variaregises		  			
 ***********************************************************************
-		* sort stable by firmname to identify duplicates by eyeballing based on firmname
-sort firmname, stable
 
 		* define all the variables where respondent had to enter text
-local bl_open rg_fte rg_fte_femmes date_created_str rg_capital rg_position rg_legalstatus /// /* firm characteristics */
-	   firmname rg_nom_rep rg_telrep rg_telpdg rg_emailrep rg_emailpdg rg_adresse /// /* personal */
-	   rg_matricule rg_codedouane 
+local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 /// /* firm characteristics */
+	   entr_histoire entr_produit1 entr_produit2 entr_produit3  /// /* personal */
+	   id_base_repondent id_repondent_position /// /* numerical * / 
+	   dig_marketing_respons dig_service_responsable investcom_2021 investcom_futur expprep_responsable
 				
 		* export all the variables into a word document
 foreach x of local bl_open {
@@ -98,7 +95,6 @@ putdocx pagebreak
 }
 
 
-
 ***********************************************************************
 * 	End:  save dta, word file		  			
 ***********************************************************************
@@ -106,5 +102,5 @@ putdocx pagebreak
 cd "$bl_checks"
 putdocx save "regis-checks-question-ouvertes.docx", replace
 	* restore all the observations
-restore
+
 
