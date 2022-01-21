@@ -5,18 +5,17 @@
 *	PURPOSE: 		check whether string answer to open questions are 														 
 *					logical
 *	OUTLINE:														  
-*	1)				create wordfile for export		  		  			
-*	3)  			open question string variaregises					 
-*	4)  			open question numerical variaregises							  
-*	5)  			Time and speed test							  
+*	1)				Create wordfile for export		  		  			
+*	2)  			Check for & visualise duplicates						 
+*	3)  			Open question variables							  
 *	6)  			
 *																	  
-*	ID variaregise: 	id (example: f101)			  					  
+*	ID variaregise: 	id_plateforme (example: 373)			  					  
 *	Requires: bl_inter.dta & bl_checks_survey_progress.do 	  
 *	Creates:  bl_inter.dta			  
 *																	  
 ***********************************************************************
-* 	PART 1:  create word file for export		  			
+* 	PART 1:  Create word file for export		  			
 ***********************************************************************
 	* import file
 use "${bl_intermediate}/bl_inter", clear
@@ -74,18 +73,18 @@ putdocx image duplicates.png
 
 		* indicate to RA's where to write code to search & remove duplicates
 putdocx paragraph
-putdocx text ("Go to do-file 'bl_correct' part 9 'remove duplicates' to examine & potentially remove duplicates manually/via code."), bold
+putdocx text ("Go to do-file 'bl_correct' part 10 'Identify duplicates' to examine & potentially remove duplicates manually/via code."), bold
 putdocx pagebreak
 
 ***********************************************************************
-* 	PART 3:  Open question variaregises		  			
+* 	PART 3:  Open question variables		  			
 ***********************************************************************
 
 		* define all the variables where respondent had to enter text
-local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 /// /* firm characteristics */
+local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_pays_principal_avant21 exp_pays_principal_2021 /// /* firm characteristics */
 	   entr_histoire entr_produit1 entr_produit2 entr_produit3  /// /* personal */
-	   id_base_repondent id_repondent_position /// /* numerical * / 
-	   dig_marketing_respons dig_service_responsable investcom_2021 investcom_futur expprep_responsable
+	   id_base_repondent id_repondent_position car_pdg_age /// /* numerical * / 
+	   dig_marketing_respons dig_service_responsable investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
 				
 		* export all the variables into a word document
 foreach x of local bl_open {
