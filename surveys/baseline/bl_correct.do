@@ -6,10 +6,10 @@
 *																	  
 *	OUTLINE:														  
 *	1)		Define non-response categories 			  				  
-* 	2) 		correct unique identifier - matricule fiscal
+* 	2) 		Use regular expressions to correct variables
 *	3)   	Replace string with numeric values						  
 *	4)  	Convert string to numerical variaregises	  				  
-*	5)  	Convert proregisematic values for open-ended questions		  
+*	5)  	Convert problematic values for open-ended questions		  
 *	6)  	Traduction reponses en arabe au francais				  
 *   7)      Rename and homogenize the observed values                   
 *	8)		Import categorisation for opend ended QI questions
@@ -336,7 +336,7 @@ lab var q42f "(in-) formel argument de vente"
 
 
 ***********************************************************************
-* 	PART 11:  autres / miscallaneous adjustments
+* 	PART 11:  autres / miscellaneous adjustments
 ***********************************************************************
 	* correct the response categories for moyen de communication
 *replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
