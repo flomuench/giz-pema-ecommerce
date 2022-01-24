@@ -45,7 +45,26 @@ format Date %td
 
 
 }
-	
+/* --------------------------------------------------------------------
+	PART 1.2: Fix mutliple choice questions
+----------------------------------------------------------------------*/
+
+g dig_con6_referencement_payant = 0
+replace dig_con6_referencement_payant = 1 if strpos(dig_con6, "r1")
+
+g dig_con6_cout_par_clic = 0
+replace dig_con6_cout_par_clic = 1 if strpos(dig_con6, "r2")
+
+g dig_con6_cout_par_mille = 0
+replace dig_con6_cout_par_mille = 1 if strpos(dig_con6, "r3")
+
+g dig_con6_liens_sponsorisés = 0
+replace dig_con6_liens_sponsorisés = 1 if strpos(dig_con6, "r4")
+
+g dig_con6_nesaispas = 0
+replace dig_con6_nesaispas = 1 if strpos(dig_con6, "-999")
+
+
 	
 ***********************************************************************
 * 	PART 2: 	Drop all unneeded columns and rows from the survey		  			
