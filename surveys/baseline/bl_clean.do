@@ -48,7 +48,7 @@ format Date %td
 /* --------------------------------------------------------------------
 	PART 1.2: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
-
+* variable dig_con6
 g dig_con6_referencement_payant = 0
 replace dig_con6_referencement_payant = 1 if strpos(dig_con6, "r1")
 
@@ -63,6 +63,54 @@ replace dig_con6_liens_sponsorisés = 1 if strpos(dig_con6, "r4")
 
 g dig_con6_nesaispas = 0
 replace dig_con6_nesaispas = 1 if strpos(dig_con6, "-999")
+
+* variable dig_marketing_num19
+g dig_marketing_num19_sea = 0
+replace dig_marketing_num19_sea = 1 if strpos(dig_marketing_num19, "r1")
+
+g dig_marketing_num19_seo = 0
+replace dig_marketing_num19_seo = 1 if strpos(dig_marketing_num19, "r2")
+
+g dig_marketing_num19_blg = 0
+replace dig_marketing_num19_blg = 1 if strpos(dig_marketing_num19, "r3")
+
+g dig_marketing_num19_pub = 0
+replace dig_marketing_num19_pub = 1 if strpos(dig_marketing_num19, "r4")
+
+g dig_marketing_num19_mail = 0
+replace dig_marketing_num19_mail = 1 if strpos(dig_marketing_num19, "r5")
+
+g dig_marketing_num19_prtn = 0
+replace dig_marketing_num19_prtn = 1 if strpos(dig_marketing_num19, "r6")
+
+g dig_marketing_num19_socm = 0
+replace dig_marketing_num19_socm = 1 if strpos(dig_marketing_num19, "r7")
+
+g dig_marketing_num19_autre = 0
+replace dig_marketing_num19_autre = 1 if strpos(dig_marketing_num19, "r8")
+
+g dig_marketing_num19_aucu = 0
+replace dig_marketing_num19_aucu = 1 if strpos(dig_marketing_num19, "r9")
+
+g dig_marketing_num19_nsp = 0
+replace dig_marketing_num19_nsp = 1 if strpos(dig_marketing_num19, "-999")
+
+* variable dig_con4
+
+g dig_con4_org = 0
+replace dig_con4_org = 1 if strpos( dig_con4, "r1")
+
+g dig_con4_rech = 0
+replace dig_con4_rech = 1 if strpos( dig_con4, "r2")
+
+g dig_con4_mrkt = 0
+replace dig_con4_mrkt = 1 if strpos( dig_con4, "r3")
+
+g dig_con4_reso = 0
+replace dig_con4_reso = 1 if strpos( dig_con4, "r4")
+
+g dig_con4_nsp = 0
+replace dig_con4_nsp = 1 if strpos( dig_con4, "r5")
 
 
 	
@@ -110,9 +158,9 @@ rename *, lower
 *rename au dig_miseajour2
 *rename av dig_miseajour3
 
-rename bl dig_marketing_num_autres
-rename ck exp_produit_services_avant21
-rename co exp_pays_principal_2021
+*rename bl dig_marketing_num_autres
+*rename ck exp_produit_services_avant21
+*rename co exp_pays_principal_2021
 rename exp_pays_principal exp_pays_principal_avant21
 rename quelestlepaysdafrique exp_afrique_pays
 rename dig_benefice2020 comp_benefice2020
@@ -179,13 +227,13 @@ lab var expprep_norme "certification des produits/ services"
 lab var expprep_norme2 "nom certification"
 lab var expprep_demande "possibilité d’augmenter la production face à une demande accrue"  
 lab var rg_oper_exp "opération d'export en 2021"
-lab var exp_produit_services21 "produit/service exporté en 2021"
+*lab var exp_produit_services21 "produit/service exporté en 2021"
 lab var exp_pays_21 "nombre de pays export 2021"
-lab var exp_pays_principal_avant21 "principal pays pour l'export avant 2021"
+*lab var exp_pays_principal_avant21 "principal pays pour l'export avant 2021"
 lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
-lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
-lab var exp_pays_avant21 "nombre de pays export avant 2021"
-lab var exp_pays_principal_2021 "principal pays pour l'export en 2021"
+*lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
+*lab var exp_pays_avant21 "nombre de pays export avant 2021"
+*lab var exp_pays_principal_2021 "principal pays pour l'export en 2021"
 lab var exp_afrique "exportation vers un pays d'Afrique subsaharienne 12 derniers mois"
 lab var exp_afrique_pays "pays Afrique subsaharienne"
 lab var info_neces "possession des informations comptables nécessaires"
