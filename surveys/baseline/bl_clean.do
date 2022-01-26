@@ -75,6 +75,8 @@ replace dig_con6_nesaispas = 1 if strpos(dig_con6, "-999")
 }
 
 drop if Id_plateforme==.
+
+
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			
 ***********************************************************************
