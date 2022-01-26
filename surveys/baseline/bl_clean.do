@@ -123,6 +123,8 @@ replace dig_con4_nsp = 1 if strpos( dig_con4, "r5")
 }
 
 drop if Id_plateforme==.
+
+
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			
 ***********************************************************************
