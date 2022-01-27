@@ -1,4 +1,4 @@
-***********************************************************************
+************************************************************************
 * 			E-commerce baseline clean					 		  	  *	  
 ***********************************************************************
 *																	  
@@ -45,10 +45,6 @@ format Date %td
 
 
 }
-<<<<<<< Updated upstream
-	
-	
-=======
 /* --------------------------------------------------------------------
 	PART 1.2: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
@@ -184,7 +180,6 @@ lab var dig_logistique_retour_nsp "Ne sais pas"
 
 *horaire_pref
 }
->>>>>>> Stashed changes
 ***********************************************************************
 * 	PART 2: 	Drop all unneeded columns and rows from the survey		  			
 ***********************************************************************
@@ -194,6 +189,8 @@ lab var dig_logistique_retour_nsp "Ne sais pas"
 }
 
 drop if Id_plateforme==.
+
+
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			
 ***********************************************************************
@@ -211,28 +208,6 @@ rename *, lower
 ***********************************************************************
 {
 	* Section suivi
-<<<<<<< Updated upstream
-* rename var var1
-*rename var z "dig_con6_referencement_payant"
-*rename var aa "dig_con6_cout_par_clic"
-*rename var ab "dig_con6_cout_par_mille"
-*rename var ac "dig_con6_liens_sponsorisés"
-*rename var surlesquellesdesmarketpl dig_presence3_little_jneina
-*rename var ai dig_presence3_elfabrica.tn
-*rename var aj dig_presence3_savana 
-*rename var surlesquellesdesmarketpla dig_presence3_jumia
-*rename var al dig_presence3_amazon
-*rename var am dig_presence3_ali_baba
-*rename var an dig_presence3_etsy
-*rename var ao dig_presence3_little_jneina
-*rename var autres dig_presence3_autres
-*rename au dig_miseajour2
-*rename av dig_miseajour3
-
-rename bl dig_marketing_num_autres
-rename ck exp_produit_services_avant21
-rename co exp_pays_principal_2021
-=======
 rename nomdelapersonne ident_nom
 rename nomdelentreprise ident_entreprise
 rename merciderenseignerlenomcorr ident_nom_correct_entreprise
@@ -244,7 +219,6 @@ rename autres dig_presence3_exemples_autres
 rename aq dig_marketing_num19_autres
 rename quelestlepaysdafrique exp_afrique_principal
 rename bt exp_pays_principal_21
->>>>>>> Stashed changes
 rename exp_pays_principal exp_pays_principal_avant21
 rename bp exp_produit_services_avant21
 rename dig_benefice2020 comp_benefice2020
@@ -309,14 +283,6 @@ lab var expprep_norme2 "nom certification"
 lab var expprep_demande "possibilité d’augmenter la production face à une demande accrue"  
 lab var rg_oper_exp "opération d'export en 2021"
 lab var exp_produit_services21 "produit/service exporté en 2021"
-<<<<<<< Updated upstream
-lab var exp_pays_21 "nombre de pays export 2021"
-lab var exp_pays_principal_avant21 "principal pays pour l'export avant 2021"
-lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
-lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
-lab var exp_pays_avant21 "nombre de pays export avant 2021"
-lab var exp_pays_principal_2021 "principal pays pour l'export en 2021"
-=======
 lab var exp_avant21 "opération d'export avant 2021"
 lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
 lab var exp_pays_avant21 "nombre principal pays pour l'export avant 2021"
@@ -324,7 +290,6 @@ lab var exp_pays_principal_avant21 "nombre principal pays pour l'export avant 20
 lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
 lab var exp_pays_21 "nombre de pays export 2021"
 lab var exp_pays_principal_21 "principal pays pour l'export en 2021"
->>>>>>> Stashed changes
 lab var exp_afrique "exportation vers un pays d'Afrique subsaharienne 12 derniers mois"
 lab var exp_afrique_principal "principal pays Afrique subsaharienne"
 lab var info_neces "possession des informations comptables nécessaires"
