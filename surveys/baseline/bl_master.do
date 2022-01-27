@@ -123,7 +123,7 @@ if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.5: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_open_question_checks.do"
+if (0) do "${bl_github}/bl_open_question_checks.do"
 /* --------------------------------------------------------------------
 	PART 3.6: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
