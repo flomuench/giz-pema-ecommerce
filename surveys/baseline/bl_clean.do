@@ -45,7 +45,7 @@ format Date %td
 
 
 }
-<<<<<<< HEAD
+
 /* --------------------------------------------------------------------
 	PART 1.2: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
@@ -181,10 +181,8 @@ lab var dig_logistique_retour_nsp "Ne sais pas"
 
 *horaire_pref
 }
-=======
-	
-	
->>>>>>> parent of cc3f5e8 (Update 26/01/2022)
+
+
 ***********************************************************************
 * 	PART 2: 	Drop all unneeded columns and rows from the survey		  			
 ***********************************************************************
@@ -214,7 +212,7 @@ rename *, lower
 {
 
 	* Section suivi
-<<<<<<< HEAD
+
 rename nomdelapersonne ident_nom
 rename nomdelentreprise ident_entreprise
 rename merciderenseignerlenomcorr ident_nom_correct_entreprise
@@ -226,28 +224,10 @@ rename autres dig_presence3_exemples_autres
 rename aq dig_marketing_num19_autres
 rename quelestlepaysdafrique exp_afrique_principal
 rename bt exp_pays_principal_21
-=======
-* rename var var1
-*rename var z "dig_con6_referencement_payant"
-*rename var aa "dig_con6_cout_par_clic"
-*rename var ab "dig_con6_cout_par_mille"
-*rename var ac "dig_con6_liens_sponsorisés"
-*rename var surlesquellesdesmarketpl dig_presence3_little_jneina
-*rename var ai dig_presence3_elfabrica.tn
-*rename var aj dig_presence3_savana 
-*rename var surlesquellesdesmarketpla dig_presence3_jumia
-*rename var al dig_presence3_amazon
-*rename var am dig_presence3_ali_baba
-*rename var an dig_presence3_etsy
-*rename var ao dig_presence3_little_jneina
-*rename var autres dig_presence3_autres
-*rename au dig_miseajour2
-*rename av dig_miseajour3
-
 rename bl dig_marketing_num_autres
 rename ck exp_produit_services_avant21
 rename co exp_pays_principal_2021
->>>>>>> parent of cc3f5e8 (Update 26/01/2022)
+
 rename exp_pays_principal exp_pays_principal_avant21
 rename quelestlepaysdafrique exp_afrique_pays
 rename dig_benefice2020 comp_benefice2020
@@ -315,22 +295,14 @@ lab var expprep_norme2 "nom certification"
 lab var expprep_demande "possibilité d’augmenter la production face à une demande accrue"  
 lab var rg_oper_exp "opération d'export en 2021"
 lab var exp_produit_services21 "produit/service exporté en 2021"
-<<<<<<< HEAD
-lab var exp_avant21 "opération d'export avant 2021"
-lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
-lab var exp_pays_avant21 "nombre principal pays pour l'export avant 2021"
-lab var exp_pays_principal_avant21 "nombre principal pays pour l'export avant 2021"
-lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
 lab var exp_pays_21 "nombre de pays export 2021"
-lab var exp_pays_principal_21 "principal pays pour l'export en 2021"
-=======
-lab var exp_pays_21 "nombre de pays export 2021"
-lab var exp_pays_principal_avant21 "principal pays pour l'export avant 2021"
 lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
 lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
 lab var exp_pays_avant21 "nombre de pays export avant 2021"
 lab var exp_pays_principal_2021 "principal pays pour l'export en 2021"
->>>>>>> parent of cc3f5e8 (Update 26/01/2022)
+*lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
+*lab var exp_pays_avant21 "nombre de pays export avant 2021"
+*lab var exp_pays_principal_2021 "principal pays pour l'export en 2021"
 lab var exp_afrique "exportation vers un pays d'Afrique subsaharienne 12 derniers mois"
 lab var exp_afrique_pays "pays Afrique subsaharienne"
 lab var info_neces "possession des informations comptables nécessaires"
@@ -377,7 +349,8 @@ lab val variablename labelname
 * 	PART 8: Removing trail and leading spaces in from string variables  			
 ***********************************************************************
 * Creating global according to the variable type
-global varstring entr_histoire entr_produit1 entr_produit2 entr_produit3 dig_marketing_num_autres investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_produit_services21 exp_pays_principal_avant21 exp_pays_principal_2021 exp_afrique_pays info_compt2 car_attend1 car_attend2 car_attend3
+global varstring info_compt2 exp_afrique_principal exp_pays_principal_21 car_attend1 car_attend2 car_attend3 exp_produit_services_avant21 exp_produit_services21 entr_histoire entr_bien_service entr_produit1 entr_produit2 entr_produit3 dig_presence3_exemples_autres investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2
+global numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21
 
 
 {
