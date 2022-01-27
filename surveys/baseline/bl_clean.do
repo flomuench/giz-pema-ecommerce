@@ -45,6 +45,7 @@ format Date %td
 
 
 }
+<<<<<<< HEAD
 /* --------------------------------------------------------------------
 	PART 1.2: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
@@ -180,6 +181,10 @@ lab var dig_logistique_retour_nsp "Ne sais pas"
 
 *horaire_pref
 }
+=======
+	
+	
+>>>>>>> parent of cc3f5e8 (Update 26/01/2022)
 ***********************************************************************
 * 	PART 2: 	Drop all unneeded columns and rows from the survey		  			
 ***********************************************************************
@@ -207,7 +212,9 @@ rename *, lower
 * 	PART 5: 	Rename the variables as needed
 ***********************************************************************
 {
+
 	* Section suivi
+<<<<<<< HEAD
 rename nomdelapersonne ident_nom
 rename nomdelentreprise ident_entreprise
 rename merciderenseignerlenomcorr ident_nom_correct_entreprise
@@ -219,16 +226,37 @@ rename autres dig_presence3_exemples_autres
 rename aq dig_marketing_num19_autres
 rename quelestlepaysdafrique exp_afrique_principal
 rename bt exp_pays_principal_21
+=======
+* rename var var1
+*rename var z "dig_con6_referencement_payant"
+*rename var aa "dig_con6_cout_par_clic"
+*rename var ab "dig_con6_cout_par_mille"
+*rename var ac "dig_con6_liens_sponsorisés"
+*rename var surlesquellesdesmarketpl dig_presence3_little_jneina
+*rename var ai dig_presence3_elfabrica.tn
+*rename var aj dig_presence3_savana 
+*rename var surlesquellesdesmarketpla dig_presence3_jumia
+*rename var al dig_presence3_amazon
+*rename var am dig_presence3_ali_baba
+*rename var an dig_presence3_etsy
+*rename var ao dig_presence3_little_jneina
+*rename var autres dig_presence3_autres
+*rename au dig_miseajour2
+*rename av dig_miseajour3
+
+rename bl dig_marketing_num_autres
+rename ck exp_produit_services_avant21
+rename co exp_pays_principal_2021
+>>>>>>> parent of cc3f5e8 (Update 26/01/2022)
 rename exp_pays_principal exp_pays_principal_avant21
-rename bp exp_produit_services_avant21
+rename quelestlepaysdafrique exp_afrique_pays
 rename dig_benefice2020 comp_benefice2020
 rename carsoutien_gouvern car_soutien_gouvern
+rename car_carempl_dive4 car_carempl_div3
 rename acceptezvousdevalidervosré accord_validation
 rename jattestequetouteslesinform attestation_info
-rename car_carempl_dive2 car_carempl_div2
-rename car_carempl_dive4 car_carempl_div3
+*rename dig_miseajou dig_miseajour1
 }
-
 ***********************************************************************
 * 	PART 6: 	Label the variables		  			
 ***********************************************************************
@@ -245,12 +273,16 @@ lab var dig_con2 "définition d'un marketplace"
 lab var dig_con3 "connaissance des publications d’annonces payantes en ligne"
 lab var dig_con4 "définition des publications d’annonces payantes en ligne"
 lab var dig_con5 "connaissance de Google Ads"
-lab var dig_con6 "possibilités de réponses sur Google Ads"
+*lab var dig_con6 "définition de Google Ads"
+*lab var z "dig_con6_referencement_payant"
+*lab var aa "dig_con6_cout_par_clic"
+*lab var ab "dig_con6_cout_par_mille"
+*lab var ac "dig_con6_liens_sponsorisés"
+*lab var surlesquellesdesmarketpl
+
 lab var dig_presence1 "présence sur un site web"
 lab var dig_presence2 "présence sur les réseaux sociaux"
 lab var dig_presence3 "présence sur une marketplace"
-lab var dig_presence3_exemples "exemples présence sur une marketplace"
-lab var dig_presence3_exemples_autres "autres exemples présence sur une marketplace"
 lab var dig_description1 "description entreprise & produit sur site web"
 lab var dig_description2 "description entreprise & produit sur les réseaux sociaux"
 lab var dig_description3 "description entreprise & produit sur marketplace"
@@ -283,6 +315,7 @@ lab var expprep_norme2 "nom certification"
 lab var expprep_demande "possibilité d’augmenter la production face à une demande accrue"  
 lab var rg_oper_exp "opération d'export en 2021"
 lab var exp_produit_services21 "produit/service exporté en 2021"
+<<<<<<< HEAD
 lab var exp_avant21 "opération d'export avant 2021"
 lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
 lab var exp_pays_avant21 "nombre principal pays pour l'export avant 2021"
@@ -290,8 +323,16 @@ lab var exp_pays_principal_avant21 "nombre principal pays pour l'export avant 20
 lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
 lab var exp_pays_21 "nombre de pays export 2021"
 lab var exp_pays_principal_21 "principal pays pour l'export en 2021"
+=======
+lab var exp_pays_21 "nombre de pays export 2021"
+lab var exp_pays_principal_avant21 "principal pays pour l'export avant 2021"
+lab var exp_avant21 " est ce que l'entreprise a exporté avant 2021"
+lab var exp_produit_services_avant21 "produit/service exporté avant 2021"
+lab var exp_pays_avant21 "nombre de pays export avant 2021"
+lab var exp_pays_principal_2021 "principal pays pour l'export en 2021"
+>>>>>>> parent of cc3f5e8 (Update 26/01/2022)
 lab var exp_afrique "exportation vers un pays d'Afrique subsaharienne 12 derniers mois"
-lab var exp_afrique_principal "principal pays Afrique subsaharienne"
+lab var exp_afrique_pays "pays Afrique subsaharienne"
 lab var info_neces "possession des informations comptables nécessaires"
 lab var info_compt1  "numéro de téléphone du comptable"
 lab var info_compt2 "email du comptable"
@@ -303,7 +344,7 @@ lab var car_soutien_gouvern "participation à d'autres programme de coopération
 lab var car_sex_pdg "sexe du PDG"
 lab var car_pdg_age "age du PDG"
 lab var car_carempl_div1  "nombre d'employés femmes"
-lab var car_carempl_div2 "nombre d'employés âgés entre 18 ans et 24 ans "
+lab var car_carempl_dive2 "nombre d'employés âgés entre 18 ans et 24 ans "
 lab var car_carempl_div3 "nombre d'employés à temps partiel"
 lab var car_pdg_educ "niveau education du PDG"
 lab var car_credit1 " perception d'obtenir un crédit"
@@ -313,8 +354,6 @@ lab var car_ecom_prive "réalisation d'achats personnels en ligne"
 lab var car_attend1 "attente 1 du projet"
 lab var car_attend2 "attente 2 du projet"
 lab var car_attend3 "attente 3 du projet"
-lab var perc_com1 "etre informé/courant de la vidéo"
-lab var perc_com2 "etre informé/courant de la garde enfants"
 lab var perc_video  "perception mail video"
 lab var perc_care "perception mail garde enfants"
 lab var perc_iden "identification avec la vidéo"
@@ -338,10 +377,8 @@ lab val variablename labelname
 * 	PART 8: Removing trail and leading spaces in from string variables  			
 ***********************************************************************
 * Creating global according to the variable type
-global varstring info_compt2 exp_afrique_principal exp_pays_principal_21 car_attend1 car_attend2 car_attend3 exp_produit_services_avant21 exp_produit_services21 entr_histoire entr_bien_service entr_produit1 entr_produit2 entr_produit3 dig_presence3_exemples_autres investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2
-global numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21
+global varstring entr_histoire entr_produit1 entr_produit2 entr_produit3 dig_marketing_num_autres investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_produit_services21 exp_pays_principal_avant21 exp_pays_principal_2021 exp_afrique_pays info_compt2 car_attend1 car_attend2 car_attend3
 
-*exp_afrique_pays
 
 {
 ds, has(type string) 

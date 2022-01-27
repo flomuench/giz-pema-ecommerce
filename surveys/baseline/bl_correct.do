@@ -116,15 +116,12 @@ replace entr_produit3 = ustrregexra( entr_produit3 ,"des ","")
 {
 *Remplacer les textes de la variable investcom_2021
 replace investcom_2021 = "100000" if investcom_2021== "100000dt"
-replace investcom_2021 = "8000" if investcom_2021== "huit mille dinars"
+replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
 replace investcom_2021 = "0" if investcom_2021== "zéro"
 replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
 replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
 replace investcom_2021 = "0" if investcom_2021 == "zero"
 replace investcom_2021 = "10000" if investcom_2021 == "10 000"
-replace investcom_2021 = "3500" if investcom_2021== "3 500,000"
-replace investcom_2021 = "30000" if investcom_2021== "trente milles dinars"
-replace investcom_2021 = "9000" if investcom_2021== "9000 (neuf mille dinars)"
 
 *Remplacer les textes de la variable investcom_futur
 replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
@@ -137,10 +134,6 @@ replace investcom_futur = "7000" if investcom_futur == "sept milles  (7000)"
 replace investcom_futur = "10000" if investcom_futur == "10 000"
 replace investcom_futur = "20000" if investcom_futur == "20 000"
 replace investcom_futur = "20000" if investcom_futur == "20000 "
-replace investcom_futur = "5500" if investcom_futur == "5 500,000"
-replace investcom_futur = "30000" if investcom_futur == "trente mille "
-replace investcom_futur = "15000" if investcom_futur == "15000 (quinze mille )"
-
 
 *Correction de la variable compexp_2020
 replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
@@ -223,8 +216,6 @@ replace entr_produit1 = "matériel éléctrique" if entr_produit1 == "الموا
 replace entr_produit2 = "matériaux de construction" if entr_produit2 == "مواد البناء"
 replace entr_produit3 = "produits agro-alimentaires" if entr_produit3 == "الصناعات الغذائية"
 
-* Traduction Nom Entreprise
-replace ident_nom_correct_entreprise = "Entrepôts frigorifiques centraux" if ident_nom_correct_entreprise == "مخازن التبريد بالوسط"
 
 *Traduction histoire de l'entreprise
 replace entr_histoire = "International Trading and Consulting Company est une société entièrement exportatrice créée en 2006, caractérisée par une vaste expérience dans le domaine du commerce international et sa mission principale est d'améliorer l'activité des clients en fournissant la meilleure valeur pour leurs investissements dans le monde." if entr_histoire == "الشركة الدولية للتجارة والاستشارة هي شركة مصدرة بالكامل تأسست سنة 2006, تتميز بخبرة واسعة في مجال التجارة الدولية وتتمثل مهمتها الأساسية في تعزيز أعمال العملاء من خلال تقديم أفضل قيمة لاستثماراتهم في العالم، كما تقدم الشركة خدمات استشارية تمحور بالاساس حول طرق تقليل تكاليف الشراء والنقل وتسهيل عمل الحرفاء."
@@ -366,4 +357,4 @@ save "bl_inter", replace
 
 cd "$bl_checks"
 
-export excel id_plateforme needs_check questions_needing_check date-commentsmsb using "fiche_correction" if needs_check==1, firstrow(variables) replace
+export excel id_plateforme needs_check questions_needing_check date-dz using "fiche_correction" if needs_check==1, firstrow(variables) replace
