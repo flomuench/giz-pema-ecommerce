@@ -45,8 +45,8 @@ format Date %td
 
 }
 
-replace acceptezvousenregistrement = "1" if acceptezvousenregistrement=="oui / نعم"
-destring acceptezvousenregistrement, replace
+replace Acceptezvousenregistrement = "1" if Acceptezvousenregistrement=="oui / نعم"
+destring Acceptezvousenregistrement, replace
 
 
 /* --------------------------------------------------------------------
@@ -192,12 +192,12 @@ replace dig_logistique_retour_nsp = 1 if strpos( dig_logistique_retour, "-999")
 ***********************************************************************
 * 	PART 2: 	Drop all unneeded columns and rows from the survey		  			
 ***********************************************************************
-{
+
 *drop VARNAMES
 
 drop dig_con2 dig_con6 Surlesquellesdesmarketplaces dig_marketing_num19 dig_con4 dig_logistique_retour
 
-}
+
 
 drop if Id_plateforme==.
 
@@ -241,7 +241,7 @@ rename exp_pays_principal exp_pays_principal_avant21
 rename dig_benefice2020 comp_benefice2020
 rename carsoutien_gouvern car_soutien_gouvern
 rename car_carempl_dive4 car_carempl_div3
-rename acceptezvousdevalidervosré accord_validation
+//rename acceptezvousdevalidervosré accord_validation
 //rename jattestequetouteslesinform attestation_info
 *rename dig_miseajou dig_miseajour1
 }

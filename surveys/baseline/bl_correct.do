@@ -52,16 +52,15 @@ gen commentsmsb = ""
 * Needs check
 //replace needs_check = 1 if id_plateforme = 572== "a"
 //replace needs_check = 1 if id_plateforme = 572 == "aa"
-replace needs_check = 1 if comp_benefice2020 == "§§"
-replace needs_check = 1 if comp_benefice2020 == "na"
-replace needs_check = 1 if exp_pays_21 ==200
+//replace needs_check = 1 if comp_benefice2020 == "§§"
+//replace needs_check = 1 if comp_benefice2020 == "na"
+//replace needs_check = 1 if exp_pays_21 ==200
 
 * Questions needing check
 replace questions_needing_check = "investcom_2021/investcom_futur" if id_plateforme==572
 replace questions_needing_check = "exp_pays_21" if id_plateforme==757
 replace questions_needing_check = "comp_benefice2020" if id_plateforme==592
 replace questions_needing_check = "comp_benefice2020" if id_plateforme==148
-
 
 ***********************************************************************
 * 	PART 2: use regular expressions to correct variables 		  			
