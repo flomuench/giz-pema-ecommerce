@@ -357,4 +357,4 @@ save "bl_inter", replace
 
 cd "$bl_checks"
 
-export excel id_plateforme needs_check questions_needing_check date-dz using "fiche_correction" if needs_check==1, firstrow(variables) replace
+export excel id_plateforme needs_check questions_needing_check date-commentsmsb using "fiche_correction" if needs_check==1, firstrow(variables) replace

@@ -1,8 +1,8 @@
 ***********************************************************************
-* 			registration generate									  	  
+* 			baseline generate									  	  
 ***********************************************************************
 *																	    
-*	PURPOSE: generate registration variables				  							  
+*	PURPOSE: generate baseline variables				  							  
 *																	  
 *																	  
 *	OUTLINE:														  
@@ -17,18 +17,105 @@
 *	9) eligibility	
 *
 *																	  															      
-*	Author:  	Florian Muench & Kais Jomaa							  
-*	ID variaregise: 	id (example: f101)			  					  
-*	Requires: regis_inter.dta 	  								  
-*	Creates:  regis_inter.dta			                          
+*	Author:  	Teo Firpo & Florian Muench & Kais Jomaa							  
+*	ID variaregise: 	id_plateforme (example: 777)			  					  
+*	Requires: bl_inter.dta 	  								  
+*	Creates:  bl_inter.dta			                          
 *																	  
 ***********************************************************************
-* 	PART 1:  Define non-response categories  			
+* 	PART 1:  Sum points in info questions 			
 ***********************************************************************
-use "${regis_intermediate}/regis_inter", clear
+use "${bl_intermediate}/bl_inter", clear
+
+g dig_con2 = 0 
+replace dig_con2 = 1 if dig_con2_correct
+lab var dig_con2 "Correct response to question about digital markets"
+
+g dig_con4 = 0
+replace dig_con4 = 1 if dig_con4_rech == 1
+lab var dig_con4 "Correct response to question about online ads"
+
+g dig_con6 = 0
+replace dig_con6 = dig_con6 + 0.33 if dig_con6_referencement_payant == 1
+replace dig_con6 = dig_con6 + 0.33 if dig_con6_cout_par_clic == 1
+replace dig_con6 = dig_con6 + 0.33 if dig_con6_liens_sponsorisés == 1
+
+g dig_presence_score = dig_presence1 + dig_presence2 + dig_presence3
+
+g dig_presence3_ex = dig_presence3_ex1 + dig_presence3_ex2 + dig_presence3_ex3 + dig_presence3_ex4 + dig_presence3_ex5 + dig_presence3_ex6 +  dig_presence3_ex7 + dig_presence3_ex8 
+
+g dig_description1_score = 0
+replace dig_description1_score = 1 if dig_description1==4
+replace dig_description1_score = 0.51 if dig_description1==3
+replace dig_description1_score = 0.49 if dig_description1==2
+
+g dig_description2_score = 0
+replace dig_description2_score = 1 if dig_description2==4
+replace dig_description2_score = 0.51 if dig_description2==3
+replace dig_description2_score = 0.49 if dig_description2==2
+
+g dig_description3_score = 0
+replace dig_description3_score = 1 if dig_description3==4
+replace dig_description3_score = 0.51 if dig_description3==3
+replace dig_description3_score = 0.49 if dig_description3==2
+
+g dig_miseajour1_score = 0
+replace dig_miseajour1_score = 0.25 if dig_miseajour1 = 2
+replace dig_miseajour1_score = 0.5 if dig_miseajour1 = 3 
+replace dig_miseajour1_score = 0.75 if dig_miseajour1 = 4
+replace dig_miseajour1_score = 1 if dig_miseajour1 = 5
+
+g dig_miseajour2_score = 0
+replace dig_miseajour2_score = 0.25 if dig_miseajour2 = 2
+replace dig_miseajour2_score = 0.5 if dig_miseajour2 = 3 
+replace dig_miseajour2_score = 0.75 if dig_miseajour2 = 4
+replace dig_miseajour2_score = 1 if dig_miseajour2 = 5
+
+g dig_miseajour3_score = 0
+replace dig_miseajour3_score = 0.25 if dig_miseajour3 = 2
+replace dig_miseajour3_score = 0.5 if dig_miseajour3 = 3 
+replace dig_miseajour3_score = 0.75 if dig_miseajour3 = 4
+replace dig_miseajour3_score = 1 if dig_miseajour3 = 5
+
+g dig_payment1_score = 0
+replace dig_payment1_score = 0.5 if dig_payment1 == 1
+replace dig_payment1_score = 1 if dig_payment1 == 2
+
+g dig_payment2_score = 0
+replace dig_payment2_score = 0.5 if dig_payment2 == 1
+replace dig_payment2_score = 1 if dig_payment2 == 2
+
+g dig_payment3_score = 0
+replace dig_payment3_score = 0.5 if dig_payment3 == 1
+replace dig_payment3_score = 1 if dig_payment3 == 2
+
+g digmark1 = 0.2 if dig_marketing_num19_sea == 1 | dig_marketing_num19_seo == 1
+
+g digmark2 = 0.1 if dig_marketing_num19_blg == 1 | dig_marketing_num19_mail == 1 | dig_marketing_num19_socm == 1 | dig_marketing_num19_autre == 1 
+
+g digmark3 = 0.15 if dig_marketing_num19_pub == 1 |  dig_marketing_num19_prtn == 1 
+
+g dig_marketing_score = digmark1 + digmark2 + digmark3
+
+drop digmark1 digmark2 digmark3
+
+g dig_marketing_ind2_score = 0
+replace dig_marketing_ind2_score = 0.25 if dig_marketing_ind2 == 4
+replace dig_marketing_ind2_score = 0.5 if dig_marketing_ind2 == 3
+replace dig_marketing_ind2_score = 0.75 if dig_marketing_ind2 == 2
+replace dig_marketing_ind2_score = 1 if dig_marketing_ind2 == 5
+
+g dig_logistique_entrepot_score = 0 
+replace dig_logistique_entrepot_score = 0.33 if dig_logistique_entrepot == 1
+replace dig_logistique_entrepot_score = 0.66 if dig_logistique_entrepot == 2
+replace dig_logistique_entrepot_score = 1 if dig_logistique_entrepot == 3
+
+g dig_logistique_retour_score = 0
+replace dig_logistique_retour_score = 1 if dig_logistique_retour_natetr == 1
+replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | dig_logistique_retour_etr == 1
 
 
-***********************************************************************
+**********************************************************************
 * 	PART 1:  Index calculation based on z-score		
 ***********************************************************************
 /*
