@@ -24,16 +24,45 @@ use "${bl_intermediate}/bl_inter", clear
 cd "$bl_checks"
 
 	* create word document
+putdocx clear
 putdocx begin 
 putdocx paragraph
 putdocx text ("Quality checks open question variables: baseline E-commerce training"), bold
 
+
 ***********************************************************************
-* 	PART 2:  Check for & visualise duplicates		  			
+* 	PART 2:  Print all variables that should be numerical but aren't	  			
+***********************************************************************
+
+
+local numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21 car_carempl_div1 car_carempl_dive2 car_carempl_div3
+
+local correct_vars 
+local incorrect_vars
+
+foreach v of local numvars {
+	capture confirm numeric variable `v'
+                if !_rc {
+                        local correct_vars `correct_vars' `v'
+                }
+                else {
+                        local incorrect_vars `incorrect_vars'  `v'
+                }
+}
+
+local list_vars "`incorrect_vars'"
+
+putdocx paragraph
+putdocx text ("String vars that should be numerical but aren't: `list_vars' –––> go back to bl_correct and fix these until they're numerical'") 
+putdocx paragraph
+
+
+***********************************************************************
+* 	PART 3:  Check for & visualise duplicates		  			
 ***********************************************************************
 
 		* put all variables to for which we want to check for duplicates into a local
-local dupcontrol id_plateforme commentvousappelezvous adresseéléctronique
+local dupcontrol id_plateforme 
 
 		* generate a variable = 1 if the observation of the variable has a duplicate
 foreach x of local dupcontrol {
@@ -81,7 +110,7 @@ putdocx pagebreak
 ***********************************************************************
 
 		* define all the variables where respondent had to enter text
-local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_pays_principal_avant21 exp_pays_principal_2021 /// /* firm characteristics */
+local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_pays_principal_avant21 exp_pays_principal2 /// /* firm characteristics */
 	   entr_histoire entr_produit1 entr_produit2 entr_produit3  /// /* personal */
 	   id_base_repondent id_repondent_position car_pdg_age /// /* numerical * / 
 	   dig_marketing_respons dig_service_responsable investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
@@ -99,7 +128,7 @@ putdocx pagebreak
 ***********************************************************************
 	* word file
 cd "$bl_checks"
-putdocx save "regis-checks-question-ouvertes.docx", replace
+putdocx save "bl-checks-question-ouvertes.docx", replace
 	* restore all the observations
 
 

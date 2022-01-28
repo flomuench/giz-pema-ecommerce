@@ -116,9 +116,6 @@ g dig_presence3_exnsp = 0
 replace dig_presence3_exnsp= 1 if strpos(Surlesquellesdesmarketplaces, "-999")
 
 
-
-
-
 * dig_presence3_exemples
 
 * variable dig_marketing_num19
@@ -198,8 +195,15 @@ replace dig_logistique_retour_nsp = 1 if strpos( dig_logistique_retour, "-999")
 drop dig_con2 dig_con6 Surlesquellesdesmarketplaces dig_marketing_num19 dig_con4 dig_logistique_retour
 
 
+* drop empty vars 
 
 drop if Id_plateforme==.
+
+* drop incomplete entries
+
+gen complete = 0 
+
+replace complete = 1 if attest == 1 | attest2 == 1 | Acceptezvousdevalidervosré == 1
 
 
 ***********************************************************************
@@ -259,7 +263,7 @@ lab var entr_produit3 "produit/service principal de l'entreprise 3"
 lab var dig_con1 "connaissance des marketplaces"
 //lab var dig_con2 "définition d'un marketplace"
 lab var dig_con3 "connaissance des publications d’annonces payantes en ligne"
-lab var dig_con4 "définition des publications d’annonces payantes en ligne"
+//lab var dig_con4 "définition des publications d’annonces payantes en ligne"
 lab var dig_con5 "connaissance de Google Ads"
 *lab var dig_con6 "définition de Google Ads"
 *lab var z "dig_con6_referencement_payant"
@@ -332,7 +336,7 @@ lab var dig_marketing_ind1  "présence d'objectifs marketing digital"
 lab var dig_marketing_ind2  "fréquence mesure des objectifs marketing digital"
 lab var dig_marketing_respons "nombre d'émployés chargés activités marketing digital"
 lab var dig_logistique_entrepot "stock des produits dans des entrepôts"
-lab var dig_logistique_retour "retours gratuits des produits vendus en ligne"
+//lab var dig_logistique_retour "retours gratuits des produits vendus en ligne"
 lab var dig_service_responsable "nombre d'émployés chargés demandes internautes"
 lab var dig_service_satisfaction "mesure satisfaction clients en ligne"
 lab var investcom_2021 "montant investi dans les acitivités e-commerce en 2021 (en TND)"

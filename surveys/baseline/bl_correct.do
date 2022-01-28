@@ -75,12 +75,12 @@ lab val id_adminrect correct
 
 */
 
-* Correction des variables investissement
+/* Correction des variables investissement
 replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
 replace investcom_futur = ustrregexra( investcom_futur,"dinars","")
 replace investcom_futur = ustrregexra( investcom_futur,"dt","")
 replace investcom_futur = ustrregexra( investcom_futur,"k","000")
-
+*/
 * Enlever tout les déterminants du nom des produits
 {
 replace entr_produit1 = ustrregexra( entr_produit1 ,"la ","")
@@ -113,7 +113,7 @@ replace entr_produit3 = ustrregexra( entr_produit3 ,"des ","")
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
-*Remplacer les textes de la variable investcom_2021
+/*Remplacer les textes de la variable investcom_2021
 replace investcom_2021 = "100000" if investcom_2021== "100000dt"
 replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
 replace investcom_2021 = "0" if investcom_2021== "zéro"
@@ -152,12 +152,12 @@ replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
 replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
 replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
 replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
-
+*/
 *Correction de la variable dig_revenues_ecom
 replace dig_revenues_ecom = "200000" if dig_revenues_ecom== "200 000"
 replace dig_revenues_ecom = "11131" if dig_revenues_ecom== "11 131"
 
-*Correction de la variable comp_benefice2020
+/*Correction de la variable comp_benefice2020
 replace comp_benefice2020 = "337892" if comp_benefice2020== "337 892"
 replace comp_benefice2020 = "317887,923" if comp_benefice2020== "317 887,923"
 replace comp_benefice2020 = "28929" if comp_benefice2020== "28 929"
@@ -166,7 +166,7 @@ replace comp_benefice2020 = "191805" if comp_benefice2020== "191805000"
 replace comp_benefice2020 = "317888" if comp_benefice2020 == "317887,923"
 replace comp_benefice2020 = "41000" if comp_benefice2020 == "41 000"
 replace comp_benefice2020 = "46000" if comp_benefice2020 == "46000 quarante six mille dinar"
-
+*/
 
 }
 ***********************************************************************
@@ -190,7 +190,7 @@ replace comp_benefice2020 = "46000" if comp_benefice2020 == "46000 quarante six 
 *gen rg_nom_repr= rg_nom_rep            
 *replace rg_nom_repr="$check_again" if rg_nom_rep == "Études géomatiques." 
 
-* Correction de la variable investcom_2021
+/* Correction de la variable investcom_2021
 replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
 
 * correction de lavariable comp_benefice2020
@@ -199,7 +199,7 @@ replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
 
 * Correction de la variable investcom_futur
 replace investcom_futur = "88888888888888888" if investcom_futur== "aa"
-
+*/
  
 }
 
@@ -319,22 +319,7 @@ lab var q42f "(in-) formel argument de vente"
 ***********************************************************************
 * 	PART 10:  Identify duplicates (for removal see bl_generate)
 ***********************************************************************
-	* formating the variables for whcih we check duplicates
-*format firmname rg_emailrep rg_emailpdg %-35s
-*format id_plateforme %9.0g
-*sort firmname
-	
-	* id_plateform
-*duplicates report id_plateform
 
-	* email
-*duplicates report rg_emailrep
-*duplicates report rg_emailpdg
-*duplicates tag rg_emailpdg, gen(dup_emailpdg)
-
-	* firmname	
-*duplicates report firmname
-*duplicates tag firmname, gen(dup_firmname)
 
 
 ***********************************************************************
@@ -357,20 +342,6 @@ save "bl_inter", replace
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
 
-drop if acceptezvousdevalidervosré == 0
-
-gen complete = 0
-replace complete = 1 if attest == 1 | attest2 == 1 | acceptezvousdevalidervosré == 1
-
-drop if complete == 0
-drop complete
-
-sort id_plateforme, stable
-
-quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
-
-replace needs_check = 1 if dup>0
-
 cd "$bl_checks"
 
-export excel id_plateforme needs_check questions_needing_check date-commentsmsb using "fiche_correction" if needs_check==1, firstrow(variables) replace
+capture export excel id_plateforme needs_check questions_needing_check date-commentsmsb using "fiche_correction" if needs_check==1, firstrow(variables) replace
