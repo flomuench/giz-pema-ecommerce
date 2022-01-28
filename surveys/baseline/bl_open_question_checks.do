@@ -33,7 +33,7 @@ putdocx text ("Quality checks open question variables: baseline E-commerce train
 ***********************************************************************
 
 		* put all variables to for which we want to check for duplicates into a local
-local dupcontrol id_plateforme commentvousappelezvous adresseéléctronique
+local dupcontrol id_plateforme id_base_respondent ident_email_1
 
 		* generate a variable = 1 if the observation of the variable has a duplicate
 foreach x of local dupcontrol {
@@ -81,11 +81,11 @@ putdocx pagebreak
 ***********************************************************************
 
 		* define all the variables where respondent had to enter text
-local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_pays_principal_avant21 exp_pays_principal_2021 /// /* firm characteristics */
+local bl_open  investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2 exp_pays_principal_avant21 exp_pays_principal_21 /// /* firm characteristics */
 	   entr_histoire entr_produit1 entr_produit2 entr_produit3  /// /* personal */
 	   id_base_repondent id_repondent_position car_pdg_age /// /* numerical * / 
-	   dig_marketing_respons dig_service_responsable investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
-				
+	   dig_marketing_respons dig_service_responsable investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_div2 car_carempl_div3 car_adop_peer
+
 		* export all the variables into a word document
 foreach x of local bl_open {
 putdocx paragraph, halign(center)
