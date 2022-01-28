@@ -91,10 +91,7 @@ global bl_figures = "${bl_output}/descriptive-statistics-figures"
 global bl_progress = "${bl_output}/progress-eligibility-characteristics"
 
 
-		* global for *type* variables
-
-		
-		* set seeds for replication
+			* set seeds for replication
 set seed 8413195
 set sortseed 8413195
 		

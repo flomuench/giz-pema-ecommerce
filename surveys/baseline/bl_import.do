@@ -58,6 +58,9 @@ append using temp_bl_raw, force
 ***********************************************************************
 * 	PART 2: save 						
 ***********************************************************************
-save "bl_raw", replace
-
 erase temp_bl_raw.dta
+
+cd "$bl_intermediate"
+save "bl_inter", replace
+
+
