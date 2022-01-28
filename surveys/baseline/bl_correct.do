@@ -296,6 +296,9 @@ lab var q42f "(in-) formel argument de vente"
 */
 }
 
+
+
+
 ***********************************************************************
 * 	PART 9:  Convert data types to the appropriate format
 ***********************************************************************
@@ -353,6 +356,20 @@ save "bl_inter", replace
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
+
+drop if acceptezvousdevalidervosré == 0
+
+gen complete = 0
+replace complete = 1 if attest == 1 | attest2 == 1 | acceptezvousdevalidervosré == 1
+
+drop if complete == 0
+drop complete
+
+sort id_plateforme, stable
+
+quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
+
+replace needs_check = 1 if dup>0
 
 cd "$bl_checks"
 
