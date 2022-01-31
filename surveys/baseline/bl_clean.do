@@ -50,6 +50,13 @@ format Date %td
 replace Acceptezvousenregistrement = "1" if Acceptezvousenregistrement=="oui / نعم"
 destring Acceptezvousenregistrement, replace
 
+replace attest = "1" if attest=="oui نعم"
+destring attest, replace
+
+replace attest2 = "1" if attest2=="oui نعم"
+destring attest2, replace
+
+
 
 /* --------------------------------------------------------------------
 	PART 1.2: Fix mutliple choice questions
