@@ -24,7 +24,7 @@
 ***********************************************************************
 
 
-use "${bl_intermediate}/bl_inter", clear
+use "${bl_raw}/bl_raw", clear
 
 {
 	* string
@@ -154,13 +154,6 @@ replace exp_afrique = "1" if exp_afrique == "oui / نعم"
 replace exp_afrique = "0" if exp_afrique == "non / لا"
 replace exp_afrique = "-999" if exp_afrique == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
 destring exp_afrique, replace
-
-
-replace attest = "1" if attest=="oui نعم"
-destring attest, replace
-
-replace attest2 = "1" if attest2=="oui نعم"
-destring attest2, replace
 
 
 

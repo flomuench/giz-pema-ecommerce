@@ -60,7 +60,7 @@ append using temp_bl_raw, force
 ***********************************************************************
 erase temp_bl_raw.dta
 
-cd "$bl_intermediate"
-save "bl_inter", replace
+cd "$bl_raw"
+save "bl_raw", replace
 
 
