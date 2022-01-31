@@ -48,8 +48,113 @@ format Date %td
 
 }
 
-replace Acceptezvousenregistrement = "1" if Acceptezvousenregistrement=="oui / نعم"
-destring Acceptezvousenregistrement, replace
+
+/* --------------------------------------------------------------------
+	PART 1.2: Turn binary questions numerical 
+----------------------------------------------------------------------*/
+
+local binaryvars Acceptezvousenregistrement id_ident2 dig_con1 dig_con3 dig_con5   
+
+foreach var of local binaryvars {
+	replace `var' = "1" if `var' == "oui / نعم" 
+	replace `var' = "0" if `var' == "non / لا"
+	replace `var' = "-999" if `var' == "ne sais pas - ما نعرفش"
+	destring `var', replace
+}
+
+local binaryvars2 dig_presence1 dig_presence2 dig_presence3
+
+foreach var of local binaryvars2 {
+	replace `var' = "1" if `var' == "oui"
+	replace `var' = "0" if `var' == "non"
+	destring `var', replace
+}
+
+
+replace dig_marketing_lien = "0" if dig_marketing_lien == "non  / لا"
+replace dig_marketing_lien = "1" if dig_marketing_lien == "oui  / نعم"
+replace dig_marketing_lien = "0" if dig_marketing_lien == "ne sais pas - ما نعرفش"
+destring dig_marketing_lien, replace
+
+
+replace expprep_cible = "1" if expprep_cible == "oui /  نعم"
+replace expprep_cible = "0" if expprep_cible == "non  لا"
+replace expprep_cible = "-1200" if expprep_cible == "prévu  عن قريب / متوقعة"
+destring expprep_cible, replace
+
+
+replace dig_vente = "1" if dig_vente == "oui /نعم"
+replace dig_vente = "0" if dig_vente == "non / لا"
+replace dig_vente = "-999" if dig_vente == "ne sais pas - ما نعرفش"
+destring dig_vente, replace
+
+replace dig_marketing_ind1 = "1" if dig_marketing_ind1 == "oui /نعم"
+replace dig_marketing_ind1 = "0" if dig_marketing_ind1 == "non / لا"
+replace dig_marketing_ind1 = "-999" if dig_marketing_ind1 == "ne sais pas - ما نعرفش"
+destring dig_marketing_ind1, replace
+
+
+replace attest = "1" if attest == "oui نعم"
+destring attest, replace
+replace attest2 = "1" if attest2 == "oui نعم"
+destring attest2, replace
+
+encode entr_bien_service, gen(entr_service_bien)
+
+replace dig_service_satisfaction = "0" if dig_service_satisfaction == "non لا"
+replace dig_service_satisfaction = "1" if dig_service_satisfaction == "oui  نعم"
+replace dig_service_satisfaction = "-999" if dig_service_satisfaction == "ne sais pas - ما نعرفش"
+destring dig_service_satisfaction, replace
+
+replace expprep_norme = "0" if expprep_norme == "non  لا"
+replace expprep_norme = "1" if expprep_norme == "oui نعم"
+replace expprep_norme = "-999" if expprep_norme == "ne sais pas - ما نعرفش"
+destring expprep_norme, replace
+
+replace expprep_demande = "1" if expprep_demande == "oui / نعم"
+replace expprep_demande = "0" if expprep_demande == "non / لا"
+replace expprep_demande = "-999" if expprep_demande == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring expprep_demande, replace
+
+replace rg_oper_exp = "1" if rg_oper_exp == "oui / نعم"
+replace rg_oper_exp = "0" if rg_oper_exp == "non / لا"
+replace rg_oper_exp = "-999" if rg_oper_exp == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring rg_oper_exp, replace
+
+replace carsoutien_gouvern = "1" if carsoutien_gouvern == "oui / نعم"
+replace carsoutien_gouvern = "0" if carsoutien_gouvern == "non / لا"
+replace carsoutien_gouvern = "-999" if carsoutien_gouvern == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring carsoutien_gouvern, replace
+
+replace car_sex_pdg = "1" if car_sex_pdg == "femme أنثى"
+replace car_sex_pdg = "2" if car_sex_pdg == "homme ذكر"
+destring car_sex_pdg, replace
+
+replace car_pdg_educ = "1" if car_pdg_educ == "aucune scolarité, école primaire, secondaire (sans obtention du bac) ماقراش/ تعليم ابتدائي / تعليم ثانوي (ما خذاش البكالوريا)"
+replace car_pdg_educ = "1" if car_pdg_educ == "formation professionnelle diplômante (bts/ btp...)  تكوين مهني (يمكن من الحصول على شهادة)"
+replace car_pdg_educ = "2" if car_pdg_educ == "diplôme de l'enseignement secondaire (baccalauréat) متحصل على شهادة ختم التعليم الثانوي (البكالوريا)"
+replace car_pdg_educ = "3" if car_pdg_educ == "enseignement supérieur (diplôme universitaire) متحصل على شهادة جامعية"
+replace car_pdg_educ = "-999" if car_pdg_educ == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring car_pdg_educ, replace
+
+replace car_ecom_prive = "0" if car_ecom_prive == "non / لا"
+replace car_ecom_prive = "1" if car_ecom_prive == "oui / نعم"
+replace car_ecom_prive = "-999" if car_ecom_prive == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring car_ecom_prive, replace
+
+replace perc_com1 = "0" if perc_com1 == "non / لا"
+replace perc_com1 = "1" if perc_com1 == "oui / نعم"
+destring perc_com1, replace
+
+replace perc_com2 = "0" if perc_com2 == "non / لا"
+replace perc_com2 = "1" if perc_com2 == "oui / نعم"
+destring perc_com2, replace
+
+replace exp_afrique = "1" if exp_afrique == "oui / نعم"
+replace exp_afrique = "0" if exp_afrique == "non / لا"
+replace exp_afrique = "-999" if exp_afrique == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring exp_afrique, replace
+
 
 replace attest = "1" if attest=="oui نعم"
 destring attest, replace
@@ -60,7 +165,7 @@ destring attest2, replace
 
 
 /* --------------------------------------------------------------------
-	PART 1.2: Fix mutliple choice questions
+	PART 1.3: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
 {
 * variable dig_con2
@@ -125,9 +230,6 @@ replace dig_presence3_ex8= 1 if strpos(Surlesquellesdesmarketplaces, "r8")
 g dig_presence3_exnsp = 0
 replace dig_presence3_exnsp= 1 if strpos(Surlesquellesdesmarketplaces, "-999")
 
-
-* dig_presence3_exemples
-
 * variable dig_marketing_num19
 gen dig_marketing_num19_sea = 0
 replace dig_marketing_num19_sea = 1 if strpos(dig_marketing_num19, "r1")
@@ -191,6 +293,82 @@ replace dig_logistique_retour_aucun = 1 if strpos( dig_logistique_retour, "r4")
 gen dig_logistique_retour_nsp = 0
 replace dig_logistique_retour_nsp = 1 if strpos( dig_logistique_retour, "-999")
 
+* dig_description 
+
+local vars_description  dig_description1 dig_description2 dig_description3
+
+foreach var of local vars_description {
+	replace `var' = "0.49" if `var' == "seulement une description de l’entreprise / فقط تعريف الشركة"
+	replace `var' = "0.51" if `var' == "seulement une description des produits / فقط تعريف المنتجات"
+	replace `var' = "1" if `var' == "description complète de l’entreprise et des produits / تعريف كامل للشركة وللمنتجات"
+	replace `var' = "0" if `var' == "non / لا"
+	replace `var' = "-999" if `var' == "Ne sais pas"
+	destring `var', replace
+}
+
+* dig_miseajour1
+
+local vars_misea dig_miseajour2 dig_miseajour1 dig_miseajour3
+
+foreach var of local vars_misea {
+	replace `var' = "0" if `var' == "jamais / أبدا"
+	replace `var' = "0.25" if `var' == "annuellement / سنويا"
+	replace `var' = "0.5" if `var' == "mensuellement / شهريا"
+	replace `var' = "0.75" if `var' == "hebdomadairement / أسبوعيا"
+	replace `var' = "1" if `var' == "plus qu'une fois par semaine / أكثر من مرة في الأسبوع"
+	destring `var', replace
+	} 
+	
+* dig_payment
+local vars_payments dig_payment1 dig_payment2 dig_payment3
+
+foreach var of local vars_payments {
+	replace `var' = "0.5" if `var' == "seulement commander en ligne, mais le paiement se fait par d'autres moyens (virement, mandat postal, cash-on-delivery...)  / تكمندي منو فقط وتخلص بوسائل أخرى"
+	replace `var' = "1" if `var' == "commander et payer en ligne /  تكمندي وتخلص منو"
+	replace `var' = "0" if `var' == "ni commander ni payer en ligne / لا تكمندي لا تخلص"
+	destring `var', replace
+}
+
+* dig_marketing_ind2
+
+replace dig_marketing_ind2 = "1" if dig_marketing_ind2 == "oui, tous les mois  أي، كل شهر"
+replace dig_marketing_ind2 = "0.75" if dig_marketing_ind2 == "oui, trimestriellement أي، كل تريميستا"
+replace dig_marketing_ind2 = "0.5" if dig_marketing_ind2 == "oui, une fois par an  أي مرة في العام"
+replace dig_marketing_ind2 = "0.25" if dig_marketing_ind2 == "oui, mais moins d'une fois par an  أي، أقل من مرة في العام"
+replace dig_marketing_ind2 = "0" if dig_marketing_ind2 == "non لا"
+replace dig_marketing_ind2 = "=999" if dig_marketing_ind2 == "ne sais pas"
+destring dig_marketing_ind2, replace
+
+	
+	
+* dig_logistique_entrepot 
+
+replace dig_logistique_entrepot = "0.33" if dig_logistique_entrepot == "oui, mais uniquement en tunisie  / نعم, أما نستعملوا مستودعات في تونس فقط"
+replace dig_logistique_entrepot = "0.66" if dig_logistique_entrepot == "oui, mais uniquement à l'étranger  / الخارج نعم نستعملوا في مستودعات في"
+replace dig_logistique_entrepot = "1" if dig_logistique_entrepot == "oui, j’utilise des entrepôts nationaux et à l’étranger /  نعم نستعملوا في مستودعات في تونس وفي الخارج"
+replace dig_logistique_entrepot = "0" if dig_logistique_entrepot == "non, je n’utilise pas des entrepôts / لا"
+replace dig_logistique_entrepot = "-999" if dig_logistique_entrepot == "ne sais pas"
+destring dig_logistique_entrepot, replace
+	
+	
+* investcom_benefit1-2
+
+replace investcom_benefit1 = "1" if investcom_benefit1 == "1 : très bas منخفضة برشا"
+replace investcom_benefit1 = "10" if investcom_benefit1 == "10 : très haut مرتفعة برشا"
+destring investcom_benefit1, replace
+
+replace investcom_benefit2 = "1" if investcom_benefit2 == "1 : très bas منخفضة برشا"
+replace investcom_benefit2 = "10" if investcom_benefit2 == "10 : très haut مرتفعة برشا"
+destring investcom_benefit2, replace
+
+
+replace car_credit1 = "1" if car_credit1 == "1 très difficile صعيب ياسر"
+replace car_credit1 = "10" if car_credit1 == "10 très facile ساهل برشا"
+destring car_credit1, replace
+
+replace car_risque = "1" if car_risque == "1 non-disposée à prendre des risques"
+replace car_risque = "10" if car_risque == "10 disposée à prendre des risques / قادرة على المخاطرة"
+destring car_risque, replace
 
 *horaire_pref
 }
@@ -202,7 +380,7 @@ replace dig_logistique_retour_nsp = 1 if strpos( dig_logistique_retour, "-999")
 
 *drop VARNAMES
 
-drop dig_con2 dig_con6 Surlesquellesdesmarketplaces dig_marketing_num19 dig_con4 dig_logistique_retour
+drop dig_con2 dig_con6 Surlesquellesdesmarketplaces dig_marketing_num19 dig_con4 dig_logistique_retour entr_bien_service
 
 drop if Id_plateforme==.
 
@@ -232,6 +410,8 @@ order id_plateforme heure date attest attest2 acceptezvousdevalidervosré survey
 * 	PART 5: 	Rename the variables as needed
 ***********************************************************************
 {
+
+rename entr_service_bien entr_bien_service
 
 	* Section suivi
 
@@ -381,7 +561,7 @@ lab var comp_ca2020 "chiffre d'affaire total 2020"
 lab var dig_revenues_ecom "chiffre d'affaire ventes en ligne 2020"
 lab var comp_benefice2020 "bénéfices 2020"
 lab var car_soutien_gouvern "participation à d'autres programme de coopération internationale"
-lab var car_sex_pdg "sexe du PDG"
+lab var car_sex_pdg "sexe du PDG - 1 = femme"
 lab var car_pdg_age "age du PDG"
 lab var car_carempl_div1  "nombre d'employés femmes"
 lab var car_carempl_dive2 "nombre d'employés âgés entre 18 ans et 24 ans "
@@ -408,7 +588,7 @@ lab var tel_sup2 "numéro téléphone suppléméntaire 2"
 ***********************************************************************
 * Creating global according to the variable type
 global varstring info_compt2 exp_afrique_principal exp_pays_principal_21 car_attend1 car_attend2 car_attend3 exp_produit_services_avant21 exp_produit_services21 entr_histoire entr_bien_service entr_produit1 entr_produit2 entr_produit3 dig_presence3_exemples_autres investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 expprep_norme2
-global numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21
+global numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 car_carempl_div1 car_carempl_dive2 car_carempl_div3 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21
 
 
 {

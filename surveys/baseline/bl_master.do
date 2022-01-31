@@ -7,8 +7,7 @@
 *																	  
 *	OUTLINE: 	PART 1: Set standard settings & install packages	  
 *				PART 2: Prepare dynamic folder paths & globals		  
-*				PART 3: Run all do-files                          
-*																	  
+*				PART 3: Run all do-files                          											  
 *																	  
 *	Author:  	Teo Firpo & Florian Münch							    
 *	ID variable: id_email		  					  
@@ -116,15 +115,20 @@ if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
-//if (1) do "${bl_github}/bl_generate.do"
+if (1) do "${bl_github}/bl_generate.do"
 /* --------------------------------------------------------------------
 	PART 3.5: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_open_question_checks.do"
 /* --------------------------------------------------------------------
-	PART 3.6: Export pdf with descriptive statistics on responses
+	PART 3.6: Perform logical checks
+----------------------------------------------------------------------*/	
+if (1) do "${bl_github}/bl_test.do"
+/* --------------------------------------------------------------------
+	PART 3.7: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
 //if (1) do "${bl_github}/bl_progress_statistics.do"
+
 
 
 /* 

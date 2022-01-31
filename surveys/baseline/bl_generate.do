@@ -6,15 +6,8 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1) sector
-* 	2) gender
-* 	3) onshore / offshore  							  
-*	4) produit exportable  
-*	5) intention d'exporter 			  
-*	6) une opération d'export				  
-*   7) export status  
-*	8) age
-*	9) eligibility	
+*	1) Sum up points of info questions
+* 	2) Indices
 *
 *																	  															      
 *	Author:  	Teo Firpo & Florian Muench & Kais Jomaa							  
@@ -25,6 +18,7 @@
 ***********************************************************************
 * 	PART 1:  Sum points in info questions 			
 ***********************************************************************
+
 use "${bl_intermediate}/bl_inter", clear
 
 g dig_con2 = 0 
@@ -35,59 +29,28 @@ g dig_con4 = 0
 replace dig_con4 = 1 if dig_con4_rech == 1
 lab var dig_con4 "Correct response to question about online ads"
 
-g dig_con6 = 0
-replace dig_con6 = dig_con6 + 0.33 if dig_con6_referencement_payant == 1
-replace dig_con6 = dig_con6 + 0.33 if dig_con6_cout_par_clic == 1
-replace dig_con6 = dig_con6 + 0.33 if dig_con6_liens_sponsorisés == 1
+g dig_con6_score = 0
+replace dig_con6_score = dig_con6_score + 0.33 if dig_con6_referencement_payant == 1
+replace dig_con6_score = dig_con6_score + 0.33 if dig_con6_cout_par_clic == 1
+replace dig_con6_score = dig_con6_score + 0.33 if dig_con6_liens_sponsorisés == 1
+lab var dig_con6_score "Score on question about Google Ads"
 
-g dig_presence_score = dig_presence1 + dig_presence2 + dig_presence3
+g dig_presence_score = 0
+replace dig_presence_score = 0.33 if dig_presence1 == 1
+replace dig_presence_score = dig_presence_score + 0.33 if dig_presence2 == 1
+replace dig_presence_score = dig_presence_score + 0.33 if dig_presence3 == 1
+lab var dig_presence_score "Score on question about online presence channels"
 
-g dig_presence3_ex = dig_presence3_ex1 + dig_presence3_ex2 + dig_presence3_ex3 + dig_presence3_ex4 + dig_presence3_ex5 + dig_presence3_ex6 +  dig_presence3_ex7 + dig_presence3_ex8 
-
-g dig_description1_score = 0
-replace dig_description1_score = 1 if dig_description1==4
-replace dig_description1_score = 0.51 if dig_description1==3
-replace dig_description1_score = 0.49 if dig_description1==2
-
-g dig_description2_score = 0
-replace dig_description2_score = 1 if dig_description2==4
-replace dig_description2_score = 0.51 if dig_description2==3
-replace dig_description2_score = 0.49 if dig_description2==2
-
-g dig_description3_score = 0
-replace dig_description3_score = 1 if dig_description3==4
-replace dig_description3_score = 0.51 if dig_description3==3
-replace dig_description3_score = 0.49 if dig_description3==2
-
-g dig_miseajour1_score = 0
-replace dig_miseajour1_score = 0.25 if dig_miseajour1 = 2
-replace dig_miseajour1_score = 0.5 if dig_miseajour1 = 3 
-replace dig_miseajour1_score = 0.75 if dig_miseajour1 = 4
-replace dig_miseajour1_score = 1 if dig_miseajour1 = 5
-
-g dig_miseajour2_score = 0
-replace dig_miseajour2_score = 0.25 if dig_miseajour2 = 2
-replace dig_miseajour2_score = 0.5 if dig_miseajour2 = 3 
-replace dig_miseajour2_score = 0.75 if dig_miseajour2 = 4
-replace dig_miseajour2_score = 1 if dig_miseajour2 = 5
-
-g dig_miseajour3_score = 0
-replace dig_miseajour3_score = 0.25 if dig_miseajour3 = 2
-replace dig_miseajour3_score = 0.5 if dig_miseajour3 = 3 
-replace dig_miseajour3_score = 0.75 if dig_miseajour3 = 4
-replace dig_miseajour3_score = 1 if dig_miseajour3 = 5
-
-g dig_payment1_score = 0
-replace dig_payment1_score = 0.5 if dig_payment1 == 1
-replace dig_payment1_score = 1 if dig_payment1 == 2
-
-g dig_payment2_score = 0
-replace dig_payment2_score = 0.5 if dig_payment2 == 1
-replace dig_payment2_score = 1 if dig_payment2 == 2
-
-g dig_payment3_score = 0
-replace dig_payment3_score = 0.5 if dig_payment3 == 1
-replace dig_payment3_score = 1 if dig_payment3 == 2
+g dig_presence3_exscore = 0
+replace dig_presence3_exscore = 0.125 if dig_presence3_ex1 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex2 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex3 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex4 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex5 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex6 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex7 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex8 == 1
+lab var dig_presence3_exscore "Score on examples of digital channels used"
 
 g digmark1 = 0.2 if dig_marketing_num19_sea == 1 | dig_marketing_num19_seo == 1
 
@@ -96,25 +59,18 @@ g digmark2 = 0.1 if dig_marketing_num19_blg == 1 | dig_marketing_num19_mail == 1
 g digmark3 = 0.15 if dig_marketing_num19_pub == 1 |  dig_marketing_num19_prtn == 1 
 
 g dig_marketing_score = digmark1 + digmark2 + digmark3
+lab var dig_marketing_score "Score on question about digital marketing activities"
 
 drop digmark1 digmark2 digmark3
-
-g dig_marketing_ind2_score = 0
-replace dig_marketing_ind2_score = 0.25 if dig_marketing_ind2 == 4
-replace dig_marketing_ind2_score = 0.5 if dig_marketing_ind2 == 3
-replace dig_marketing_ind2_score = 0.75 if dig_marketing_ind2 == 2
-replace dig_marketing_ind2_score = 1 if dig_marketing_ind2 == 5
-
-g dig_logistique_entrepot_score = 0 
-replace dig_logistique_entrepot_score = 0.33 if dig_logistique_entrepot == 1
-replace dig_logistique_entrepot_score = 0.66 if dig_logistique_entrepot == 2
-replace dig_logistique_entrepot_score = 1 if dig_logistique_entrepot == 3
 
 g dig_logistique_retour_score = 0
 replace dig_logistique_retour_score = 1 if dig_logistique_retour_natetr == 1
 replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | dig_logistique_retour_etr == 1
 
+replace expprep_cible = 0.5 if expprep_cible==-1200
 
+
+/*
 **********************************************************************
 * 	PART 1:  Index calculation based on z-score		
 ***********************************************************************
@@ -138,10 +94,7 @@ program define zscore /* opens a program called zscore */
 end
 
 	* calculate z score for all variables that are part of the index
-local qiki_std "q10r1 q10r2c q10r3c q10r4c q10r5f"
-local qiki_reg "q10n1 q10n2c q10n3c q10n4c q10n5f q12_correct"
-local qiki_caa "q15c1 q15c2c q15c3c q15c4c q15c5f q16_compris"
-local qiki_met "q18m1 q18m2c q18m3c q18m4c q18m5f q20b_compris"
+local 
 foreach z in qiki_std qiki_reg qiki_caa qiki_met {
 	foreach x of local `z'  {
 			zscore `x'
@@ -453,7 +406,7 @@ drop if id_plateforme == 775
 * 	Save the changes made to the data		  			
 ***********************************************************************
 	* set export directory
-cd "$regis_intermediate"
+cd "$bl_intermediate"
 
 	* export file with potentially eligible companies
 gen check = 0
@@ -469,7 +422,7 @@ preserve
 	rename rg_produitexp produit_exportable
 	rename rg_intention intention_export
 	rename rg_oper_exp operation_export
-	rename date_created_str date_creation
+	rename date_created_stÏr date_creation
 	rename firmname nom_entreprise
 	rename rg_codedouane code_douane
 	rename rg_matricule matricule_cnss
@@ -479,4 +432,4 @@ preserve
 restore
 
 	* save dta file
-save "regis_inter", replace
+save "bl_inter", replace
