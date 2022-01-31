@@ -70,7 +70,7 @@ replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | di
 replace expprep_cible = 0.5 if expprep_cible==-1200
 
 
-/*
+
 **********************************************************************
 * 	PART 1:  Index calculation based on z-score		
 ***********************************************************************
@@ -94,8 +94,12 @@ program define zscore /* opens a program called zscore */
 end
 
 	* calculate z score for all variables that are part of the index
-local 
-foreach z in qiki_std qiki_reg qiki_caa qiki_met {
+local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_respons dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction
+local expprep expprep_cible expprep_responsable expprep_norme expprep_demande
+local expoutcomes rg_oper_exp exp_pays_avant21 exp_pays_21 exp_afrique
+
+
+foreach z in digtalvars expprep expoutcomes {
 	foreach x of local `z'  {
 			zscore `x'
 		}
@@ -103,16 +107,16 @@ foreach z in qiki_std qiki_reg qiki_caa qiki_met {
 
 		* calculate the index value: average of zscores 
 
-egen qiki_std = rowmean(q10n1z q10n2cz q10n3cz q10n4cz q10n5fz q12_correctz)
-egen qiki_reg = rowmean(q10r1z q10r2cz q10r3cz q10r4cz q10r5fz q12_correctz)
-egen qiki_caa = rowmean(q15c1z q15c2cz q15c3cz q15c4cz q15c5f q16_comprisz)
-egen qiki_met = rowmean(q18m1z q18m2cz q18m3cz q18m4cz q18m5fz q20b_comprisz)
+egen digtalvars = rowmean(dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_respons dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction)
+egen expprep = rowmean(expprep_cible expprep_responsable expprep_norme expprep_demande)
+egen expoutcomes = rowmean(rg_oper_exp exp_pays_avant21 exp_pays_21 exp_afrique)
 
-label var qiki_std "QI knowledge standards"
-label var qiki_reg "QI knowledge technical regulation"
-label var qiki_caa "QI knowledge conformity assessment & accreditation"
-label var qiki_met "QI knowledge metrology"
+label var digtalvars   "Index digitalisation"
+label var expprep "Index export preparation"
+label var expoutcomes "Index export outcomes"
 
+
+/*
 ***********************************************************************
 * 	PART 2: factor variable sector & subsector 			  										  
 ***********************************************************************
