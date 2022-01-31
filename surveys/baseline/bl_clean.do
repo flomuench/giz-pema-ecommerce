@@ -23,6 +23,7 @@
 * 	PART 1: 	Format string & numerical & date variables		  			
 ***********************************************************************
 
+
 use "${bl_intermediate}/bl_inter", clear
 
 {
