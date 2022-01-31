@@ -6,11 +6,11 @@
 *					logical
 *	OUTLINE:														  
 *	1)				Create wordfile for export		  		  			
-*	2)  			Check for & visualise duplicates						 
-*	3)  			Open question variables							  
-*	6)  			
+*	2)  			Identify vars that should be numerical but aren't						 
+*	3)  			Check for & visualise duplicates
+*	4)  			Open question variables							  
 *																	  
-*	ID variaregise: 	id_plateforme (example: 373)			  					  
+*	ID variable: 	id_plateforme (example: 373)			  					  
 *	Requires: bl_inter.dta & bl_checks_survey_progress.do 	  
 *	Creates:  bl_inter.dta			  
 *																	  
@@ -29,8 +29,12 @@ putdocx begin
 putdocx paragraph
 putdocx text ("Quality checks variables: baseline E-commerce training"), bold
 
+***********************************************************************
+* 	PART 2:  Identify variables that should be numerical but aren't	  			
+***********************************************************************
 
-local numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21 car_carempl_div1 car_carempl_dive2 car_carempl_div3
+
+local numvars info_compt1 dig_revenues_ecom comp_benefice2020 comp_ca2020 compexp_2020 tel_sup2 tel_sup1 dig_marketing_respons investcom_futur investcom_2021 expprep_responsable exp_pays_avant21 exp_pays_principal_avant21 exp_pays_21 car_carempl_div1 car_carempl_dive2 car_carempl_div3 dig_service_responsable investcom_benefit2 investcom_benefit1 car_pdg_age car_adop_peer car_credit1 car_risque
 
 local correct_vars 
 local incorrect_vars
@@ -53,7 +57,7 @@ putdocx paragraph
 
 
 ***********************************************************************
-* 	PART 2:  Check for & visualise duplicates		  			
+* 	PART 3:  Check for & visualise duplicates		  			
 ***********************************************************************
 
 		* put all variables to for which we want to check for duplicates into a local

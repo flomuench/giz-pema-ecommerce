@@ -305,21 +305,6 @@ lab var q42f "(in-) formel argument de vente"
 * Convert string variable to integer variables
 
 
-*Test logical values*
-
-
-* If 'benefices' is larger than 'chiffres d'affaires' need to check:
-
-* replace needs_check = 1 if comp_benefice2020>comp_ca2020
-replace questions_needing_checks = "Benefices sont plus élevés que comptes d'affaires'" if comp_benefice2020>comp_ca2020
-
-* Check if export values, or online revenues, are larger than total revenues 
-
-*replace needs_check = 1 if   comp_ca2020< compexp_2020
-* replace questions_needing_checks = "Export sont plus élevés que comptes d'affaires" if   comp_ca2020< compexp_2020
-
-*replace needs_check = 1 if  comp_ca2020 < dig_revenues_ecom
-* replace questions_needing_checks = "Revenues en ligne sont plus élevés que comptes d'affaires" if  comp_ca2020 < dig_revenues_ecom
 
 
 
@@ -349,14 +334,6 @@ save "bl_inter", replace
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
-
-drop if acceptezvousdevalidervosré == 0
-
-gen complete = 0
-replace complete = 1 if attest == 1 | attest2 == 1 | acceptezvousdevalidervosré == 1
-
-drop if complete == 0
-drop complete
 
 sort id_plateforme, stable
 
