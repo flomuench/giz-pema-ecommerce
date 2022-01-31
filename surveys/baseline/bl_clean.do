@@ -156,6 +156,13 @@ replace exp_afrique = "-999" if exp_afrique == "ne sais pas (ne pas lire) - ما
 destring exp_afrique, replace
 
 
+replace attest = "1" if attest=="oui نعم"
+destring attest, replace
+
+replace attest2 = "1" if attest2=="oui نعم"
+destring attest2, replace
+
+
 
 /* --------------------------------------------------------------------
 	PART 1.3: Fix mutliple choice questions
