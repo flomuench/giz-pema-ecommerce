@@ -23,7 +23,6 @@
 * 	PART 1: 	Format string & numerical & date variables		  			
 ***********************************************************************
 
-
 use "${bl_raw}/bl_raw", clear
 
 {
@@ -53,107 +52,15 @@ format Date %td
 	PART 1.2: Turn binary questions numerical 
 ----------------------------------------------------------------------*/
 
-local binaryvars Acceptezvousenregistrement id_ident2 dig_con1 dig_con3 dig_con5   
-
+local binaryvars Acceptezvousenregistrement  Nomdelapersonne Nomdelentreprise id_ident2 dig_con1 dig_con3 dig_con5 dig_presence1 dig_presence2 dig_presence3 dig_marketing_lien expprep_cible  dig_vente dig_marketing_ind1 attest attest2 dig_service_satisfaction expprep_norme expprep_demande rg_oper_exp carsoutien_gouvern perc_com1 perc_com2 exp_afrique car_ecom_prive exp_avant21 info_neces
+ 
 foreach var of local binaryvars {
-	replace `var' = "1" if `var' == "oui / نعم" 
-	replace `var' = "0" if `var' == "non / لا"
-	replace `var' = "-999" if `var' == "ne sais pas - ما نعرفش"
+	replace `var' = "1" if strpos(`var', "oui")
+	replace `var' = "0" if strpos(`var', "non")
+	replace `var' = "-999" if strpos(`var', "sais")
+	replace `var' = "-1200" if strpos(`var', "prévu")
 	destring `var', replace
 }
-
-local binaryvars2 dig_presence1 dig_presence2 dig_presence3
-
-foreach var of local binaryvars2 {
-	replace `var' = "1" if `var' == "oui"
-	replace `var' = "0" if `var' == "non"
-	destring `var', replace
-}
-
-
-replace dig_marketing_lien = "0" if dig_marketing_lien == "non  / لا"
-replace dig_marketing_lien = "1" if dig_marketing_lien == "oui  / نعم"
-replace dig_marketing_lien = "0" if dig_marketing_lien == "ne sais pas - ما نعرفش"
-destring dig_marketing_lien, replace
-
-
-replace expprep_cible = "1" if expprep_cible == "oui /  نعم"
-replace expprep_cible = "0" if expprep_cible == "non  لا"
-replace expprep_cible = "-1200" if expprep_cible == "prévu  عن قريب / متوقعة"
-destring expprep_cible, replace
-
-
-replace dig_vente = "1" if dig_vente == "oui /نعم"
-replace dig_vente = "0" if dig_vente == "non / لا"
-replace dig_vente = "-999" if dig_vente == "ne sais pas - ما نعرفش"
-destring dig_vente, replace
-
-replace dig_marketing_ind1 = "1" if dig_marketing_ind1 == "oui /نعم"
-replace dig_marketing_ind1 = "0" if dig_marketing_ind1 == "non / لا"
-replace dig_marketing_ind1 = "-999" if dig_marketing_ind1 == "ne sais pas - ما نعرفش"
-destring dig_marketing_ind1, replace
-
-
-replace attest = "1" if attest == "oui نعم"
-destring attest, replace
-replace attest2 = "1" if attest2 == "oui نعم"
-destring attest2, replace
-
-encode entr_bien_service, gen(entr_service_bien)
-
-replace dig_service_satisfaction = "0" if dig_service_satisfaction == "non لا"
-replace dig_service_satisfaction = "1" if dig_service_satisfaction == "oui  نعم"
-replace dig_service_satisfaction = "-999" if dig_service_satisfaction == "ne sais pas - ما نعرفش"
-destring dig_service_satisfaction, replace
-
-replace expprep_norme = "0" if expprep_norme == "non  لا"
-replace expprep_norme = "1" if expprep_norme == "oui نعم"
-replace expprep_norme = "-999" if expprep_norme == "ne sais pas - ما نعرفش"
-destring expprep_norme, replace
-
-replace expprep_demande = "1" if expprep_demande == "oui / نعم"
-replace expprep_demande = "0" if expprep_demande == "non / لا"
-replace expprep_demande = "-999" if expprep_demande == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
-destring expprep_demande, replace
-
-replace rg_oper_exp = "1" if rg_oper_exp == "oui / نعم"
-replace rg_oper_exp = "0" if rg_oper_exp == "non / لا"
-replace rg_oper_exp = "-999" if rg_oper_exp == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
-destring rg_oper_exp, replace
-
-replace carsoutien_gouvern = "1" if carsoutien_gouvern == "oui / نعم"
-replace carsoutien_gouvern = "0" if carsoutien_gouvern == "non / لا"
-replace carsoutien_gouvern = "-999" if carsoutien_gouvern == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
-destring carsoutien_gouvern, replace
-
-replace car_sex_pdg = "1" if car_sex_pdg == "femme أنثى"
-replace car_sex_pdg = "2" if car_sex_pdg == "homme ذكر"
-destring car_sex_pdg, replace
-
-replace car_pdg_educ = "1" if car_pdg_educ == "aucune scolarité, école primaire, secondaire (sans obtention du bac) ماقراش/ تعليم ابتدائي / تعليم ثانوي (ما خذاش البكالوريا)"
-replace car_pdg_educ = "1" if car_pdg_educ == "formation professionnelle diplômante (bts/ btp...)  تكوين مهني (يمكن من الحصول على شهادة)"
-replace car_pdg_educ = "2" if car_pdg_educ == "diplôme de l'enseignement secondaire (baccalauréat) متحصل على شهادة ختم التعليم الثانوي (البكالوريا)"
-replace car_pdg_educ = "3" if car_pdg_educ == "enseignement supérieur (diplôme universitaire) متحصل على شهادة جامعية"
-replace car_pdg_educ = "-999" if car_pdg_educ == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
-destring car_pdg_educ, replace
-
-replace car_ecom_prive = "0" if car_ecom_prive == "non / لا"
-replace car_ecom_prive = "1" if car_ecom_prive == "oui / نعم"
-replace car_ecom_prive = "-999" if car_ecom_prive == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
-destring car_ecom_prive, replace
-
-replace perc_com1 = "0" if perc_com1 == "non / لا"
-replace perc_com1 = "1" if perc_com1 == "oui / نعم"
-destring perc_com1, replace
-
-replace perc_com2 = "0" if perc_com2 == "non / لا"
-replace perc_com2 = "1" if perc_com2 == "oui / نعم"
-destring perc_com2, replace
-
-replace exp_afrique = "1" if exp_afrique == "oui / نعم"
-replace exp_afrique = "0" if exp_afrique == "non / لا"
-replace exp_afrique = "-999" if exp_afrique == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
-destring exp_afrique, replace
 
 
 
@@ -161,6 +68,27 @@ destring exp_afrique, replace
 	PART 1.3: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
 {
+	
+* entr_bien_service
+	
+encode entr_bien_service, gen(entr_service_bien)
+
+* car_sex_pdg
+
+replace car_sex_pdg = "1" if car_sex_pdg == "femme أنثى"
+replace car_sex_pdg = "2" if car_sex_pdg == "homme ذكر"
+destring car_sex_pdg, replace
+
+* car_pdg_educ
+
+replace car_pdg_educ = "1" if car_pdg_educ == "aucune scolarité, école primaire, secondaire (sans obtention du bac) ماقراش/ تعليم ابتدائي / تعليم ثانوي (ما خذاش البكالوريا)"
+replace car_pdg_educ = "1" if car_pdg_educ == "formation professionnelle diplômante (bts/ btp...)  تكوين مهني (يمكن من الحصول على شهادة)"
+replace car_pdg_educ = "2" if car_pdg_educ == "diplôme de l'enseignement secondaire (baccalauréat) متحصل على شهادة ختم التعليم الثانوي (البكالوريا)"
+replace car_pdg_educ = "3" if car_pdg_educ == "enseignement supérieur (diplôme universitaire) متحصل على شهادة جامعية"
+replace car_pdg_educ = "-999" if car_pdg_educ == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
+destring car_pdg_educ, replace
+	
+	
 * variable dig_con2
 gen dig_con2_internationale = 0
 replace dig_con2_internationale = 1 if strpos(dig_con2, "r1")
