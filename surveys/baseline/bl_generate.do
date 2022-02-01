@@ -70,7 +70,7 @@ replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | di
 replace expprep_cible = 0.5 if expprep_cible==-1200
 
 
-
+/*
 **********************************************************************
 * 	PART 1:  Index calculation based on z-score		
 ***********************************************************************
@@ -435,5 +435,8 @@ preserve
 	export excel `varlist' using ecommerce_eligibes_pme if eligible_sans_matricule == 1, firstrow(var) replace
 restore
 
+*/
+*/
 	* save dta file
+cd "$bl_intermediate"
 save "bl_inter", replace
