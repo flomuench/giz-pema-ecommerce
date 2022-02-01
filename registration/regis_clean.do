@@ -41,7 +41,7 @@ format %-25.0fc `numvars'
 
 	* dates
 		* creation
-gen datedecréation = date(Datedecréation, "MDY")
+gen datedecréation = date(Datedecréation, "DMY")
 order datedecréation, a(Datedecréation)
 format datedecréation %td
 rename Datedecréation date_created_str
