@@ -55,11 +55,11 @@ format Date %td
 local binaryvars Acceptezvousenregistrement  Nomdelapersonne Nomdelentreprise id_ident2 dig_con1 dig_con3 dig_con5 dig_presence1 dig_presence2 dig_presence3 dig_marketing_lien expprep_cible  dig_vente dig_marketing_ind1 attest attest2 dig_service_satisfaction expprep_norme expprep_demande rg_oper_exp carsoutien_gouvern perc_com1 perc_com2 exp_afrique car_ecom_prive exp_avant21 info_neces
  
 foreach var of local binaryvars {
-	replace `var' = "1" if strpos(`var', "oui")
-	replace `var' = "0" if strpos(`var', "non")
-	replace `var' = "-999" if strpos(`var', "sais")
-	replace `var' = "-1200" if strpos(`var', "prévu")
-	destring `var', replace
+	capture replace `var' = "1" if strpos(`var', "oui")
+	capture replace `var' = "0" if strpos(`var', "non")
+	capture replace `var' = "-999" if strpos(`var', "sais")
+	capture replace `var' = "-1200" if strpos(`var', "prévu")
+	capture destring `var', replace
 }
 
 
@@ -71,10 +71,10 @@ foreach var of local binaryvars {
 	
 * entr_bien_service
 	
-encode entr_bien_service, gen(entr_service_bien)
+//capture encode entr_bien_service, gen(entr_service_bien)
 
 * car_sex_pdg
-
+/*
 replace car_sex_pdg = "1" if car_sex_pdg == "femme أنثى"
 replace car_sex_pdg = "2" if car_sex_pdg == "homme ذكر"
 destring car_sex_pdg, replace
@@ -87,7 +87,7 @@ replace car_pdg_educ = "2" if car_pdg_educ == "diplôme de l'enseignement second
 replace car_pdg_educ = "3" if car_pdg_educ == "enseignement supérieur (diplôme universitaire) متحصل على شهادة جامعية"
 replace car_pdg_educ = "-999" if car_pdg_educ == "ne sais pas (ne pas lire) - ما نعرفش (ما تقراش)"
 destring car_pdg_educ, replace
-	
+*/	
 	
 * variable dig_con2
 gen dig_con2_internationale = 0
@@ -214,7 +214,7 @@ replace dig_logistique_retour_aucun = 1 if strpos( dig_logistique_retour, "r4")
 gen dig_logistique_retour_nsp = 0
 replace dig_logistique_retour_nsp = 1 if strpos( dig_logistique_retour, "-999")
 
-* dig_description 
+/* dig_description 
 
 local vars_description  dig_description1 dig_description2 dig_description3
 
@@ -251,6 +251,7 @@ foreach var of local vars_payments {
 }
 
 * dig_marketing_ind2
+
 
 replace dig_marketing_ind2 = "1" if dig_marketing_ind2 == "oui, tous les mois  أي، كل شهر"
 replace dig_marketing_ind2 = "0.75" if dig_marketing_ind2 == "oui, trimestriellement أي، كل تريميستا"
@@ -290,7 +291,7 @@ destring car_credit1, replace
 replace car_risque = "1" if car_risque == "1 non-disposée à prendre des risques"
 replace car_risque = "10" if car_risque == "10 disposée à prendre des risques / قادرة على المخاطرة"
 destring car_risque, replace
-
+*/
 *horaire_pref
 }
 
@@ -301,7 +302,7 @@ destring car_risque, replace
 
 *drop VARNAMES
 
-drop dig_con2 dig_con6 Surlesquellesdesmarketplaces dig_marketing_num19 dig_con4 dig_logistique_retour entr_bien_service
+drop dig_con2 dig_con6 Surlesquellesdesmarketplaces dig_marketing_num19 dig_con4 dig_logistique_retour 
 
 drop if Id_plateforme==.
 
@@ -332,7 +333,7 @@ order id_plateforme heure date attest attest2 acceptezvousdevalidervosré survey
 ***********************************************************************
 {
 
-rename entr_service_bien entr_bien_service
+//rename entr_service_bien entr_bien_service
 
 	* Section suivi
 
