@@ -149,4 +149,4 @@ replace questions_needing_checks =  questions_needing_checks + "Index wrong exp_
 	* word file
 cd "$bl_checks"
 
-capture export excel id_plateforme needs_check questions_needing_check date-dig_logistique_retour_score using "reponses_illogiques" if needs_check==1, firstrow(variables) replace
+capture export excel id_plateforme needs_check questions_needing_check date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
