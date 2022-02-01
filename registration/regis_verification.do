@@ -90,7 +90,12 @@ drop _merge
 * 	PART 4:  export contact list for baseline 	  			
 ***********************************************************************+
 cd "$regis_final"
+
+	* export all eligible firms
 export excel id_plateforme firmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 rg_telrep rg_telpdg rg_telephone2 using "eligible_finale" if finally_eligible == 1, replace firstrow(var)
+
+	* export all ineligible firms
+export excel id_plateforme firmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 rg_telrep rg_telpdg rg_telephone2 using "ineligible_finale" if finally_eligible == 0, replace firstrow(var)
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

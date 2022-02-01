@@ -1,34 +1,77 @@
 ***********************************************************************
-* 			registration generate									  	  
+* 			baseline generate									  	  
 ***********************************************************************
 *																	    
-*	PURPOSE: generate registration variables				  							  
+*	PURPOSE: generate baseline variables				  							  
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1) sector
-* 	2) gender
-* 	3) onshore / offshore  							  
-*	4) produit exportable  
-*	5) intention d'exporter 			  
-*	6) une opération d'export				  
-*   7) export status  
-*	8) age
-*	9) eligibility	
+*	1) Sum up points of info questions
+* 	2) Indices
 *
 *																	  															      
-*	Author:  	Florian Muench & Kais Jomaa							  
-*	ID variaregise: 	id (example: f101)			  					  
-*	Requires: regis_inter.dta 	  								  
-*	Creates:  regis_inter.dta			                          
+*	Author:  	Teo Firpo & Florian Muench & Kais Jomaa							  
+*	ID variaregise: 	id_plateforme (example: 777)			  					  
+*	Requires: bl_inter.dta 	  								  
+*	Creates:  bl_inter.dta			                          
 *																	  
 ***********************************************************************
-* 	PART 1:  Define non-response categories  			
+* 	PART 1:  Sum points in info questions 			
 ***********************************************************************
-use "${regis_intermediate}/regis_inter", clear
+
+use "${bl_intermediate}/bl_inter", clear
+
+g dig_con2 = 0 
+replace dig_con2 = 1 if dig_con2_correct
+lab var dig_con2 "Correct response to question about digital markets"
+
+g dig_con4 = 0
+replace dig_con4 = 1 if dig_con4_rech == 1
+lab var dig_con4 "Correct response to question about online ads"
+
+g dig_con6_score = 0
+replace dig_con6_score = dig_con6_score + 0.33 if dig_con6_referencement_payant == 1
+replace dig_con6_score = dig_con6_score + 0.33 if dig_con6_cout_par_clic == 1
+replace dig_con6_score = dig_con6_score + 0.33 if dig_con6_liens_sponsorisés == 1
+lab var dig_con6_score "Score on question about Google Ads"
+
+g dig_presence_score = 0
+replace dig_presence_score = 0.33 if dig_presence1 == 1
+replace dig_presence_score = dig_presence_score + 0.33 if dig_presence2 == 1
+replace dig_presence_score = dig_presence_score + 0.33 if dig_presence3 == 1
+lab var dig_presence_score "Score on question about online presence channels"
+
+g dig_presence3_exscore = 0
+replace dig_presence3_exscore = 0.125 if dig_presence3_ex1 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex2 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex3 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex4 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex5 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex6 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex7 == 1
+replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex8 == 1
+lab var dig_presence3_exscore "Score on examples of digital channels used"
+
+g digmark1 = 0.2 if dig_marketing_num19_sea == 1 | dig_marketing_num19_seo == 1
+
+g digmark2 = 0.1 if dig_marketing_num19_blg == 1 | dig_marketing_num19_mail == 1 | dig_marketing_num19_socm == 1 | dig_marketing_num19_autre == 1 
+
+g digmark3 = 0.15 if dig_marketing_num19_pub == 1 |  dig_marketing_num19_prtn == 1 
+
+g dig_marketing_score = digmark1 + digmark2 + digmark3
+lab var dig_marketing_score "Score on question about digital marketing activities"
+
+drop digmark1 digmark2 digmark3
+
+g dig_logistique_retour_score = 0
+replace dig_logistique_retour_score = 1 if dig_logistique_retour_natetr == 1
+replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | dig_logistique_retour_etr == 1
+
+replace expprep_cible = 0.5 if expprep_cible==-1200
 
 
-***********************************************************************
+/*
+**********************************************************************
 * 	PART 1:  Index calculation based on z-score		
 ***********************************************************************
 /*
@@ -51,11 +94,12 @@ program define zscore /* opens a program called zscore */
 end
 
 	* calculate z score for all variables that are part of the index
-local qiki_std "q10r1 q10r2c q10r3c q10r4c q10r5f"
-local qiki_reg "q10n1 q10n2c q10n3c q10n4c q10n5f q12_correct"
-local qiki_caa "q15c1 q15c2c q15c3c q15c4c q15c5f q16_compris"
-local qiki_met "q18m1 q18m2c q18m3c q18m4c q18m5f q20b_compris"
-foreach z in qiki_std qiki_reg qiki_caa qiki_met {
+local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_respons dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction
+local expprep expprep_cible expprep_responsable expprep_norme expprep_demande
+local expoutcomes rg_oper_exp exp_pays_avant21 exp_pays_21 exp_afrique
+
+
+foreach z in digtalvars expprep expoutcomes {
 	foreach x of local `z'  {
 			zscore `x'
 		}
@@ -63,16 +107,16 @@ foreach z in qiki_std qiki_reg qiki_caa qiki_met {
 
 		* calculate the index value: average of zscores 
 
-egen qiki_std = rowmean(q10n1z q10n2cz q10n3cz q10n4cz q10n5fz q12_correctz)
-egen qiki_reg = rowmean(q10r1z q10r2cz q10r3cz q10r4cz q10r5fz q12_correctz)
-egen qiki_caa = rowmean(q15c1z q15c2cz q15c3cz q15c4cz q15c5f q16_comprisz)
-egen qiki_met = rowmean(q18m1z q18m2cz q18m3cz q18m4cz q18m5fz q20b_comprisz)
+egen digtalvars = rowmean(dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_respons dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction)
+egen expprep = rowmean(expprep_cible expprep_responsable expprep_norme expprep_demande)
+egen expoutcomes = rowmean(rg_oper_exp exp_pays_avant21 exp_pays_21 exp_afrique)
 
-label var qiki_std "QI knowledge standards"
-label var qiki_reg "QI knowledge technical regulation"
-label var qiki_caa "QI knowledge conformity assessment & accreditation"
-label var qiki_met "QI knowledge metrology"
+label var digtalvars   "Index digitalisation"
+label var expprep "Index export preparation"
+label var expoutcomes "Index export outcomes"
 
+
+/*
 ***********************************************************************
 * 	PART 2: factor variable sector & subsector 			  										  
 ***********************************************************************
@@ -366,7 +410,7 @@ drop if id_plateforme == 775
 * 	Save the changes made to the data		  			
 ***********************************************************************
 	* set export directory
-cd "$regis_intermediate"
+cd "$bl_intermediate"
 
 	* export file with potentially eligible companies
 gen check = 0
@@ -382,7 +426,7 @@ preserve
 	rename rg_produitexp produit_exportable
 	rename rg_intention intention_export
 	rename rg_oper_exp operation_export
-	rename date_created_str date_creation
+	rename date_created_stÏr date_creation
 	rename firmname nom_entreprise
 	rename rg_codedouane code_douane
 	rename rg_matricule matricule_cnss
@@ -391,5 +435,8 @@ preserve
 	export excel `varlist' using ecommerce_eligibes_pme if eligible_sans_matricule == 1, firstrow(var) replace
 restore
 
+*/
+*/
 	* save dta file
-save "regis_inter", replace
+cd "$bl_intermediate"
+save "bl_inter", replace

@@ -133,7 +133,7 @@ if (1) do "${regis_github}/regis_verification.do"
 /* --------------------------------------------------------------------
 	PART 4.9: master data + deidentified regis_final for analysis
 ----------------------------------------------------------------------*/
-if (1) do "${regis_github}/deidentify.do"
+if (1) do "${regis_github}/regis_masterdata_deidentify.do"
 
 
 ***********************************************************************

@@ -37,7 +37,7 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 putpdf paragraph, halign(center) 
 putpdf text ("E-commerce training: registration progress")
 
-{
+
 	* total number of firms registered
 graph bar (count) id_plateforme, blabel(total) ///
 	title("Number of registered firms") note("Date: `c(current_date)'") ///
@@ -87,7 +87,7 @@ graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 	title("Nombre des employés des entreprises selon moyen de communication") ///
 	ytitle("Nombre des employés")
 
-}
+
 
 ***********************************************************************
 * 	PART 3:  Eligibility		  			
@@ -95,7 +95,7 @@ graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 putpdf paragraph, halign(center) 
 putpdf text ("E-commerce training: eligibility"), bold linebreak
 
-{
+
 	* identifiant unique correct (oui ou non)
 graph bar (count), over(id_admin_correct) blabel(total) ///
 	title("Identifiant unique/matricule fiscal format correct") ///
@@ -215,7 +215,7 @@ putpdf paragraph, halign(center)
 putpdf image eligibles_enligne.png
 putpdf pagebreak
 
-}
+
 ***********************************************************************
 * 	PART 4:  Characteristics
 ***********************************************************************
