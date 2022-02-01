@@ -126,7 +126,8 @@ drop rg_telrep diff
 rename rg_telrep_cor rg_telrep
 
 *****Correct the website ******
-{gen rg_siteweb_cor = rg_siteweb
+{
+gen rg_siteweb_cor = rg_siteweb
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"https://","")
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"http://","")
 replace rg_siteweb_cor = ustrregexra(rg_siteweb_cor ,"/","")
@@ -257,7 +258,9 @@ replace rg_media_cor = "$check_again" if rg_media_cor == "sfax"
 replace rg_media_cor = "$check_again" if rg_media_cor == "sfax"
 }
 *****Correct the firm name ******
-{gen firmname_cor = firmname
+{
+
+gen firmname_cor = firmname
 replace firmname_cor = "$check_again" if firmname_cor == "06 rue khalil materane cité ettadhamen"
 replace firmname_cor = "$check_again" if firmname_cor == "32, avenue habib bourguiba-bureau 3-4 nouvelle ariana 2080 tunisie"
 replace firmname_cor = "$check_again" if firmname_cor == "lif africa à pour objectif de développer le marché de l’emploi en afrique dans ses différentes succursales"
