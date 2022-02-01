@@ -52,15 +52,26 @@ gen commentsmsb = ""
 * Needs check
 //replace needs_check = 1 if id_plateforme = 572== "a"
 //replace needs_check = 1 if id_plateforme = 572 == "aa"
+
+replace needs_check = 1 if comp_benefice2020 == "§§"
+replace needs_check = 1 if comp_benefice2020 == "na"
+replace needs_check = 1 if exp_pays_21 ==200
+replace needs_check = 1 if compexp_2020== "248000dt 2018 et 124000dt 2019"
+replace needs_check = 1 if dig_revenues_ecom== "non établi. ds les 30% environ"
+
+
 //replace needs_check = 1 if comp_benefice2020 == "§§"
 //replace needs_check = 1 if comp_benefice2020 == "na"
 //replace needs_check = 1 if exp_pays_21 ==200
+
 
 * Questions needing check
 replace questions_needing_check = "investcom_2021/investcom_futur" if id_plateforme==572
 replace questions_needing_check = "exp_pays_21" if id_plateforme==757
 replace questions_needing_check = "comp_benefice2020" if id_plateforme==592
 replace questions_needing_check = "comp_benefice2020" if id_plateforme==148
+replace questions_needing_check = "compexp_2020/comp_ca2020/comp_benefice2020" if id_plateforme==365
+replace questions_needing_check = "dig_revenues_ecom" if id_plateforme==375
 
 replace questions_needing_check = "entr_histoire" if id_plateforme == 909
 replace needs_check = 1 if id_plateforme == 909
@@ -126,6 +137,8 @@ replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
 replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
 replace investcom_2021 = "0" if investcom_2021 == "zero"
 replace investcom_2021 = "10000" if investcom_2021 == "10 000"
+replace investcom_2021 = "9000" if investcom_2021 == "9000 (neuf mille dinars)"
+replace investcom_2021 = "2500" if investcom_2021 == "2 500,000"
 
 *Remplacer les textes de la variable investcom_futur
 replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
@@ -138,6 +151,8 @@ replace investcom_futur = "7000" if investcom_futur == "sept milles  (7000)"
 replace investcom_futur = "10000" if investcom_futur == "10 000"
 replace investcom_futur = "20000" if investcom_futur == "20 000"
 replace investcom_futur = "20000" if investcom_futur == "20000 "
+replace investcom_futur = "15000" if investcom_futur == "15000 (quinze mille )"
+replace investcom_futur = "3500" if investcom_futur == "3 500,000"
 
 *Correction de la variable compexp_2020
 replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
@@ -145,6 +160,7 @@ replace compexp_2020 = "110000" if compexp_2020== "110 000"
 replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
 replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
 replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
+replace compexp_2020= "3609000" if compexp_2020== "3609000dt"
 
 *Correction de la variable comp_ca2020
 replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
@@ -157,10 +173,18 @@ replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
 replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
 replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
 replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
+
+replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
+replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
+replace comp_ca2020 = "28727" if comp_ca2020 == "28 726.833"
+replace comp_ca2020 = "500000" if comp_ca2020 == "500 (cinq cent mille dinars)"
+
+
 */
 *Correction de la variable dig_revenues_ecom
 replace dig_revenues_ecom = "200000" if dig_revenues_ecom== "200 000"
 replace dig_revenues_ecom = "11131" if dig_revenues_ecom== "11 131"
+replace dig_revenues_ecom = "0" if dig_revenues_ecom == "zeo"
 
 /*Correction de la variable comp_benefice2020
 replace comp_benefice2020 = "337892" if comp_benefice2020== "337 892"
@@ -372,4 +396,8 @@ replace needs_check = 1 if dup>0
 
 cd "$bl_checks"
 
+
+export excel id_plateforme needs_check questions_needing_check date using "fiche_correction" if needs_check==1, firstrow(variables) replace
+
 capture export excel id_plateforme needs_check questions_needing_check date-commentsmsb using "fiche_correction" if needs_check==1, firstrow(variables) replace
+
