@@ -52,13 +52,12 @@ foreach var of local accountvars {
 
 }
 
-* If 'benefices' is larger than 'chiffres d'affaires' need to check: 
-
+* If profits are larger than 'chiffres d'affaires' need to check: 
  
 replace needs_check = 1 if comp_benefice2020>comp_ca2020 & scalar_issue==0
 replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que comptes d'affaires & " if comp_benefice2020>comp_ca2020  & scalar_issue==0
 
-* Check if export values, or online revenues, are larger than total revenues 
+* Check if export values are larger than total revenues 
 
 replace needs_check = 1 if   comp_ca2020< compexp_2020 & scalar_issue==0
 replace questions_needing_checks = questions_needing_checks +  "Export sont plus élevés que comptes d'affaires & " if   comp_ca2020< compexp_2020  & scalar_issue==0
@@ -67,6 +66,14 @@ replace questions_needing_checks = questions_needing_checks +  "Export sont plus
 
 capture replace needs_check = 1 if  comp_ca2020 < dig_revenues_ecom  & scalar_issue==0
 capture replace questions_needing_checks = questions_needing_checks +  "Revenues en ligne sont plus élevés que comptes d'affaires & " if  comp_ca2020 < dig_revenues_ecom  & scalar_issue==0
+
+* If number of export countries is higher than 100 – needs check (it's sus)
+
+capture replace needs_check = 1 if  exp_pays_avant21 > 100
+capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_avant21 & " if  exp_pays_avant21 > 100
+
+capture replace needs_check = 1 if  exp_pays_21 > 100
+capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_21 & " if  exp_pays_21 > 100
 
 
 /* --------------------------------------------------------------------

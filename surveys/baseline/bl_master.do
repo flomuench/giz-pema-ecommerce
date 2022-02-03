@@ -64,15 +64,16 @@ else if c(os) == "MacOSX" {
 }
 
 if c(os) == "Windows" {
-	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
-	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
-	global samp_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
+	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
+	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
 else if c(os) == "MacOSX" {
-	global samp_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
-	global samp_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
-	global samp_backup = "Users/`c(username)'/Documents/e-commerce-email-back-up"
+	global regis_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
+	global regis_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
+
 		* paths within gdrive
 			* data
 global bl_raw = "${bl_gdrive}/raw"
@@ -80,10 +81,10 @@ global bl_intermediate "${bl_gdrive}/intermediate"
 global bl_final = "${bl_gdrive}/final"
 global bl_checks = "${bl_gdrive}/checks"
 global bl_output = "${bl_gdrive}/output"
-global samp_raw = "${samp_gdrive}/raw"
-global samp_intermediate "${samp_gdrive}/intermediate"
-global samp_final = "${samp_gdrive}/final"
-
+global regis_raw = "${regis_gdrive}/raw"
+global regis_intermediate "${regis_gdrive}/intermediate"
+global regis_final = "${regis_gdrive}/final"
+global regis_checks = "${regis_gdrive}/checks"
 
 			* output (regression tables, figures)
 global bl_output = "${bl_gdrive}/output"
@@ -114,19 +115,23 @@ if (1) do "${bl_github}/bl_clean.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
-	PART 3.4: Generate variables for analysis or implementation
+	PART 3.4: Match to registration data
+----------------------------------------------------------------------*/	
+//if (1) do "${bl_github}/bl_match.do"
+/* --------------------------------------------------------------------
+	PART 3.5: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_generate.do"
 /* --------------------------------------------------------------------
-	PART 3.5: export open text or number variables for RA check
+	PART 3.6: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_open_question_checks.do"
 /* --------------------------------------------------------------------
-	PART 3.6: Perform logical checks
+	PART 3.7: Perform logical checks
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_test.do"
 /* --------------------------------------------------------------------
-	PART 3.7: Export pdf with descriptive statistics on responses
+	PART 3.8: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
 //if (1) do "${bl_github}/bl_progress_statistics.do"
 
