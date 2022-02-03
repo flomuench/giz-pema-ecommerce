@@ -101,6 +101,9 @@ foreach var of local accountvars {
 }
 
 
+drop scalar_issue
+
+
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
@@ -111,9 +114,11 @@ quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
 
 replace needs_check = 1 if dup>0
 
+gen commentaires_ElAmouri = 0
+
 cd "$bl_checks"
 
-order id_plateforme commentsmsb 
+order commentaires_ElAmouri id_plateforme commentsmsb 
 
-export excel id_plateforme commentsmsb needs_check questions_needing_check date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
+export excel commentaires_ElAmouri id_plateforme commentsmsb needs_check questions_needing_check date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
 
