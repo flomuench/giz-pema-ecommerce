@@ -31,20 +31,42 @@ use "${bl_intermediate}/bl_inter", clear
 	PART 2.1: Comptabilité / accounting questions
 ----------------------------------------------------------------------*/		
 
-* If 'benefices' is larger than 'chiffres d'affaires' need to check:
+* If any of the accounting vars corresponds to the scalars (not_know: 77777777777777777; refused: 99999999999999999; or check_again = 88888888888888888) change needs_check to 1
 
-replace needs_check = 1 if comp_benefice2020>comp_ca2020
-replace questions_needing_checks = questions_needing_checks + " & Benefices sont plus élevés que comptes d'affaires'" if comp_benefice2020>comp_ca2020
+local accountvars investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 comp_benefice2020 dig_revenues_ecom car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
+
+gen scalar_issue = 0
+
+foreach var of local accountvars {
+	replace needs_check = 1 if `var' == 77777777777777777 
+	replace scalar_issue = 1 if `var' ==  77777777777777777
+	replace questions_needing_checks = "`var' pas connue & " + questions_needing_checks if `var' == 77777777777777777 
+
+	replace needs_check = 1 if `var' == 99999999999999999 
+	replace scalar_issue = 1 if `var' == 99999999999999999
+	replace questions_needing_checks = "`var' refusée & " + questions_needing_checks if `var' == 99999999999999999 
+	
+	replace needs_check = 1 if `var' == 88888888888888888 
+	replace scalar_issue = 1 if `var' == 88888888888888888
+	replace questions_needing_checks = "`var' doit être verifiée & " + questions_needing_checks if `var' == 88888888888888888 
+
+}
+
+* If 'benefices' is larger than 'chiffres d'affaires' need to check: 
+
+ 
+replace needs_check = 1 if comp_benefice2020>comp_ca2020 & scalar_issue==0
+replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que comptes d'affaires & " if comp_benefice2020>comp_ca2020  & scalar_issue==0
 
 * Check if export values, or online revenues, are larger than total revenues 
 
-replace needs_check = 1 if   comp_ca2020< compexp_2020
-replace questions_needing_checks = questions_needing_checks +  " & Export sont plus élevés que comptes d'affaires" if   comp_ca2020< compexp_2020
+replace needs_check = 1 if   comp_ca2020< compexp_2020 & scalar_issue==0
+replace questions_needing_checks = questions_needing_checks +  "Export sont plus élevés que comptes d'affaires & " if   comp_ca2020< compexp_2020  & scalar_issue==0
 
 * Check if online revenu is higher than overall revenue
 
-capture replace needs_check = 1 if  comp_ca2020 < dig_revenues_ecom
-capture replace questions_needing_checks = questions_needing_checks +  " & Revenues en ligne sont plus élevés que comptes d'affaires" if  comp_ca2020 < dig_revenues_ecom
+capture replace needs_check = 1 if  comp_ca2020 < dig_revenues_ecom  & scalar_issue==0
+capture replace questions_needing_checks = questions_needing_checks +  "Revenues en ligne sont plus élevés que comptes d'affaires & " if  comp_ca2020 < dig_revenues_ecom  & scalar_issue==0
 
 
 /* --------------------------------------------------------------------
@@ -55,10 +77,10 @@ local unit_scores dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour
 
 foreach var of local acunit_scores {
 	replace needs_check = 1 if `var'>1 & `var'!=.
-	replace questions_needing_checks = questions_needing_checks + " & `var' too high" if `var'>1 & `var'!=.
+	replace questions_needing_checks = questions_needing_checks + "`var' too high & " if `var'>1 & `var'!=.
 	
 	replace needs_check = 1 if `var'<0 & `var'!=-999
-	replace questions_needing_checks = questions_needing_checks + " & `var' too low" if `var'<0 & `var'!=-999
+	replace questions_needing_checks = questions_needing_checks + "`var' too low & " if `var'<0 & `var'!=-999
 
 } 
 
@@ -67,18 +89,15 @@ local cont_vars dig_marketing_respons dig_service_responsable expprep_responsabl
 foreach var of local cont_vars {
 
 	replace needs_check = 1 if `var'<0 & `var'!=-999
-	replace questions_needing_checks = questions_needing_checks + " & `var' too low" if `var'<0 & `var'!=-999
+	replace questions_needing_checks = questions_needing_checks + "`var' too low & " if `var'<0 & `var'!=-999
 
 } 
 
 * check accounting answers that are empty: 
 
-local accountvars investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 comp_benefice2020 dig_revenues_ecom car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
-
-
 foreach var of local accountvars {
-	capture replace needs_check = 1 if `var' == . 
-	capture replace questions_needing_checks = questions_needing_checks + " & missing `var'" if `var' == . 
+	capture replace needs_check = 1 if `var' == . & scalar_issue==0 
+	capture replace questions_needing_checks = questions_needing_checks + "`var' manque & " if `var' == .  & scalar_issue==0
 }
 
 
