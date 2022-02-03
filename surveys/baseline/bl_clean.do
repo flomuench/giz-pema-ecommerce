@@ -341,17 +341,16 @@ rename nomdelapersonne ident_nom
 rename nomdelentreprise ident_entreprise
 rename merciderenseignerlenomcorr ident_nom_correct_entreprise
 rename adresseéléctronique ident_email_1
-rename i ident_email_2
+rename k ident_email_2
 rename commentvousappelezvous id_base_respondent
-//rename surlesquellesdesmarketplaces dig_presence3_exemples
-rename autres dig_presence3_exemples_autres
-rename aq dig_marketing_num19_autres
+*rename as dig_presence3_exemples
 rename quelestlepaysdafrique exp_afrique_principal
 //rename bt exp_pays_principal_21
 //rename bl dig_marketing_num_autres
 //rename ck exp_produit_services_avant21
 //rename co exp_pays_principal_2021
-
+rename autres dig_presence3_ex8
+rename as dig_marketing_num19_autre
 rename exp_pays_principal exp_pays_principal_avant21
 //rename quelestlepaysdafrique exp_afrique_pays
 rename dig_benefice2020 comp_benefice2020
