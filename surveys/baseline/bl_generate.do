@@ -70,7 +70,7 @@ replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | di
 replace expprep_cible = 0.5 if expprep_cible==-1200
 
 
-/*
+
 **********************************************************************
 * 	PART 1:  Index calculation based on z-score		
 ***********************************************************************
@@ -107,9 +107,9 @@ foreach z in digtalvars expprep expoutcomes {
 
 		* calculate the index value: average of zscores 
 
-egen digtalvars = rowmean(dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_respons dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction)
-egen expprep = rowmean(expprep_cible expprep_responsable expprep_norme expprep_demande)
-egen expoutcomes = rowmean(rg_oper_exp exp_pays_avant21 exp_pays_21 exp_afrique)
+egen digtalvars = rowmean(dig_presence_scorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_responsz dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_scorez dig_service_responsablez dig_service_satisfactionz)
+egen expprep = rowmean(expprep_ciblez expprep_responsablez expprep_normez expprep_demandez)
+egen expoutcomes = rowmean(rg_oper_expz exp_pays_avant21z exp_pays_21z exp_afriquez)
 
 label var digtalvars   "Index digitalisation"
 label var expprep "Index export preparation"
