@@ -53,11 +53,11 @@ gen commentsmsb = ""
 //replace needs_check = 1 if id_plateforme = 572== "a"
 //replace needs_check = 1 if id_plateforme = 572 == "aa"
 
-replace needs_check = 1 if comp_benefice2020 == "§§"
-replace needs_check = 1 if comp_benefice2020 == "na"
-replace needs_check = 1 if exp_pays_21 ==200
-replace needs_check = 1 if compexp_2020== "248000dt 2018 et 124000dt 2019"
-replace needs_check = 1 if dig_revenues_ecom== "non établi. ds les 30% environ"
+*replace needs_check = 1 if comp_benefice2020 == "§§"
+*replace needs_check = 1 if comp_benefice2020 == "na"
+*replace needs_check = 1 if exp_pays_21 ==200
+*replace needs_check = 1 if compexp_2020== "248000dt 2018 et 124000dt 2019"
+*replace needs_check = 1 if dig_revenues_ecom== "non établi. ds les 30% environ"
 
 
 //replace needs_check = 1 if comp_benefice2020 == "§§"
@@ -66,18 +66,66 @@ replace needs_check = 1 if dig_revenues_ecom== "non établi. ds les 30% environ"
 
 
 * Questions needing check
+*replace questions_needing_check = "investcom_2021/investcom_futur" if id_plateforme==572
+*replace questions_needing_check = "exp_pays_21" if id_plateforme==757
+*replace questions_needing_check = "comp_benefice2020" if id_plateforme==592
+*replace needs_check = 1 if id_plateforme == 592
+*replace questions_needing_check = "compexp_2020/comp_ca2020/comp_benefice2020" if id_plateforme==365
+*replace questions_needing_check = "dig_revenues_ecom" if id_plateforme==375
+
+
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 89
+replace needs_check = 1 if id_plateforme == 89
+replace questions_needing_check = "expprep_norme2/exp_afrique_principal/duplicate" if id_plateforme == 108
+replace needs_check = 1 if id_plateforme == 108
+replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 136
+replace needs_check = 1 if id_plateforme == 136
+replace questions_needing_check = "duplicate" if id_plateforme == 140
+replace needs_check = 1 if id_plateforme == 140
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 148
+replace needs_check = 1 if id_plateforme == 148
+replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 151
+replace needs_check = 1 if id_plateforme == 151
+replace questions_needing_check = "duplicate" if id_plateforme==206
+replace needs_check = 1 if id_plateforme == 206
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 254
+replace needs_check = 1 if id_plateforme == 254
+replace questions_needing_check = "dig_revenues_ecom/comp_benefice2020" if id_plateforme == 365
+replace needs_check = 1 if id_plateforme == 365
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 377
+replace needs_check = 1 if id_plateforme == 377
+replace questions_needing_check = "comp_benefice2020/dig_revenues_ecom" if id_plateforme == 392
+replace needs_check = 1 if id_plateforme == 392
+replace questions_needing_check = "exp_pays_21" if id_plateforme == 443
+replace needs_check = 1 if id_plateforme == 443
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 457
+replace needs_check = 1 if id_plateforme == 457
+replace questions_needing_check = "duplicate" if id_plateforme==526
+replace needs_check = 1 if id_plateforme == 526
+replace questions_needing_check = "duplicate" if id_plateforme==545
+replace needs_check = 1 if id_plateforme == 545
 replace questions_needing_check = "investcom_2021/investcom_futur" if id_plateforme==572
-replace questions_needing_check = "exp_pays_21" if id_plateforme==757
-replace questions_needing_check = "comp_benefice2020" if id_plateforme==592
-replace questions_needing_check = "comp_benefice2020" if id_plateforme==148
-replace questions_needing_check = "compexp_2020/comp_ca2020/comp_benefice2020" if id_plateforme==365
-replace questions_needing_check = "dig_revenues_ecom" if id_plateforme==375
-
-replace questions_needing_check = "entr_histoire" if id_plateforme == 909
-replace needs_check = 1 if id_plateforme == 909
-replace questions_needing_check = "entr_histoire" if id_plateforme == 916
-replace needs_check = 1 if id_plateforme == 916
-
+replace needs_check = 1 if id_plateforme == 572
+replace questions_needing_check = "exp_afrique_principal" if id_plateforme==592
+replace needs_check = 1 if id_plateforme == 592
+replace questions_needing_check = "id_base_respondent" if id_plateforme == 623
+replace needs_check = 1 if id_plateforme == 623
+replace questions_needing_check = "exp_pays_21" if id_plateforme == 628
+replace needs_check = 1 if id_plateforme == 628
+replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 668
+replace needs_check = 1 if id_plateforme == 668
+replace questions_needing_check = "duplicate" if id_plateforme == 679
+replace needs_check = 1 if id_plateforme == 679
+replace questions_needing_check = "tel_sup2" if id_plateforme == 695
+replace needs_check = 1 if id_plateforme == 695
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 698
+replace needs_check = 1 if id_plateforme == 698
+replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 761
+replace needs_check = 1 if id_plateforme == 761
+replace questions_needing_check = "comp_benefice2020" if id_plateforme == 841
+replace needs_check = 1 if id_plateforme == 841
+replace questions_needing_check = "duplicate" if id_plateforme == 898
+replace needs_check = 1 if id_plateforme == 898
 ***********************************************************************
 * 	PART 2: use regular expressions to correct variables 		  			
 ***********************************************************************
@@ -119,6 +167,12 @@ replace entr_produit3 = ustrregexra( entr_produit3 ,"les ","")
 replace entr_produit3 = ustrregexra( entr_produit3 ,"un ","")
 replace entr_produit3 = ustrregexra( entr_produit3 ,"une ","")
 replace entr_produit3 = ustrregexra( entr_produit3 ,"des ","")
+
+replace id_base_repondent = ustrregexra( id_base_repondent ,"mme ","")
+
+replace investcom_futur = ustrregexra( investcom_futur ," dinars","")
+
+
 }
 
 * Remplacer tout les points par des virgules & Enlever les virgules au niveau des numéros de téléphone
@@ -129,83 +183,136 @@ replace entr_produit3 = ustrregexra( entr_produit3 ,"des ","")
 * 	PART 3:  Replace string with numeric values		  			
 ***********************************************************************
 {
-/*Remplacer les textes de la variable investcom_2021
-replace investcom_2021 = "100000" if investcom_2021== "100000dt"
-replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
-replace investcom_2021 = "0" if investcom_2021== "zéro"
-replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
-replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
-replace investcom_2021 = "0" if investcom_2021 == "zero"
-replace investcom_2021 = "10000" if investcom_2021 == "10 000"
-replace investcom_2021 = "9000" if investcom_2021 == "9000 (neuf mille dinars)"
-replace investcom_2021 = "2500" if investcom_2021 == "2 500,000"
+*Remplacer les textes de la variable investcom_2021
+//replace investcom_2021 = "100000" if investcom_2021== "100000dt"
+//replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
+//replace investcom_2021 = "0" if investcom_2021== "zéro"
+//replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
+//replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
+//replace investcom_2021 = "0" if investcom_2021 == "zero"
+//replace investcom_2021 = "10000" if investcom_2021 == "10 000"
+//replace investcom_2021 = "9000" if investcom_2021 == "9000 (neuf mille dinars)"
+//replace investcom_2021 = "2500" if investcom_2021 == "2 500,000"
+
+replace investcom_2021 = 99999999999999999 if investcom_2021 == -888
+replace investcom_2021 = 77777777777777777 if investcom_2021 == -999
+
 
 *Remplacer les textes de la variable investcom_futur
-replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
-replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
-replace investcom_futur = "20000" if investcom_futur == "vingt mille dinars"
-replace investcom_futur = "20000" if investcom_futur == "vingt mille "
-replace investcom_futur = "10000" if investcom_futur == "dix milles"
-replace investcom_futur = "15000" if investcom_futur == "10 000 à 20 000"
-replace investcom_futur = "7000" if investcom_futur == "sept milles  (7000)"
-replace investcom_futur = "10000" if investcom_futur == "10 000"
+
+replace investcom_futur = "20000" if investcom_futur == "vingt mille"
+replace investcom_futur = "7000" if investcom_futur == "sept milles (7000dt)"
 replace investcom_futur = "20000" if investcom_futur == "20 000"
 replace investcom_futur = "20000" if investcom_futur == "20000 "
-replace investcom_futur = "15000" if investcom_futur == "15000 (quinze mille )"
+replace investcom_futur = "15000" if investcom_futur == "15000 (quinze mille)"
 replace investcom_futur = "3500" if investcom_futur == "3 500,000"
+replace investcom_futur = "5500" if investcom_futur == "5 500,000"
+replace investcom_futur = "10000" if investcom_futur == "dix milles"
+replace investcom_futur = "20000" if investcom_futur == "vingt mille dinars"
+replace investcom_futur = "30000" if investcom_futur == "trente mille"
+replace investcom_futur = "5000" if investcom_futur == "cinq mille 5000"
+
+replace investcom_futur = "10000" if investcom_futur == "dix milles"
+replace investcom_futur = "100000" if investcom_futur == "100kdt"
+replace investcom_futur = "15000" if investcom_futur == "10 000 à 20 000"
+replace investcom_futur = "12500" if investcom_futur == "entre 10000 à 15000"
+
+replace investcom_futur = "10000" if investcom_futur == "10 000"
+
+replace investcom_futur = "88888888888888888" if investcom_futur == "aa"
+replace investcom_futur = "99999999999999999" if investcom_futur == "-888"
+replace investcom_futur = "77777777777777777" if investcom_futur == "-999"
+replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
+replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
 
 *Correction de la variable compexp_2020
-replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
-replace compexp_2020 = "110000" if compexp_2020== "110 000"
-replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
-replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
-replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
-replace compexp_2020= "3609000" if compexp_2020== "3609000dt"
+*replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
+*replace compexp_2020 = "110000" if compexp_2020== "110 000"
+*replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
+*replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
+*replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
+*replace compexp_2020= "3609000" if compexp_2020== "3609000dt"
 
 *Correction de la variable comp_ca2020
-replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
-replace comp_ca2020 = "304379" if comp_ca2020== "304 379"
-replace comp_ca2020 = "10000000" if comp_ca2020== "10 000 000"
-replace comp_ca2020 = "7628248" if comp_ca2020== "7628248000"
-replace comp_ca2020 = "3039336" if comp_ca2020== "3 039 336"
-replace comp_ca2020 = "5351160" if comp_ca2020== "5.351.160"
-replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
-replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
-replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
-replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
+*replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
+*replace comp_ca2020 = "304379" if comp_ca2020== "304 379"
+*replace comp_ca2020 = "10000000" if comp_ca2020== "10 000 000"
+*replace comp_ca2020 = "7628248" if comp_ca2020== "7628248000"
+*replace comp_ca2020 = "3039336" if comp_ca2020== "3 039 336"
+*replace comp_ca2020 = "5351160" if comp_ca2020== "5.351.160"
+*replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
+*replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
+*replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
+*replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
 
-replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
-replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
-replace comp_ca2020 = "28727" if comp_ca2020 == "28 726.833"
-replace comp_ca2020 = "500000" if comp_ca2020 == "500 (cinq cent mille dinars)"
+*replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
+*replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
+*replace comp_ca2020 = "28727" if comp_ca2020 == "28 726.833"
+*replace comp_ca2020 = "500000" if comp_ca2020 == "500 (cinq cent mille dinars)"
 
 
 */
 *Correction de la variable dig_revenues_ecom
+replace dig_revenues_ecom = "20000" if dig_revenues_ecom== "20 000"
 replace dig_revenues_ecom = "200000" if dig_revenues_ecom== "200 000"
+
 replace dig_revenues_ecom = "11131" if dig_revenues_ecom== "11 131"
 replace dig_revenues_ecom = "0" if dig_revenues_ecom == "zeo"
+replace dig_revenues_ecom = "0.70" if dig_revenues_ecom == "70% de ca totale"
+replace dig_revenues_ecom = "0.30" if dig_revenues_ecom == "non établi. ds les 30% environ"
+
+replace dig_revenues_ecom = "88888888888888888" if dig_revenues_ecom == "0 dt en 2019"
+
+replace dig_revenues_ecom = "99999999999999999" if dig_revenues_ecom == "-888"
+replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "-999"
+
 
 /*Correction de la variable comp_benefice2020
 replace comp_benefice2020 = "337892" if comp_benefice2020== "337 892"
 replace comp_benefice2020 = "317887,923" if comp_benefice2020== "317 887,923"
 replace comp_benefice2020 = "28929" if comp_benefice2020== "28 929"
-replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
 replace comp_benefice2020 = "191805" if comp_benefice2020== "191805000"
 replace comp_benefice2020 = "317888" if comp_benefice2020 == "317887,923"
 replace comp_benefice2020 = "41000" if comp_benefice2020 == "41 000"
 replace comp_benefice2020 =  "46000" if comp_benefice2020 == "46000 quarante six mille dinar"
 */
 
+replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "18000 dt en 2019"
+replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "na"
+replace comp_benefice2020 = "337892" if comp_benefice2020 == "337 892"
+replace comp_benefice2020 = "-114131" if comp_benefice2020 == "-114 131"
+replace comp_benefice2020 = "293050" if comp_benefice2020 == "293 050"
+replace comp_benefice2020 = "46000" if comp_benefice2020 == "46000 quarante six mille dinar"
+replace comp_benefice2020 = "41000" if comp_benefice2020 == "41 000"
+replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "§§"
+replace comp_benefice2020 = "28929" if comp_benefice2020 == "28 929"
+replace comp_benefice2020 = "317887.923" if comp_benefice2020 == "317 887,923"
+replace comp_benefice2020 = "0.2" if comp_benefice2020 == "20pou cent"
+replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
+
+
+replace comp_benefice2020 = "99999999999999999" if comp_benefice2020 == "-888"
+replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "-999"
+
+*Correction de la variable car_carempl_div
+replace car_carempl_div1 = "77777777777777777" if car_carempl_div1 == "?"
+replace car_carempl_dive2 = "77777777777777777" if car_carempl_dive2 == "?"
+replace car_carempl_div3 = "77777777777777777" if car_carempl_div3 == "?"
+
+
 }
+
 ***********************************************************************
 * 	PART 4:  Convert string to numerical variaregises	  			
 ***********************************************************************
 * local destrvar XX
 *foreach x of local destrvar { 
 *destring `x', replace
-
-
+local destrvar investcom_futur dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3
+foreach x of local destrvar {
+destring `x', replace
+format `x' %25.0fc
+}
 
 ***********************************************************************
 * 	PART 5:  Convert problematic values for open-ended questions  			
@@ -296,6 +403,19 @@ replace investcom_benefit3_3 = "améliorer l'image de la marque" if investcom_be
 	* Sectionname
 *replace bl_unite = "pièce"  if bl_unite=="par piece"
 *replace bl_unite = "pièce"  if bl_unite=="Pièce" 
+replace id_base_repondent= "Emna Cheikhrouhou" if id_base_repondent == "emna chi5 rouho"
+replace entr_produit1 = "jeans"  if entr_produit1=="djaen"
+replace entr_produit1 = "crevettes"  if entr_produit1=="creveutte"
+replace entr_produit1 = "tapis"  if entr_produit1=="tapies"
+replace entr_produit1 = "huide romarain"  if entr_produit1=="huide romaraine"
+replace entr_produit1 = "outillage aéronautique"  if entr_produit1=="auquillage aeronothaique"
+replace entr_produit1 = "charcuterie"  if entr_produit1=="charcxuterie"
+replace entr_produit1 = "carreaux de marbre"  if entr_produit1=="caro de marbre"
+replace entr_produit1 = "produits en fibre végétale (cofain;chapeux;sac)"  if entr_produit1=="produits en fibre végita(cofain;chapeux;sac)"
+replace entr_produit1 = "céramique"  if entr_produit1=="ciramic"
+replace entr_produit1 = "tuiles"  if entr_produit1=="9armoud"
+replace entr_produit1 = "dattes"  if entr_produit1=="tmar"
+replace entr_produit1 = "maillots de bain"  if entr_produit1=="mayo de bain"
 
 }
 
