@@ -503,21 +503,3 @@ lab var q42f "(in-) formel argument de vente"
 ***********************************************************************
 cd "$bl_intermediate"
 save "bl_inter", replace
-
-***********************************************************************
-* 	Export an excel sheet with needs_check variables  			
-***********************************************************************
-
-sort id_plateforme, stable
-
-quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
-
-replace needs_check = 1 if dup>0
-
-cd "$bl_checks"
-
-
-export excel id_plateforme needs_check questions_needing_check date using "fiche_correction" if needs_check==1, firstrow(variables) replace
-
-capture export excel id_plateforme needs_check questions_needing_check date-commentsmsb using "fiche_correction" if needs_check==1, firstrow(variables) replace
-

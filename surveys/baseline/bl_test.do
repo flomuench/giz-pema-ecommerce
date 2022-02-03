@@ -50,7 +50,7 @@ capture replace questions_needing_checks = questions_needing_checks +  " & Reven
 /* --------------------------------------------------------------------
 	PART 2.2: Indices / questions with points
 ----------------------------------------------------------------------*/		
-replace needs_check = 1 if dig_presence_score>1
+/*replace needs_check = 1 if dig_presence_score>1
 replace questions_needing_checks = questions_needing_checks +  " & Index wrong dig_presence_score" if dig_presence_score>1
 
 replace needs_check = 1 if dig_presence_score<0
@@ -150,12 +150,21 @@ foreach var of local accountvars {
 	capture replace questions_needing_checks = questions_needing_checks + " & missing `var'" if `var' == . 
 }
 
-
+*/
 
 ***********************************************************************
-* 	End:  save dta, word file		  			
+* 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
-	* word file
+
+sort id_plateforme, stable
+
+quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
+
+replace needs_check = 1 if dup>0
+
 cd "$bl_checks"
 
-capture export excel id_plateforme needs_check questions_needing_check date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
+order id_plateforme commentsmsb 
+
+export excel id_plateforme commentsmsb needs_check questions_needing_check date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
+
