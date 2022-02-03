@@ -145,12 +145,12 @@ replace questions_needing_checks =  questions_needing_checks + " & Index wrong e
 
 local accountvars investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 comp_benefice2020 dig_revenues_ecom car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
 
+*/
 foreach var of local accountvars {
 	capture replace needs_check = 1 if `var' == . 
 	capture replace questions_needing_checks = questions_needing_checks + " & missing `var'" if `var' == . 
 }
 
-*/
 
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
