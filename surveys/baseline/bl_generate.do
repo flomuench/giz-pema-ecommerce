@@ -70,9 +70,28 @@ replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | di
 replace expprep_cible = 0.5 if expprep_cible==-1200
 
 
+**********************************************************************
+* 	PART 2:  Additional variables
+***********************************************************************
+
+	* calculate as percentage of FTEs: 
+	
+// g expprepres_per =  expprep_responsable/"number of employees"
+
+
+	* Calculate export revenues, digital revenues and profits as percentage of total revenues
+g exp_per = compexp_2020/comp_ca2020
+lab var exp_per "Export revenues as percentage of total revenues"
+
+g dig_rev_per = dig_revenues_ecom/comp_ca2020
+lab var dig_rev_per "Digital revenus as percentage of total revenues"
+
+g profits_per = comp_benefice2020/comp_ca2020
+lab var profits_per "Profits as percentage of total revenues"
+ 
 
 **********************************************************************
-* 	PART 1:  Index calculation based on z-score		
+* 	PART 3:  Index calculation based on z-score		
 ***********************************************************************
 /*
 calculation of indeces is based on Kling et al. 2007 and adopted from Mckenzie et al. 2018
@@ -85,6 +104,21 @@ JDE pre-analysis publication:
 	--> implies: same weight for all three dimensions
 */
 
+
+* for some calculations, create a variable that shows if a value is missing, refused, etc
+
+local all_accountingvars expprep_cible expprep_responsable expprep_norme expprep_demande exp_pays_avant21 exp_pays_21 exp_afrique comp_benefice2020 dig_revenues_ecom compexp_2020 comp_ca2020
+
+gen scalar_issue = 0
+
+foreach var of local all_accountingvars {
+	replace scalar_issue = 1 if `var' == 77777777777777777
+	replace scalar_issue = 1 if `var' == 99999999999999999
+	replace scalar_issue = 1 if `var' == 88888888888888888
+	replace scalar_issue = 1 if `var' == .
+
+}
+
 	* calculate z-score for each individual outcome
 		* write a program calculates the z-score
 * capture program drop zscore
@@ -93,18 +127,25 @@ program define zscore /* opens a program called zscore */
 	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
 end
 
+/* WORK IN PROGRESS
+
 	* calculate z score for all variables that are part of the index
 local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_respons dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction
-local expprep expprep_cible expprep_responsable expprep_norme expprep_demande
-local expoutcomes rg_oper_exp exp_pays_avant21 exp_pays_21 exp_afrique
+local expprep expprep_cible expprepres_per expprep_norme expprep_demande
+local exportcomes exp_pays_avant21 exp_pays_21 exp_afrique exp_per
 
 
-foreach z in digtalvars expprep expoutcomes {
+foreach z in digtalvars expprep {
 	foreach x of local `z'  {
-			zscore `x'
+			zscore `x' if scalar_issue==0
 		}
 }	
 
+	* For export outcomes, only if the firm exports
+
+foreach x of local exportcomes{
+	zscore `x' if rg_oper_exp == 1 & scalar_issue==0
+}
 		* calculate the index value: average of zscores 
 
 egen digtalvars = rowmean(dig_presence_scorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_responsz dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_scorez dig_service_responsablez dig_service_satisfactionz)
@@ -114,6 +155,9 @@ egen expoutcomes = rowmean(rg_oper_expz exp_pays_avant21z exp_pays_21z exp_afriq
 label var digtalvars   "Index digitalisation"
 label var expprep "Index export preparation"
 label var expoutcomes "Index export outcomes"
+
+*/
+drop scalar_issue
 
 
 /*

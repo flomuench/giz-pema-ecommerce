@@ -349,8 +349,8 @@ rename quelestlepaysdafrique exp_afrique_principal
 //rename bl dig_marketing_num_autres
 //rename ck exp_produit_services_avant21
 //rename co exp_pays_principal_2021
-rename autres dig_presence3_ex8
-rename as dig_marketing_num19_autre
+//rename autres dig_presence3_ex8
+//rename as dig_marketing_num19_autre
 rename exp_pays_principal exp_pays_principal_avant21
 //rename quelestlepaysdafrique exp_afrique_pays
 rename dig_benefice2020 comp_benefice2020
