@@ -312,9 +312,9 @@ gen complete = 0
 
 replace complete = 1 if attest ==1 | attest2 ==1 |  Acceptezvousdevalidervosré ==1 
 
-keep if complete == 1
+// keep if complete == 1
 
-drop complete
+// drop complete
 
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			

@@ -103,7 +103,7 @@ foreach var of local cont_vars {
 * check accounting answers that are empty: 
 
 foreach var of local accountvars {
-	capture replace needs_check = 1 if `var' == . & scalar_issue==0 
+	capture replace needs_check = 1 if `var' == . 
 	capture replace questions_needing_checks = questions_needing_checks + "`var' manque & " if `var' == .  & scalar_issue==0
 }
 
@@ -127,5 +127,5 @@ cd "$bl_checks"
 
 order commentaires_ElAmouri id_plateforme commentsmsb 
 
-export excel commentaires_ElAmouri id_plateforme commentsmsb needs_check questions_needing_check date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
+export excel commentaires_ElAmouri id_plateforme commentsmsb needs_check questions_needing_check heure date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
 

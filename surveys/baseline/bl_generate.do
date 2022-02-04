@@ -89,7 +89,7 @@ lab var dig_rev_per "Digital revenus as percentage of total revenues"
 g profits_per = comp_benefice2020/comp_ca2020
 lab var profits_per "Profits as percentage of total revenues"
  
-
+/*
 **********************************************************************
 * 	PART 3:  Index calculation based on z-score		
 ***********************************************************************
@@ -105,7 +105,7 @@ JDE pre-analysis publication:
 */
 
 
-* for some calculations, create a variable that shows if a value is missing, refused, etc
+* for zscore calculations, create a variable that shows if a value is missing, refused, etc
 
 local all_accountingvars expprep_cible expprep_responsable expprep_norme expprep_demande exp_pays_avant21 exp_pays_21 exp_afrique comp_benefice2020 dig_revenues_ecom compexp_2020 comp_ca2020
 
