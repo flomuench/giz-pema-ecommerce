@@ -94,8 +94,13 @@ replace questions_needing_check = "dig_revenues_ecom/comp_benefice2020" if id_pl
 replace needs_check = 1 if id_plateforme == 365
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 377
 replace needs_check = 1 if id_plateforme == 377
+replace questions_needing_check = "investcom_2021/investcom_futur" if id_plateforme == 387
+replace needs_check = 1 if id_plateforme == 387
 replace questions_needing_check = "comp_benefice2020/dig_revenues_ecom" if id_plateforme == 392
 replace needs_check = 1 if id_plateforme == 392
+
+replace questions_needing_check = "investcom_2021" if id_plateforme == 427
+replace needs_check = 1 if id_plateforme == 427
 replace questions_needing_check = "exp_pays_21" if id_plateforme == 443
 replace needs_check = 1 if id_plateforme == 443
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 457
@@ -218,6 +223,7 @@ replace investcom_futur = "15000" if investcom_futur == "10 000 à 20 000"
 replace investcom_futur = "12500" if investcom_futur == "entre 10000 à 15000"
 
 replace investcom_futur = "10000" if investcom_futur == "10 000"
+replace investcom_futur = "120000" if investcom_futur == "cent vingt milles"
 
 replace investcom_futur = "88888888888888888" if investcom_futur == "aa"
 replace investcom_futur = "99999999999999999" if investcom_futur == "-888"
@@ -265,6 +271,7 @@ replace dig_revenues_ecom = "88888888888888888" if dig_revenues_ecom == "0 dt en
 
 replace dig_revenues_ecom = "99999999999999999" if dig_revenues_ecom == "-888"
 replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "-999"
+replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "je ne sais pas"
 
 
 /*Correction de la variable comp_benefice2020
@@ -289,10 +296,12 @@ replace comp_benefice2020 = "28929" if comp_benefice2020 == "28 929"
 replace comp_benefice2020 = "317887.923" if comp_benefice2020 == "317 887,923"
 replace comp_benefice2020 = "0.2" if comp_benefice2020 == "20pou cent"
 replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
+replace comp_benefice2020 = "0.3" if comp_benefice2020 == "30% men chiffre d'affaire"
 
 
 replace comp_benefice2020 = "99999999999999999" if comp_benefice2020 == "-888"
 replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "-999"
+replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "je ne sais pas"
 
 *Correction de la variable car_carempl_div
 replace car_carempl_div1 = "77777777777777777" if car_carempl_div1 == "?"
