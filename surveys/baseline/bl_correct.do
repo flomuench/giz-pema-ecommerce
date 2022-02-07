@@ -80,8 +80,6 @@ replace questions_needing_check = "expprep_norme2/exp_afrique_principal/duplicat
 replace needs_check = 1 if id_plateforme == 108
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 136
 replace needs_check = 1 if id_plateforme == 136
-replace questions_needing_check = "duplicate" if id_plateforme == 140
-replace needs_check = 1 if id_plateforme == 140
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 148
 replace needs_check = 1 if id_plateforme == 148
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 151
@@ -98,7 +96,6 @@ replace questions_needing_check = "investcom_2021/investcom_futur" if id_platefo
 replace needs_check = 1 if id_plateforme == 387
 replace questions_needing_check = "comp_benefice2020/dig_revenues_ecom" if id_plateforme == 392
 replace needs_check = 1 if id_plateforme == 392
-
 replace questions_needing_check = "investcom_2021" if id_plateforme == 427
 replace needs_check = 1 if id_plateforme == 427
 replace questions_needing_check = "exp_pays_21" if id_plateforme == 443
@@ -119,8 +116,6 @@ replace questions_needing_check = "exp_pays_21" if id_plateforme == 628
 replace needs_check = 1 if id_plateforme == 628
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 668
 replace needs_check = 1 if id_plateforme == 668
-replace questions_needing_check = "duplicate" if id_plateforme == 679
-replace needs_check = 1 if id_plateforme == 679
 replace questions_needing_check = "tel_sup2" if id_plateforme == 695
 replace needs_check = 1 if id_plateforme == 695
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 698
@@ -129,8 +124,6 @@ replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 76
 replace needs_check = 1 if id_plateforme == 761
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 841
 replace needs_check = 1 if id_plateforme == 841
-replace questions_needing_check = "duplicate" if id_plateforme == 898
-replace needs_check = 1 if id_plateforme == 898
 ***********************************************************************
 * 	PART 2: use regular expressions to correct variables 		  			
 ***********************************************************************
@@ -494,6 +487,120 @@ lab var q42f "(in-) formel argument de vente"
 * 	PART 10:  Identify and remove duplicates 
 ***********************************************************************
 
+* Dropping duplicates:
+
+drop if id_plateforme == 58 & heure == "09h51`38``"
+drop if id_plateforme == 63 & heure == "17h32`56``"
+drop if id_plateforme == 63 & heure == "10h50`30``"
+drop if id_plateforme == 78 & heure == "15h56`49``"
+drop if id_plateforme == 78 & heure == "11h55`23``"
+drop if id_plateforme == 78 & heure == "11h25`01``"
+drop if id_plateforme == 105 & heure == "15h50`43``"
+drop if id_plateforme == 108 & heure == "15h29`12``"
+drop if id_plateforme == 114 & heure == "18h34`17``"
+drop if id_plateforme == 140 & heure == "18h17`02``"
+drop if id_plateforme == 166 & heure == "19h43`11``"
+drop if id_plateforme == 195 & heure == "10h09`54``"
+drop if id_plateforme == 206 & heure == "11h08`43``"
+drop if id_plateforme == 206 & heure == "08h55`51``"
+drop if id_plateforme == 271 & heure == "14h34`28``"
+drop if id_plateforme == 313 & heure == "15h24`44``"
+drop if id_plateforme == 324 & heure == "08h46`17``"
+drop if id_plateforme == 324 & heure == "14h38`49``"
+drop if id_plateforme == 324 & heure == "12h54`53``"
+drop if id_plateforme == 436 & heure == "16h56`32``"
+drop if id_plateforme == 457 & heure == "13h06`26``"
+drop if id_plateforme == 457 & heure == "11h08`09``"
+drop if id_plateforme == 457 & heure == "08h22`05``"
+drop if id_plateforme == 457 & heure == "15h38`43``"
+drop if id_plateforme == 488 & heure == "13h35`09``"
+drop if id_plateforme == 521 & heure == "15h41`40``"
+drop if id_plateforme == 526 & heure == "08h55`51``"
+drop if id_plateforme == 526 & heure == "19h24`33``"
+drop if id_plateforme == 526 & heure == "19h45`13``"
+drop if id_plateforme == 527 & heure == "11h30`18``"
+drop if id_plateforme == 541 & heure == "16h40`39``"
+drop if id_plateforme == 542 & heure == "15h37`59``"
+drop if id_plateforme == 545 & heure == "15h54`12``"
+drop if id_plateforme == 545 & heure == "10h10`49``"
+drop if id_plateforme == 572 & heure == "16h19`02``"
+drop if id_plateforme == 576 & heure == "11h49`52``"
+drop if id_plateforme == 602 & heure == "14h08`28``"
+drop if id_plateforme == 623 & heure == "16h23`38``"
+drop if id_plateforme == 629 & heure == "15h28`26``"
+drop if id_plateforme == 644 & heure == "13h15`19``"
+drop if id_plateforme == 646 & heure == "16h08`01``"
+drop if id_plateforme == 646 & heure == "16h28`14``"
+drop if id_plateforme == 679 & heure == "18h28`53``"
+drop if id_plateforme == 679 & heure == "13h32`54``"
+drop if id_plateforme == 679 & heure == "19h01`55``"
+drop if id_plateforme == 698 & heure == "13h00`32``"
+drop if id_plateforme == 710 & heure == "19h10`37``"
+drop if id_plateforme == 716 & heure == "17h02`40``"
+drop if id_plateforme == 716 & heure == "11h22`15``"
+drop if id_plateforme == 732 & heure == "16h55`41``"
+drop if id_plateforme == 739 & heure == "15h36`45``"
+drop if id_plateforme == 739 & heure == "11h27`59``"
+drop if id_plateforme == 757 & heure == "16h29`40``"
+drop if id_plateforme == 765 & heure == "11h01`13``"
+drop if id_plateforme == 767 & heure == "11h00`11``"
+drop if id_plateforme == 782 & heure == "14h31`55``"
+drop if id_plateforme == 791 & heure == "13h40`07``"
+drop if id_plateforme == 791 & heure == "13h40`16``"
+drop if id_plateforme == 800 & heure == "15h38`00``"
+drop if id_plateforme == 803 & heure == "08h32`50``"
+drop if id_plateforme == 831 & heure == "15h45`46``"
+drop if id_plateforme == 896 & heure == "11h34`10``"
+drop if id_plateforme == 898 & heure == "10h16`02``"
+drop if id_plateforme == 911 & heure == "12h15`01``"
+drop if id_plateforme == 916 & heure == "18h16`52``"
+drop if id_plateforme == 941 & heure == "16h09`19``"
+drop if id_plateforme == 961 & heure == "10h17`41``"
+
+
+* Correcting the second duplicates:
+replace id_base_repondent= "sana farjallah" if id_plateforme == 108
+replace entr_produit1= "skit solaire connecté réseau,site isolé et pompage solaire" if id_plateforme == 108
+replace i= "africa@growatt.pro" if id_plateforme == 108
+
+replace dig_revenues_ecom= 20000 if id_plateforme == 140
+replace perc_ident= 2 if id_plateforme == 140
+replace perc_video= 2 if id_plateforme == 140
+
+replace expprep_norme2= "toutes les certifs de hp" if id_plateforme == 206
+replace exp_avant21_2= "logiciels & services" if id_plateforme == 206
+replace exp_pays_avant21= 1 if id_plateforme == 206
+replace exp_pays_principal_avant21= "libye" if id_plateforme == 206
+
+replace orienter_= 6 if id_plateforme == 195
+replace id_nouveau_personne= 2 if id_plateforme == 195
+replace id_base_repondent= "anis kadech" if id_plateforme == 195
+replace id_repondent_position= 2 if id_plateforme == 195
+
+replace entr_produit1= "aliments composés pour toutes espèces (volailles, ruminants, lapin, cheval..)" if id_plateforme == 436
+replace entr_produit2= "prémix" if id_plateforme == 436
+replace entr_produit3= "matières premières tels que soja extrudé (fullfat) et tourteau de soja express" if id_plateforme == 436
+
+replace entr_produit1= "cuisines / pose" if id_plateforme == 521
+replace entr_produit2= "dressings / pose" if id_plateforme == 521
+replace entr_produit3= "meubde salde bain / pose" if id_plateforme == 521
+				
+replace entr_produit1= "conseil en stratégie, organisation et financiers" if id_plateforme == 623
+replace entr_produit2= "assistance it" if id_plateforme == 623
+replace entr_produit3= "outsourcing, audit financier et assistance comptable, fiscaet juridique" if id_plateforme == 623
+
+replace entr_produit2= "legume" if id_plateforme == 644
+replace entr_produit3= "dattes" if id_plateforme == 644
+	
+replace entr_produit2= "audit" if id_plateforme == 803
+replace entr_produit3= "etuet conseils" if id_plateforme == 803
+		
+replace compexp_2020= "660000" if id_plateforme == 898
+replace comp_ca2020= "800000" if id_plateforme == 898
+replace car_carempl_div1= 16 if id_plateforme == 898
+replace car_carempl_dive2= 5 if id_plateforme == 898
+replace car_carempl_div3= 0 if id_plateforme == 898		
+	  		
 
 
 
