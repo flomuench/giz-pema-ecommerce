@@ -487,7 +487,6 @@ lab var q42f "(in-) formel argument de vente"
 * 	PART 10:  Identify and remove duplicates 
 ***********************************************************************
 
-<<<<<<< Updated upstream
 * Dropping duplicates:
 
 drop if id_plateforme == 58 & heure == "09h51`38``"
@@ -558,18 +557,13 @@ drop if id_plateforme == 916 & heure == "18h16`52``"
 drop if id_plateforme == 941 & heure == "16h09`19``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
 
-=======
-* Dropping the latest duplicates:
-drop if id_plateforme == 108 & heure == "10h43`51``"
-drop if id_plateforme == 140 & heure == "18h17`02``"
->>>>>>> Stashed changes
 
 * Correcting the second duplicates:
 replace id_base_repondent= "sana farjallah" if id_plateforme == 108
 replace entr_produit1= "skit solaire connecté réseau,site isolé et pompage solaire" if id_plateforme == 108
 replace i= "africa@growatt.pro" if id_plateforme == 108
 
-<<<<<<< Updated upstream
+
 replace dig_revenues_ecom= 20000 if id_plateforme == 140
 replace perc_ident= 2 if id_plateforme == 140
 replace perc_video= 2 if id_plateforme == 140
@@ -602,19 +596,13 @@ replace entr_produit3= "dattes" if id_plateforme == 644
 replace entr_produit2= "audit" if id_plateforme == 803
 replace entr_produit3= "etuet conseils" if id_plateforme == 803
 		
-replace compexp_2020= "660000" if id_plateforme == 898
-replace comp_ca2020= "800000" if id_plateforme == 898
+replace compexp_2020= 660000 if id_plateforme == 898
+replace comp_ca2020= 800000 if id_plateforme == 898
 replace car_carempl_div1= 16 if id_plateforme == 898
 replace car_carempl_dive2= 5 if id_plateforme == 898
 replace car_carempl_div3= 0 if id_plateforme == 898		
 	  		
 
-
-=======
-replace dig_revenues_ecom= "20000" if id_plateforme == 140
-replace perc_ident= "2" if id_plateforme == 140
-replace perc_video= "2" if id_plateforme == 140
->>>>>>> Stashed changes
 
 ***********************************************************************
 * 	PART 11:  autres / miscellaneous adjustments
