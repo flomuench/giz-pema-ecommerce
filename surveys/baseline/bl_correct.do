@@ -84,8 +84,6 @@ replace questions_needing_check = "comp_benefice2020" if id_plateforme == 148
 replace needs_check = 1 if id_plateforme == 148
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 151
 replace needs_check = 1 if id_plateforme == 151
-replace questions_needing_check = "duplicate" if id_plateforme==206
-replace needs_check = 1 if id_plateforme == 206
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 254
 replace needs_check = 1 if id_plateforme == 254
 replace questions_needing_check = "dig_revenues_ecom/comp_benefice2020" if id_plateforme == 365
@@ -224,30 +222,6 @@ replace investcom_futur = "77777777777777777" if investcom_futur == "-999"
 replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
 replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
 
-*Correction de la variable compexp_2020
-*replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
-*replace compexp_2020 = "110000" if compexp_2020== "110 000"
-*replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
-*replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
-*replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
-*replace compexp_2020= "3609000" if compexp_2020== "3609000dt"
-
-*Correction de la variable comp_ca2020
-*replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
-*replace comp_ca2020 = "304379" if comp_ca2020== "304 379"
-*replace comp_ca2020 = "10000000" if comp_ca2020== "10 000 000"
-*replace comp_ca2020 = "7628248" if comp_ca2020== "7628248000"
-*replace comp_ca2020 = "3039336" if comp_ca2020== "3 039 336"
-*replace comp_ca2020 = "5351160" if comp_ca2020== "5.351.160"
-*replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
-*replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
-*replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
-*replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
-
-*replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
-*replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
-*replace comp_ca2020 = "28727" if comp_ca2020 == "28 726.833"
-*replace comp_ca2020 = "500000" if comp_ca2020 == "500 (cinq cent mille dinars)"
 
 
 */
@@ -319,27 +293,6 @@ format `x' %25.0fc
 ***********************************************************************
 * 	PART 5:  Convert problematic values for open-ended questions  			
 ***********************************************************************
-{
-
-	* Sectionname
-*replace q04 ="Hors sujet" if q04 == "OUI" 
-
-*Correction nom du representant
-*gen rg_nom_repr= rg_nom_rep            
-*replace rg_nom_repr="$check_again" if rg_nom_rep == "Études géomatiques." 
-
-* Correction de la variable investcom_2021
-//replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
-
-* correction de lavariable comp_benefice2020
-
-
-
-* Correction de la variable investcom_futur
-//replace investcom_futur = "88888888888888888" if investcom_futur== "aa"
-
- 
-}
 
 ***********************************************************************
 * 	PART 6:  Traduction reponses en arabe au francais		  			
@@ -488,7 +441,7 @@ lab var q42f "(in-) formel argument de vente"
 ***********************************************************************
 
 * Dropping duplicates:
-
+{
 drop if id_plateforme == 58 & heure == "09h51`38``"
 drop if id_plateforme == 63 & heure == "17h32`56``"
 drop if id_plateforme == 63 & heure == "10h50`30``"
@@ -556,9 +509,10 @@ drop if id_plateforme == 911 & heure == "12h15`01``"
 drop if id_plateforme == 916 & heure == "18h16`52``"
 drop if id_plateforme == 941 & heure == "16h09`19``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
-
+}
 
 * Correcting the second duplicates:
+{
 replace id_base_repondent= "sana farjallah" if id_plateforme == 108
 replace entr_produit1= "skit solaire connecté réseau,site isolé et pompage solaire" if id_plateforme == 108
 replace i= "africa@growatt.pro" if id_plateforme == 108
@@ -602,7 +556,7 @@ replace car_carempl_div1= 16 if id_plateforme == 898
 replace car_carempl_dive2= 5 if id_plateforme == 898
 replace car_carempl_div3= 0 if id_plateforme == 898		
 	  		
-
+}
 
 ***********************************************************************
 * 	PART 11:  autres / miscellaneous adjustments
