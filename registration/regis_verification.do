@@ -80,7 +80,7 @@ drop if matricule_fiscale == ""
 merge 1:1 matricule_fiscale using "verified_ecommerce_eligibles_pme"
 browse if _merge == 2
 *export excel matricule_fiscale nom_entreprise-export2021 using "verif_unmerged" if _merge == 2, replace firstrow(var)
-
+drop code_douane site_web Téléphone reseaux_sociaux date_created onshore employes
 gen finally_eligible = 0
 replace finally_eligible = 1 if _merge == 3
 
