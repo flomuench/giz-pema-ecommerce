@@ -225,6 +225,9 @@ replace investcom_futur = "77777777777777777" if investcom_futur == "-999"
 replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
 replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
 
+replace investcom_futur = "120000" if investcom_futur == "cent vingt milles"
+
+
 *Correction de la variable compexp_2020
 *replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
 *replace compexp_2020 = "110000" if compexp_2020== "110 000"
@@ -266,6 +269,9 @@ replace dig_revenues_ecom = "88888888888888888" if dig_revenues_ecom == "0 dt en
 replace dig_revenues_ecom = "99999999999999999" if dig_revenues_ecom == "-888"
 replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "-999"
 
+replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "je ne sais pas"
+
+
 
 /*Correction de la variable comp_benefice2020
 replace comp_benefice2020 = "337892" if comp_benefice2020== "337 892"
@@ -278,6 +284,8 @@ replace comp_benefice2020 =  "46000" if comp_benefice2020 == "46000 quarante six
 */
 
 replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "18000 dt en 2019"
+replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "30% men chiffre d'affaire"
+replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "je ne sais pas"
 replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "na"
 replace comp_benefice2020 = "337892" if comp_benefice2020 == "337 892"
 replace comp_benefice2020 = "-114131" if comp_benefice2020 == "-114 131"
@@ -294,10 +302,12 @@ replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
 replace comp_benefice2020 = "99999999999999999" if comp_benefice2020 == "-888"
 replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "-999"
 
+
 *Correction de la variable car_carempl_div
 replace car_carempl_div1 = "77777777777777777" if car_carempl_div1 == "?"
 replace car_carempl_dive2 = "77777777777777777" if car_carempl_dive2 == "?"
 replace car_carempl_div3 = "77777777777777777" if car_carempl_div3 == "?"
+
 
 
 }
@@ -328,6 +338,7 @@ format `x' %25.0fc
 
 * Correction de la variable investcom_2021
 //replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
+
 
 * correction de lavariable comp_benefice2020
 
@@ -395,6 +406,32 @@ replace investcom_benefit3_3 = "le produit sera plus connu" if investcom_benefit
 replace investcom_benefit3_3 = "augmentation de chiffre d'affaire" if investcom_benefit3_3 == "ogmantaion de chiffre d'affaire"
 replace investcom_benefit3_3 = "améliorer l'image de la marque" if investcom_benefit3_3 == "t7aseen f image de marque"
 }
+
+
+/*
+
+
+*** 09.02.2022 TO change: 
+
+replace exp_afrique_principal = "sénégal" if id_plateforme = 108
+
+drop if id_plateforme = 108 & attest!=1
+
+drop if id_plateforme = 140 & attest!=1
+
+replace perc_video = 2 if id_plateforme = 140
+replace perc_ident = 2 id_plateforme = 140
+
+
+replace exp_pays_principal2 = "france" if id_plateforme==679
+
+CHECK id_plateforme == 898 (earlier response has more details)
+
+*/
+
+
+
+
 
 ***********************************************************************
 * 	PART 7: 	Rename and homogenize the observed values		  			

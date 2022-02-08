@@ -69,10 +69,10 @@ capture replace questions_needing_checks = questions_needing_checks +  "Revenues
 
 * If number of export countries is higher than 100 – needs check (it's sus)
 
-capture replace needs_check = 1 if  exp_pays_avant21 > 100
+capture replace needs_check = 1 if  exp_pays_avant21 > 100 & exp_pays_avant21!=.
 capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_avant21 & " if  exp_pays_avant21 > 100
 
-capture replace needs_check = 1 if  exp_pays_21 > 100
+capture replace needs_check = 1 if  exp_pays_21 > 100 & exp_pays_21!=.
 capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_21 & " if  exp_pays_21 > 100
 
 
@@ -104,7 +104,7 @@ foreach var of local cont_vars {
 
 foreach var of local accountvars {
 	capture replace needs_check = 1 if `var' == . 
-	capture replace questions_needing_checks = questions_needing_checks + "`var' manque & " if `var' == .  & scalar_issue==0
+	capture replace questions_needing_checks = questions_needing_checks + "`var' manque & " if `var' == . 
 }
 
 
