@@ -5,15 +5,16 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1)		Define non-response categories 			  				  
-* 	2) 		Use regular expressions to correct variables
-*	3)   	Replace string with numeric values						  
-*	4)  	Convert string to numerical variaregises	  				  
-*	5)  	Convert problematic values for open-ended questions		  
-*	6)  	Traduction reponses en arabe au francais				  
-*   7)      Rename and homogenize the observed values                   
-*	8)		Import categorisation for opend ended QI questions
-*	9)		Remove duplicates
+*	1)		Define non-response categories 		
+*   2)		Manually fix wrong answers 	  				  
+* 	3) 		Use regular expressions to correct variables
+*	4)   	Replace string with numeric values						  
+*	5)  	Convert string to numerical variaregises	  				  
+*	6)  	Convert problematic values for open-ended questions		  
+*	7)  	Traduction reponses en arabe au francais				  
+*   8)      Rename and homogenize the observed values                   
+*	9)		Import categorisation for opend ended QI questions
+*	10)		Remove duplicates
 *
 *																	  															      
 *	Author:  	Florian Muench & Kais Jomaa							  
@@ -47,6 +48,10 @@ gen questions_needing_checks = ""
 gen commentsmsb = ""
 */
 }
+
+***********************************************************************
+* 	PART 2:  Manually fix wrong answers
+***********************************************************************
 
 
 * Needs check
@@ -122,8 +127,46 @@ replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 76
 replace needs_check = 1 if id_plateforme == 761
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 841
 replace needs_check = 1 if id_plateforme == 841
+
+
+replace tel_sup2 = 99667598 if id_plateforme==695
+replace needs_check = 0 if id_plateforme==695
+
+replace exp_afrique = 0 if id_plateforme==151
+replace needs_check = 0 if id_plateforme==151
+
+replace exp_afrique = 0 if id_plateforme==761
+replace needs_check = 0 if id_plateforme==761
+
+replace compexp_2020 = "8000000" if id_plateforme==91
+replace comp_ca2020 = "8000000" if id_plateforme==91
+replace investcom_2021 = "0" if id_plateforme==91
+replace needs_check = 0 if id_plateforme==91
+
+replace compexp_2020 = "30000" if id_plateforme==146
+replace comp_ca2020 = "30000" if id_plateforme==146
+replace investcom_2021 = "0" if id_plateforme==146
+replace needs_check = 0 if id_plateforme==146
+
+replace compexp_2020 = "0" if id_plateforme==209
+replace comp_ca2020 = "750000" if id_plateforme==209
+replace investcom_2021 = "0" if id_plateforme==209
+replace comp_benefice2020 = "500000" if id_plateforme==209
+replace needs_check = 0 if id_plateforme==209
+
+replace exp_afrique_principal = "cameroun" if id_plateforme==136
+replace needs_check = 0 if id_plateforme==136
+
+replace exp_afrique_principal = "sénégal" if id_plateforme==668
+replace comp_ca2020 = "50000" if id_plateforme==668
+replace dig_revenues_ecom = "50000" if id_plateforme==668
+replace comp_benefice2020 = "0" if id_plateforme==668
+replace needs_check = 0 if id_plateforme==668
+
+
+
 ***********************************************************************
-* 	PART 2: use regular expressions to correct variables 		  			
+* 	PART 3: use regular expressions to correct variables 		  			
 ***********************************************************************
 /* for reference and guidance, regularly these commands are used in this section
 gen XXX = ustrregexra(XXX, "^216", "")
@@ -136,7 +179,7 @@ lab val id_adminrect correct
 */
 
 * Correction des variables investissement
-//replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
+replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
 //replace investcom_futur = ustrregexra( investcom_futur,"dinars","")
 //replace investcom_futur = ustrregexra( investcom_futur,"dt","")
 //replace investcom_futur = ustrregexra( investcom_futur,"k","000")
@@ -176,22 +219,25 @@ replace investcom_futur = ustrregexra( investcom_futur ," dinars","")
 
 
 ***********************************************************************
-* 	PART 3:  Replace string with numeric values		  			
+* 	PART 4:  Replace string with numeric values		  			
 ***********************************************************************
 {
 *Remplacer les textes de la variable investcom_2021
-//replace investcom_2021 = "100000" if investcom_2021== "100000dt"
-//replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
-//replace investcom_2021 = "0" if investcom_2021== "zéro"
-//replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
-//replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
-//replace investcom_2021 = "0" if investcom_2021 == "zero"
-//replace investcom_2021 = "10000" if investcom_2021 == "10 000"
-//replace investcom_2021 = "9000" if investcom_2021 == "9000 (neuf mille dinars)"
-//replace investcom_2021 = "2500" if investcom_2021 == "2 500,000"
+replace investcom_2021 = "100000" if investcom_2021== "100000dt"
+replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
+replace investcom_2021 = "0" if investcom_2021== "zéro"
+replace investcom_2021 = "7628248" if investcom_2021== "7628248,000 dt"
+replace investcom_2021 = "1000" if investcom_2021== "moins que 1000dt"
+replace investcom_2021 = "0" if investcom_2021 == "zero"
+replace investcom_2021 = "10000" if investcom_2021 == "10 000"
+replace investcom_2021 = "9000" if investcom_2021 == "9000 (neuf mille dinars)"
+replace investcom_2021 = "2500" if investcom_2021 == "2 500,000"
+replace investcom_2021 = "100000" if investcom_2021 == "100kdt"
+replace investcom_2021 = "100000" if investcom_2021 == "a"
+replace investcom_2021 = "3500000" if investcom_2021 == "3 500,000"
 
-replace investcom_2021 = 99999999999999999 if investcom_2021 == -888
-replace investcom_2021 = 77777777777777777 if investcom_2021 == -999
+replace investcom_2021 = "99999999999999999" if investcom_2021 == "-888"
+replace investcom_2021 = "77777777777777777" if investcom_2021 == "-999"
 
 
 *Remplacer les textes de la variable investcom_futur
@@ -269,6 +315,7 @@ replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "je ne s
 
 replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "je ne sais pas"
 
+replace investcom_futur = "" if investcom_futur == ".."
 
 
 /*Correction de la variable comp_benefice2020
@@ -313,19 +360,19 @@ replace car_carempl_div3 = "77777777777777777" if car_carempl_div3 == "?"
 }
 
 ***********************************************************************
-* 	PART 4:  Convert string to numerical variaregises	  			
+* 	PART 5:  Convert string to numerical variabales	  			
 ***********************************************************************
 * local destrvar XX
 *foreach x of local destrvar { 
 *destring `x', replace
-local destrvar investcom_futur dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3
+local destrvar investcom_futur investcom_2021 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3
 foreach x of local destrvar {
 destring `x', replace
 format `x' %25.0fc
 }
 
 ***********************************************************************
-* 	PART 5:  Convert problematic values for open-ended questions  			
+* 	PART 6:  Convert problematic values for open-ended questions  			
 ***********************************************************************
 {
 
@@ -337,7 +384,8 @@ format `x' %25.0fc
 *replace rg_nom_repr="$check_again" if rg_nom_rep == "Études géomatiques." 
 
 * Correction de la variable investcom_2021
-//replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
+replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
+replace investcom_2021 = "30000" if investcom_2021== "trente milles dinars"
 
 
 * correction de lavariable comp_benefice2020
@@ -352,7 +400,7 @@ format `x' %25.0fc
 
 
 ***********************************************************************
-* 	PART 6:  Traduction reponses en arabe au francais		  			
+* 	PART 7:  Traduction reponses en arabe au francais		  			
 ***********************************************************************
 {
 *Traduction des produits principaux de l'entreprise
@@ -435,7 +483,7 @@ CHECK id_plateforme == 898 (earlier response has more details)
 
 
 ***********************************************************************
-* 	PART 7: 	Rename and homogenize the observed values		  			
+* 	PART 8: 	Rename and homogenize the observed values		  			
 ***********************************************************************
 {
 	* Sectionname
@@ -459,7 +507,7 @@ replace entr_produit1 = "maillots de bain"  if entr_produit1=="mayo de bain"
 
 
 ***********************************************************************
-* 	PART 8:  Import categorisation for opend ended QI questions
+* 	PART 9:  Import categorisation for opend ended QI questions
 ***********************************************************************
 {
 /*
@@ -511,16 +559,14 @@ lab var q42f "(in-) formel argument de vente"
 
 
 ***********************************************************************
-* 	PART 9:  Convert data types to the appropriate format
+* 	PART 10:  Convert data types to the appropriate format
 ***********************************************************************
 * Convert string variable to integer variables
 
 
 
-
-
 ***********************************************************************
-* 	PART 10:  Identify and remove duplicates 
+* 	PART 11:  Identify and remove duplicates 
 ***********************************************************************
 
 * Dropping duplicates:
