@@ -133,7 +133,7 @@ if (1) do "${bl_github}/bl_test.do"
 /* --------------------------------------------------------------------
 	PART 3.8: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
-//if (1) do "${bl_github}/bl_progress_statistics.do"
+if (1) do "${bl_github}/bl_statistics.do"
 
 
 
