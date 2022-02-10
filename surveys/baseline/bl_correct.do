@@ -53,7 +53,7 @@ gen commentsmsb = ""
 * 	PART 2:  Manually fix wrong answers
 ***********************************************************************
 
-
+{
 * Needs check
 //replace needs_check = 1 if id_plateforme = 572== "a"
 //replace needs_check = 1 if id_plateforme = 572 == "aa"
@@ -127,26 +127,70 @@ replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 76
 replace needs_check = 1 if id_plateforme == 761
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 841
 replace needs_check = 1 if id_plateforme == 841
+}
+{
+replace compexp_2020 = "3346308" if id_plateforme==	70
+replace comp_ca2020 = "7267643" if id_plateforme==70
+replace investcom_2021 = "8000" if id_plateforme==70
+replace needs_check = 0 if id_plateforme==70
 
+replace exp_pays_avant21 = 0 if id_plateforme==	80
+replace needs_check = 0 if id_plateforme==80
 
-replace tel_sup2 = 99667598 if id_plateforme==695
-replace needs_check = 0 if id_plateforme==695
+replace compexp_2020 = "3300000" if id_plateforme==	82
+replace comp_ca2020 = "6143000" if id_plateforme==82
+replace comp_benefice2020 = "0" if id_plateforme==82
+replace dig_revenues_ecom = "0" if id_plateforme==82
+replace investcom_2021 = "0" if id_plateforme==82
+replace needs_check = 0 if id_plateforme==82
 
-replace exp_afrique = 0 if id_plateforme==151
-replace needs_check = 0 if id_plateforme==151
-
-replace exp_afrique = 0 if id_plateforme==761
-replace needs_check = 0 if id_plateforme==761
+replace compexp_2020 = "80000" if id_plateforme==	89
+replace comp_ca2020 = "137000" if id_plateforme==89
+replace comp_benefice2020 = "10000" if id_plateforme==89
+replace needs_check = 0 if id_plateforme==89
 
 replace compexp_2020 = "8000000" if id_plateforme==91
 replace comp_ca2020 = "8000000" if id_plateforme==91
 replace investcom_2021 = "0" if id_plateforme==91
 replace needs_check = 0 if id_plateforme==91
 
+replace exp_pays_avant21 = 0 if id_plateforme==122
+replace needs_check = 0 if id_plateforme==122
+
+replace exp_pays_avant21 = 0 if id_plateforme==126
+replace needs_check = 0 if id_plateforme==126
+
+replace exp_afrique_principal = "cameroun" if id_plateforme==136
+replace needs_check = 0 if id_plateforme==136
+
+replace exp_pays_avant21 = 0 if id_plateforme==144
+replace needs_check = 0 if id_plateforme==144
+
 replace compexp_2020 = "30000" if id_plateforme==146
 replace comp_ca2020 = "30000" if id_plateforme==146
 replace investcom_2021 = "0" if id_plateforme==146
 replace needs_check = 0 if id_plateforme==146
+
+replace exp_afrique = 0 if id_plateforme==151
+replace needs_check = 0 if id_plateforme==151
+
+replace exp_pays_avant21 = 0 if id_plateforme==166
+replace needs_check = 0 if id_plateforme==166
+
+replace comp_benefice2020 = "-8120" if id_plateforme==172
+replace dig_revenues_ecom = "8500" if id_plateforme==172
+replace needs_check = 0 if id_plateforme==172
+
+replace compexp_2020 = "120000" if id_plateforme==183
+replace comp_ca2020 = "600000" if id_plateforme==183
+replace comp_benefice2020 = "0" if id_plateforme==183
+replace dig_revenues_ecom = "0" if id_plateforme==183
+replace investcom_2021 = "0" if id_plateforme==183
+replace needs_check = 0 if id_plateforme==183
+
+replace compexp_2020 = "142500" if id_plateforme==204
+replace comp_ca2020 = "1222221" if id_plateforme==204
+replace needs_check = 0 if id_plateforme==204
 
 replace compexp_2020 = "0" if id_plateforme==209
 replace comp_ca2020 = "750000" if id_plateforme==209
@@ -154,8 +198,201 @@ replace investcom_2021 = "0" if id_plateforme==209
 replace comp_benefice2020 = "500000" if id_plateforme==209
 replace needs_check = 0 if id_plateforme==209
 
-replace exp_afrique_principal = "cameroun" if id_plateforme==136
-replace needs_check = 0 if id_plateforme==136
+replace compexp_2020 = "426552" if id_plateforme==212
+replace comp_ca2020 = "426552" if id_plateforme==212
+replace investcom_2021 = "0" if id_plateforme==212
+replace dig_revenues_ecom = "5000" if id_plateforme==212
+replace comp_benefice2020 = "38350" if id_plateforme==212
+replace needs_check = 0 if id_plateforme==212
+
+replace exp_pays_avant21 = 0 if id_plateforme==213
+replace needs_check = 0 if id_plateforme==213
+
+replace exp_pays_avant21 = 0 if id_plateforme==231
+replace needs_check = 0 if id_plateforme==231
+
+replace comp_ca2020 = "14000000" if id_plateforme==237
+replace comp_benefice2020 = "1680000" if id_plateforme==237
+replace needs_check = 0 if id_plateforme==237
+
+replace compexp_2020 = "3240000" if id_plateforme==240
+replace comp_ca2020 = "28400000" if id_plateforme==240
+replace investcom_2021 = "10000" if id_plateforme==240
+replace needs_check = 0 if id_plateforme==240
+
+replace compexp_2020 = "100000" if id_plateforme==244
+replace comp_ca2020 = "2000000" if id_plateforme==244
+replace comp_benefice2020 = "380000" if id_plateforme==244
+replace needs_check = 0 if id_plateforme==244
+
+replace investcom_2021 = "99999999999999999" if id_plateforme==248
+replace needs_check = 0 if id_plateforme==248
+
+replace exp_pays_avant21 = 0 if id_plateforme==253
+replace needs_check = 0 if id_plateforme==253
+
+replace compexp_2020 = "300000" if id_plateforme==254
+replace comp_ca2020 = "1500000" if id_plateforme==254
+replace comp_benefice2020 = "150000" if id_plateforme==254
+replace dig_revenues_ecom = "80000" if id_plateforme==254
+replace needs_check = 0 if id_plateforme==254
+
+replace exp_pays_avant21 = 0 if id_plateforme==259
+replace needs_check = 0 if id_plateforme==259
+
+replace compexp_2020 = "2557" if id_plateforme==261
+replace comp_ca2020 = "2556" if id_plateforme==261
+replace needs_check = 0 if id_plateforme==261
+
+replace compexp_2020 = "400000" if id_plateforme==264
+replace comp_ca2020 = "400000" if id_plateforme==264
+replace needs_check = 0 if id_plateforme==264
+
+replace exp_pays_avant21 = 0 if id_plateforme==271
+replace needs_check = 0 if id_plateforme==271
+
+replace exp_pays_avant21 = 0 if id_plateforme==290
+replace needs_check = 0 if id_plateforme==290
+
+replace exp_pays_21 = 0 if id_plateforme==332
+replace needs_check = 0 if id_plateforme==332
+
+replace compexp_2020 = "0" if id_plateforme==337
+replace comp_ca2020 = "5130000" if id_plateforme==337
+replace dig_revenues_ecom = "0" if id_plateforme==337
+replace comp_benefice2020 = "44124" if id_plateforme==337
+replace needs_check = 0 if id_plateforme==337
+
+replace exp_pays_21 = 0 if id_plateforme==345
+replace needs_check = 0 if id_plateforme==345
+
+replace compexp_2020 = "425339" if id_plateforme==352
+replace comp_ca2020 = "3260763" if id_plateforme==352
+replace comp_benefice2020 = "333963" if id_plateforme==352
+replace needs_check = 0 if id_plateforme==352
+
+replace compexp_2020 = "0" if id_plateforme==352
+replace comp_ca2020 = "0" if id_plateforme==352
+replace comp_benefice2020 = "0" if id_plateforme==352
+replace dig_revenues_ecom = "0" if id_plateforme==352
+replace needs_check = 0 if id_plateforme==352 ///L'entreprise n'a pas eu d'activité en 2020 a cause de la pandémie (0)
+
+replace compexp_2020 = "7900000" if id_plateforme==377
+replace comp_ca2020 = "7900000" if id_plateforme==377
+replace comp_benefice2020 = "191000" if id_plateforme==377
+replace needs_check = 0 if id_plateforme==377
+
+replace comp_benefice2020 = "99999999999999999" if id_plateforme==386
+replace investcom_futur = "77777777777777777" if id_plateforme==386
+replace dig_revenues_ecom = "99999999999999999" if id_plateforme==386
+replace exp_pays_avant21 = 0 if id_plateforme==386
+replace needs_check = 0 if id_plateforme==386
+
+replace compexp_2020 = "23361" if id_plateforme==392
+replace comp_ca2020 = "166656" if id_plateforme==392
+replace comp_benefice2020 = "143295" if id_plateforme==392
+replace dig_revenues_ecom = "0" if id_plateforme==392
+replace needs_check = 0 if id_plateforme==392
+
+replace exp_pays_avant21 = 0 if id_plateforme==398
+replace needs_check = 0 if id_plateforme==398
+
+replace exp_pays_avant21 = 0 if id_plateforme==405
+replace needs_check = 0 if id_plateforme==405
+
+replace exp_pays_avant21 = 0 if id_plateforme==406
+replace needs_check = 0 if id_plateforme==406
+
+replace exp_pays_avant21 = 0 if id_plateforme==409
+replace needs_check = 0 if id_plateforme==409
+
+replace exp_pays_21 = 0 if id_plateforme==416
+replace needs_check = 0 if id_plateforme==416
+
+replace exp_pays_avant21 = 0 if id_plateforme==438
+replace needs_check = 0 if id_plateforme==438
+
+replace exp_pays_avant21 = 77777777777777777 if id_plateforme==443
+replace needs_check = 0 if id_plateforme==443
+
+replace compexp_2020 = "700000" if id_plateforme==451
+replace comp_ca2020 = "34000000" if id_plateforme==451
+replace comp_benefice2020 = "99999999999999999" if id_plateforme==451
+replace needs_check = 0 if id_plateforme==451
+
+replace exp_pays_avant21 = 0 if id_plateforme==453
+replace needs_check = 0 if id_plateforme==453
+
+replace compexp_2020 = "18419000" if id_plateforme==489
+replace comp_ca2020 = "135429000" if id_plateforme==489
+replace dig_revenues_ecom = "0" if id_plateforme==489
+replace comp_benefice2020 = "77777777777777777" if id_plateforme==489
+replace needs_check = 0 if id_plateforme==489
+
+replace compexp_2020 = "0" if id_plateforme==489
+replace comp_ca2020 = "4800000" if id_plateforme==489
+replace needs_check = 0 if id_plateforme==489
+
+replace exp_pays_21 = 0 if id_plateforme==505
+replace investcom_2021 = "77777777777777777" if id_plateforme==505
+replace needs_check = 0 if id_plateforme==505
+
+replace compexp_2020 = "426552" if id_plateforme==545
+replace comp_ca2020 = "426552" if id_plateforme==545
+replace investcom_2021 = "0" if id_plateforme==545
+replace dig_revenues_ecom = "5000" if id_plateforme==545
+replace comp_benefice2020 = "38350" if id_plateforme==545
+replace needs_check = 0 if id_plateforme==545
+
+replace compexp_2020 = "1500000" if id_plateforme==549
+replace comp_ca2020 = "1500000" if id_plateforme==549
+replace needs_check = 0 if id_plateforme==549
+
+replace compexp_2020 = "794596" if id_plateforme==572
+replace comp_ca2020 = "993245" if id_plateforme==572
+replace needs_check = 0 if id_plateforme==572
+
+replace compexp_2020 = "150000" if id_plateforme==600
+replace comp_ca2020 = "1800000" if id_plateforme==600
+replace dig_revenues_ecom = "8000" if id_plateforme==600
+replace comp_benefice2020 = "-180000" if id_plateforme==600
+replace needs_check = 0 if id_plateforme==600
+
+replace compexp_2020 = "1800000" if id_plateforme==604
+replace comp_ca2020 = "4500000" if id_plateforme==604
+replace dig_revenues_ecom = "0" if id_plateforme==604
+replace comp_benefice2020 = "-500000" if id_plateforme==604
+replace needs_check = 0 if id_plateforme==604
+
+replace compexp_2020 = "0" if id_plateforme==617
+replace comp_ca2020 = "250000" if id_plateforme==617
+replace needs_check = 0 if id_plateforme==617
+
+replace compexp_2020 = "0" if id_plateforme==620
+replace comp_ca2020 = "400000" if id_plateforme==620
+replace dig_revenues_ecom = "100000" if id_plateforme==620
+replace comp_benefice2020 = "200000" if id_plateforme==620
+replace needs_check = 0 if id_plateforme==620
+
+replace exp_pays_21 = 77777777777777777 
+replace compexp_2020 = "1150000" if id_plateforme==628
+replace comp_ca2020 = "1280000" if id_plateforme==628
+replace dig_revenues_ecom = "0" if id_plateforme==628
+//replace comp_benefice2020 = "49623" if id_plateforme==628  le benefice ( négative -999 )
+replace needs_check = 0 if id_plateforme==628
+
+replace comp_ca2020 = "120000" if id_plateforme==632
+replace needs_check = 0 if id_plateforme==632
+
+replace compexp_2020 = "0" if id_plateforme==650
+replace comp_ca2020 = "2409519" if id_plateforme==650
+replace dig_revenues_ecom = "0" if id_plateforme==650
+replace comp_benefice2020 = "49623" if id_plateforme==650
+replace needs_check = 0 if id_plateforme==650
+
+replace compexp_2020 = "0" if id_plateforme==657
+replace comp_ca2020 = "1183683" if id_plateforme==657
+replace needs_check = 0 if id_plateforme==657
 
 replace exp_afrique_principal = "sénégal" if id_plateforme==668
 replace comp_ca2020 = "50000" if id_plateforme==668
@@ -163,8 +400,98 @@ replace dig_revenues_ecom = "50000" if id_plateforme==668
 replace comp_benefice2020 = "0" if id_plateforme==668
 replace needs_check = 0 if id_plateforme==668
 
+replace tel_sup2 = 99667598 if id_plateforme==695
+replace needs_check = 0 if id_plateforme==695
+
+replace compexp_2020 = "312000" if id_plateforme==706
+replace comp_ca2020 = "312000" if id_plateforme==706
+replace comp_benefice2020 = "80332" if id_plateforme==706
+replace needs_check = 0 if id_plateforme==706
+
+replace compexp_2020 = "30000" if id_plateforme==708
+replace comp_ca2020 = "100000" if id_plateforme==708
+replace dig_revenues_ecom = "20000" if id_plateforme==708
+replace comp_benefice2020 = "15000" if id_plateforme==708
+replace needs_check = 0 if id_plateforme==708
+
+replace compexp_2020 = "2380000" if id_plateforme==739
+replace comp_ca2020 = "16000000" if id_plateforme==739
+replace comp_benefice2020 = "0" if id_plateforme==739
+replace needs_check = 0 if id_plateforme==739
+
+replace exp_pays_21 = 0 if id_plateforme==742
+replace needs_check = 0 if id_plateforme==742
+
+replace compexp_2020 = "1300" if id_plateforme==743
+replace comp_ca2020 = "80000" if id_plateforme==743
+replace needs_check = 0 if id_plateforme==743
+
+replace exp_afrique = 0 if id_plateforme==761
+replace needs_check = 0 if id_plateforme==761
+
+replace compexp_2020 = "0" if id_plateforme==763
+replace investcom_2021 = "300" if id_plateforme==763
+replace comp_ca2020 = "1700" if id_plateforme==763
+replace comp_benefice2020 = "1100" if id_plateforme==763
+replace needs_check = 0 if id_plateforme==763
+
+replace exp_pays_21 = 0 if id_plateforme==769
+replace investcom_2021 = "0" if id_plateforme==769
+replace needs_check = 0 if id_plateforme==769
+
+replace compexp_2020 = "0" if id_plateforme==773
+replace investcom_2021 = "0" if id_plateforme==773
+replace comp_ca2020 = "800000" if id_plateforme==773
+replace comp_benefice2020 = "40000" if id_plateforme==773
+replace needs_check = 0 if id_plateforme==773
+
+replace compexp_2020 = "50000000" if id_plateforme==820
+replace comp_ca2020 = "70000000" if id_plateforme==820
+replace dig_revenues_ecom = "0" if id_plateforme==820
+replace comp_benefice2020 = "99999999999999999" if id_plateforme==820
+replace needs_check = 0 if id_plateforme==820 
+
+replace compexp_2020 = "99999999999999999" if id_plateforme==827
+replace comp_ca2020 = "99999999999999999" if id_plateforme==827
+replace dig_revenues_ecom = "99999999999999999" if id_plateforme==827
+replace comp_benefice2020 = "99999999999999999" if id_plateforme==827
+replace needs_check = 0 if id_plateforme==827 //Refuse de donner toutes les réponses comptabilité
+
+replace survey_type = "online" if id_plateforme==831
+
+replace compexp_2020 = "250000" if id_plateforme==841
+replace comp_ca2020 = "250000" if id_plateforme==841
+replace dig_revenues_ecom = "0" if id_plateforme==841
+replace comp_benefice2020 = "45000" if id_plateforme==841
+replace needs_check = 0 if id_plateforme==841
+
+replace compexp_2020 = "15000" if id_plateforme==876
+replace comp_ca2020 = "38000" if id_plateforme==876
+replace dig_revenues_ecom = "0" if id_plateforme==876
+replace investcom_2021 = "8000" if id_plateforme==876
+replace needs_check = 0 if id_plateforme==876
+
+replace compexp_2020 = "2500000" if id_plateforme==899
+replace comp_ca2020 = "7000000" if id_plateforme==899
+replace dig_revenues_ecom = "0" if id_plateforme==899
+replace needs_check = 0 if id_plateforme==899
+
+replace investcom_2021 = "77777777777777777" if id_plateforme==926
+replace needs_check = 0 if id_plateforme==926
+
+replace compexp_2020 = "0" if id_plateforme==931
+replace comp_ca2020 = "3000" if id_plateforme==931
+replace dig_revenues_ecom = "0" if id_plateforme==931
+replace comp_benefice2020 = "0" if id_plateforme==931
+replace needs_check = 0 if id_plateforme==962
 
 
+replace compexp_2020 = "350000" if id_plateforme==962
+replace comp_ca2020 = "1500000" if id_plateforme==962
+replace dig_revenues_ecom = "0" if id_plateforme==962
+replace comp_benefice2020 = "150000" if id_plateforme==962
+replace needs_check = 0 if id_plateforme==962
+}
 ***********************************************************************
 * 	PART 3: use regular expressions to correct variables 		  			
 ***********************************************************************
@@ -235,9 +562,14 @@ replace investcom_2021 = "2500" if investcom_2021 == "2 500,000"
 replace investcom_2021 = "100000" if investcom_2021 == "100kdt"
 replace investcom_2021 = "100000" if investcom_2021 == "a"
 replace investcom_2021 = "3500000" if investcom_2021 == "3 500,000"
+replace investcom_2021 = "40000" if investcom_2021 == "quarante milles dinars"
+replace investcom_2021 = "30000" if investcom_2021 == "trente milles dinars"
+replace investcom_2021 = "3000" if investcom_2021 == "trois mille dinars 3000"
 
 replace investcom_2021 = "99999999999999999" if investcom_2021 == "-888"
 replace investcom_2021 = "77777777777777777" if investcom_2021 == "-999"
+replace investcom_2021 = "77777777777777777" if investcom_2021 == "لا اعرف"
+
 
 
 *Remplacer les textes de la variable investcom_futur
@@ -343,7 +675,8 @@ replace comp_benefice2020 = "317887.923" if comp_benefice2020 == "317 887,923"
 replace comp_benefice2020 = "0.2" if comp_benefice2020 == "20pou cent"
 replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
 replace comp_benefice2020 = "0.3" if comp_benefice2020 == "30% men chiffre d'affaire"
-
+replace comp_benefice2020 = "78000" if comp_benefice2020 == "78 000"
+replace comp_benefice2020 = "120000" if comp_benefice2020 == "120 000"
 
 replace comp_benefice2020 = "99999999999999999" if comp_benefice2020 == "-888"
 replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "-999"
@@ -384,8 +717,8 @@ format `x' %25.0fc
 *replace rg_nom_repr="$check_again" if rg_nom_rep == "Études géomatiques." 
 
 * Correction de la variable investcom_2021
-replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
-replace investcom_2021 = "30000" if investcom_2021== "trente milles dinars"
+*replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
+*replace investcom_2021 = "30000" if investcom_2021== "trente milles dinars"
 
 
 * correction de lavariable comp_benefice2020
