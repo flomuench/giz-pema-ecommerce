@@ -73,7 +73,6 @@ graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 putpdf paragraph, halign(center) 
 putpdf text ("E-commerce training: Z scores"), bold linebreak
 
-{
 	* Digital Z-scores
 	
 hist digtalvars, ///

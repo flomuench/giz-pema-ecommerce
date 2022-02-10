@@ -129,7 +129,7 @@ foreach var of local all_accountingvars {
 }
 */
 
-local allvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_all exp_per
+local allvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_all exp_per dig_description1 dig_description2 dig_description3
 
 foreach var of local  allvars {
 	replace `var' = 0 if `var' == .
@@ -150,7 +150,7 @@ end
 
 	* calculate z score for all variables that are part of the index
 	// removed dig_marketing_respons, dig_service_responsable and expprepres_per bcs we don't have fte data without matching (& abs value doesn't make sense)
-local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction
+local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3
 local expprep expprep_cible expprep_norme expprep_demande
 local exportcomes exp_pays_all exp_per
 
@@ -163,7 +163,7 @@ foreach z in digtalvars expprep exportcomes {
 
 		* calculate the index value: average of zscores 
 
-egen digtalvars = rowmean(dig_presence_scorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_scorez dig_service_satisfactionz)
+egen digtalvars = rowmean(dig_presence_scorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_scorez dig_service_satisfactionz dig_description1z dig_description2z dig_description3z)
 egen expprep = rowmean(expprep_ciblez  expprep_normez expprep_demandez)
 egen expoutcomes = rowmean(exp_pays_allz exp_perz)
 
