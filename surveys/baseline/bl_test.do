@@ -116,6 +116,8 @@ drop scalar_issue
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
 
+capture drop dup
+
 sort id_plateforme, stable
 
 quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)

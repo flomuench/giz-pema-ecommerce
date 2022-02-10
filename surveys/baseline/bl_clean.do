@@ -38,7 +38,7 @@ replace `x'= lower(`x')
 	* numeric 
 ds, has(type numeric) 
 local numvars "`r(varlist)'"
-format %-25.0fc `numvars'
+format %-25.2fc `numvars'
 
 	* dates
 		* creation

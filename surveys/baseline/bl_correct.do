@@ -1065,6 +1065,13 @@ bysort id_plateforme: egen max_length = max(sum_allvars)
 
 drop if dup>0 & sum_allvars<max_length
 
+drop dup
+
+bysort id_plateforme:  gen dup = cond(_N==1,0,_n)	
+ 
+keep if dup<2
+
+
 	// We will need to manually check which dups need to be dropped
 
 
