@@ -22,6 +22,7 @@ use "${bl_intermediate}/bl_inter", clear
 cd "$bl_output"
 
 	* create word document
+putpdf clear
 putpdf begin 
 putpdf paragraph
 
@@ -30,7 +31,7 @@ putpdf text ("E-commerce: survey progress, firm characteristics"), bold linebrea
 putpdf text ("Date: `c(current_date)'"), bold linebreak
 
 
-***********************************************************************
+/***********************************************************************
 * 	PART 2:  Survey progress		  			
 ***********************************************************************
 putpdf paragraph, halign(center) 
@@ -51,8 +52,8 @@ format %-td date
 graph twoway histogram date, frequency width(1) ///
 		tlabel(17jan2022(1)01mar2022, angle(60) labsize(vsmall)) ///
 		ytitle("responses") ///
-		title("{bf:Baseline survey: number of responses}") /// 
-gr export survey_response_byday.png,replace
+		title("{bf:Baseline survey: number of responses}") 
+gr export survey_response_byday.png, replace
 putpdf paragraph, halign(center) 
 putpdf image survey_response_byday.png
 putpdf pagebreak
@@ -64,7 +65,7 @@ graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 	ytitle("Nombre des employés")
 
 }
-
+*/
 ***********************************************************************
 *** PART 3: Z Scores 		  			
 ***********************************************************************
@@ -102,9 +103,42 @@ graph export expoutcomes_zscores.png, replace
 putpdf paragraph, halign(center) 
 putpdf image expoutcomes_zscores.png
 putpdf pagebreak
+
+
+	* For comparison, the 'raw' indices: 
+	
+	* Digital Z-scores
+	
+hist raw_digtalvars, ///
+	title("Raw sum of all digital scores") ///
+	xtitle("Sum")
+graph export raw_digital.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_digital.png
+putpdf pagebreak
+
+	* Export preparation Z-scores
+	
+hist raw_expprep, ///
+	title("Raw sum of all export preparation questions") ///
+	xtitle("Sum")
+graph export raw_expprep.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_expprep.png
+putpdf pagebreak
+
+	* Export outcomes Z-scores
+	
+hist raw_expoutcomes, ///
+	title("Raw sum of all export outcomes questions") ///
+	xtitle("Sum")
+graph export raw_expoutcomes.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_expoutcomes.png
+putpdf pagebreak
 	
 	
-***********************************************************************
+/***********************************************************************
 * 	PART 4:  Firm characteristics
 ***********************************************************************
 	* create a heading for the section in the pdf
@@ -220,16 +254,12 @@ gr combine gender_ssector_eligible gender_ssector_eligible_alt, title("{bf:Eligi
 graph export gender_sector_eligible_alt.png, replace
 putpdf paragraph, halign(center) 
 putpdf image gender_sector_eligible_alt.png
-	
+
+*/	
 ***********************************************************************
 * 	PART 6:  save pdf
 ***********************************************************************
 	* change directory to progress folder
-cd "$bl_progress"
+cd "$bl_output"
 	* pdf
-putpdf save "progress-eligibility-characteristics", replace
-
-	* export excel with list of firms that we need to contact for them to correct
-		* their matricule fiscal
-cd "$bl_checks"
-export excel potentially_eligible if eligible == 0 & eligible_sans_matricule == 1, firstrow(var) replace
+putpdf save "baseline_statistics", replace

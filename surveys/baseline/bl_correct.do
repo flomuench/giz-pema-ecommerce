@@ -35,12 +35,13 @@ foreach x of local strvars {
 		replace `x' = "" if `x' == "-"
 	}
 	
+scalar not_know    = -999
+scalar refused     = -888
+scalar check_again = -777
 
-
-
-scalar not_know    = 77777777777777777
-scalar refused     = 99999999999999999
-scalar check_again = 88888888888888888
+local not_know    = -999
+local refused     = -888
+local check_again = -777
 
 	* replace, gen, label
 gen needs_check = 0
@@ -157,6 +158,10 @@ replace needs_check = 0 if id_plateforme==91
 replace exp_pays_avant21 = 0 if id_plateforme==122
 replace needs_check = 0 if id_plateforme==122
 
+replace exp_pays_avant21 = -999 if exp_pays_avant21==330
+
+
+
 replace exp_pays_avant21 = 0 if id_plateforme==126
 replace needs_check = 0 if id_plateforme==126
 
@@ -225,7 +230,7 @@ replace comp_ca2020 = "2000000" if id_plateforme==244
 replace comp_benefice2020 = "380000" if id_plateforme==244
 replace needs_check = 0 if id_plateforme==244
 
-replace investcom_2021 = "99999999999999999" if id_plateforme==248
+replace investcom_2021 = "`refused'" if id_plateforme==248
 replace needs_check = 0 if id_plateforme==248
 
 replace exp_pays_avant21 = 0 if id_plateforme==253
@@ -282,9 +287,9 @@ replace comp_ca2020 = "7900000" if id_plateforme==377
 replace comp_benefice2020 = "191000" if id_plateforme==377
 replace needs_check = 0 if id_plateforme==377
 
-replace comp_benefice2020 = "99999999999999999" if id_plateforme==386
-replace investcom_futur = "77777777777777777" if id_plateforme==386
-replace dig_revenues_ecom = "99999999999999999" if id_plateforme==386
+replace comp_benefice2020 = "`refused'" if id_plateforme==386
+replace investcom_futur = "`not_know'" if id_plateforme==386
+replace dig_revenues_ecom = "`refused'" if id_plateforme==386
 replace exp_pays_avant21 = 0 if id_plateforme==386
 replace needs_check = 0 if id_plateforme==386
 
@@ -312,12 +317,12 @@ replace needs_check = 0 if id_plateforme==416
 replace exp_pays_avant21 = 0 if id_plateforme==438
 replace needs_check = 0 if id_plateforme==438
 
-replace exp_pays_avant21 = 77777777777777777 if id_plateforme==443
+replace exp_pays_avant21 = not_know if id_plateforme==443
 replace needs_check = 0 if id_plateforme==443
 
 replace compexp_2020 = "700000" if id_plateforme==451
 replace comp_ca2020 = "34000000" if id_plateforme==451
-replace comp_benefice2020 = "99999999999999999" if id_plateforme==451
+replace comp_benefice2020 = "`refused'" if id_plateforme==451
 replace needs_check = 0 if id_plateforme==451
 
 replace exp_pays_avant21 = 0 if id_plateforme==453
@@ -326,7 +331,7 @@ replace needs_check = 0 if id_plateforme==453
 replace compexp_2020 = "18419000" if id_plateforme==489
 replace comp_ca2020 = "135429000" if id_plateforme==489
 replace dig_revenues_ecom = "0" if id_plateforme==489
-replace comp_benefice2020 = "77777777777777777" if id_plateforme==489
+replace comp_benefice2020 = "`not_know'" if id_plateforme==489
 replace needs_check = 0 if id_plateforme==489
 
 replace compexp_2020 = "0" if id_plateforme==489
@@ -334,7 +339,7 @@ replace comp_ca2020 = "4800000" if id_plateforme==489
 replace needs_check = 0 if id_plateforme==489
 
 replace exp_pays_21 = 0 if id_plateforme==505
-replace investcom_2021 = "77777777777777777" if id_plateforme==505
+replace investcom_2021 = "`not_know'" if id_plateforme==505
 replace needs_check = 0 if id_plateforme==505
 
 replace compexp_2020 = "426552" if id_plateforme==545
@@ -374,7 +379,7 @@ replace dig_revenues_ecom = "100000" if id_plateforme==620
 replace comp_benefice2020 = "200000" if id_plateforme==620
 replace needs_check = 0 if id_plateforme==620
 
-replace exp_pays_21 = 77777777777777777 
+//replace exp_pays_21 = not_know 
 replace compexp_2020 = "1150000" if id_plateforme==628
 replace comp_ca2020 = "1280000" if id_plateforme==628
 replace dig_revenues_ecom = "0" if id_plateforme==628
@@ -422,6 +427,12 @@ replace needs_check = 0 if id_plateforme==739
 replace exp_pays_21 = 0 if id_plateforme==742
 replace needs_check = 0 if id_plateforme==742
 
+replace exp_pays_21 = -999 if exp_pays_21==330
+replace needs_check = 0 if id_plateforme==628
+replace needs_check = 0 if id_plateforme==443
+
+replace exp_pays_21 = -999 if exp_pays_21==200
+
 replace compexp_2020 = "1300" if id_plateforme==743
 replace comp_ca2020 = "80000" if id_plateforme==743
 replace needs_check = 0 if id_plateforme==743
@@ -448,13 +459,13 @@ replace needs_check = 0 if id_plateforme==773
 replace compexp_2020 = "50000000" if id_plateforme==820
 replace comp_ca2020 = "70000000" if id_plateforme==820
 replace dig_revenues_ecom = "0" if id_plateforme==820
-replace comp_benefice2020 = "99999999999999999" if id_plateforme==820
+replace comp_benefice2020 = "`refused'" if id_plateforme==820
 replace needs_check = 0 if id_plateforme==820 
 
-replace compexp_2020 = "99999999999999999" if id_plateforme==827
-replace comp_ca2020 = "99999999999999999" if id_plateforme==827
-replace dig_revenues_ecom = "99999999999999999" if id_plateforme==827
-replace comp_benefice2020 = "99999999999999999" if id_plateforme==827
+replace compexp_2020 = "`refused'" if id_plateforme==827
+replace comp_ca2020 = "`refused'" if id_plateforme==827
+replace dig_revenues_ecom = "`refused'" if id_plateforme==827
+replace comp_benefice2020 = "`refused'" if id_plateforme==827
 replace needs_check = 0 if id_plateforme==827 //Refuse de donner toutes les réponses comptabilité
 
 replace survey_type = "online" if id_plateforme==831
@@ -476,7 +487,7 @@ replace comp_ca2020 = "7000000" if id_plateforme==899
 replace dig_revenues_ecom = "0" if id_plateforme==899
 replace needs_check = 0 if id_plateforme==899
 
-replace investcom_2021 = "77777777777777777" if id_plateforme==926
+replace investcom_2021 = "`not_know'" if id_plateforme==926
 replace needs_check = 0 if id_plateforme==926
 
 replace compexp_2020 = "0" if id_plateforme==931
@@ -566,9 +577,9 @@ replace investcom_2021 = "40000" if investcom_2021 == "quarante milles dinars"
 replace investcom_2021 = "30000" if investcom_2021 == "trente milles dinars"
 replace investcom_2021 = "3000" if investcom_2021 == "trois mille dinars 3000"
 
-replace investcom_2021 = "99999999999999999" if investcom_2021 == "-888"
-replace investcom_2021 = "77777777777777777" if investcom_2021 == "-999"
-replace investcom_2021 = "77777777777777777" if investcom_2021 == "لا اعرف"
+replace investcom_2021 = "`refused'" if investcom_2021 == "-888"
+replace investcom_2021 = "`not_know'" if investcom_2021 == "-999"
+replace investcom_2021 = "`not_know'" if investcom_2021 == "لا اعرف"
 
 
 
@@ -594,42 +605,53 @@ replace investcom_futur = "12500" if investcom_futur == "entre 10000 à 15000"
 replace investcom_futur = "10000" if investcom_futur == "10 000"
 replace investcom_futur = "120000" if investcom_futur == "cent vingt milles"
 
-replace investcom_futur = "88888888888888888" if investcom_futur == "aa"
-replace investcom_futur = "99999999999999999" if investcom_futur == "-888"
-replace investcom_futur = "77777777777777777" if investcom_futur == "-999"
-replace investcom_futur = "77777777777777777" if investcom_futur == "je sais pas encore"
-replace investcom_futur = "77777777777777777" if investcom_futur == "ne sais pas"
+replace investcom_futur = "`check_again'" if investcom_futur == "aa"
+replace investcom_futur = "`refused'" if investcom_futur == "-888"
+replace investcom_futur = "`not_know'" if investcom_futur == "-999"
+replace investcom_futur = "`not_know'" if investcom_futur == "je sais pas encore"
+replace investcom_futur = "`not_know'" if investcom_futur == "ne sais pas"
 
 
 replace investcom_futur = "120000" if investcom_futur == "cent vingt milles"
 
 
 *Correction de la variable compexp_2020
-*replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
-*replace compexp_2020 = "110000" if compexp_2020== "110 000"
-*replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
-*replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
-*replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
-*replace compexp_2020= "3609000" if compexp_2020== "3609000dt"
+replace compexp_2020 = "794596" if compexp_2020== "794 596.000"
+replace compexp_2020 = "110000" if compexp_2020== "110 000"
+replace compexp_2020 = "7628248" if compexp_2020== "7628248000"
+replace compexp_2020 = "1566010" if compexp_2020== "1.566.010"
+replace compexp_2020 = "40000" if compexp_2020 == "40.000 quarante mille dinars"
+replace compexp_2020= "3609000" if compexp_2020== "3609000dt"
+replace compexp_2020= "0" if compexp_2020== "248000dt 2018 et 124000dt 2019"
+replace compexp_2020= "1200000" if compexp_2020== "1 200 000"
+replace compexp_2020= "`not_know'" if compexp_2020== "je ne sais pas"
+replace compexp_2020= "8000000" if compexp_2020== "8 000 000"
+replace compexp_2020= "263605" if compexp_2020== "263 605"
+
 
 *Correction de la variable comp_ca2020
-*replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
-*replace comp_ca2020 = "304379" if comp_ca2020== "304 379"
-*replace comp_ca2020 = "10000000" if comp_ca2020== "10 000 000"
-*replace comp_ca2020 = "7628248" if comp_ca2020== "7628248000"
-*replace comp_ca2020 = "3039336" if comp_ca2020== "3 039 336"
-*replace comp_ca2020 = "5351160" if comp_ca2020== "5.351.160"
-*replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
-*replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
-*replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
-*replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
+replace comp_ca2020 = "993245" if comp_ca2020== "993 245,000"
+replace comp_ca2020 = "304379" if comp_ca2020== "304 379"
+replace comp_ca2020 = "10000000" if comp_ca2020== "10 000 000"
+replace comp_ca2020 = "7628248" if comp_ca2020== "7628248000"
+replace comp_ca2020 = "3039336" if comp_ca2020== "3 039 336"
+replace comp_ca2020 = "5351160" if comp_ca2020== "5.351.160"
+replace comp_ca2020 = "6987385,476" if comp_ca2020== "6987385.476"
+replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
+replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
+replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
+replace comp_ca2020= "0" if comp_ca2020== "248000dt 2018 et 124000dt 2019"
 
-*replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
-*replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
-*replace comp_ca2020 = "28727" if comp_ca2020 == "28 726.833"
-*replace comp_ca2020 = "500000" if comp_ca2020 == "500 (cinq cent mille dinars)"
+replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
+replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
+replace comp_ca2020 = "28727" if comp_ca2020 == "28 726.833"
+replace comp_ca2020 = "500000" if comp_ca2020 == "500 (cinq cent mille dinars)"
+replace comp_ca2020 = "977097" if comp_ca2020 == "977 097"
+replace comp_ca2020 = "1880000" if comp_ca2020 == "1 880 000"
+replace comp_ca2020= "`not_know'" if comp_ca2020== "je ne sais pas"
+replace comp_ca2020= "8000000" if comp_ca2020== "8 000 000"
 
-*/
+
 *Correction de la variable dig_revenues_ecom
 replace dig_revenues_ecom = "20000" if dig_revenues_ecom== "20 000"
 replace dig_revenues_ecom = "200000" if dig_revenues_ecom== "200 000"
@@ -639,18 +661,18 @@ replace dig_revenues_ecom = "0" if dig_revenues_ecom == "zeo"
 replace dig_revenues_ecom = "0.70" if dig_revenues_ecom == "70% de ca totale"
 replace dig_revenues_ecom = "0.30" if dig_revenues_ecom == "non établi. ds les 30% environ"
 
-replace dig_revenues_ecom = "88888888888888888" if dig_revenues_ecom == "0 dt en 2019"
+replace dig_revenues_ecom = "`check_again'" if dig_revenues_ecom == "0 dt en 2019"
 
-replace dig_revenues_ecom = "99999999999999999" if dig_revenues_ecom == "-888"
-replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "-999"
-replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "je ne sais pas"
+replace dig_revenues_ecom = "`refused'" if dig_revenues_ecom == "-888"
+replace dig_revenues_ecom = "`not_know'" if dig_revenues_ecom == "-999"
+replace dig_revenues_ecom = "`not_know'" if dig_revenues_ecom == "je ne sais pas"
 
-replace dig_revenues_ecom = "77777777777777777" if dig_revenues_ecom == "je ne sais pas"
+replace dig_revenues_ecom = "`not_know'" if dig_revenues_ecom == "je ne sais pas"
 
 replace investcom_futur = "" if investcom_futur == ".."
 
 
-/*Correction de la variable comp_benefice2020
+* Correction de la variable comp_benefice2020
 replace comp_benefice2020 = "337892" if comp_benefice2020== "337 892"
 replace comp_benefice2020 = "317887,923" if comp_benefice2020== "317 887,923"
 replace comp_benefice2020 = "28929" if comp_benefice2020== "28 929"
@@ -658,18 +680,18 @@ replace comp_benefice2020 = "191805" if comp_benefice2020== "191805000"
 replace comp_benefice2020 = "317888" if comp_benefice2020 == "317887,923"
 replace comp_benefice2020 = "41000" if comp_benefice2020 == "41 000"
 replace comp_benefice2020 =  "46000" if comp_benefice2020 == "46000 quarante six mille dinar"
-*/
 
-replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "18000 dt en 2019"
-replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "30% men chiffre d'affaire"
-replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "je ne sais pas"
-replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "na"
+
+replace comp_benefice2020 = "`check_again'" if comp_benefice2020 == "18000 dt en 2019"
+replace comp_benefice2020 = "`check_again'" if comp_benefice2020 == "30% men chiffre d'affaire"
+replace comp_benefice2020 = "`not_know'" if comp_benefice2020 == "je ne sais pas"
+replace comp_benefice2020 = "`check_again'" if comp_benefice2020 == "na"
 replace comp_benefice2020 = "337892" if comp_benefice2020 == "337 892"
 replace comp_benefice2020 = "-114131" if comp_benefice2020 == "-114 131"
 replace comp_benefice2020 = "293050" if comp_benefice2020 == "293 050"
 replace comp_benefice2020 = "46000" if comp_benefice2020 == "46000 quarante six mille dinar"
 replace comp_benefice2020 = "41000" if comp_benefice2020 == "41 000"
-replace comp_benefice2020 = "88888888888888888" if comp_benefice2020 == "§§"
+replace comp_benefice2020 = "`check_again'" if comp_benefice2020 == "§§"
 replace comp_benefice2020 = "28929" if comp_benefice2020 == "28 929"
 replace comp_benefice2020 = "317887.923" if comp_benefice2020 == "317 887,923"
 replace comp_benefice2020 = "0.2" if comp_benefice2020 == "20pou cent"
@@ -678,15 +700,15 @@ replace comp_benefice2020 = "0.3" if comp_benefice2020 == "30% men chiffre d'aff
 replace comp_benefice2020 = "78000" if comp_benefice2020 == "78 000"
 replace comp_benefice2020 = "120000" if comp_benefice2020 == "120 000"
 
-replace comp_benefice2020 = "99999999999999999" if comp_benefice2020 == "-888"
-replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "-999"
-replace comp_benefice2020 = "77777777777777777" if comp_benefice2020 == "je ne sais pas"
+replace comp_benefice2020 = "`refused'" if comp_benefice2020 == "-888"
+replace comp_benefice2020 = "`not_know'" if comp_benefice2020 == "-999"
+replace comp_benefice2020 = "`not_know'" if comp_benefice2020 == "je ne sais pas"
 
 
 *Correction de la variable car_carempl_div
-replace car_carempl_div1 = "77777777777777777" if car_carempl_div1 == "?"
-replace car_carempl_dive2 = "77777777777777777" if car_carempl_dive2 == "?"
-replace car_carempl_div3 = "77777777777777777" if car_carempl_div3 == "?"
+replace car_carempl_div1 = "`not_know'" if car_carempl_div1 == "?"
+replace car_carempl_dive2 = "`not_know'" if car_carempl_dive2 == "?"
+replace car_carempl_div3 = "`not_know'" if car_carempl_div3 == "?"
 
 
 
@@ -698,7 +720,7 @@ replace car_carempl_div3 = "77777777777777777" if car_carempl_div3 == "?"
 * local destrvar XX
 *foreach x of local destrvar { 
 *destring `x', replace
-local destrvar investcom_futur investcom_2021 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3
+local destrvar investcom_futur investcom_2021 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 compexp_2020 comp_ca2020
 foreach x of local destrvar {
 destring `x', replace
 format `x' %25.0fc
@@ -717,7 +739,7 @@ format `x' %25.0fc
 *replace rg_nom_repr="$check_again" if rg_nom_rep == "Études géomatiques." 
 
 * Correction de la variable investcom_2021
-*replace investcom_2021 = "88888888888888888" if investcom_2021== "a"
+*replace investcom_2021 = "`check_again'" if investcom_2021== "a"
 *replace investcom_2021 = "30000" if investcom_2021== "trente milles dinars"
 
 
@@ -726,7 +748,7 @@ format `x' %25.0fc
 
 
 * Correction de la variable investcom_futur
-//replace investcom_futur = "88888888888888888" if investcom_futur== "aa"
+//replace investcom_futur = "`check_again'" if investcom_futur== "aa"
 
  
 }
@@ -1019,6 +1041,32 @@ replace car_carempl_dive2= 5 if id_plateforme == 898
 replace car_carempl_div3= 0 if id_plateforme == 898		
 	  		
 }
+
+	* Drop incomplete answers (only once the survey is complete!!!)
+	
+//keep if complete==1
+
+	* Check remaining duplicates (after manual corrections above)
+	
+bysort id_plateforme:  gen dup = cond(_N==1,0,_n)	
+
+	// 350 total obs | 239 unique
+
+	* Check which observations are more complete
+	
+ds, has(type numeric)
+local all_nums `r(varlist)'
+
+egen sum_allvars = rowtotal(`all_nums')
+
+	* Drop duplicates that are less complete
+
+bysort id_plateforme: egen max_length = max(sum_allvars)
+
+drop if dup>0 & sum_allvars<max_length
+
+	// We will need to manually check which dups need to be dropped
+
 
 ***********************************************************************
 * 	PART 11:  autres / miscellaneous adjustments

@@ -20,13 +20,16 @@
 
 clear 
 
-use "${regis_final}/regis_matched", clear
+use "${regis_final}/regis_final", clear
 
-keep id_plateforme dup rg_firmname rg_fte samp_fte rg_expstatus rg_sector samp_sector
+keep id_plateforme presence_enligne rg_age fte fte_femmes capital sector subsector rg_gender_rep rg_gender_pdg produit_exportable export2017 export2018 export2019 export2020 export2021
+//rg_firmname rg_fte samp_fte rg_expstatus rg_sector samp_sector
 
 merge m:m id_plateforme using "${bl_intermediate}/bl_inter"
 
-drop if _merge==1
+keep if _merge==3
+
+drop _merge
 
 // Need to figure out which obs to keep 
 
