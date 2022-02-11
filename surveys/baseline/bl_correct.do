@@ -1184,29 +1184,6 @@ drop if id_plateforme == 646 & dup == 4
 *check again duplicate id_plateforme= 800 & 108
 
 
-
-
-
-
-
-
-670.00
-695.00
-698.00
-715.00
-730.00
-732.00
-739.00
-743.00
-761.00
-810.00
-820.00
-846.00
-873.00
-887.00
-941.00
-
-
 /*
 drop if dup>0 & sum_allvars<max_length
 
