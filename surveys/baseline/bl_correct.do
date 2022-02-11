@@ -1,5 +1,6 @@
 ***********************************************************************
-* 			e-commerce baseline survey corrections                    *	***********************************************************************
+* 			e-commerce baseline survey corrections                    *	
+***********************************************************************
 *																	    
 *	PURPOSE: correct all incoherent responses				  							  
 *																	  
