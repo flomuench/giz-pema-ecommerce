@@ -83,7 +83,7 @@ gen commentsmsb = ""
 
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 89
 replace needs_check = 1 if id_plateforme == 89
-replace questions_needing_check = "expprep_norme2/exp_afrique_principal/duplicate" if id_plateforme == 108
+replace questions_needing_check = "expprep_norme2/exp_afrique_principal" if id_plateforme == 108
 replace needs_check = 1 if id_plateforme == 108
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 136
 replace needs_check = 1 if id_plateforme == 136
@@ -503,6 +503,13 @@ replace comp_ca2020 = "1500000" if id_plateforme==962
 replace dig_revenues_ecom = "0" if id_plateforme==962
 replace comp_benefice2020 = "150000" if id_plateforme==962
 replace needs_check = 0 if id_plateforme==962
+
+
+
+
+
+
+
 }
 ***********************************************************************
 * 	PART 3: use regular expressions to correct variables 		  			
@@ -994,6 +1001,16 @@ drop if id_plateforme == 911 & heure == "12h15`01``"
 drop if id_plateforme == 916 & heure == "18h16`52``"
 drop if id_plateforme == 941 & heure == "16h09`19``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
+
+	* Drop firms that did not want to participate in the intervention
+	* (According to the survey institute)
+drop if id_plateforme == 548
+drop if id_plateforme == 734
+
+	* Drop obs that was not a firm (According to the survey institute):
+
+drop if id_plateforme == 813
+	
 }
 
 * Correcting the second duplicates:
@@ -1064,6 +1081,15 @@ egen sum_allvars = rowtotal(`all_nums')
 
 bysort id_plateforme: egen max_length = max(sum_allvars)
 
+// Suggestion to check which are duplicates – turn duplicate observations
+// that is shorter (ie has fewer answers) into dup==4
+
+replace dup = 4 if dup>0 & sum_allvars<max_length
+
+// you can now sort id_plateforme dup and check if indeed the one coded 4 
+// is to be dropped
+
+/*
 drop if dup>0 & sum_allvars<max_length
 
 drop dup
@@ -1071,7 +1097,7 @@ drop dup
 bysort id_plateforme:  gen dup = cond(_N==1,0,_n)	
  
 keep if dup<2
-
+*/
 
 	// We will need to manually check which dups need to be dropped
 
