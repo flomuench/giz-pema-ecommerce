@@ -145,7 +145,7 @@ add to existing do files
 new do file 1:
 - high frequency checks (generate pdf with statistics)
 	 - extreme values, outliers for numerical questions --> comptabilité
-	 - logical checks
+
 
 new do file 2: (generate pdf with statistics)
 - descriptive statistics of the responses
