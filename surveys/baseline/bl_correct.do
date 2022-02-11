@@ -942,17 +942,21 @@ drop if id_plateforme == 78 & heure == "11h55`23``"
 drop if id_plateforme == 78 & heure == "11h25`01``"
 drop if id_plateforme == 105 & heure == "15h50`43``"
 drop if id_plateforme == 108 & heure == "15h29`12``"
+drop if id_plateforme == 108 & heure == "23h09`09``" 
 drop if id_plateforme == 114 & heure == "18h34`17``"
 drop if id_plateforme == 140 & heure == "18h17`02``"
 drop if id_plateforme == 166 & heure == "19h43`11``"
 drop if id_plateforme == 195 & heure == "10h09`54``"
 drop if id_plateforme == 206 & heure == "11h08`43``"
 drop if id_plateforme == 206 & heure == "08h55`51``"
+drop if id_plateforme == 213 & heure == "08h43`15``"
 drop if id_plateforme == 271 & heure == "14h34`28``"
 drop if id_plateforme == 313 & heure == "15h24`44``"
 drop if id_plateforme == 324 & heure == "08h46`17``"
 drop if id_plateforme == 324 & heure == "14h38`49``"
 drop if id_plateforme == 324 & heure == "12h54`53``"
+drop if id_plateforme == 369 & heure == "11h42`59``"
+drop if id_plateforme == 360 & heure == "20h07`59``"
 drop if id_plateforme == 436 & heure == "16h56`32``"
 drop if id_plateforme == 457 & heure == "13h06`26``"
 drop if id_plateforme == 457 & heure == "11h08`09``"
@@ -1001,6 +1005,8 @@ drop if id_plateforme == 911 & heure == "12h15`01``"
 drop if id_plateforme == 916 & heure == "18h16`52``"
 drop if id_plateforme == 941 & heure == "16h09`19``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
+
+
 
 	* Drop firms that did not want to participate in the intervention
 	* (According to the survey institute)
@@ -1088,6 +1094,49 @@ replace dup = 4 if dup>0 & sum_allvars<max_length
 
 // you can now sort id_plateforme dup and check if indeed the one coded 4 
 // is to be dropped
+drop if dup ==4 & attest!=1 & attest2!=1 & acceptezvousdevalidervosré!=1
+
+drop if id_plateforme == 70 & dup == 4
+drop if id_plateforme == 82 & dup == 4
+drop if id_plateforme == 91 & dup == 4
+drop if id_plateforme == 95 & dup == 4
+drop if id_plateforme == 105 & dup == 4
+drop if id_plateforme == 136 & dup == 4
+drop if id_plateforme == 140 & dup == 4
+drop if id_plateforme == 146 & dup == 4
+drop if id_plateforme == 148 & dup == 4
+drop if id_plateforme == 151 & dup == 4
+drop if id_plateforme == 183 & dup == 4
+drop if id_plateforme == 212 & dup == 4
+drop if id_plateforme == 216 & dup == 4
+drop if id_plateforme == 240 & dup == 4
+drop if id_plateforme == 248 & dup == 2
+drop if id_plateforme == 261 & dup == 4
+drop if id_plateforme == 264 & dup == 4
+drop if id_plateforme == 265 & dup == 4
+drop if id_plateforme == 270 & dup == 4
+drop if id_plateforme == 275 & dup == 2
+drop if id_plateforme == 303 & dup == 4
+drop if id_plateforme == 311 & dup == 4
+drop if id_plateforme == 323 & dup == 4
+drop if id_plateforme == 324 & dup == 4
+drop if id_plateforme == 337 & dup == 2
+drop if id_plateforme == 352 & dup == 4
+drop if id_plateforme == 354 & dup == 2
+drop if id_plateforme == 365 & dup == 4
+drop if id_plateforme == 366 & dup == 4
+drop if id_plateforme == 373 & dup == 4
+drop if id_plateforme == 375 & dup == 4
+drop if id_plateforme == 377 & dup == 4
+drop if id_plateforme == 381 & dup == 4
+drop if id_plateforme == 424 & dup == 4
+drop if id_plateforme == 440 & dup == 4
+drop if id_plateforme == 457 & dup == 4
+drop if id_plateforme == 477 & dup == 4
+drop if id_plateforme == 488 & dup == 4
+drop if id_plateforme == 493 & dup == 4
+drop if id_plateforme == 526 & dup == 4
+drop if id_plateforme == 541 & dup == 4
 
 /*
 drop if dup>0 & sum_allvars<max_length
