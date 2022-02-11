@@ -74,11 +74,6 @@ replace expprep_cible = 0.5 if expprep_cible==-1200
 * 	PART 2:  Additional variables
 ***********************************************************************
 
-	* calculate as percentage of FTEs: 
-	
-// g expprepres_per =  expprep_responsable/"number of employees"
-
-
 	* Calculate export revenues, digital revenues and profits as percentage of total revenues
 g exp_per = compexp_2020/comp_ca2020
 lab var exp_per "Export revenues as percentage of total revenues"
@@ -89,7 +84,16 @@ lab var dig_rev_per "Digital revenus as percentage of total revenues"
 g profits_per = comp_benefice2020/comp_ca2020
 lab var profits_per "Profits as percentage of total revenues"
 
-	* 
+	* Calculate variables as percentage of employees: 
+	
+g dig_mar_res_per =  dig_marketing_respons/fte
+lab var dig_mar_res_per "FTEs working on digital marketing as percentage"
+
+g dig_ser_res_per = dig_service_responsable/fte
+lab var dig_ser_res_per "FTEs managing online clients as percentage"
+
+g exp_prep_res_per = expprep_responsable/fte
+lab var exp_prep_res_per "FTEs working on exports as percentage" 
 
 
 ** NEED TO ADD FTES TO CREATE dig_marketing_respons and expprepres_per as % of FTEs
@@ -113,36 +117,23 @@ JDE pre-analysis publication:
 	--> implies: same weight for all three dimensions
 */
 
-
-/* for zscore calculations, create a variable that shows if a value is missing, refused, etc
-
-local all_accountingvars expprep_cible expprep_responsable expprep_norme expprep_demande exp_pays_avant21 exp_pays_21 exp_afrique comp_benefice2020 dig_revenues_ecom compexp_2020 comp_ca2020
-
-gen scalar_issue = 0
-
-foreach var of local all_accountingvars {
-	replace scalar_issue = 1 if `var' == -999
-	replace scalar_issue = 1 if `var' == -888
-	replace scalar_issue = 1 if `var' == -777
-	replace scalar_issue = 1 if `var' == .
-
-}
-*/
-
-local allvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_all exp_per dig_description1 dig_description2 dig_description3
+local allvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_all exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
 
 foreach var of local  allvars {
 	replace `var' = 0 if `var' == .
 	replace `var' = 0 if `var' == -999
 	replace `var' = 0 if `var' == -888
 	replace `var' = 0 if `var' == -777
+	replace `var' = 0 if `var' == -1998
+	replace `var' = 0 if `var' == -1776 
+	replace `var' = 0 if `var' == -1554
 	
 }
 
-* WORK IN PROGRESS
 	* calculate z-score for each individual outcome
-		* write a program calculates the z-score
-* capture program drop zscore
+	* write a program calculates the z-score
+	* capture program drop zscore
+	
 program define zscore /* opens a program called zscore */
 	sum `1'
 	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
@@ -150,8 +141,8 @@ end
 
 	* calculate z score for all variables that are part of the index
 	// removed dig_marketing_respons, dig_service_responsable and expprepres_per bcs we don't have fte data without matching (& abs value doesn't make sense)
-local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3
-local expprep expprep_cible expprep_norme expprep_demande
+local digtalvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per 
+local expprep expprep_cible expprep_norme expprep_demande exp_prep_res_per
 local exportcomes exp_pays_all exp_per
 
 
@@ -163,8 +154,8 @@ foreach z in digtalvars expprep exportcomes {
 
 		* calculate the index value: average of zscores 
 
-egen digtalvars = rowmean(dig_presence_scorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_scorez dig_service_satisfactionz dig_description1z dig_description2z dig_description3z)
-egen expprep = rowmean(expprep_ciblez  expprep_normez expprep_demandez)
+egen digtalvars = rowmean(dig_presence_scorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_scorez dig_service_satisfactionz dig_description1z dig_description2z dig_description3z dig_mar_res_perz dig_ser_res_perz)
+egen expprep = rowmean(expprep_ciblez  expprep_normez expprep_demandez exp_prep_res_perz)
 egen expoutcomes = rowmean(exp_pays_allz exp_perz)
 
 label var digtalvars   "Index digitalisation"
