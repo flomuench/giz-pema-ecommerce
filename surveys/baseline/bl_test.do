@@ -70,7 +70,7 @@ capture replace questions_needing_checks = questions_needing_checks +  "Revenues
 * If number of export countries is higher than 100 – needs check (it's sus)
 
 capture replace needs_check = 1 if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
-//capture replace needs_check = 1 if exp_pays_avant21==. & rg_oper_exp == 1 & exp_pays>1
+//capture replace needs_check = 1 if exp_pays_avant21==. &  rg_oper_exp == 1 & exp_pays>1
 capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_avant21 & " if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
 
 capture replace needs_check = 1 if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
