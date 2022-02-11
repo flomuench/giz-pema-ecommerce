@@ -117,8 +117,10 @@ JDE pre-analysis publication:
 	--> implies: same weight for all three dimensions
 */
 
+*Definition of all variables that are being used in index calculation*
 local allvars dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_all exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
 
+*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros*
 foreach var of local  allvars {
 	replace `var' = 0 if `var' == .
 	replace `var' = 0 if `var' == -999
