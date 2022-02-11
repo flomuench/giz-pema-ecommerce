@@ -1137,6 +1137,75 @@ drop if id_plateforme == 488 & dup == 4
 drop if id_plateforme == 493 & dup == 4
 drop if id_plateforme == 526 & dup == 4
 drop if id_plateforme == 541 & dup == 4
+drop if id_plateforme == 542 & dup == 4
+drop if id_plateforme == 543 & dup == 4
+drop if id_plateforme == 549 & dup == 4
+drop if id_plateforme == 568 & dup == 4
+drop if id_plateforme == 572 & dup == 4
+drop if id_plateforme == 576 & dup == 4
+drop if id_plateforme == 581 & dup == 4
+drop if id_plateforme == 592 & dup == 4
+drop if id_plateforme == 604 & dup == 4
+drop if id_plateforme == 617 & dup == 4
+drop if id_plateforme == 632 & dup == 4
+drop if id_plateforme == 542 & dup == 4
+drop if id_plateforme == 546 & dup == 4
+drop if id_plateforme == 650 & dup == 4
+drop if id_plateforme == 657 & dup == 4
+drop if id_plateforme == 670 & dup == 4
+drop if id_plateforme == 679 & dup == 4
+drop if id_plateforme == 695 & dup == 4
+drop if id_plateforme == 698 & dup == 4
+drop if id_plateforme == 700 & dup == 4
+drop if id_plateforme == 715 & dup == 2
+drop if id_plateforme == 730 & dup == 4
+drop if id_plateforme == 732 & dup == 4
+drop if id_plateforme == 739 & dup == 4
+drop if id_plateforme == 761 & dup == 4
+drop if id_plateforme == 763 & dup == 4
+drop if id_plateforme == 773 & dup == 4
+drop if id_plateforme == 805 & dup == 4
+drop if id_plateforme == 820 & dup == 4
+drop if id_plateforme == 846 & dup == 4
+drop if id_plateforme == 876 & dup == 4
+drop if id_plateforme == 887 & dup == 4
+drop if id_plateforme == 899 & dup == 4
+drop if id_plateforme == 959 & dup == 4
+drop if id_plateforme == 165 & dup == 1
+drop if id_plateforme == 209 & dup == 2
+drop if id_plateforme == 213 & dup == 4
+drop if id_plateforme == 360 & dup == 2
+drop if id_plateforme == 369 & dup == 1
+drop if id_plateforme == 598 & dup == 2
+drop if id_plateforme == 612 & dup == 2
+drop if id_plateforme == 642 & dup == 4
+drop if id_plateforme == 646 & dup == 4
+
+*check again duplicate id_plateforme= 800 & 108
+
+
+
+
+
+
+
+
+670.00
+695.00
+698.00
+715.00
+730.00
+732.00
+739.00
+743.00
+761.00
+810.00
+820.00
+846.00
+873.00
+887.00
+941.00
+
 
 /*
 drop if dup>0 & sum_allvars<max_length
