@@ -78,7 +78,6 @@ capture replace questions_needing_checks = questions_needing_checks +  "Vérifer
 
 
 
-
 /* --------------------------------------------------------------------
 	PART 2.2: Indices / questions with points
 ----------------------------------------------------------------------*/		
@@ -103,9 +102,13 @@ foreach var of local cont_vars {
 
 } 
 
-* check accounting answers that are empty: 
 
-foreach var of local accountvars {
+
+
+local importantvars investcom_2021 investcom_futur expprep_responsable compexp_2020 comp_ca2020 comp_benefice2020 dig_revenues_ecom car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
+
+
+foreach var of local importantvars {
 	capture replace needs_check = 1 if `var' == . 
 	capture replace questions_needing_checks = questions_needing_checks + "`var' manque & " if `var' == . 
 }

@@ -113,42 +113,32 @@ if (1) do "${bl_github}/bl_clean.do"
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_correct.do"
+if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Match to registration data
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_match.do"
+if (1) do "${bl_github}/bl_match.do"
 /* --------------------------------------------------------------------
 	PART 3.5: Generate variables for analysis or implementation
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_generate.do"
+if (1) do "${bl_github}/bl_generate.do"
 /* --------------------------------------------------------------------
 	PART 3.6: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_open_question_checks.do"
+if (1) do "${bl_github}/bl_open_question_checks.do"
 /* --------------------------------------------------------------------
 	PART 3.7: Perform logical checks
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_test.do"
+if (1) do "${bl_github}/bl_test.do"
 /* --------------------------------------------------------------------
 	PART 3.8: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_statistics.do"
+if (1) do "${bl_github}/bl_statistics.do"
 
 
 
 /* 
-add to existing do files
-+ bl_generate: digital, export readiness and export performance score
-+ 
 
-new do file 1:
-- high frequency checks (generate pdf with statistics)
-	 - extreme values, outliers for numerical questions --> comptabilité
-
-
-new do file 2: (generate pdf with statistics)
-- descriptive statistics of the responses
 
 new do file 3:
 - stratification
