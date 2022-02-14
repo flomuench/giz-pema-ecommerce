@@ -825,7 +825,6 @@ replace investcom_benefit3_3 = "améliorer l'image de la marque" if investcom_be
 
 *** 09.02.2022 TO change: 
 
-replace exp_afrique_principal = "sénégal" if id_plateforme = 108
 
 drop if id_plateforme = 108 & attest!=1
 
@@ -872,68 +871,13 @@ replace entr_produit1 = "maillots de bain"  if entr_produit1=="mayo de bain"
 ***********************************************************************
 * 	PART 9:  Import categorisation for opend ended QI questions
 ***********************************************************************
-{
-/*
-	* the manually handed categories are in the folder data/AQE/surveys/midline/categorisation/copies
-			* q42, q15c5, q18m5, q10n5, q10r5, q21example
-local categories "argument-vente source-informations-conformité source-informations-metrologie source-normes source-reglements-techniques verification-intrants-fournisseurs"
-foreach x of local categories {
-	preserve
-
-	cd "$bl_categorisation"
-	
-	import excel "${bl_categorisation}/Copie de categories-`x'.xlsx", firstrow clear
-	
-	duplicates drop id, force
-
-	cd "$bl_intermediate"
-
-	save "`x'", replace
-
-	restore
-
-	merge 1:1 id using `x'
-	
-	save, replace
-
-	drop if _merge == 2 /* drops all non matched rows from coded categories */
-	
-	drop _merge
-	}
-	* format variables
-
-format %-25s q42 q42c q15c5 q18m5 q10n5 q10r5 q21example q15c5c q18m5c q10n5c q10r5c q21examplec
-
-	* visualise the categorical variables
-			* argument de vente
-codebook q42c /* suggère qu'il y a 94 valeurs uniques doit etre changé */
-graph hbar (count), over(q42c, lab(labs(tiny)))
-			* organisme de certification
-graph hbar (count), over(q15c5c, lab(labs(tiny)))
-graph hbar (count), over(q10n5c, lab(labs(tiny)))
-
-
-	* label variable categories
-lab var q42f "(in-) formel argument de vente"
-*/
-}
-
-
-
-
-***********************************************************************
-* 	PART 10:  Convert data types to the appropriate format
-***********************************************************************
-* Convert string variable to integer variables
-
-
 
 ***********************************************************************
 * 	PART 11:  Identify and remove duplicates 
 ***********************************************************************
 
 * Dropping duplicates:
-{
+
 drop if id_plateforme == 58 & heure == "09h51`38``"
 drop if id_plateforme == 63 & heure == "17h32`56``"
 drop if id_plateforme == 63 & heure == "10h50`30``"
@@ -1005,6 +949,10 @@ drop if id_plateforme == 911 & heure == "12h15`01``"
 drop if id_plateforme == 916 & heure == "18h16`52``"
 drop if id_plateforme == 941 & heure == "16h09`19``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
+drop if id_plateforme == 77 & attest==.
+drop if id_plateforme == 710 & exp_pays_21==.
+drop if id_plateforme == 715 & survey_type=="phone"
+drop if id_plateforme == 366 &exp_pays_21==.
 
 
 
@@ -1017,10 +965,9 @@ drop if id_plateforme == 734
 
 drop if id_plateforme == 813
 	
-}
 
 * Correcting the second duplicates:
-{
+
 replace id_base_repondent= "sana farjallah" if id_plateforme == 108
 replace entr_produit1= "skit solaire connecté réseau,site isolé et pompage solaire" if id_plateforme == 108
 replace i= "africa@growatt.pro" if id_plateforme == 108
@@ -1063,18 +1010,22 @@ replace comp_ca2020= 800000 if id_plateforme == 898
 replace car_carempl_div1= 16 if id_plateforme == 898
 replace car_carempl_dive2= 5 if id_plateforme == 898
 replace car_carempl_div3= 0 if id_plateforme == 898		
-	  		
-}
 
-	* Drop incomplete answers (only once the survey is complete!!!)
-	
-//keep if complete==1
+replace car_carempl_div1 = 1 if id_plateforme==360
+replace car_carempl_dive2 = 2 if id_plateforme==360
+replace car_carempl_div3 = 0 if id_plateforme==360
+replace exp_pays_21 = 1 if id_plateforme==360
+
+replace car_carempl_div1 = 50 if id_plateforme==369
+replace car_carempl_dive2 = 20 if id_plateforme==369
+replace car_carempl_div3 = 0 if id_plateforme==369
+replace exp_pays_21 = 4 if id_plateforme==369
+
+ 	  	
 
 	* Check remaining duplicates (after manual corrections above)
 	
 bysort id_plateforme:  gen dup = cond(_N==1,0,_n)	
-
-	// 350 total obs | 239 unique
 
 	* Check which observations are more complete
 	
@@ -1087,20 +1038,14 @@ egen sum_allvars = rowtotal(`all_nums')
 
 bysort id_plateforme: egen max_length = max(sum_allvars)
 
-// Suggestion to check which are duplicates – turn duplicate observations
-// that is shorter (ie has fewer answers) into dup==4
-
+	* Tag as dup 4 shorter answers, check them and drop them
 replace dup = 4 if dup>0 & sum_allvars<max_length
-
-// you can now sort id_plateforme dup and check if indeed the one coded 4 
-// is to be dropped
-drop if dup ==4 & attest!=1 & attest2!=1 & acceptezvousdevalidervosré!=1
 
 drop if id_plateforme == 70 & dup == 4
 drop if id_plateforme == 82 & dup == 4
 drop if id_plateforme == 91 & dup == 4
 drop if id_plateforme == 95 & dup == 4
-drop if id_plateforme == 105 & dup == 4
+drop if id_plateforme == 105 & dup == 4 & car_carempl_div1 == .
 drop if id_plateforme == 136 & dup == 4
 drop if id_plateforme == 140 & dup == 4
 drop if id_plateforme == 146 & dup == 4
@@ -1113,13 +1058,16 @@ drop if id_plateforme == 240 & dup == 4
 drop if id_plateforme == 248 & dup == 2
 drop if id_plateforme == 261 & dup == 4
 drop if id_plateforme == 264 & dup == 4
+
 drop if id_plateforme == 265 & dup == 4
 drop if id_plateforme == 270 & dup == 4
 drop if id_plateforme == 275 & dup == 2
 drop if id_plateforme == 303 & dup == 4
 drop if id_plateforme == 311 & dup == 4
 drop if id_plateforme == 323 & dup == 4
-drop if id_plateforme == 324 & dup == 4
+// check the following two
+drop if id_plateforme == 324 & dup == 4 & acceptezvousdevalidervosré!=1
+drop if id_plateforme == 324 & dup == 4 & survey_type!="online"
 drop if id_plateforme == 337 & dup == 2
 drop if id_plateforme == 352 & dup == 4
 drop if id_plateforme == 354 & dup == 2
@@ -1137,7 +1085,9 @@ drop if id_plateforme == 488 & dup == 4
 drop if id_plateforme == 493 & dup == 4
 drop if id_plateforme == 526 & dup == 4
 drop if id_plateforme == 541 & dup == 4
-drop if id_plateforme == 542 & dup == 4
+// check the next two
+drop if id_plateforme == 542 & dup == 4 & attest!=1
+drop if id_plateforme == 542 & dup == 4 & survey_type!="phone"
 drop if id_plateforme == 543 & dup == 4
 drop if id_plateforme == 549 & dup == 4
 drop if id_plateforme == 568 & dup == 4
@@ -1176,27 +1126,80 @@ drop if id_plateforme == 209 & dup == 2
 drop if id_plateforme == 213 & dup == 4
 drop if id_plateforme == 360 & dup == 2
 drop if id_plateforme == 369 & dup == 1
-drop if id_plateforme == 598 & dup == 2
-drop if id_plateforme == 612 & dup == 2
+drop if id_plateforme == 598 & dup == 1
+drop if id_plateforme == 612 & dup == 1
 drop if id_plateforme == 642 & dup == 4
 drop if id_plateforme == 646 & dup == 4
 
-*check again duplicate id_plateforme= 800 & 108
+//double check these: 
+drop if id_plateforme == 89 & car_carempl_div1==.
+drop if id_plateforme == 324 & car_carempl_div1==.
+drop if id_plateforme == 360 & attest==.
+drop if id_plateforme == 743 & car_carempl_div1==.
+drop if id_plateforme == 800 & comp_ca2020==.
+drop if id_plateforme == 810 & car_carempl_div1==.
+drop if id_plateforme == 898 & acceptezvousdevalidervosré==.
+
+*check again duplicate id_plateforme= 800 & 108 & 324
+
+drop if id_plateforme == 58 & dup ==4
+drop if id_plateforme == 63 & dup ==4
+// check next (missing answers in dropped)
+drop if id_plateforme == 78 & dup ==4 & comp_ca2020==.
+drop if id_plateforme == 85 & dup ==4
+// double check
+drop if id_plateforme == 114 & dup ==1
+drop if id_plateforme == 166 & dup ==4
+drop if id_plateforme == 195 & dup ==4
+// check next (missing answers in dropped)
+drop if id_plateforme == 206 & dup ==4
+drop if id_plateforme == 271 & dup ==4
+drop if id_plateforme == 313 & dup ==4
+drop if id_plateforme == 394 & dup ==4
+drop if id_plateforme == 405 & dup ==4
+// check next (missing answers in dropped)
+drop if id_plateforme == 436 & dup ==4
+drop if id_plateforme == 447 & dup ==4
+drop if id_plateforme == 508 & dup ==4
+drop if id_plateforme == 521 & dup ==4
+drop if id_plateforme == 527 & dup ==4
+// check next (missing answers in dropped)
+drop if id_plateforme == 545 & dup ==4
+drop if id_plateforme == 565 & dup ==4
+
+drop if id_plateforme == 586 & dup ==4
+drop if id_plateforme == 602 & dup ==4
+drop if id_plateforme == 623 & dup ==4
+drop if id_plateforme == 629 & dup ==4
+drop if id_plateforme == 644 & dup ==4
+drop if id_plateforme == 710 & dup ==4
+drop if id_plateforme == 716 & dup ==4
+drop if id_plateforme == 736 & dup ==4
+drop if id_plateforme == 747 & dup ==4
+drop if id_plateforme == 757 & dup ==4
+drop if id_plateforme == 765 & dup ==4
+drop if id_plateforme == 767 & dup ==4
+drop if id_plateforme == 782 & dup ==1
+drop if id_plateforme == 791 & dup ==4
+drop if id_plateforme == 803 & dup ==4
+drop if id_plateforme == 831 & dup ==4
+drop if id_plateforme == 873 & dup ==4
+drop if id_plateforme == 896 & dup ==4
+drop if id_plateforme == 911 & dup ==4
+drop if id_plateforme == 916 & dup ==4
+// check next two
+drop if id_plateforme == 941 & dig_con1==.
+drop if id_plateforme == 941 & survey_type=="online"
+drop if id_plateforme == 961 & dup ==4
 
 
-/*
-drop if dup>0 & sum_allvars<max_length
 
-drop dup
+	* Drop useless variables
 
-bysort id_plateforme:  gen dup = cond(_N==1,0,_n)	
- 
-keep if dup<2
-*/
+	
+drop dup sum_allvars max_length
 
-	// We will need to manually check which dups need to be dropped
-
-
+	
 ***********************************************************************
 * 	PART 11:  autres / miscellaneous adjustments
 ***********************************************************************
