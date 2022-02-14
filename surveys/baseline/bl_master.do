@@ -127,13 +127,17 @@ if (1) do "${bl_github}/bl_generate.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_open_question_checks.do"
 /* --------------------------------------------------------------------
-	PART 3.7: Perform logical checks
+	PART 3.7: Perform logical checks (and SAVE bl_final.dta)
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_test.do"
 /* --------------------------------------------------------------------
 	PART 3.8: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_statistics.do"
+/* --------------------------------------------------------------------
+	PART 3.9: Generate stratifiers
+----------------------------------------------------------------------*/	
+if (1) do "${bl_github}/bl_stratification.do"
 
 
 
