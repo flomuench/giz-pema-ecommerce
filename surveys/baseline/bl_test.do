@@ -17,12 +17,10 @@
 *	Creates:  fiche_correction.xls			                          
 *																	  
 ***********************************************************************
-* 	PART 1:  Create word file for export		  		
+* 	PART 1:  Load data	  		
 ***********************************************************************
-	* import file
-	
+	 
 use "${bl_intermediate}/bl_inter", clear
-
 
 ***********************************************************************
 * 	PART 2:  Define logical tests
@@ -36,6 +34,7 @@ use "${bl_intermediate}/bl_inter", clear
 
 local accountvars investcom_2021 investcom_futur expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 comp_benefice2020 dig_revenues_ecom car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
 
+// generate a variable that highlights this (to be used later)
 gen scalar_issue = 0
 
 foreach var of local accountvars {
@@ -131,7 +130,6 @@ replace questions_needing_checks = questions_needing_checks +  " | Aucune répon
 //replace needs_check = 1 if ==. &
 //replace questions_needing_checks = questions_needing_checks +  " | " 
 
-
 	* Now all closed variables without a logic (ie don't require other answers to be true)
 
 local closed_vars entr_bien_service dig_con1 dig_con3 dig_presence1 dig_presence2 dig_presence3 expprep_responsable comp_ca2020 comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
@@ -144,6 +142,18 @@ foreach var of local closed_vars {
 
 drop scalar_issue
 
+
+***********************************************************************
+* 	PART 4:  Cross checks again registration data
+***********************************************************************
+
+// check using export2017-2021 
+// check 'produit exportable'
+// compare car_carempl_div1 to fte_femmes
+
+***********************************************************************
+* 	PART 5:  Export fiche correction and save as final
+***********************************************************************
 
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
@@ -164,4 +174,14 @@ cd "$bl_checks"
 order commentaires_ElAmouri id_plateforme commentsmsb 
 
 export excel commentaires_ElAmouri id_plateforme commentsmsb needs_check questions_needing_check heure date-dig_logistique_retour_score using "fiche_correction" if needs_check==1, firstrow(variables) replace
+
+
+	* Save as final
+
+drop export2017 export2018  export2019  export2020 export2021 attest attest2 acceptezvousdevalidervosré acceptezvousenregistrement ident_nom orienter_ ident_nom_correct_entreprise qsinonident as aq complete needs_check questions_needing_checks commentsmsb
+
+cd "$bl_final"
+
+save "bl_final", replace
+
 
