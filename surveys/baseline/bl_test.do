@@ -9,11 +9,12 @@
 *	1)		Preamble
 * 	2) 		Define logical tests
 *	2.1) 	Tests for accounting
-*	2.1) 	Tests for indices									  															      
+*	2.1) 	Tests for indices	
+*   3) Check missing values								  															      
 *	Author:  	Teo Firpo							  
 *	ID variable: 	id_plateforme (example: f101)			  					  
 *	Requires: bl_inter.dta 	  								  
-*	Creates:  bl_inter.dta			                          
+*	Creates:  fiche_correction.xls			                          
 *																	  
 ***********************************************************************
 * 	PART 1:  Create word file for export		  		
@@ -40,41 +41,41 @@ gen scalar_issue = 0
 foreach var of local accountvars {
 	replace needs_check = 2 if `var' == -999 
 	replace scalar_issue = 1 if `var' ==  -999
-	replace questions_needing_checks = "`var' pas connue & " + questions_needing_checks if `var' == -999 
+	replace questions_needing_checks = " | `var' pas connue & " + questions_needing_checks if `var' == -999 
 
 	replace needs_check = 2 if `var' == -888 
 	replace scalar_issue = 1 if `var' == -888
-	replace questions_needing_checks = "`var' refusée & " + questions_needing_checks if `var' == -888 
+	replace questions_needing_checks = " | `var' refusée & " + questions_needing_checks if `var' == -888 
 	
 	replace needs_check = 2 if `var' == -777 
 	replace scalar_issue = 1 if `var' == -777
-	replace questions_needing_checks = "`var' doit être verifiée & " + questions_needing_checks if `var' == -777 
+	replace questions_needing_checks = " | `var' doit être verifiée & " + questions_needing_checks if `var' == -777 
 
 }
 
 * If profits are larger than 'chiffres d'affaires' need to check: 
  
 replace needs_check = 1 if comp_benefice2020>comp_ca2020 & comp_ca2020!=. & comp_benefice2020!=. & scalar_issue==0
-replace questions_needing_checks = questions_needing_checks + " Benefices sont plus élevés que comptes d'affaires & " if comp_benefice2020>comp_ca2020 & comp_ca2020!=. & comp_benefice2020!=. & scalar_issue==0
+replace questions_needing_checks = questions_needing_checks + " | Benefices sont plus élevés que comptes d'affaires" if comp_benefice2020>comp_ca2020 & comp_ca2020!=. & comp_benefice2020!=. & scalar_issue==0
 
 * Check if export values are larger than total revenues 
 
 replace needs_check = 1 if comp_ca2020< compexp_2020 & comp_ca2020!=. & compexp_2020!=. & scalar_issue==0
-replace questions_needing_checks = questions_needing_checks +  " Export sont plus élevés que comptes d'affaires & " if comp_ca2020< compexp_2020 & comp_ca2020!=. & compexp_2020!=. & scalar_issue==0
+replace questions_needing_checks = questions_needing_checks +  " | Export sont plus élevés que comptes d'affaires" if comp_ca2020< compexp_2020 & comp_ca2020!=. & compexp_2020!=. & scalar_issue==0
 
 * Check if online revenu is higher than overall revenue
 
 capture replace needs_check = 1 if  comp_ca2020 < dig_revenues_ecom & dig_revenues_ecom!=. & comp_ca2020!=. & scalar_issue==0
-capture replace questions_needing_checks = questions_needing_checks +  "Revenues en ligne sont plus élevés que comptes d'affaires & " if  comp_ca2020 < dig_revenues_ecom & dig_revenues_ecom!=. & comp_ca2020!=. & scalar_issue==0
+capture replace questions_needing_checks = questions_needing_checks +  " | Revenues en ligne sont plus élevés que comptes d'affaires" if  comp_ca2020 < dig_revenues_ecom & dig_revenues_ecom!=. & comp_ca2020!=. & scalar_issue==0
 
 * If number of export countries is higher than 100 – needs check (it's sus)
 
 capture replace needs_check = 1 if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
 //capture replace needs_check = 1 if exp_pays_avant21==. &  rg_oper_exp == 1 & exp_pays>1
-capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_avant21 & " if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
+capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_avant21" if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
 
 capture replace needs_check = 1 if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
-capture replace questions_needing_checks = questions_needing_checks +  "Vérifer nombre de pays dans exp_pays_21 & " if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
+capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_21" if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
 
 
 
@@ -84,12 +85,12 @@ capture replace questions_needing_checks = questions_needing_checks +  "Vérifer
 
 local unit_scores dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_score dig_marketing_ind1 dig_marketing_ind2 dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction expprep_cible expprep_norme rg_oper_exp exp_afrique 
 
-foreach var of local acunit_scores {
+foreach var of local unit_scores {
 	replace needs_check = 1 if `var'>1 & `var'!=.
-	replace questions_needing_checks = questions_needing_checks + "`var' too high & " if `var'>1 & `var'!=.
+	replace questions_needing_checks = questions_needing_checks + " | `var' too high" if `var'>1 & `var'!=.
 	
 	replace needs_check = 1 if `var'<0 & `var'!=-999  & `var'!=-888 & `var'!=-777
-	replace questions_needing_checks = questions_needing_checks + "`var' too low & " if `var'<0 & `var'!=-999  & `var'!=-888 & `var'!=-777
+	replace questions_needing_checks = questions_needing_checks + " | `var' too low" if `var'<0 & `var'!=-999  & `var'!=-888 & `var'!=-777
 
 } 
 
@@ -98,19 +99,46 @@ local cont_vars dig_marketing_respons dig_service_responsable expprep_responsabl
 foreach var of local cont_vars {
 
 	replace needs_check = 1 if `var'<0 & `var'!=-999 & `var'!=-888 & `var'!=-777
-	replace questions_needing_checks = questions_needing_checks + "`var' too low & " if `var'<0 & `var'!=-999 & `var'!=-888 & `var'!=-777
+	replace questions_needing_checks = questions_needing_checks + " | `var' too low" if `var'<0 & `var'!=-999 & `var'!=-888 & `var'!=-777
 
 } 
 
+***********************************************************************
+* 	PART 3:  Check for missing values
+***********************************************************************
+
+	* Variables with internal logic:
+	
+replace needs_check = 1 if investcom_2021 == . & dig_presence_score>0
+replace questions_needing_checks = questions_needing_checks +  " | investcom_2021 manque" if investcom_2021 == . & dig_presence_score>0
+replace needs_check = 1 if investcom_futur == . & dig_presence_score>0
+replace questions_needing_checks = questions_needing_checks +  " | investcom_futur manque" if investcom_futur == . & dig_presence_score>0
+replace needs_check = 1 if compexp_2020==. & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==. & rg_oper_exp==1
+
+replace needs_check = 1 if dig_revenues_ecom==. & dig_presence_score>0
+replace questions_needing_checks = questions_needing_checks +  " | dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
+
+replace needs_check = 1 if dig_con2==. & dig_con1==1
+replace questions_needing_checks = questions_needing_checks +  " | dig_con2 manque" if dig_con2==. & dig_con1==1
+
+replace needs_check = 1 if dig_con4==. & dig_con3==1
+replace questions_needing_checks = questions_needing_checks +  " | dig_con4 manque"  if dig_con4==. & dig_con3==1
+
+replace needs_check = 1 if dig_presence3_exscore==. & dig_presence3==0.33
+replace questions_needing_checks = questions_needing_checks +  " | Aucune réponse aux exemples dig_presence3" if dig_presence3_exscore==. & dig_presence3==0.33 
+
+//replace needs_check = 1 if ==. &
+//replace questions_needing_checks = questions_needing_checks +  " | " 
 
 
+	* Now all closed variables without a logic (ie don't require other answers to be true)
 
-local importantvars investcom_2021 investcom_futur expprep_responsable compexp_2020 comp_ca2020 comp_benefice2020 dig_revenues_ecom car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
+local closed_vars entr_bien_service dig_con1 dig_con3 dig_presence1 dig_presence2 dig_presence3 expprep_responsable comp_ca2020 comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 car_adop_peer
 
-
-foreach var of local importantvars {
+foreach var of local closed_vars {
 	capture replace needs_check = 1 if `var' == . 
-	capture replace questions_needing_checks = questions_needing_checks + "`var' manque & " if `var' == . 
+	capture replace questions_needing_checks = questions_needing_checks + " | `var' manque" if `var' == . 
 }
 
 
