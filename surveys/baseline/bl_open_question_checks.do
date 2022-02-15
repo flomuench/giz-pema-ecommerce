@@ -138,7 +138,7 @@ extremes comp_benefice2020 id_plateforme
 					*id=324 -720.000 TND with large with 12 mio. TND revenues possible
 					
 tab compexp_2020,missing
-tab comp_ca2020,missing |-999
+tab comp_ca2020,missing
 tab comp_benefice2020,missing
 
 

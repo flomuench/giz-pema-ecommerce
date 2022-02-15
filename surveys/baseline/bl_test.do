@@ -78,7 +78,7 @@ capture replace questions_needing_checks = questions_needing_checks +  " | Véri
 
 *Identify unrealistic outliers and flag them as needs_check*
 replace needs_check = 1 if id_plateforme==767
-replace questions_needing_checks = questions_needing_checks +  " | benefice trop elevé pour une entreprise avec 8 employées" 
+replace questions_needing_checks = questions_needing_checks +  " | benefice trop elevé pour une entreprise avec 8 employées" if id_plateforme==767
 
 /* --------------------------------------------------------------------
 	PART 2.2: Indices / questions with points
@@ -123,12 +123,35 @@ replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 
 replace needs_check = 3 if compexp_2020==-999 & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-999 & rg_oper_exp==1
 replace needs_check = 3 if compexp_2020==-888 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-888 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 refusé" if compexp_2020==-888 & rg_oper_exp==1
 replace needs_check = 3 if compexp_2020==-777 & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-777 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==0 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | exportateur mais compexp_2020 zero" if compexp_2020==-777 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==1 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020==1 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==11 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020==11 & rg_oper_exp==1
 
+replace needs_check = 3 if comp_benefice2020<1100 & comp_benefice2020>-1
+replace questions_needing_checks = questions_needing_checks +  " | benefice aberrante" if comp_benefice2020<1100 & comp_benefice2020>-1
+replace needs_check = 3 if comp_benefice2020== .
+replace questions_needing_checks = questions_needing_checks +  " | benefice manque " if comp_benefice2020==.
 
+replace needs_check = 3 if comp_ca2020== .
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 manque " if comp_ca2020==.
 
+replace needs_check = 3 if comp_ca2020== -999
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 manque " if comp_ca2020==-999
+replace needs_check = 3 if comp_ca2020== -888
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 refusé " if comp_ca2020==-888
+replace needs_check = 3 if comp_ca2020== 0
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 zero " if comp_ca2020==0
+
+replace needs_check = 3 if comp_ca2020== 1
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 aberrante " if comp_ca2020==1
+replace needs_check = 3 if comp_ca2020== 11
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 aberrante " if comp_ca2020==11
 
 replace needs_check = 3 if dig_revenues_ecom==. & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
