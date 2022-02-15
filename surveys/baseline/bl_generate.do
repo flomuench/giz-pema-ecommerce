@@ -173,7 +173,7 @@ JDE pre-analysis publication:
 ----------------------------------------------------------------------*/
 
 *Definition of all variables that are being used in index calculation*
-local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_all exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
+local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
 
 *IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros*
 * Create temp variables where missing values etc are replaced by 0s
@@ -211,7 +211,7 @@ end
 local knowledge temp_dig_con1 temp_dig_con2 temp_dig_con3 temp_dig_con4 temp_dig_con5 temp_dig_con6_score
 local digtalvars temp_dig_presence_score temp_dig_presence3_exscore temp_dig_miseajour1 temp_dig_miseajour2 temp_dig_miseajour3 temp_dig_payment1 temp_dig_payment2 temp_dig_payment3 temp_dig_vente temp_dig_marketing_lien temp_dig_marketing_ind1 temp_dig_marketing_ind2 temp_dig_marketing_score temp_dig_logistique_entrepot t_dig_logistique_retour_score temp_dig_service_satisfaction temp_dig_description1 temp_dig_description2 temp_dig_description3 temp_dig_mar_res_per temp_dig_ser_res_per 
 local expprep temp_expprep_cible temp_expprep_norme temp_expprep_demande temp_exp_prep_res_per
-local exportcomes temp_exp_pays_all temp_exp_per
+local exportcomes temp_exp_pays_avg temp_exp_per
 
 foreach z in knowledge digtalvars expprep exportcomes {
 	foreach x of local `z'  {
@@ -226,7 +226,7 @@ foreach z in knowledge digtalvars expprep exportcomes {
 egen knowledge = rowmean(temp_dig_con1z temp_dig_con2z temp_dig_con3z temp_dig_con4z temp_dig_con5z temp_dig_con6_scorez)
 egen digtalvars = rowmean(temp_dig_presence_scorez temp_dig_presence3_exscorez temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z temp_dig_payment1z temp_dig_payment2z temp_dig_payment3z temp_dig_ventez temp_dig_marketing_lienz temp_dig_marketing_ind1z temp_dig_marketing_ind2z temp_dig_marketing_scorez temp_dig_logistique_entrepotz t_dig_logistique_retour_score temp_dig_service_satisfactionz temp_dig_description1z temp_dig_description2z temp_dig_description3z temp_dig_mar_res_perz temp_dig_ser_res_perz)
 egen expprep = rowmean(temp_expprep_ciblez temp_expprep_normez temp_expprep_demandez temp_exp_prep_res_perz)
-egen expoutcomes = rowmean(temp_exp_pays_allz temp_exp_perz)
+egen expoutcomes = rowmean(temp_exp_pays_avgz temp_exp_perz)
 
 lab var knowledge "Index for digitalisation knowledge"
 label var digtalvars   "Index digitalisation"
@@ -257,7 +257,7 @@ label var raw_expoutcomes "Raw index export outcomes"
 
 // drop all temp vars:
 
-drop temp_dig_con1z temp_dig_con2z temp_dig_con3z temp_dig_con4z temp_dig_con5z temp_dig_con6_scorez temp_dig_presence_scorez temp_dig_presence3_exscorez temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z temp_dig_payment1z temp_dig_payment2z temp_dig_payment3z temp_dig_ventez temp_dig_marketing_lienz temp_dig_marketing_ind1z temp_dig_marketing_ind2z temp_dig_marketing_scorez temp_dig_logistique_entrepotz t_dig_logistique_retour_score temp_dig_service_satisfactionz temp_dig_description1z temp_dig_description2z temp_dig_description3z temp_dig_mar_res_perz temp_dig_ser_res_perz temp_expprep_ciblez temp_expprep_normez temp_expprep_demandez temp_exp_prep_res_perz temp_exp_pays_allz temp_exp_perz
+drop temp_dig_con1z temp_dig_con2z temp_dig_con3z temp_dig_con4z temp_dig_con5z temp_dig_con6_scorez temp_dig_presence_scorez temp_dig_presence3_exscorez temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z temp_dig_payment1z temp_dig_payment2z temp_dig_payment3z temp_dig_ventez temp_dig_marketing_lienz temp_dig_marketing_ind1z temp_dig_marketing_ind2z temp_dig_marketing_scorez temp_dig_logistique_entrepotz t_dig_logistique_retour_score temp_dig_service_satisfactionz temp_dig_description1z temp_dig_description2z temp_dig_description3z temp_dig_mar_res_perz temp_dig_ser_res_perz temp_expprep_ciblez temp_expprep_normez temp_expprep_demandez temp_exp_prep_res_perz temp_exp_pays_avgz temp_exp_perz
 
 ***********************************************************************
 * 	Save the changes made to the data		  			
