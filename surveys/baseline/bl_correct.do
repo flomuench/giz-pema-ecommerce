@@ -129,8 +129,6 @@ replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 76
 replace needs_check = 1 if id_plateforme == 761
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 841
 replace needs_check = 1 if id_plateforme == 841
-}
-{
 
 replace compexp_2020 = "0" if id_plateforme==59
 replace comp_ca2020 = "0" if id_plateforme==59

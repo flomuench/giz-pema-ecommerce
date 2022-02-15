@@ -293,6 +293,14 @@ replace car_risque = "10" if car_risque == "10 disposée à prendre des risques 
 destring car_risque, replace
 */
 *horaire_pref
+
+	* Fix rg_oper_exp, which has 'no' as 2
+	
+replace rg_oper_exp = 0 if rg_oper_exp==2
+
+label define export_status 0 "Did not export in 2021" 1 "Exported in 2021"
+label value rg_oper_exp export_status
+
 }
 
 
