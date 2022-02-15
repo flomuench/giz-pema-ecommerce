@@ -127,9 +127,14 @@ putdocx pagebreak
 *	PART 4: Check remaining outliers that were not captured by logical 
 		*	constraints or needs check*
 *************************************************************************
-extremes compexp_2020
-
-
+extremes compexp_2020 id_plateforme
+*positive outlier is 50 mio. TND for id=802 which is 15 mio.EUR, industrial firm 40 years in operation tunisian market leader, so possible. it is being winsorized to 27,776,000 TND second highest value
+extremes comp_ca2020 id_plateforme
+*Positive Outlier here is id=436,with 247 mio. TND. a firm with 182 FTE, biggest animal producer in the maghreb so makes sense. it is being winsorized at 135,429,000 TND second highest value
+extremes comp_benefice2020 id_plateforme
+*Positive outlier is id==767 artesanal glass producers with only 8 employees, making 8 mio TND profit with 80 mio. TND revenue (10% profit margin), SOUNDS Very high??  
+replace needs_check = 1 if id_plateforme==767
+replace questions_needing_checks = questions_needing_checks +  " | benefice trop elevé pour une entreprise avec 8 employées" 
 ***********************************************************************
 * 	End:  save dta, word file		  			
 ***********************************************************************
