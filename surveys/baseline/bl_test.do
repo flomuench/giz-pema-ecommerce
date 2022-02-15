@@ -144,11 +144,10 @@ foreach var of local closed_vars {
 }
 
 
-foreach var of comp_ca2020 comp_benefice2020   {
+foreach var of varlist comp_ca2020 comp_benefice2020   {
 	capture replace needs_check = 3 if `var' ==.
 	capture replace questions_needing_checks = questions_needing_checks + " | `var' manque" if `var' == . 
 }
-
 
 
 drop scalar_issue
