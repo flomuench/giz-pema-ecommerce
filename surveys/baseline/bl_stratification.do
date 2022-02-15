@@ -107,7 +107,7 @@ putdocx paragraph, halign(center)
 putdocx image raw_digital.png
 putdocx pagebreak
 
-sum raw_knowledge, d
+sum raw_digtalvars, d
 display "Raw digitalisation index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
 putdocx paragraph
 putdocx text ("Raw digitalisation index statistics"), linebreak bold
@@ -135,7 +135,7 @@ putdocx paragraph, halign(center)
 putdocx image raw_expoutcomes.png
 putdocx pagebreak
 
-sum raw_knowledge, d
+sum raw_expoutcomes, d
 display "Raw export outcomes index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
 putdocx paragraph
 putdocx text ("Raw export outcomes index statistics"), linebreak bold
@@ -143,10 +143,104 @@ putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this
 putdocx pagebreak
 
 
-
 ***********************************************************************
 * 	PART 2: Create strata
 ***********************************************************************
+
+
+	* Calculate missing values	
+	
+	* Digitalisation knowledge  index
+
+local knowledge_qs dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score 
+
+g missing_knowledge = 1
+foreach var of local  knowledge_qs {
+	replace missing_knowledge = . if `var' == .
+	replace missing_knowledge = . if `var' == -999
+	replace missing_knowledge = . if `var' == -888
+	replace missing_knowledge = . if `var' == -777
+	replace missing_knowledge = . if `var' == -1998
+	replace missing_knowledge = . if `var' == -1776 
+	replace missing_knowledge = . if `var' == -1554
+}
+
+mdesc missing_knowledge
+display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
+putdocx paragraph
+putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+
+	* Calculate missing values
+	* E-commerce adoption index
+	
+local ecommerceadoption_qs  dig_presence_score  dig_miseajour1  dig_miseajour2  dig_miseajour3  dig_payment1  dig_payment2  dig_payment3  dig_vente  dig_marketing_lien  dig_marketing_ind1  dig_marketing_ind2  dig_marketing_score  dig_logistique_entrepot t_dig_logistique_retour_score  dig_service_satisfaction  dig_description1  dig_description2  dig_description3  dig_mar_res_per  dig_ser_res_per
+
+g missing_ecommerceadopt = 1
+foreach var of local  ecommerceadoption_qs {
+	replace missing_ecommerceadopt = . if `var' == .
+	replace missing_ecommerceadopt = . if `var' == -999
+	replace missing_ecommerceadopt = . if `var' == -888
+	replace missing_ecommerceadopt = . if `var' == -777
+	replace missing_ecommerceadopt = . if `var' == -1998
+	replace missing_ecommerceadopt = . if `var' == -1776 
+	replace missing_ecommerceadopt = . if `var' == -1554
+}
+
+mdesc missing_ecommerceadopt
+display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
+putdocx paragraph
+putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+
+	* Export outcomes Index
+
+local export_score exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 
+
+g missing_export = 1
+
+foreach var of local  export_score {
+	replace missing_export = . if `var' == .
+	replace missing_export = . if `var' == -999
+	replace missing_export = . if `var' == -888
+	replace missing_export = . if `var' == -777
+	replace missing_export = . if `var' == -1998
+	replace missing_export = . if `var' == -1776 
+	replace missing_export = . if `var' == -1554
+}
+
+replace missing_export = 1 if rg_oper_exp==0
+
+mdesc missing_export
+display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
+putdocx paragraph
+putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+putdocx pagebreak
+
+	*** STRATA
+	
+	*** First approach: create simple strata for each index only
+	
+	* First, divide by under and above median
+	
+foreach var of varlist knowledge digtalvars expoutcomes {
+	egen median = median(`var')
+	gen strat1_`var' = 0
+	replace strat1_`var' = 1 if `var' >= median & !missing(`var') 
+	drop median
+}
+
+	* Second, create a separate category for indices with missing values
+	
+replace strat1_knowledge = 2 if missing(missing_knowledge)
+replace strat1_digtalvars = 2 if missing(missing_ecommerceadopt)
+replace strat1_expoutcomes = 2 if missing(missing_export)
+
+	* Create strata
+	
+egen strata1 = group(strat1_knowledge strat1_digtalvars strat1_expoutcomes)
+
+putdocx pagebreak
+
+
 
 
 ***********************************************************************
@@ -163,84 +257,58 @@ sum knowledge, d
 display "For firms in our sample, this index has a standard deviation of `r(sd)"
 putdocx paragraph
 putdocx text ("Digitalisation knowledge index"), linebreak bold
-putdocx text ("For firms in our sample, this index has a standard deviation of `r(sd)'."), linebreak
+putdocx text ("For firms in our sample, the knowledge index has a standard deviation of `r(sd)'."), linebreak
 
-	* Calculate missing values
-*Definition of all variables that are being used in index calculation*
-local knowledge_qs dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score 
-
-foreach var of local  knowledge_qs {
-	g missing_knowledge = 1
-	replace missing_knowledge = 0 if `var' == .
-	replace missing_knowledge = 0 if `var' == -999
-	replace missing_knowledge = 0 if `var' == -888
-	replace missing_knowledge = 0 if `var' == -777
-	replace missing_knowledge = 0 if `var' == -1998
-	replace missing_knowledge = 0 if `var' == -1776 
-	replace missing_knowledge = 0 if `var' == -1554
-}
-
-mdesc missing_knowledge
-display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
-putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
-
+	
 	*** E-COMMERCE INDEX: 
 
 sum digtalvars, d
 display "For firms in our sample, this index has a standard deviation of `r(sd)'"
 putdocx paragraph
 putdocx text ("E-Commerce adoption index"), linebreak bold
-putdocx text ("For firms in our sample, this index has a standard deviation of `r(sd)'."), linebreak
+putdocx text ("For firms in our sample, the e-commerce adoption index has a standard deviation of `r(sd)'."), linebreak
 
-	* Calculate missing values
-*Definition of all variables that are being used in index calculation*
-local ecommerceadoption_qs  dig_presence_score  dig_miseajour1  dig_miseajour2  dig_miseajour3  dig_payment1  dig_payment2  dig_payment3  dig_vente  dig_marketing_lien  dig_marketing_ind1  dig_marketing_ind2  dig_marketing_score  dig_logistique_entrepot t_dig_logistique_retour_score  dig_service_satisfaction  dig_description1  dig_description2  dig_description3  dig_mar_res_per  dig_ser_res_per
-
-foreach var of local  ecommerceadoption_qs {
-	g missing_ecommerceadopt = 1
-	replace missing_ecommerceadopt = 0 if `var' == .
-	replace missing_ecommerceadopt = 0 if `var' == -999
-	replace missing_ecommerceadopt = 0 if `var' == -888
-	replace missing_ecommerceadopt = 0 if `var' == -777
-	replace missing_ecommerceadopt = 0 if `var' == -1998
-	replace missing_ecommerceadopt = 0 if `var' == -1776 
-	replace missing_ecommerceadopt = 0 if `var' == -1554
-}
-
-mdesc missing_ecommerceadopt
-display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
-putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
 
 	*** EXPORT OUTCOMES INDEX: 
 
-sum digtalvars, d
-display "For firms in our sample, this index has a standard deviation of `r(sd)'."
+sum expoutcomes, d
+display "For firms in our sample, the export outcomes index has a standard deviation of `r(sd)'."
 putdocx paragraph
 putdocx text ("E-Commerce adoption index"), linebreak bold
 putdocx text ("For firms in our sample, this index has a standard deviation of `r(sd)'."), linebreak
 
-	* Calculate missing values
-*Definition of all variables that are being used in index calculation*
-local export_score  exp_pays_all exp_per 
+	
+	*** Now for the strata
 
-foreach var of local  export_score {
-	g missing_export = 1
-	replace missing_export = 0 if `var' == .
-	replace missing_export = 0 if `var' == -999
-	replace missing_export = 0 if `var' == -888
-	replace missing_export = 0 if `var' == -777
-	replace missing_export = 0 if `var' == -1998
-	replace missing_export = 0 if `var' == -1776 
-	replace missing_export = 0 if `var' == -1554
-}
+	
+	*** Strata1
+	
+putdocx paragraph
+putdocx text ("Strata1: average SDs"), linebreak bold
 
-mdesc missing_export
-display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
-putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
-putdocx pagebreak
+	*** Knowledge 
+	
+bysort strata1: egen ksd_strata1 = sd(knowledge)
+sum ksd_strata1, d
+display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."), linebreak
 
+	*** E-commerce adoption
+bysort strata1: egen dsd_strata1 = sd(digtalvars)
+sum dsd_strata1, d
+display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."), linebreak
 
+	*** Export outcomes
+bysort strata1: egen esd_strata1 = sd(expoutcomes)
+sum esd_strata1, d
+display "With these strata, the export outcomes index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `r(mean)'."), linebreak
 
+putdocx save stratification.docx, replace
 
 
 

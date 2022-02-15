@@ -129,11 +129,10 @@ replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 76
 replace needs_check = 1 if id_plateforme == 761
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 841
 replace needs_check = 1 if id_plateforme == 841
-}
-{
+
 replace compexp_2020 = "3346308" if id_plateforme==	70
 replace comp_ca2020 = "7267643" if id_plateforme==70
-replace investcom_2021 = "8000" if id_plateforme==70
+replace investcom_2021 = 8000 if id_plateforme==70
 replace needs_check = 0 if id_plateforme==70
 
 replace exp_pays_avant21 = 0 if id_plateforme==	80
@@ -143,7 +142,7 @@ replace compexp_2020 = "3300000" if id_plateforme==	82
 replace comp_ca2020 = "6143000" if id_plateforme==82
 replace comp_benefice2020 = "0" if id_plateforme==82
 replace dig_revenues_ecom = "0" if id_plateforme==82
-replace investcom_2021 = "0" if id_plateforme==82
+replace investcom_2021 = 0 if id_plateforme==82
 replace needs_check = 0 if id_plateforme==82
 
 replace compexp_2020 = "80000" if id_plateforme==	89
@@ -153,7 +152,7 @@ replace needs_check = 0 if id_plateforme==89
 
 replace compexp_2020 = "8000000" if id_plateforme==91
 replace comp_ca2020 = "8000000" if id_plateforme==91
-replace investcom_2021 = "0" if id_plateforme==91
+replace investcom_2021 = 0 if id_plateforme==91
 replace needs_check = 0 if id_plateforme==91
 
 replace exp_pays_avant21 = 0 if id_plateforme==122
