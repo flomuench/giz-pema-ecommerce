@@ -133,7 +133,7 @@ replace needs_check = 1 if id_plateforme == 841
 {
 replace compexp_2020 = "3346308" if id_plateforme==	70
 replace comp_ca2020 = "7267643" if id_plateforme==70
-replace investcom_2021 = "8000" if id_plateforme==70
+replace investcom_2021 = 8000 if id_plateforme==70
 replace needs_check = 0 if id_plateforme==70
 
 replace exp_pays_avant21 = 0 if id_plateforme==	80
@@ -143,7 +143,7 @@ replace compexp_2020 = "3300000" if id_plateforme==	82
 replace comp_ca2020 = "6143000" if id_plateforme==82
 replace comp_benefice2020 = "0" if id_plateforme==82
 replace dig_revenues_ecom = "0" if id_plateforme==82
-replace investcom_2021 = "0" if id_plateforme==82
+replace investcom_2021 = 0 if id_plateforme==82
 replace needs_check = 0 if id_plateforme==82
 
 replace compexp_2020 = "80000" if id_plateforme==	89
@@ -153,7 +153,7 @@ replace needs_check = 0 if id_plateforme==89
 
 replace compexp_2020 = "8000000" if id_plateforme==91
 replace comp_ca2020 = "8000000" if id_plateforme==91
-replace investcom_2021 = "0" if id_plateforme==91
+replace investcom_2021 = 0 if id_plateforme==91
 replace needs_check = 0 if id_plateforme==91
 
 replace exp_pays_avant21 = 0 if id_plateforme==122
@@ -174,7 +174,7 @@ replace needs_check = 0 if id_plateforme==144
 
 replace compexp_2020 = "30000" if id_plateforme==146
 replace comp_ca2020 = "30000" if id_plateforme==146
-replace investcom_2021 = "0" if id_plateforme==146
+replace investcom_2021 = 0 if id_plateforme==146
 replace needs_check = 0 if id_plateforme==146
 
 replace exp_afrique = 0 if id_plateforme==151
@@ -191,7 +191,7 @@ replace compexp_2020 = "120000" if id_plateforme==183
 replace comp_ca2020 = "600000" if id_plateforme==183
 replace comp_benefice2020 = "0" if id_plateforme==183
 replace dig_revenues_ecom = "0" if id_plateforme==183
-replace investcom_2021 = "0" if id_plateforme==183
+replace investcom_2021 = 0 if id_plateforme==183
 replace needs_check = 0 if id_plateforme==183
 
 replace compexp_2020 = "142500" if id_plateforme==204
@@ -200,13 +200,13 @@ replace needs_check = 0 if id_plateforme==204
 
 replace compexp_2020 = "0" if id_plateforme==209
 replace comp_ca2020 = "750000" if id_plateforme==209
-replace investcom_2021 = "0" if id_plateforme==209
+replace investcom_2021 = 0 if id_plateforme==209
 replace comp_benefice2020 = "500000" if id_plateforme==209
 replace needs_check = 0 if id_plateforme==209
 
 replace compexp_2020 = "426552" if id_plateforme==212
 replace comp_ca2020 = "426552" if id_plateforme==212
-replace investcom_2021 = "0" if id_plateforme==212
+replace investcom_2021 = 0 if id_plateforme==212
 replace dig_revenues_ecom = "5000" if id_plateforme==212
 replace comp_benefice2020 = "38350" if id_plateforme==212
 replace needs_check = 0 if id_plateforme==212
@@ -223,7 +223,7 @@ replace needs_check = 0 if id_plateforme==237
 
 replace compexp_2020 = "3240000" if id_plateforme==240
 replace comp_ca2020 = "28400000" if id_plateforme==240
-replace investcom_2021 = "10000" if id_plateforme==240
+replace investcom_2021 = 10000 if id_plateforme==240
 replace needs_check = 0 if id_plateforme==240
 
 replace compexp_2020 = "100000" if id_plateforme==244
@@ -231,7 +231,7 @@ replace comp_ca2020 = "2000000" if id_plateforme==244
 replace comp_benefice2020 = "380000" if id_plateforme==244
 replace needs_check = 0 if id_plateforme==244
 
-replace investcom_2021 = "`refused'" if id_plateforme==248
+replace investcom_2021 = -888 if id_plateforme==248
 replace needs_check = 0 if id_plateforme==248
 
 replace exp_pays_avant21 = 0 if id_plateforme==253
@@ -289,7 +289,7 @@ replace comp_benefice2020 = "191000" if id_plateforme==377
 replace needs_check = 0 if id_plateforme==377
 
 replace comp_benefice2020 = "`refused'" if id_plateforme==386
-replace investcom_futur = "`not_know'" if id_plateforme==386
+replace investcom_futur = "-999" if id_plateforme==386
 replace dig_revenues_ecom = "`refused'" if id_plateforme==386
 replace exp_pays_avant21 = 0 if id_plateforme==386
 replace needs_check = 0 if id_plateforme==386
@@ -340,12 +340,12 @@ replace comp_ca2020 = "4800000" if id_plateforme==489
 replace needs_check = 0 if id_plateforme==489
 
 replace exp_pays_21 = 0 if id_plateforme==505
-replace investcom_2021 = "`not_know'" if id_plateforme==505
+replace investcom_2021 = -999 if id_plateforme==505
 replace needs_check = 0 if id_plateforme==505
 
 replace compexp_2020 = "426552" if id_plateforme==545
 replace comp_ca2020 = "426552" if id_plateforme==545
-replace investcom_2021 = "0" if id_plateforme==545
+replace investcom_2021 = 0 if id_plateforme==545
 replace dig_revenues_ecom = "5000" if id_plateforme==545
 replace comp_benefice2020 = "38350" if id_plateforme==545
 replace needs_check = 0 if id_plateforme==545
@@ -442,17 +442,17 @@ replace exp_afrique = 0 if id_plateforme==761
 replace needs_check = 0 if id_plateforme==761
 
 replace compexp_2020 = "0" if id_plateforme==763
-replace investcom_2021 = "300" if id_plateforme==763
+replace investcom_2021 = 300 if id_plateforme==763
 replace comp_ca2020 = "1700" if id_plateforme==763
 replace comp_benefice2020 = "1100" if id_plateforme==763
 replace needs_check = 0 if id_plateforme==763
 
 replace exp_pays_21 = 0 if id_plateforme==769
-replace investcom_2021 = "0" if id_plateforme==769
+replace investcom_2021 = 0 if id_plateforme==769
 replace needs_check = 0 if id_plateforme==769
 
 replace compexp_2020 = "0" if id_plateforme==773
-replace investcom_2021 = "0" if id_plateforme==773
+replace investcom_2021 =0 if id_plateforme==773
 replace comp_ca2020 = "800000" if id_plateforme==773
 replace comp_benefice2020 = "40000" if id_plateforme==773
 replace needs_check = 0 if id_plateforme==773
@@ -480,7 +480,7 @@ replace needs_check = 0 if id_plateforme==841
 replace compexp_2020 = "15000" if id_plateforme==876
 replace comp_ca2020 = "38000" if id_plateforme==876
 replace dig_revenues_ecom = "0" if id_plateforme==876
-replace investcom_2021 = "8000" if id_plateforme==876
+replace investcom_2021 = 8000 if id_plateforme==876
 replace needs_check = 0 if id_plateforme==876
 
 replace compexp_2020 = "2500000" if id_plateforme==899
@@ -488,7 +488,7 @@ replace comp_ca2020 = "7000000" if id_plateforme==899
 replace dig_revenues_ecom = "0" if id_plateforme==899
 replace needs_check = 0 if id_plateforme==899
 
-replace investcom_2021 = "`not_know'" if id_plateforme==926
+replace investcom_2021 = -999 if id_plateforme==926
 replace needs_check = 0 if id_plateforme==926
 
 replace compexp_2020 = "0" if id_plateforme==931
@@ -525,7 +525,7 @@ lab val id_adminrect correct
 */
 
 * Correction des variables investissement
-replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
+*replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
 //replace investcom_futur = ustrregexra( investcom_futur,"dinars","")
 //replace investcom_futur = ustrregexra( investcom_futur,"dt","")
 //replace investcom_futur = ustrregexra( investcom_futur,"k","000")
@@ -568,7 +568,7 @@ replace investcom_futur = ustrregexra( investcom_futur ," dinars","")
 * 	PART 4:  Replace string with numeric values		  			
 ***********************************************************************
 {
-*Remplacer les textes de la variable investcom_2021
+/*Remplacer les textes de la variable investcom_2021
 replace investcom_2021 = "100000" if investcom_2021== "100000dt"
 replace investcom_2021 = "18000" if investcom_2021== "huit mille dinars"
 replace investcom_2021 = "0" if investcom_2021== "zéro"
@@ -589,7 +589,7 @@ replace investcom_2021 = "`refused'" if investcom_2021 == "-888"
 replace investcom_2021 = "`not_know'" if investcom_2021 == "-999"
 replace investcom_2021 = "`not_know'" if investcom_2021 == "لا اعرف"
 
-
+*/
 
 *Remplacer les textes de la variable investcom_futur
 
@@ -635,6 +635,8 @@ replace compexp_2020= "1200000" if compexp_2020== "1 200 000"
 replace compexp_2020= "`not_know'" if compexp_2020== "je ne sais pas"
 replace compexp_2020= "8000000" if compexp_2020== "8 000 000"
 replace compexp_2020= "263605" if compexp_2020== "263 605"
+replace compexp_2020= "201801" if compexp_2020== "201 801"
+replace compexp_2020= "700000" if compexp_2020== "700 000"
 
 
 *Correction de la variable comp_ca2020
@@ -649,6 +651,9 @@ replace comp_ca2020 = "6987385" if comp_ca2020 == "6987385,476"
 replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars"
 replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
 replace comp_ca2020= "0" if comp_ca2020== "248000dt 2018 et 124000dt 2019"
+replace comp_ca2020 = "1000000" if comp_ca2020== "1 000 000"
+
+
 
 replace comp_ca2020 = "1183683" if comp_ca2020 == "1183683.477"
 replace comp_ca2020 = "15231000" if comp_ca2020 == "15231000dt"
@@ -658,6 +663,7 @@ replace comp_ca2020 = "977097" if comp_ca2020 == "977 097"
 replace comp_ca2020 = "1880000" if comp_ca2020 == "1 880 000"
 replace comp_ca2020= "`not_know'" if comp_ca2020== "je ne sais pas"
 replace comp_ca2020= "8000000" if comp_ca2020== "8 000 000"
+replace comp_ca2020= "2343425" if comp_ca2020== "2 343 425"
 
 
 *Correction de la variable dig_revenues_ecom
@@ -707,6 +713,8 @@ replace comp_benefice2020 = "550000" if comp_benefice2020== "550 000"
 replace comp_benefice2020 = "0.3" if comp_benefice2020 == "30% men chiffre d'affaire"
 replace comp_benefice2020 = "78000" if comp_benefice2020 == "78 000"
 replace comp_benefice2020 = "120000" if comp_benefice2020 == "120 000"
+replace comp_benefice2020 = "10000" if comp_benefice2020 == "10 000"
+
 
 replace comp_benefice2020 = "`refused'" if comp_benefice2020 == "-888"
 replace comp_benefice2020 = "`not_know'" if comp_benefice2020 == "-999"
@@ -888,8 +896,13 @@ drop if id_plateforme == 105 & heure == "15h50`43``"
 drop if id_plateforme == 108 & heure == "15h29`12``"
 drop if id_plateforme == 108 & heure == "23h09`09``" 
 drop if id_plateforme == 114 & heure == "18h34`17``"
+drop if id_plateforme == 126 & heure == "14h55`09``"
+replace exp_pays_21 =6 if  id_plateforme == 129 & heure == "14h27`18``"
+replace investcom_2021 =15000 if  id_plateforme == 129 & heure == "14h27`18``"
+drop if id_plateforme == 129 & heure == "14h15`10``"
 drop if id_plateforme == 140 & heure == "18h17`02``"
 drop if id_plateforme == 166 & heure == "19h43`11``"
+drop if id_plateforme == 180 & heure == "14h25`37``"
 drop if id_plateforme == 195 & heure == "10h09`54``"
 drop if id_plateforme == 206 & heure == "11h08`43``"
 drop if id_plateforme == 206 & heure == "08h55`51``"
@@ -899,8 +912,11 @@ drop if id_plateforme == 313 & heure == "15h24`44``"
 drop if id_plateforme == 324 & heure == "08h46`17``"
 drop if id_plateforme == 324 & heure == "14h38`49``"
 drop if id_plateforme == 324 & heure == "12h54`53``"
+drop if id_plateforme == 351 & heure == "10h43`21``"
+drop if id_plateforme == 351 & heure == "16h28`08``"
 drop if id_plateforme == 369 & heure == "11h42`59``"
 drop if id_plateforme == 360 & heure == "20h07`59``"
+drop if id_plateforme == 410 & heure == "10h16`57``"
 drop if id_plateforme == 436 & heure == "16h56`32``"
 drop if id_plateforme == 457 & heure == "13h06`26``"
 drop if id_plateforme == 457 & heure == "11h08`09``"
@@ -924,29 +940,54 @@ drop if id_plateforme == 629 & heure == "15h28`26``"
 drop if id_plateforme == 644 & heure == "13h15`19``"
 drop if id_plateforme == 646 & heure == "16h08`01``"
 drop if id_plateforme == 646 & heure == "16h28`14``"
+drop if id_plateforme == 655 & heure == "10h20`08``"
 drop if id_plateforme == 679 & heure == "18h28`53``"
 drop if id_plateforme == 679 & heure == "13h32`54``"
 drop if id_plateforme == 679 & heure == "19h01`55``"
 drop if id_plateforme == 698 & heure == "13h00`32``"
+drop if id_plateforme == 706 & heure == "14h23`08``"
 drop if id_plateforme == 710 & heure == "19h10`37``"
 drop if id_plateforme == 716 & heure == "17h02`40``"
 drop if id_plateforme == 716 & heure == "11h22`15``"
 drop if id_plateforme == 732 & heure == "16h55`41``"
 drop if id_plateforme == 739 & heure == "15h36`45``"
 drop if id_plateforme == 739 & heure == "11h27`59``"
+drop if id_plateforme == 752 & heure == "20h33`22``"
 drop if id_plateforme == 757 & heure == "16h29`40``"
+drop if id_plateforme == 764 & heure == "11h13`42``"
+drop if id_plateforme == 764 & heure == "11h10`00``"
 drop if id_plateforme == 765 & heure == "11h01`13``"
 drop if id_plateforme == 767 & heure == "11h00`11``"
+replace investcom_2021 = 0 if id_plateforme == 782 & heure == "09h36`22``"
 drop if id_plateforme == 782 & heure == "14h31`55``"
+drop if id_plateforme == 782 & heure == "13h59`59``"
 drop if id_plateforme == 791 & heure == "13h40`07``"
 drop if id_plateforme == 791 & heure == "13h40`16``"
 drop if id_plateforme == 800 & heure == "15h38`00``"
 drop if id_plateforme == 803 & heure == "08h32`50``"
 drop if id_plateforme == 831 & heure == "15h45`46``"
+drop if id_plateforme == 859 & heure == "11h17`13``"
+
+replace entr_bien_service= 2 if id_plateforme == 875 & heure == "11h08`29``"
+replace entr_produit1= "carreaux céramique" if id_plateforme == 875 & heure == "11h08`29``"
+replace entr_produit2= "grès" if id_plateforme == 875 & heure == "11h08`29``"
+replace entr_produit3= "sanitaires et robinetteries" if id_plateforme == 875 & heure == "11h08`29``"
+replace investcom_futur= 10000 if id_plateforme == 875 & heure == "11h08`29``"
+replace investcom_benefit3_2= "une notoriété a l'échelle international" if id_plateforme == 875 & heure == "11h08`29``"
+replace expprep_cible= 1 if id_plateforme == 875 & heure == "11h08`29``"
+replace exp_produit_services21= "faience, carreau céramique" if id_plateforme == 875 & heure == "11h08`29``"
+drop if id_plateforme == 875 & heure == "16h15`31``"
+
+
 drop if id_plateforme == 896 & heure == "11h34`10``"
 drop if id_plateforme == 898 & heure == "10h16`02``"
 drop if id_plateforme == 911 & heure == "12h15`01``"
 drop if id_plateforme == 916 & heure == "18h16`52``"
+drop if id_plateforme == 931 & heure == "21h11`06``"
+drop if id_plateforme == 953 & heure == "19h03`17``"
+
+
+
 drop if id_plateforme == 941 & heure == "16h09`19``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
 drop if id_plateforme == 77 & attest==.
