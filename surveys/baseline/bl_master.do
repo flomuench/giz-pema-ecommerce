@@ -42,9 +42,8 @@ ssc install stripplot
 net install http://www.stata.com/users/kcrow/tab2docx
 ssc install labutil
 ssc install winsor
-ssc install extreme
+ssc install extremes
 */
-
 
 	* define graph scheme for visual outputs
 set scheme plotplain
