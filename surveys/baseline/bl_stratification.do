@@ -42,20 +42,12 @@ local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
 local ecommerce dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per 
 local export exp_pays_all exp_per
 
-	
 	* Indices
 	
 	* Digital knowledge index
 	
 putdocx paragraph, halign(center) 
 putdocx text ("Knowledge of digitalisation index")
-
-hist knowledge, ///
-	title("Zscores of knowledge of digitalisation scores") ///
-	xtitle("Zscores")
-graph export knowledge_zscores.png, replace
-putdocx paragraph, halign(center) 
-putdocx image knowledge_zscores.png
 	
 hist raw_knowledge, ///
 	title("Raw sum of all knowledge scores") ///
@@ -65,23 +57,13 @@ putdocx paragraph, halign(center)
 putdocx image raw_knowledge.png
 
 sum raw_knowledge, d
-display "Raw digitalisation knowledge index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
+display "Raw knowledge index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at  `r(p90)' ."
 putdocx paragraph
-putdocx text ("Raw digitalisation knowledge index statistics"), linebreak bold
+putdocx text ("Raw digitalisation index statistics"), linebreak bold
 putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
 
 
-	* Digital Z-scores
-	
-hist digtalvars, ///
-	title("Zscores of digital scores") ///
-	xtitle("Zscores")
-graph export digital_zscores.png, replace
-putdocx paragraph, halign(center) 
-putdocx image digital_zscores.png
-
-
-	* For comparison, the 'raw' index: 
+	* E-commerce adoption: 
 	
 hist raw_digtalvars, ///
 	title("Raw sum of all digital scores") ///
@@ -91,38 +73,85 @@ putdocx paragraph, halign(center)
 putdocx image raw_digital.png
 
 sum raw_digtalvars, d
-display "Raw digitalisation index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
+display "Raw digitalisation index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile  at `r(p90)' ."
 putdocx paragraph
 putdocx text ("Raw digitalisation index statistics"), linebreak bold
 putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
 
+	* Both joint: 
 
-	* Export outcomes Z-scores
-	
-hist expoutcomes, ///
-	title("Zscores of export outcomes questions") ///
-	xtitle("Zscores")
-graph export expoutcomes_zscores.png, replace
-putdocx paragraph, halign(center) 
-putdocx image expoutcomes_zscores.png
-
-	* For comparison, the 'raw' index:
-	
-hist raw_expoutcomes, ///
-	title("Raw sum of all export outcomes questions") ///
+hist raw_indices, ///
+	title("Raw sum of digitalisation & knowledge scores") ///
 	xtitle("Sum")
-graph export raw_expoutcomes.png, replace
+graph export raw_indices.png, replace
 putdocx paragraph, halign(center) 
-putdocx image raw_expoutcomes.png
-
-sum raw_expoutcomes, d
-display "Raw export outcomes index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
+putdocx image raw_indices.png
+	
+sum raw_indices, d
+display "Raw sum of digitalisation & knowledge indices has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at `r(p90)' ."
 putdocx paragraph
-putdocx text ("Raw export outcomes index statistics"), linebreak bold
-putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
-putdocx pagebreak
+putdocx text ("Raw indices statistics"), linebreak bold
+putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in the digitalisation and knowledge joint index."), linebreak
 
 
+	*** NOW EXPORT VARS
+	
+	* Export status
+
+graph bar (count), ///
+	over(rg_oper_exp) ///
+	title("Exporting status") ///
+	ytitle("Number")
+graph export export_status.png, replace
+putdocx paragraph, halign(center) 
+putdocx image export_status.png
+	
+	* Exporting as percentage of revenue
+	
+hist exp_per, ///
+	title("Exporting as percentage of revenue") 
+graph export exp_per.png, replace
+putdocx paragraph, halign(center) 
+putdocx image exp_per.png
+	
+sum exp_per, d
+display "Exporting as percentage of revenue has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at `r(p90)' ."
+putdocx paragraph
+putdocx text ("Exporting as percentage of revenue"), linebreak bold
+putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in exporting as percentage of revenue."), linebreak
+
+
+	* Exporting in absolute terms
+	
+	
+hist compexp_2020 if compexp_2020<1000000000, ///
+	title("Exporting revenue") 
+graph export compexp_2020.png, replace
+putdocx paragraph, halign(center) 
+putdocx image compexp_2020.png
+	
+sum compexp_2020 if compexp_2020<1000000000, d
+display "Exporting revenue has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at `r(p90)' ."
+putdocx paragraph
+putdocx text ("Exporting revenue"), linebreak bold
+putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in exporting revenue."), linebreak
+
+	* Number of exporting countries
+
+hist exp_pays_avg if exp_pays_avg<100, ///
+	title("Exporting countries") ///
+	note("Outliers (countries>100) removed")
+graph export exp_pays_avg.png, replace
+putdocx paragraph, halign(center) 
+putdocx image exp_pays_avg.png
+	
+sum exp_pays_avg if exp_pays_avg<100, d
+display "Exporting countries has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at `r(p90)' (outliers removed)."
+putdocx paragraph
+putdocx text ("Exporting countries"), linebreak bold
+putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in exporting countries."), linebreak
+	
+	
 ***********************************************************************
 * 	PART 2: Create strata
 ***********************************************************************
@@ -173,7 +202,7 @@ putdocx text ("We miss some information on these variables for `r(miss)' (`r(per
 
 	* Export outcomes Index
 
-local export_score exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 
+local export_score exp_pays_avg compexp_2020 
 
 g missing_export = 1
 

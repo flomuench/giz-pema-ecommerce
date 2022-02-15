@@ -72,14 +72,50 @@ replace expprep_cible = 0.5 if expprep_cible==-1200
 * 	PART 2:  Additional variables
 ***********************************************************************
 
+
+
+	*** Winsorise main accounting variables
+	
+	* Total revenues is winsorised at 99percentile (only top)
+	
+winsor comp_ca2020, gen(w_compca) p(0.01) highonly
+
+	* Profits is winsorised at 99percentile (top and bottom)
+	
+winsor comp_benefice2020, gen(w_compbe) p(0.01)
+
+	* Exports is winsorised at 99percentile (only top)
+	
+winsor compexp_2020, gen(w_compexp) p(0.01) highonly
+
+	* Digital revenues is winsorised at 99percentile (only top)
+	
+winsor dig_revenues_ecom, gen(w_compdrev) p(0.01) highonly
+
+
+	*** Calculate inverse hyperbolic sine of revenues, profits and exports
+
+gen ihs_ca = log(w_compca + sqrt((w_compca*w_compca)+1))
+lab var ihs_ca "IHS of revenues"
+
+gen ihs_profits = log(w_compbe + sqrt((w_compbe*w_compbe)+1))
+lab var ihs_profits "IHS of profits"
+
+gen ihs_exports = log(w_compexp + sqrt((w_compexp*w_compexp)+1))
+lab var ihs_exports "IHS of exports"
+
+gen ihs_digrevenue = log(w_compdrev + sqrt((w_compdrev*w_compdrev)+1))
+lab var ihs_digrevenue "IHS of digital revenues"
+
+
 	*** Calculate export revenues, digital revenues and profits as percentage of total revenues
 	
 g exp_per = compexp_2020/comp_ca2020
 lab var exp_per "Export revenues as percentage of total revenues"
 
-replace exp_per = -999 if compexp_2020==-999 | comp_ca2020==-999
-replace exp_per = -888 if compexp_2020==-888 | comp_ca2020==-888
-replace exp_per = -777 if compexp_2020==-777 | comp_ca2020==-777
+replace exp_per = . if compexp_2020==-999 | comp_ca2020==-999
+replace exp_per = . if compexp_2020==-888 | comp_ca2020==-888
+replace exp_per = . if compexp_2020==-777 | comp_ca2020==-777
 replace exp_per = . if compexp_2020==. | comp_ca2020==.
 
 
@@ -117,40 +153,10 @@ lab var exp_prep_res_per "FTEs working on exports as percentage"
 g exp_pays_avg = (exp_pays_avant21 + exp_pays_21)/2 if exp_pays_avant21!=. & exp_pays_21!=.
 replace exp_pays_avg = exp_pays_avant21 if exp_pays_21==. & exp_pays_avant21!=.
 replace exp_pays_avg = exp_pays_21 if exp_pays_avant21==. & exp_pays_21!=.
-
-
-	*** Winsorise main accounting variables
-	
-	* Total revenues is winsorised at 99percentile (only top)
-	
-winsor comp_ca2020, gen(w_compca) p(0.01) highonly
-
-	* Profits is winsorised at 99percentile (top and bottom)
-	
-winsor comp_benefice2020, gen(w_compbe) p(0.01)
-
-	* Exports is winsorised at 99percentile (only top)
-	
-winsor compexp_2020, gen(w_compexp) p(0.01) highonly
-
-	* Digital revenues is winsorised at 99percentile (only top)
-	
-winsor dig_revenues_ecom, gen(w_compdrev) p(0.01) highonly
-
-
-	*** Calculate inverse hyperbolic sine of revenues, profits and exports
-
-gen ihs_ca = log(w_compca + sqrt((w_compca*w_compca)+1))
-lab var ihs_ca "IHS of revenues"
-
-gen ihs_profits = log(w_compbe + sqrt((w_compbe*w_compbe)+1))
-lab var ihs_profits "IHS of profits"
-
-gen ihs_exports = log(w_compexp + sqrt((w_compexp*w_compexp)+1))
-lab var ihs_exports "IHS of exports"
-
-gen ihs_digrevenue = log(w_compdrev + sqrt((w_compdrev*w_compdrev)+1))
-lab var ihs_digrevenue "IHS of digital revenues"
+replace exp_pays_avg = . if exp_pays_avg==-999
+replace exp_pays_avg = . if exp_pays_avg==-888
+replace exp_pays_avg = . if exp_pays_avg==-777
+replace exp_pays_avg = 1 if exp_pays_avg==0.5
 
 
  
@@ -249,15 +255,20 @@ egen raw_expprep = rowtotal(`expprep')
 
 egen raw_expoutcomes = rowmean(`exportcomes')
 
+gen raw_indices = raw_knowledge + raw_digtalvars
+
 label var raw_knowledge   "Raw index knowledge of digitalisation"
 label var raw_digtalvars   "Raw index digitalisation"
 label var raw_expprep "Raw index export preparation"
 label var raw_expoutcomes "Raw index export outcomes"
+label var raw_indices "Raw sum of knowledge and digitalisation indices"
 
 
 // drop all temp vars:
 
 drop temp_dig_con1z temp_dig_con2z temp_dig_con3z temp_dig_con4z temp_dig_con5z temp_dig_con6_scorez temp_dig_presence_scorez temp_dig_presence3_exscorez temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z temp_dig_payment1z temp_dig_payment2z temp_dig_payment3z temp_dig_ventez temp_dig_marketing_lienz temp_dig_marketing_ind1z temp_dig_marketing_ind2z temp_dig_marketing_scorez temp_dig_logistique_entrepotz t_dig_logistique_retour_score temp_dig_service_satisfactionz temp_dig_description1z temp_dig_description2z temp_dig_description3z temp_dig_mar_res_perz temp_dig_ser_res_perz temp_expprep_ciblez temp_expprep_normez temp_expprep_demandez temp_exp_prep_res_perz temp_exp_pays_allz temp_exp_perz
+
+drop temp_dig_con1 temp_dig_con2 temp_dig_con3 temp_dig_con4 temp_dig_con5 temp_dig_con6_score temp_dig_presence_score temp_dig_miseajour1 temp_dig_miseajour2 temp_dig_miseajour3 temp_dig_payment1 temp_dig_payment2 temp_dig_payment3 temp_dig_vente temp_dig_marketing_lien temp_dig_marketing_ind1 temp_dig_marketing_ind2 temp_dig_marketing_score temp_dig_logistique_entrepot temp_dig_service_responsable temp_dig_service_satisfaction temp_expprep_cible temp_expprep_norme temp_expprep_demande temp_exp_pays_all temp_exp_per temp_dig_description1 temp_dig_description2 temp_dig_description3 temp_dig_mar_res_per temp_dig_ser_res_per temp_exp_prep_res_per t_dig_logistique_retour_scorez
 
 ***********************************************************************
 * 	Save the changes made to the data		  			
