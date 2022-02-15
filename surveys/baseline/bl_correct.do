@@ -874,6 +874,7 @@ replace compexp_2020= "8000000" if compexp_2020== "8 000 000"
 replace compexp_2020= "263605" if compexp_2020== "263 605"
 replace compexp_2020= "201801" if compexp_2020== "201 801"
 replace compexp_2020= "700000" if compexp_2020== "700 000"
+replace compexp_2020= "2599419" if id_plateforme == 757
 
 
 *Correction de la variable comp_ca2020
@@ -889,6 +890,7 @@ replace comp_ca2020 = "800000" if comp_ca2020 == "800.000 huit cent mille dinars
 replace comp_ca2020 = "235000" if comp_ca2020 == "235 000"
 replace comp_ca2020= "0" if comp_ca2020== "248000dt 2018 et 124000dt 2019"
 replace comp_ca2020 = "1000000" if comp_ca2020== "1 000 000"
+replace comp_ca2020= "15959988" if id_plateforme == 757
 
 
 
@@ -951,6 +953,7 @@ replace comp_benefice2020 = "0.3" if comp_benefice2020 == "30% men chiffre d'aff
 replace comp_benefice2020 = "78000" if comp_benefice2020 == "78 000"
 replace comp_benefice2020 = "120000" if comp_benefice2020 == "120 000"
 replace comp_benefice2020 = "10000" if comp_benefice2020 == "10 000"
+replace comp_benefice2020= "2059805" if id_plateforme == 757
 
 
 replace comp_benefice2020 = "`refused'" if comp_benefice2020 == "-888"
@@ -1125,6 +1128,7 @@ replace entr_produit1 = "maillots de bain"  if entr_produit1=="mayo de bain"
 drop if id_plateforme == 58 & heure == "09h51`38``"
 drop if id_plateforme == 63 & heure == "17h32`56``"
 drop if id_plateforme == 63 & heure == "10h50`30``"
+drop if id_plateforme == 77 & heure == "08h27`13``"
 drop if id_plateforme == 78 & heure == "15h56`49``"
 drop if id_plateforme == 78 & heure == "11h55`23``"
 drop if id_plateforme == 78 & heure == "11h25`01``"
@@ -1146,8 +1150,15 @@ drop if id_plateforme == 213 & heure == "08h43`15``"
 drop if id_plateforme == 271 & heure == "14h34`28``"
 drop if id_plateforme == 313 & heure == "15h24`44``"
 drop if id_plateforme == 324 & heure == "08h46`17``"
+
+replace comp_benefice2020 = -720000 if id_plateforme == 324
+replace dig_revenues_ecom = 1200000 if id_plateforme == 324
+replace entr_bien_service= 	3 if id_plateforme == 324
 drop if id_plateforme == 324 & heure == "14h38`49``"
 drop if id_plateforme == 324 & heure == "12h54`53``"
+drop if id_plateforme == 324 & heure == "15h32`04``"
+
+
 drop if id_plateforme == 351 & heure == "10h43`21``"
 drop if id_plateforme == 351 & heure == "16h28`08``"
 drop if id_plateforme == 369 & heure == "11h42`59``"
@@ -1158,6 +1169,23 @@ drop if id_plateforme == 457 & heure == "13h06`26``"
 drop if id_plateforme == 457 & heure == "11h08`09``"
 drop if id_plateforme == 457 & heure == "08h22`05``"
 drop if id_plateforme == 457 & heure == "15h38`43``"
+
+
+replace dig_marketing_respons= 2 if id_plateforme == 478
+replace dig_service_responsable= 2 if id_plateforme == 478
+replace investcom_2021= 3000 if id_plateforme == 478
+replace expprep_norme= 1 if id_plateforme == 478
+replace expprep_norme2= "iso 90010 en 2006 et 2008" if id_plateforme == 478
+replace exp_pays_21= 5 if id_plateforme == 478
+replace comp_benefice2020= -200000 if id_plateforme == 478
+replace car_soutien_gouvern= 1 if id_plateforme == 478
+replace car_pdg_age= 53 if id_plateforme == 478
+replace car_carempl_div1= 35 if id_plateforme == 478
+replace car_carempl_dive2= 10 if id_plateforme == 478
+replace car_carempl_div3= 0 if id_plateforme == 478
+drop if id_plateforme == 478 & heure == "11h36`38``"
+
+
 drop if id_plateforme == 488 & heure == "13h35`09``"
 drop if id_plateforme == 521 & heure == "15h41`40``"
 drop if id_plateforme == 526 & heure == "08h55`51``"
@@ -1204,6 +1232,21 @@ drop if id_plateforme == 803 & heure == "08h32`50``"
 drop if id_plateforme == 831 & heure == "15h45`46``"
 drop if id_plateforme == 859 & heure == "11h17`13``"
 
+replace dig_service_responsable= 2 if id_plateforme == 800
+replace investcom_2021= -999 if id_plateforme == 800
+replace expprep_responsable= 1 if id_plateforme == 800
+replace exp_pays_21= 3 if id_plateforme == 800
+replace info_neces= 1 if id_plateforme == 800
+replace compexp_2020= 0 if id_plateforme == 800
+replace comp_ca2020= 90000 if id_plateforme == 800
+replace dig_revenues_ecom= 90000 if id_plateforme == 800
+replace comp_benefice2020= -5000 if id_plateforme == 800
+replace car_carempl_div1= 9 if id_plateforme == 800
+replace car_carempl_dive2= 2 if id_plateforme == 800
+replace car_carempl_div3 = 0 if id_plateforme == 800
+drop if id_plateforme == 800 & heure == "14h48`52``"
+
+
 replace entr_bien_service= 2 if id_plateforme == 875 & heure == "11h08`29``"
 replace entr_produit1= "carreaux céramique" if id_plateforme == 875 & heure == "11h08`29``"
 replace entr_produit2= "grès" if id_plateforme == 875 & heure == "11h08`29``"
@@ -1225,18 +1268,16 @@ drop if id_plateforme == 953 & heure == "19h03`17``"
 
 
 drop if id_plateforme == 941 & heure == "16h09`19``"
+drop if id_plateforme == 941 & heure == "15h56`54``"
 drop if id_plateforme == 961 & heure == "10h17`41``"
-drop if id_plateforme == 77 & attest==.
-drop if id_plateforme == 710 & exp_pays_21==.
-drop if id_plateforme == 715 & survey_type=="phone"
-drop if id_plateforme == 366 &exp_pays_21==.
-
 
 
 	* Drop firms that did not want to participate in the intervention
 	* (According to the survey institute)
+drop if id_plateforme == 414
 drop if id_plateforme == 548
 drop if id_plateforme == 734
+drop if id_plateforme == 887
 
 	* Drop obs that was not a firm (According to the survey institute):
 
@@ -1408,13 +1449,7 @@ drop if id_plateforme == 612 & dup == 1
 drop if id_plateforme == 642 & dup == 4
 drop if id_plateforme == 646 & dup == 4
 
-//double check these: 
-drop if id_plateforme == 324 & car_carempl_div1==.
-drop if id_plateforme == 360 & attest==.
-drop if id_plateforme == 743 & car_carempl_div1==.
-drop if id_plateforme == 800 & comp_ca2020==.
-drop if id_plateforme == 810 & car_carempl_div1==.
-drop if id_plateforme == 898 & acceptezvousdevalidervosré==.
+
 
 *check again duplicate id_plateforme= 800 & 108 & 324
 
@@ -1464,8 +1499,6 @@ drop if id_plateforme == 896 & dup ==4
 drop if id_plateforme == 911 & dup ==4
 drop if id_plateforme == 916 & dup ==4
 // check next two
-drop if id_plateforme == 941 & dig_con1==.
-drop if id_plateforme == 941 & survey_type=="online"
 drop if id_plateforme == 961 & dup ==4
 
 
