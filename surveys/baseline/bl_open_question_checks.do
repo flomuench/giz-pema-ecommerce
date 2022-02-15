@@ -123,6 +123,12 @@ tab2docx `x'
 putdocx pagebreak
 }
 
+*************************************************************************
+*	PART 4: Check remaining outliers that were not captured by logical 
+		*	constraints or needs check*
+*************************************************************************
+extremes compexp_2020
+
 
 ***********************************************************************
 * 	End:  save dta, word file		  			
