@@ -37,24 +37,10 @@ putdocx text ("Stratification options"), bold
 * 	PART 1: visualisation of candidate strata variables				  										  
 ***********************************************************************
 
-	* Firm size (FTE)
 
-sum fte, d
-display "Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."
-putdocx paragraph
-putdocx text ("Sample full time equivalent employees descriptive statistics"), linebreak bold
-putdocx text ("Sample firms have min. `r(min)', max. `r(max)' & median `r(p50)' employees."), linebreak
-mdesc fte
-display "We miss employee information for `r(miss)' (`r(percent)'%) out of `r(total)'."
-putdocx text ("We miss employee information for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
-			*  plot full sample fte distribution
-histogram fte, frequency ///
-	title("Sample firm employees") ///
-	addl
-	
-graph export fte_histogram.png, replace
-	putdocx paragraph, halign(center)
-	putdocx image fte_histogram.png, width(4)
+local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
+local ecommerce dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per 
+local export exp_pays_all exp_per
 
 	
 	* Indices
@@ -77,14 +63,12 @@ hist raw_knowledge, ///
 graph export raw_knowledge.png, replace
 putdocx paragraph, halign(center) 
 putdocx image raw_knowledge.png
-putdocx pagebreak
 
 sum raw_knowledge, d
 display "Raw digitalisation knowledge index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
 putdocx paragraph
 putdocx text ("Raw digitalisation knowledge index statistics"), linebreak bold
 putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
-putdocx pagebreak
 
 
 	* Digital Z-scores
@@ -95,7 +79,7 @@ hist digtalvars, ///
 graph export digital_zscores.png, replace
 putdocx paragraph, halign(center) 
 putdocx image digital_zscores.png
-putdocx pagebreak
+
 
 	* For comparison, the 'raw' index: 
 	
@@ -105,14 +89,12 @@ hist raw_digtalvars, ///
 graph export raw_digital.png, replace
 putdocx paragraph, halign(center) 
 putdocx image raw_digital.png
-putdocx pagebreak
 
 sum raw_digtalvars, d
 display "Raw digitalisation index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
 putdocx paragraph
 putdocx text ("Raw digitalisation index statistics"), linebreak bold
 putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
-putdocx pagebreak
 
 
 	* Export outcomes Z-scores
@@ -123,7 +105,6 @@ hist expoutcomes, ///
 graph export expoutcomes_zscores.png, replace
 putdocx paragraph, halign(center) 
 putdocx image expoutcomes_zscores.png
-putdocx pagebreak
 
 	* For comparison, the 'raw' index:
 	
@@ -133,7 +114,6 @@ hist raw_expoutcomes, ///
 graph export raw_expoutcomes.png, replace
 putdocx paragraph, halign(center) 
 putdocx image raw_expoutcomes.png
-putdocx pagebreak
 
 sum raw_expoutcomes, d
 display "Raw export outcomes index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile `r(p90)' ."
@@ -213,7 +193,6 @@ mdesc missing_export
 display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
 putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
-putdocx pagebreak
 
 	*** STRATA
 	

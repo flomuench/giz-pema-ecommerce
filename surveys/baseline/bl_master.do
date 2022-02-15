@@ -41,6 +41,7 @@ ssc install strgroup
 ssc install stripplot
 net install http://www.stata.com/users/kcrow/tab2docx
 ssc install labutil
+ssc install winsor
 */
 
 
