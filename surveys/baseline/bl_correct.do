@@ -1409,7 +1409,6 @@ drop if id_plateforme == 642 & dup == 4
 drop if id_plateforme == 646 & dup == 4
 
 //double check these: 
-drop if id_plateforme == 89 & car_carempl_div1==.
 drop if id_plateforme == 324 & car_carempl_div1==.
 drop if id_plateforme == 360 & attest==.
 drop if id_plateforme == 743 & car_carempl_div1==.
