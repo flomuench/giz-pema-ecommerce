@@ -76,7 +76,9 @@ capture replace questions_needing_checks = questions_needing_checks +  " | Véri
 capture replace needs_check = 3 if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
 capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_21" if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
 
-
+*Identify unrealistic outliers and flag them as needs_check*
+replace needs_check = 1 if id_plateforme==767
+replace questions_needing_checks = questions_needing_checks +  " | benefice trop elevé pour une entreprise avec 8 employées" 
 
 /* --------------------------------------------------------------------
 	PART 2.2: Indices / questions with points

@@ -133,8 +133,15 @@ extremes comp_ca2020 id_plateforme
 *Positive Outlier here is id=436,with 247 mio. TND. a firm with 182 FTE, biggest animal producer in the maghreb so makes sense. it is being winsorized at 135,429,000 TND second highest value
 extremes comp_benefice2020 id_plateforme
 *Positive outlier is id==767 artesanal glass producers with only 8 employees, making 8 mio TND profit with 80 mio. TND revenue (10% profit margin), SOUNDS Very high??  
-replace needs_check = 1 if id_plateforme==767
-replace questions_needing_checks = questions_needing_checks +  " | benefice trop elevé pour une entreprise avec 8 employées" 
+*negative outlier: 	id= 655, with -1.9 mio TND profits with 8 mio. Total revenue, large firms 120 FTE, exports to libya and algeria.. could be possible. it is being winsorized at second lowest value
+*  					id=93, large firm with 249 mio. TND revenue that had -1.5 Mio. TND profits during 2020, possible due to covid.
+					*id=324 -720.000 TND with large with 12 mio. TND revenues possible
+					
+tab compexp_2020,missing
+tab comp_ca2020,missing |-999
+tab comp_benefice2020,missing
+
+
 ***********************************************************************
 * 	End:  save dta, word file		  			
 ***********************************************************************

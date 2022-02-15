@@ -138,7 +138,7 @@ if (1) do "${bl_github}/bl_statistics.do"
 /* --------------------------------------------------------------------
 	PART 3.9: Generate stratifiers
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_stratification.do"
+if (0) do "${bl_github}/bl_stratification.do"
 
 
 
