@@ -30,19 +30,23 @@ cd "$bl_output/stratification"
 	
 putdocx clear	
 putdocx begin
-putdocx paragraph
+putdocx paragraph, halign(center) 
 putdocx text ("Stratification options"), bold
 
 ***********************************************************************
 * 	PART 1: visualisation of candidate strata variables				  										  
 ***********************************************************************
 
-
+/* For ref, these are the three sets of vars: 
 local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
 local ecommerce dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per 
 local export exp_pays_all exp_per
+*/
 
 	* Indices
+	
+putdocx paragraph, halign(center) 
+putdocx text ("Distribution of indices and export variables"), bold
 	
 	* Digital knowledge index
 	
@@ -59,8 +63,8 @@ putdocx image raw_knowledge.png
 sum raw_knowledge, d
 display "Raw knowledge index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at  `r(p90)' ."
 putdocx paragraph
-putdocx text ("Raw digitalisation index statistics"), linebreak bold
-putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
+putdocx text ("Raw knowledge index statistics"), linebreak bold
+putdocx text ("Raw knowledge index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at  `r(p90)' ."), linebreak
 
 
 	* E-commerce adoption: 
@@ -76,7 +80,7 @@ sum raw_digtalvars, d
 display "Raw digitalisation index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile  at `r(p90)' ."
 putdocx paragraph
 putdocx text ("Raw digitalisation index statistics"), linebreak bold
-putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in this index."), linebreak
+putdocx text ("Raw digitalisation index has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile  at `r(p90)' ."), linebreak
 
 	* Both joint: 
 
@@ -150,7 +154,7 @@ display "Exporting countries has bottom 10 percentile at `r(p10)', median at `r(
 putdocx paragraph
 putdocx text ("Exporting countries"), linebreak bold
 putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in exporting countries."), linebreak
-	
+putdocx pagebreak	
 	
 ***********************************************************************
 * 	PART 2: Create strata
@@ -159,11 +163,19 @@ putdocx text ("Firms have min. `r(min)', max. `r(max)' & median `r(p50)' in expo
 
 	* Calculate missing values	
 	
+putdocx paragraph, halign(center) 
+putdocx text ("Missing values"), bold
+	
 	* Digitalisation knowledge  index
 
-local knowledge_qs dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score 
+	
+putdocx paragraph
+putdocx text ("Knowledge questions"), bold
+
 
 g missing_knowledge = 1
+
+local knowledge_qs dig_con1 dig_con3 dig_con4 dig_con5  
 foreach var of local  knowledge_qs {
 	replace missing_knowledge = . if `var' == .
 	replace missing_knowledge = . if `var' == -999
@@ -175,16 +187,17 @@ foreach var of local  knowledge_qs {
 }
 
 mdesc missing_knowledge
-display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
+display "We miss some information on knowledge variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
-putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+putdocx text ("We miss some information on knowledge variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
 
-	* Calculate missing values
 	* E-commerce adoption index
 	
-local ecommerceadoption_qs  dig_presence_score  dig_miseajour1  dig_miseajour2  dig_miseajour3  dig_payment1  dig_payment2  dig_payment3  dig_vente  dig_marketing_lien  dig_marketing_ind1  dig_marketing_ind2  dig_marketing_score  dig_logistique_entrepot t_dig_logistique_retour_score  dig_service_satisfaction  dig_description1  dig_description2  dig_description3  dig_mar_res_per  dig_ser_res_per
+putdocx paragraph
+putdocx text ("E-commerce questions"), bold
 
 g missing_ecommerceadopt = 1
+local ecommerceadoption_qs  dig_presence_score dig_presence3_exscore dig_vente  dig_marketing_score dig_marketing_ind1  dig_service_satisfaction   dig_mar_res_per  dig_ser_res_per
 foreach var of local  ecommerceadoption_qs {
 	replace missing_ecommerceadopt = . if `var' == .
 	replace missing_ecommerceadopt = . if `var' == -999
@@ -195,18 +208,43 @@ foreach var of local  ecommerceadoption_qs {
 	replace missing_ecommerceadopt = . if `var' == -1554
 }
 
+replace missing_ecommerceadopt = .  if dig_miseajour1==. & dig_presence1==0.33
+replace missing_ecommerceadopt = .  if dig_miseajour2==. & dig_presence2==0.33
+replace missing_ecommerceadopt = .  if dig_miseajour3==. & dig_presence3==0.33
+
+replace missing_ecommerceadopt = .  if dig_description1 ==. & dig_presence1==0.33
+replace missing_ecommerceadopt = .  if dig_description2 ==. & dig_presence2==0.33
+replace missing_ecommerceadopt = .  if dig_description3 ==. & dig_presence3==0.33
+
+replace missing_ecommerceadopt = .  if dig_payment1 ==. & dig_presence1==0.33
+replace missing_ecommerceadopt = .  if dig_payment2 ==. & dig_presence2==0.33
+replace missing_ecommerceadopt = .  if dig_payment3 ==. & dig_presence3==0.33
+
+replace missing_ecommerceadopt = . if dig_marketing_lien==. & dig_presence1==1 & dig_presence2==1
+
+replace missing_ecommerceadopt = . if dig_marketing_ind2==. & dig_marketing_ind1==1
+
+replace missing_ecommerceadopt = . if dig_logistique_entrepot==. & entr_bien_service!=2
+
+replace missing_ecommerceadopt = . if dig_logistique_retour_score==. & entr_bien_service!=2
+
+
 mdesc missing_ecommerceadopt
-display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
+display "We miss some information on e-commerce variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
-putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+putdocx text ("We miss some information on e-commerce variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
 
 	* Export outcomes Index
 
-local export_score exp_pays_avg compexp_2020 
+
+putdocx paragraph
+putdocx text ("Export questions"), bold
 
 g missing_export = 1
 
-foreach var of local  export_score {
+local export_score exp_pays_avg compexp_2020 
+
+foreach var of local export_score {
 	replace missing_export = . if `var' == .
 	replace missing_export = . if `var' == -999
 	replace missing_export = . if `var' == -888
@@ -219,15 +257,27 @@ foreach var of local  export_score {
 replace missing_export = 1 if rg_oper_exp==0
 
 mdesc missing_export
-display "We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
+display "We miss some information on export variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
-putdocx text ("We miss some information on these variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+putdocx text ("We miss some information on export variables for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+
+mdesc compexp_2020 if rg_oper_exp==1
+display "We miss some information on export revenues specifically for `r(miss)' (`r(percent)'%) out of `r(total)'."
+putdocx paragraph
+putdocx text ("We miss some information on export  revenues specifically for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+
+mdesc exp_pays_avg if rg_oper_exp==1
+display "We miss some information on number of export countries specifically for `r(miss)' (`r(percent)'%) out of `r(total)'."
+putdocx paragraph
+putdocx text ("We miss some information on  number of export countries specifically for `r(miss)' (`r(percent)'%) out of `r(total)'.")	
+
+
 
 	*** STRATA
 	
 	*** First approach: create simple strata for each index only
 	
-	* First, divide by under and above median
+	/* First, divide by under and above median
 	
 foreach var of varlist knowledge digtalvars expoutcomes {
 	egen median = median(`var')
@@ -246,8 +296,17 @@ replace strat1_expoutcomes = 2 if missing(missing_export)
 	
 egen strata1 = group(strat1_knowledge strat1_digtalvars strat1_expoutcomes)
 
-putdocx pagebreak
+putdocx pagebreak*/
 
+
+	*** EXPORTS
+	
+	* Stratum on exporting status (yes/no)
+	
+g strat1_exportstatus = 1 
+replace strat1_exportstatus = 2 if rg_oper_exp==1
+
+	* Stratum on export revenues
 
 
 
@@ -262,7 +321,7 @@ putdocx pagebreak
 	*** KNOWLEDGE DIGITALISATION INDEX: 
 	
 sum knowledge, d
-display "For firms in our sample, this index has a standard deviation of `r(sd)"
+display "For firms in our sample, the knowledge index has a standard deviation of `r(sd)'"
 putdocx paragraph
 putdocx text ("Digitalisation knowledge index"), linebreak bold
 putdocx text ("For firms in our sample, the knowledge index has a standard deviation of `r(sd)'."), linebreak
@@ -271,7 +330,7 @@ putdocx text ("For firms in our sample, the knowledge index has a standard devia
 	*** E-COMMERCE INDEX: 
 
 sum digtalvars, d
-display "For firms in our sample, this index has a standard deviation of `r(sd)'"
+display "For firms in our sample, the e-commmerce adoption index has a standard deviation of `r(sd)'"
 putdocx paragraph
 putdocx text ("E-Commerce adoption index"), linebreak bold
 putdocx text ("For firms in our sample, the e-commerce adoption index has a standard deviation of `r(sd)'."), linebreak
@@ -288,7 +347,7 @@ putdocx text ("For firms in our sample, this index has a standard deviation of `
 	
 	*** Now for the strata
 
-	
+/*	
 	*** Strata1
 	
 putdocx paragraph
@@ -315,6 +374,8 @@ sum esd_strata1, d
 display "With these strata, the export outcomes index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `r(mean)'."), linebreak
+
+*/
 
 putdocx save stratification.docx, replace
 

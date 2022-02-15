@@ -118,6 +118,15 @@ replace needs_check = 3 if investcom_futur == . & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | investcom_futur manque" if investcom_futur == . & dig_presence_score>0
 replace needs_check = 3 if compexp_2020==. & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==. & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==-999 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-999 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==-888 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-888 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==-777 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-777 & rg_oper_exp==1
+
+
+
 
 replace needs_check = 3 if dig_revenues_ecom==. & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
