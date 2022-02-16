@@ -114,9 +114,9 @@ foreach var of local cont_vars {
 
 	* Variables with internal logic:
 	
-replace needs_check = 3 if investcom_2021 == . & dig_presence_score>0
+replace needs_check = 2 if investcom_2021 == . & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | investcom_2021 manque" if investcom_2021 == . & dig_presence_score>0
-replace needs_check = 3 if investcom_futur == . & dig_presence_score>0
+replace needs_check = 2 if investcom_futur == . & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | investcom_futur manque" if investcom_futur == . & dig_presence_score>0
 replace needs_check = 3 if compexp_2020==. & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==. & rg_oper_exp==1
@@ -134,7 +134,7 @@ replace needs_check = 3 if compexp_2020==11 & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020==11 & rg_oper_exp==1
 
 replace needs_check = 3 if comp_benefice2020<1100 & comp_benefice2020>-1
-replace questions_needing_checks = questions_needing_checks +  " | benefice aberrante" if comp_benefice2020<1100 & comp_benefice2020>-1
+replace questions_needing_checks = questions_needing_checks +  " | benefice zero/aberrante" if comp_benefice2020<1100 & comp_benefice2020>-1
 replace needs_check = 3 if comp_benefice2020== .
 replace questions_needing_checks = questions_needing_checks +  " | benefice manque " if comp_benefice2020==.
 
@@ -185,6 +185,16 @@ foreach var of varlist comp_ca2020 comp_benefice2020   {
 
 
 drop scalar_issue
+
+
+*Manually remove those plateforme IDs where unusual values where justified and confirmed or were respondent refused after verification call*
+replace needs_check = 0 if id_plateforme==59
+replace needs_check = 0 if id_plateforme==248
+replace needs_check = 0 if id_plateforme==451
+replace needs_check = 0 if id_plateforme==643
+replace needs_check = 0 if id_plateforme==714
+
+
 
 
 ***********************************************************************

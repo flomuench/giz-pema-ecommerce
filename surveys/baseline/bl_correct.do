@@ -80,33 +80,34 @@ gen commentsmsb = ""
 *replace questions_needing_check = "compexp_2020/comp_ca2020/comp_benefice2020" if id_plateforme==365
 *replace questions_needing_check = "dig_revenues_ecom" if id_plateforme==375
 
+*Corrections that were undertaken but where comments remained in fiche de correction are starred out here*
 
-replace questions_needing_check = "comp_benefice2020" if id_plateforme == 89
-replace needs_check = 1 if id_plateforme == 89
+*replace questions_needing_check = "comp_benefice2020" if id_plateforme == 89
+*replace needs_check = 1 if id_plateforme == 89
 replace questions_needing_check = "expprep_norme2/exp_afrique_principal" if id_plateforme == 108
 replace needs_check = 1 if id_plateforme == 108
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 136
 replace needs_check = 1 if id_plateforme == 136
-replace questions_needing_check = "comp_benefice2020" if id_plateforme == 148
-replace needs_check = 1 if id_plateforme == 148
-replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 151
-replace needs_check = 1 if id_plateforme == 151
+*replace questions_needing_check = "comp_benefice2020" if id_plateforme == 148
+*replace needs_check = 1 if id_plateforme == 148
+*replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 151
+*replace needs_check = 1 if id_plateforme == 151
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 254
 replace needs_check = 1 if id_plateforme == 254
 replace questions_needing_check = "dig_revenues_ecom/comp_benefice2020" if id_plateforme == 365
 replace needs_check = 1 if id_plateforme == 365
-replace questions_needing_check = "comp_benefice2020" if id_plateforme == 377
-replace needs_check = 1 if id_plateforme == 377
+*replace questions_needing_check = "comp_benefice2020" if id_plateforme == 377
+*replace needs_check = 1 if id_plateforme == 377
 replace questions_needing_check = "investcom_2021/investcom_futur" if id_plateforme == 387
 replace needs_check = 1 if id_plateforme == 387
-replace questions_needing_check = "comp_benefice2020/dig_revenues_ecom" if id_plateforme == 392
-replace needs_check = 1 if id_plateforme == 392
+*replace questions_needing_check = "comp_benefice2020/dig_revenues_ecom" if id_plateforme == 392
+*replace needs_check = 1 if id_plateforme == 392
 replace questions_needing_check = "investcom_2021" if id_plateforme == 427
 replace needs_check = 1 if id_plateforme == 427
 replace questions_needing_check = "exp_pays_21" if id_plateforme == 443
 replace needs_check = 1 if id_plateforme == 443
-replace questions_needing_check = "comp_benefice2020" if id_plateforme == 457
-replace needs_check = 1 if id_plateforme == 457
+*replace questions_needing_check = "comp_benefice2020" if id_plateforme == 457
+*replace needs_check = 1 if id_plateforme == 457
 replace questions_needing_check = "duplicate" if id_plateforme==526
 replace needs_check = 1 if id_plateforme == 526
 replace questions_needing_check = "duplicate" if id_plateforme==545
@@ -119,8 +120,8 @@ replace questions_needing_check = "id_base_respondent" if id_plateforme == 623
 replace needs_check = 1 if id_plateforme == 623
 replace questions_needing_check = "exp_pays_21" if id_plateforme == 628
 replace needs_check = 1 if id_plateforme == 628
-replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 668
-replace needs_check = 1 if id_plateforme == 668
+*replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 668
+*replace needs_check = 1 if id_plateforme == 668
 replace questions_needing_check = "tel_sup2" if id_plateforme == 695
 replace needs_check = 1 if id_plateforme == 695
 replace questions_needing_check = "comp_benefice2020" if id_plateforme == 698
