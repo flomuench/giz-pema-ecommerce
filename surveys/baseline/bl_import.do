@@ -26,6 +26,8 @@
 cd "$bl_raw"
 import excel "${bl_raw}/bl_raw.xlsx", sheet("Feuil1") firstrow clear
 
+tostring *, replace
+
 gen survey_type = "online"
 
 rename BP exp_avant21_2
@@ -42,7 +44,11 @@ save "temp_bl_raw", replace
 
 import excel "${bl_raw}/bl_raw_cati.xlsx", sheet("Feuil1") firstrow clear
 
-drop if Id_plateforme==.
+tostring *, replace
+
+drop if Id_plateforme=="."
+
+drop Acceptezvousenregistrement orienter_
 
 gen survey_type = "phone"
 
