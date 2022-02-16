@@ -125,8 +125,8 @@ replace needs_check = 3 if compexp_2020==-777 & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-777 & rg_oper_exp==1
 replace needs_check = 3 if compexp_2020==0 & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | exportateur mais compexp_2020 zero" if compexp_2020==-777 & rg_oper_exp==1
-replace needs_check = 3 if compexp_2020<1000 & scalar_issue = 0 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020<1000 & scalar_issue = 0 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020<1000 & scalar_issue == 0 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020<1000 & scalar_issue == 0 & rg_oper_exp==1
 
 replace needs_check = 3 if comp_benefice2020<1100 & comp_benefice2020>-1
 
@@ -143,8 +143,8 @@ replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 m
 replace needs_check = 2 if comp_ca2020== -888
 replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 refusé " if comp_ca2020==-888
 
-replace needs_check = 3 if comp_ca2020<1000 & scalar_issue = 0 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 zero ou aberrante " if comp_ca2020<1000 & scalar_issue = 0 & rg_oper_exp==1
+replace needs_check = 3 if comp_ca2020<1000 & scalar_issue == 0 & rg_oper_exp==1
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 zero ou aberrante " if comp_ca2020<1000 & scalar_issue == 0 & rg_oper_exp==1
 
 replace needs_check = 3 if dig_revenues_ecom==. & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
