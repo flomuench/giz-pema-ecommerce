@@ -128,7 +128,7 @@ if (1) do "${bl_github}/bl_generate.do"
 	PART 3.6: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_open_question_checks.do"
-/* --------------------------------------------------------------------
+ e/* --------------------------------------------------------------------
 	PART 3.7: Perform logical checks (and SAVE bl_final.dta)
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_test.do"

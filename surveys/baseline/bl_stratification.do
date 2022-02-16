@@ -315,7 +315,7 @@ sum compexp_2020, d
 replace strat1_exports = 2 if compexp_2020>`r(p75)' & compexp_2020!=.
 replace strat1_exports = 3 if rg_oper_exp==0
 
-	* E-commerce adoption
+	* E-commerce adoption and knowledge questions together
 	
 g strat1_digitalisation = 2
 sum raw_indices, d
@@ -334,7 +334,6 @@ replace strat1_missing = 1 if raw_indices==.
 replace strat1_missing = 1 if rg_oper_exp==. 
 replace strat1_missing = 1 if compexp_2020==. & rg_oper_exp==1 	
 
-
 replace strata1 = -999 if strat1_missing==1
 
 
@@ -347,7 +346,7 @@ replace strat2_exports = 2 if compexp_2020>`r(p75)' & compexp_2020!=.
 replace strat2_exports = 3 if rg_oper_exp==0
 replace strat2_exports = 4 if rg_oper_exp==. | compexp_2020==.
 
-	* E-commerce adoption
+	* E-commerce adoption and knowledge questions together
 	
 g strat2_digitalisation = 2
 sum raw_indices, d
@@ -392,6 +391,51 @@ egen strata3 = group(strat3_exports strat3_ecomm strat3_know)
 	* Two strata are too small, put them together manually
 	
 replace strata3 = 15 if strata3==14
+
+
+	*** FOURTH APPROACH – ~ As above but including comp_ca2020 and with higher caps for exports
+
+	
+	* Stratum on export revenues
+g strat4_exports = 1
+
+sum compexp_2020, d
+replace strat4_exports = 2 if compexp_2020>`r(p50)' & compexp_2020!=.
+replace strat4_exports = 3 if rg_oper_exp==0
+replace strat4_exports = 4 if rg_oper_exp==. | compexp_2020==.
+
+	* E-commerce adoption
+	
+g strat4_ecomm = 2
+sum raw_digtalvars, d
+replace strat4_ecomm = 3 if raw_digtalvars>=`r(p50)'
+replace strat4_ecomm = 1 if raw_digtalvars==.
+
+	* Knowledge adoption
+	
+g strat4_know = 2
+sum raw_knowledge, d
+replace strat4_know = 3 if raw_knowledge>=`r(p50)'
+replace strat4_know = 1 if raw_knowledge==.
+
+	* Create strata
+	
+egen strata4 = group(strat4_exports strat4_ecomm strat4_know)
+
+	* Two strata are too small, put them together manually
+	
+replace strata4 = 15 if strata4==14
+
+	* Finally, create a new stratum for observations with too large total revenues or too large exports
+	
+quietly sum comp_ca2020, d
+replace strata4 = 21 if comp_ca2020>`r(p90)' & comp_ca2020!=.
+
+quietly sum compexp_2020, d
+replace strata4 = 22 if compexp_2020>`r(p90)' & compexp_2020!=.
+
+
+
 
 ***********************************************************************
 * 	PART 3: Calculate variance by stratification approach
@@ -449,7 +493,7 @@ putdocx text ("For firms in our sample, the IHS of exports has a standard deviat
 	
 putdocx paragraph
 putdocx text ("Strata1: average SDs"), linebreak bold
-putdocx text ("This approach creates strata for exports, and the joint e-commerce adoption and digital knowledge indices; there is also a separate stratum for observations with missing values in any of the relevant variables")
+putdocx text ("This approach creates strata for exports (above/below p75, no exports) and the joint e-commerce adoption and digital knowledge indices (above/below median); there is also a separate stratum for observations with missing values in any of the relevant variables")
 
 	*** Knowledge 
 	
@@ -492,7 +536,7 @@ tab2docx strata1
 	
 putdocx paragraph
 putdocx text ("Strata2: average SDs"), linebreak bold
-putdocx text ("This approach creates strata is the same as the first, but missing values remain inside each strata category (ie they're not a separate category)"), linebreak
+putdocx text ("This approach creates strata is the same as the first, but missing values remain inside each strata category (ie they're not a separate category). Eg for exports there is a fourth substratum for observations missing export data"), linebreak
 
 	*** Knowledge 
 	
@@ -534,7 +578,7 @@ tab2docx strata2
 	
 putdocx paragraph
 putdocx text ("Strata3: average SDs"), linebreak bold
-putdocx text ("This approach creates strata for both the digital knowledge and e-commerce adoption indices (as well as exports), while keeping missing values inside each strata category"), linebreak
+putdocx text ("This approach creates separate (above/below median) strata for both the digital knowledge and e-commerce adoption indices; exports are treated as in strata2 above, as are missing values. Two smaller categories (for missing values on exports and high responses to the indices) are merged ex post."), linebreak
 
 	*** Knowledge 
 	
@@ -569,6 +613,49 @@ putdocx text ("With these strata, the IHS of export by stratum has an average st
 putdocx paragraph
 putdocx text ("Size of strata for strata3"), linebreak bold
 tab2docx strata3
+
+
+
+	*** Strata4
+	
+putdocx paragraph
+putdocx text ("Strata4: average SDs"), linebreak bold
+putdocx text ("This approach is similar to the above, but creates export strata based on the median (so above/below median, no exports, missing exports). After creating all the 15 strata, it creates two additional strata for the top 10% in terms of total revenues and total exports respectively (ignoring the other categories). The same two small categories as above are merged."), linebreak
+
+	*** Knowledge 
+	
+bysort strata4: egen ksd_strata4 = sd(knowledge)
+sum ksd_strata4, d
+display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `knowledge_sd_base' originally).")
+
+	*** E-commerce adoption
+bysort strata4: egen dsd_strata4 = sd(digtalvars)
+sum dsd_strata4, d
+display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `digital_sd_base' originally).")
+
+	*** Export outcomes
+bysort strata4: egen esd_strata4 = sd(expoutcomes)
+sum esd_strata4, d
+display "With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''."
+putdocx paragraph
+putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
+
+	*** IHS EXPORTS
+	
+bysort strata4: egen ihsesd_strata4 = sd(ihs_exports)
+sum ihsesd_strata4, d
+display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)' ."
+putdocx paragraph
+putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
+
+putdocx paragraph
+putdocx text ("Size of strata for strata3"), linebreak bold
+tab2docx strata4
+
 
 
 

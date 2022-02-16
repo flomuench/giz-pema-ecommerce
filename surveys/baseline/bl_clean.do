@@ -25,7 +25,7 @@
 
 use "${bl_raw}/bl_raw", clear
 
-{
+
 	* string
 ds, has(type string) 
 local strvars "`r(varlist)'"
@@ -34,17 +34,6 @@ format %-20s `strvars'
 	* make all string obs lower case
 foreach x of local strvars {
 replace `x'= lower(`x')
-}
-	* numeric 
-ds, has(type numeric) 
-local numvars "`r(varlist)'"
-format %-25.2fc `numvars'
-
-	* dates
-		* creation
-format Date %td
-
-
 }
 
 
@@ -62,10 +51,28 @@ foreach var of local binaryvars {
 	capture destring `var', replace
 }
 
+/* --------------------------------------------------------------------
+	PART 1.3: Turn binary questions numerical 
+----------------------------------------------------------------------*/
 
+drop if Id_plateforme=="."
+
+local stringvars Id_plateforme Date id_nouveau_personne id_repondent_position entr_bien_service dig_description1 dig_description2 dig_description3 dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_marketing_ind2 dig_marketing_respons dig_logistique_entrepot dig_service_responsable investcom_2021 investcom_futur investcom_benefit1 investcom_benefit2 car_credit1 car_risque expprep_responsable exp_pays_avant21 exp_pays_21 compexp_2020 comp_ca2020 dig_revenues_ecom comp_benefice2020 car_sex_pdg car_pdg_age car_carempl_div1 car_carempl_dive2  car_carempl_dive4 car_pdg_educ car_adop_peer perc_video perc_care perc_ident Acceptezvousdevalidervosré Date
+
+
+destring `stringvars', replace
+
+	* numeric 
+ds, has(type numeric) 
+local numvars "`r(varlist)'"
+format %-25.2fc `numvars'
+
+	* dates
+		* creation
+format Date %td
 
 /* --------------------------------------------------------------------
-	PART 1.3: Fix mutliple choice questions
+	PART 1.4: Fix mutliple choice questions
 ----------------------------------------------------------------------*/
 {
 	
