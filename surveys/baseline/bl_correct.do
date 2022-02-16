@@ -86,6 +86,13 @@ gen commentsmsb = ""
 *replace questions_needing_check = "comp_benefice2020" if id_plateforme == 89
 *replace needs_check = 1 if id_plateforme == 89
 
+
+/* CORRECTIONS TO BE MADE
+
+
+*/
+
+
 replace questions_needing_check = "expprep_norme2/exp_afrique_principal" if id_plateforme == 108
 replace needs_check = 1 if id_plateforme == 108
 replace questions_needing_check = "exp_afrique_principal" if id_plateforme == 136
@@ -156,7 +163,7 @@ replace compexp_2020 = "4266882" if id_plateforme==	78
 replace comp_ca2020 = "5006036" if id_plateforme==78
 replace dig_revenues_ecom = "93381" if id_plateforme==78
 replace comp_benefice2020 = "74652" if id_plateforme==78
-replace investcom_2021 = 8700 if id_plateforme==78
+replace investcom_2021 = "8700" if id_plateforme==78
 replace needs_check = 0 if id_plateforme==78
 
 replace exp_pays_avant21 = 0 if id_plateforme==	80
@@ -222,7 +229,7 @@ replace needs_check = 0 if id_plateforme==151
 
 replace compexp_2020 = "1500" if id_plateforme==165
 replace comp_ca2020 = "1500" if id_plateforme==165
-replace investcom_2021 = 500 if id_plateforme==165
+replace investcom_2021 = "500" if id_plateforme==165
 replace needs_check = 0 if id_plateforme==165
 
 replace exp_pays_avant21 = 0 if id_plateforme==166
@@ -689,7 +696,7 @@ replace comp_ca2020 = "15000000" if id_plateforme==689
 replace compexp_2020 = "12000000" if id_plateforme==689
 replace dig_revenues_ecom = "0" if id_plateforme==689
 replace comp_benefice2020 = "400000" if id_plateforme==689
-replace investcom_2021 = 150000 if id_plateforme==689
+replace investcom_2021 = "150000" if id_plateforme==689
 replace investcom_futur = "150000" if id_plateforme==689
 replace needs_check = 0 if id_plateforme==689
 
