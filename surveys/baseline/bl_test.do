@@ -129,7 +129,9 @@ replace needs_check = 3 if compexp_2020<1000 & scalar_issue = 0 & rg_oper_exp==1
 replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020<1000 & scalar_issue = 0 & rg_oper_exp==1
 
 replace needs_check = 3 if comp_benefice2020<1100 & comp_benefice2020>-1
+
 replace questions_needing_checks = questions_needing_checks +  " | benefice zéro ou aberrante" if comp_benefice2020<1100 & comp_benefice2020>-1
+
 replace needs_check = 3 if comp_benefice2020== .
 replace questions_needing_checks = questions_needing_checks +  " | benefice manque " if comp_benefice2020==.
 
@@ -187,6 +189,16 @@ replace needs_check = 0 if id_plateforme==248
 replace needs_check = 0 if id_plateforme==451
 replace needs_check = 0 if id_plateforme==643
 replace needs_check = 0 if id_plateforme==714
+
+*Manually remove those plateforme IDs where unusual values where justified and confirmed or were respondent refused after verification call*
+replace needs_check = 0 if id_plateforme==59
+replace needs_check = 0 if id_plateforme==248
+replace needs_check = 0 if id_plateforme==451
+replace needs_check = 0 if id_plateforme==643
+replace needs_check = 0 if id_plateforme==714
+
+
+
 
 ***********************************************************************
 * 	PART 4:  Cross checks again registration data

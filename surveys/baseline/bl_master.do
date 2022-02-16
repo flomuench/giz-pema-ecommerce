@@ -28,8 +28,8 @@ capture program drop zscore /* drops the program programname */
 qui cap log c
 
 	* install packages
-	/*
-ssc install ietoolkit /* for iebaltab */
+	
+/*ssc install ietoolkit /* for iebaltab */
 ssc install randtreat, replace /* for randtreat --> random allocation */
 ssc install blindschemes, replace /* for plotplain --> scheme for graphical visualisations */
 net install http://www.stata.com/users/kcrow/tab2docx
@@ -41,10 +41,10 @@ ssc install strgroup
 ssc install stripplot
 net install http://www.stata.com/users/kcrow/tab2docx
 ssc install labutil
+ssc inst extremes
 ssc install winsor
-ssc install extremes
-ssc install fre
 */
+
 
 	* define graph scheme for visual outputs
 set scheme plotplain
@@ -139,7 +139,7 @@ if (1) do "${bl_github}/bl_statistics.do"
 /* --------------------------------------------------------------------
 	PART 3.9: Generate stratifiers
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl_stratification.do"
+if (1) do "${bl_github}/bl_stratification.do"
 
 
 
