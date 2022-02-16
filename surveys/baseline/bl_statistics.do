@@ -147,6 +147,44 @@ graph export raw_expoutcomes.png, replace
 putpdf paragraph, halign(center) 
 putpdf image raw_expoutcomes.png
 putpdf pagebreak
+
+
+*Scatter plot comparing exports and Chiffre d'affaire (0,44 correlation there are 5 firms with high CA and little or no exports)
+corr compexp_2020 comp_ca2020
+local corr : di %4.3f r(rho)
+twoway scatter compexp_2020 comp_ca2020  || lfit compexp_2020 comp_ca2020, ytitle("Exports in TND") xtitle("Revenue in TND") subtitle(correlation `corr')
+graph export raw_exp_ca.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_exp_ca.png
+putpdf pagebreak
+correlate compexp_2020 comp_ca2020 knowledge digtalvars  
+
+*Scatter plot comparing knowledge and digitalisation index
+corr knowledge digtalvars
+local corr : di %4.3f r(rho)
+twoway scatter knowledge digtalvars  || lfit knowledge digtalvars, ytitle("Knowledge index raw") xtitle("Digitilisation Index raw") subtitle(correlation `corr')
+graph export raw_knowledge_digital.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_knowledge_digital.png
+putpdf pagebreak
+
+*Scatter plot exports and employees
+corr compexp_2020 fte
+local corr : di %4.3f r(rho)
+twoway scatter compexp_2020 fte  || lfit compexp_2020 fte, ytitle("Exports") xtitle("Number of employes") subtitle(correlation `corr')
+graph export raw_exp_fte.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_exp_fte.png
+putpdf pagebreak
+
+*Scatter plot revenues and employees
+corr comp_ca2020 fte
+local corr : di %4.3f r(rho)
+twoway scatter comp_ca2020 fte  || lfit comp_ca2020 fte, ytitle("Total Revenues") xtitle("Number of employes") subtitle(correlation `corr')
+graph export raw_ca_fte.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_ca_fte.png
+putpdf pagebreak
 	
 ***********************************************************************
 * 	PART 4:  save pdf
