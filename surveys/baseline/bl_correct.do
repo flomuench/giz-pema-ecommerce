@@ -88,8 +88,20 @@ gen commentsmsb = ""
 
 
 /* CORRECTIONS TO BE MADE
-
-
+for id_plateforme == 108, compexp_2020 ==0, comp_ca2020 == 6500 , dig_revenues_ecom== 0, comp_benefice2020== 1000, exp_afrique_principal == "Sénegal",
+for id_plateforme == 126 investcom_2021== 1000
+for id_plateforme ==136, exp_afrique_principal =="Cameroun"
+for id_plateforme == 254, comp_benefice2020= 150000
+for id_plateforme == 261, compexp_2020 = 2557611, comp_ca2020== 2649558, comp_benefice2020==421336
+for id_plateforme == 405, comp_benefice2020= 1200000
+for id_plateformeforme == 493, compexp_2020= 0
+for id_plateforme== 542 compexp_2020=800000, comp_ca2020==10000000, dig_revenues_ecom== 20000 comp_benefice2020== 500000
+for id_plateforme == 592,  exp_afrique_principal ==" Cameroun"
+for id_plateforme ==623 , id_base_respondent= "Rana Baabaa"
+for id_plateforme ==632 , compexp_2020=0, comp_ca2020 ==120000, comp_benefice2020==600
+for id_plateforme ==800, investcom_2021 ==1000
+fpr id_plateforme== 841, comp_benefice2020== 45000
+for id_plateforme == 931, comp_benefice2020 = 3000
 */
 
 
@@ -310,8 +322,8 @@ replace needs_check = 0 if id_plateforme==255
 replace exp_pays_avant21 = 0 if id_plateforme==259
 replace needs_check = 0 if id_plateforme==259
 
-replace compexp_2020 = "2557" if id_plateforme==261
-replace comp_ca2020 = "2556" if id_plateforme==261
+replace compexp_2020 = "2557611" if id_plateforme==261
+replace comp_ca2020 = "2649558" if id_plateforme==261
 replace needs_check = 0 if id_plateforme==261
 
 replace compexp_2020 = "400000" if id_plateforme==264
