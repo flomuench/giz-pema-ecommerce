@@ -69,12 +69,12 @@ capture replace questions_needing_checks = questions_needing_checks +  " | Reven
 
 * If number of export countries is higher than 100 – needs check (it's sus)
 
-capture replace needs_check = 3 if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
-//capture replace needs_check = 1 if exp_pays_avant21==. &  rg_oper_exp == 1 & exp_pays>1
-capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_avant21" if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & rg_oper_exp == 1
+capture replace needs_check = 3 if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & export_status == 1
+//capture replace needs_check = 1 if exp_pays_avant21==. &  export_status == 1 & exp_pays>1
+capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_avant21" if  exp_pays_avant21 > 100 & exp_pays_avant21!=. & export_status == 1
 
-capture replace needs_check = 3 if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
-capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_21" if  exp_pays_21 > 100 & exp_pays_21!=. & rg_oper_exp == 1
+capture replace needs_check = 3 if  exp_pays_21 > 100 & exp_pays_21!=. & export_status == 1
+capture replace questions_needing_checks = questions_needing_checks +  " | Vérifer nombre de pays dans exp_pays_21" if  exp_pays_21 > 100 & exp_pays_21!=. & export_status == 1
 
 
 /* --------------------------------------------------------------------
@@ -85,7 +85,7 @@ capture replace questions_needing_checks = questions_needing_checks +  " | Véri
 replace needs_check = 3 if dig_presence_score==.
 replace questions_needing_checks = questions_needing_checks + " | dig_presence manque " if dig_presence_score==.
 
-local unit_scores dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_score dig_marketing_ind1 dig_marketing_ind2 dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction expprep_cible expprep_norme rg_oper_exp exp_afrique 
+local unit_scores dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_score dig_marketing_ind1 dig_marketing_ind2 dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction expprep_cible expprep_norme export_status exp_afrique 
 
 foreach var of local unit_scores {
 	replace needs_check = 1 if `var'>1 & `var'!=.
@@ -115,18 +115,18 @@ replace needs_check = 2 if investcom_2021 == . & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | investcom_2021 manque" if investcom_2021 == . & dig_presence_score>0
 replace needs_check = 2 if investcom_futur == . & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | investcom_futur manque" if investcom_futur == . & dig_presence_score>0
-replace needs_check = 3 if compexp_2020==. & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==. & rg_oper_exp==1
-replace needs_check = 3 if compexp_2020==-999 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-999 & rg_oper_exp==1
-replace needs_check = 2 if compexp_2020==-888 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 refusé" if compexp_2020==-888 & rg_oper_exp==1
-replace needs_check = 3 if compexp_2020==-777 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-777 & rg_oper_exp==1
-replace needs_check = 3 if compexp_2020==0 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | exportateur mais compexp_2020 zero" if compexp_2020==-777 & rg_oper_exp==1
-replace needs_check = 3 if compexp_2020<1000 & scalar_issue == 0 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020<1000 & scalar_issue == 0 & rg_oper_exp==1
+replace needs_check = 3 if compexp_2020==. & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==. & export_status==1
+replace needs_check = 3 if compexp_2020==-999 & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-999 & export_status==1
+replace needs_check = 2 if compexp_2020==-888 & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 refusé" if compexp_2020==-888 & export_status==1
+replace needs_check = 3 if compexp_2020==-777 & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 manque" if compexp_2020==-777 & export_status==1
+replace needs_check = 3 if compexp_2020==0 & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | exportateur mais compexp_2020 zero" if compexp_2020==-777 & export_status==1
+replace needs_check = 3 if compexp_2020<1000 & scalar_issue == 0 & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | compexp_2020 aberrante" if compexp_2020<1000 & scalar_issue == 0 & export_status==1
 
 replace needs_check = 3 if comp_benefice2020<1100 & comp_benefice2020>-1
 
@@ -143,8 +143,8 @@ replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 m
 replace needs_check = 2 if comp_ca2020== -888
 replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 refusé " if comp_ca2020==-888
 
-replace needs_check = 3 if comp_ca2020<1000 & scalar_issue == 0 & rg_oper_exp==1
-replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 zero ou aberrante " if comp_ca2020<1000 & scalar_issue == 0 & rg_oper_exp==1
+replace needs_check = 3 if comp_ca2020<1000 & scalar_issue == 0 & export_status==1
+replace questions_needing_checks = questions_needing_checks +  " | comp_ca2020 zero ou aberrante " if comp_ca2020<1000 & scalar_issue == 0 & export_status==1
 
 replace needs_check = 3 if dig_revenues_ecom==. & dig_presence_score>0
 replace questions_needing_checks = questions_needing_checks +  " | dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0

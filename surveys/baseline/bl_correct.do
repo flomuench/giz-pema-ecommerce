@@ -87,7 +87,6 @@ gen commentsmsb = ""
 *replace needs_check = 1 if id_plateforme == 89
 
 
-*CORRECTIONS TO BE MADE
 replace compexp_2020 = "0" if id_plateforme == 108
 replace comp_ca2020 = "6500" if id_plateforme == 108
 replace dig_revenues_ecom = "0" if id_plateforme == 108
@@ -1167,6 +1166,21 @@ replace exp_pays_21 = "-999" if exp_pays_21=="?"
 
 }
 
+
+/*
+Quick check
+
+investcom_futur
+investcom_2021/investcom_futur
+dig_revenues_ecom
+comp_benefice2020
+car_carempl_div1
+car_carempl_dive2
+car_carempl_div3
+compexp_2020
+
+*/
+
 ***********************************************************************
 * 	PART 5:  Convert string to numerical variabales	  			
 ***********************************************************************
@@ -1438,6 +1452,7 @@ drop if id_plateforme == 911 & heure == "12h15`01``"
 drop if id_plateforme == 916 & heure == "18h16`52``"
 drop if id_plateforme == 931 & heure == "21h11`06``"
 drop if id_plateforme == 953 & heure == "19h03`17``"
+drop if id_plateforme == 715 & heure == "15h31`30``"
 
 
 
@@ -1513,7 +1528,10 @@ replace car_carempl_dive2 = 20 if id_plateforme==369
 replace car_carempl_div3 = 0 if id_plateforme==369
 replace exp_pays_21 = 4 if id_plateforme==369
 
- 	  	
+	* One observation that had no exports in 2021 or before but had positive
+	* (and suspiciously large, 111) number of export countries. Replace with .
+	
+replace exp_pays_avant21 = . if id_plateforme==255 	  	
 
 	* Check remaining duplicates (after manual corrections above)
 	
@@ -1599,7 +1617,7 @@ drop if id_plateforme == 679 & dup == 4
 drop if id_plateforme == 695 & dup == 4
 drop if id_plateforme == 698 & dup == 4
 drop if id_plateforme == 700 & dup == 4
-drop if id_plateforme == 715 & dup == 2
+* drop if id_plateforme == 715 & dup == 2
 drop if id_plateforme == 730 & dup == 4
 drop if id_plateforme == 732 & dup == 4
 drop if id_plateforme == 739 & dup == 4
@@ -1622,7 +1640,6 @@ drop if id_plateforme == 598 & dup == 1
 drop if id_plateforme == 612 & dup == 1
 drop if id_plateforme == 642 & dup == 4
 drop if id_plateforme == 646 & dup == 4
-
 
 
 *check again duplicate id_plateforme= 800 & 108 & 324
@@ -1675,23 +1692,26 @@ drop if id_plateforme == 916 & dup ==4
 // check next two
 drop if id_plateforme == 961 & dup ==4
 
-
-
 	* Drop useless variables
 
 	
 drop dup sum_allvars max_length
 
+
 	
 ***********************************************************************
 * 	PART 11:  autres / miscellaneous adjustments
 ***********************************************************************
-	* correct the response categories for moyen de communication
-*replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
-*replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
+	
+	
+	
+	
+	* Correct compexp_2020 for firms that do not export
 
-	* correct wrong response categories for subsectors
-*replace subsector = "industries chimiques" if subsector == "industrie chimique"
+//replace compexp_2020 = 0 if compexp_2020==. & rg_oper_exp==0	
+
+//replace exp_pays_avg = 0 if exp_pays_avg==. & rg_oper_exp==0	
+	
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

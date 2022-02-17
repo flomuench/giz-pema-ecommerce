@@ -73,6 +73,12 @@ replace expprep_cible = 0.5 if expprep_cible==-1200
 ***********************************************************************
 
 
+	* Export status – for firms that exported in either 2021 or before:
+	
+gen export_status = 0
+
+replace export_status = 1 if rg_oper_exp==1
+replace export_status = 1 if exp_avant21==1
 
 	*** Winsorise main accounting variables
 	
@@ -150,16 +156,21 @@ lab var exp_prep_res_per "FTEs working on exports as percentage"
 
 	*** Bring together exp_pays_avant21 and exp_pays_21
 	
-g exp_pays_avg = (exp_pays_avant21 + exp_pays_21)/2 if exp_pays_avant21!=. & exp_pays_21!=.
-replace exp_pays_avg = exp_pays_avant21 if exp_pays_21==. & exp_pays_avant21!=.
-replace exp_pays_avg = exp_pays_21 if exp_pays_avant21==. & exp_pays_21!=.
-replace exp_pays_avg = . if exp_pays_avg==-999
-replace exp_pays_avg = . if exp_pays_avg==-888
-replace exp_pays_avg = . if exp_pays_avg==-777
-replace exp_pays_avg = 1 if exp_pays_avg==0.5
+g exp_pays_avg = exp_pays_21
+replace exp_pays_avg =  exp_pays_avant21 if exp_pays_21==.
+replace exp_pays_avg =  . if exp_pays_avant21==-999 & exp_pays_21==.
+replace exp_pays_avg =  . if exp_pays_avant21==. & exp_pays_21==-999
+replace exp_pays_avg =  . if exp_pays_avant21==-999 & exp_pays_21==-999
+
+replace exp_pays_avg =  . if exp_pays_avant21==-777 & exp_pays_21==.
+replace exp_pays_avg =  . if exp_pays_avant21==. & exp_pays_21==-777
+replace exp_pays_avg =  . if exp_pays_avant21==-777 & exp_pays_21==-777
+
+replace exp_pays_avg =  . if exp_pays_avant21==-888 & exp_pays_21==.
+replace exp_pays_avg =  . if exp_pays_avant21==. & exp_pays_21==-888
+replace exp_pays_avg =  . if exp_pays_avant21==-888 & exp_pays_21==-888
 
 
- 
 **********************************************************************
 * 	PART 3:  Index calculation based on z-score		
 ***********************************************************************
