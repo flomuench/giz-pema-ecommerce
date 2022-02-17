@@ -6,9 +6,10 @@
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1)		
-*	2)		gen stratification dummy alternatives
-*	3)		visualise number of observations per strata														  
+*	1)		Visualisation of candidate strata variables
+*	2)		Generate strata using different appraoches
+*	3)		Calculate variance by stratification approach
+*   4)		Save														  
 *
 *																 																      *
 *	Author:  	Teo Firpo													  
@@ -105,7 +106,7 @@ putdocx text ("Firms have min. `: display %9.2fc `r(min)'', max. `: display %9.2
 	* Export status
 
 graph bar (count), ///
-	over(rg_oper_exp) ///
+	over(export_status) ///
 	title("Exporting status") ///
 	ytitle("Number")
 graph export export_status.png, replace
@@ -131,7 +132,7 @@ putdocx text ("Exporting as percentage of revenue has bottom 10 percentile at `:
 	
 	
 quietly sum compexp_2020, d
-hist compexp_2020 if compexp_2020<`r(p99)' & rg_oper_exp==1, ///
+hist compexp_2020 if compexp_2020<`r(p99)' & export_status==1, ///
 	title("Exporting revenue") ///
 	note("Top 99 percentile excluded; only exporting firms")
 graph export compexp_2020.png, replace
@@ -139,7 +140,7 @@ putdocx paragraph, halign(center)
 putdocx image compexp_2020.png
 
 quietly sum compexp_2020, d	
-sum compexp_2020 if compexp_2020<`r(p99)' & rg_oper_exp==1, d
+sum compexp_2020 if compexp_2020<`r(p99)' & export_status==1, d
 display "Exporting revenue has bottom 10 percentile at `r(p10)', median at `r(p50)' & top 90 percentile at `r(p90)' (only for exporting firms and cutting off at 99 percentile)."
 putdocx paragraph
 putdocx text ("Exporting revenue"), linebreak bold
@@ -259,19 +260,19 @@ foreach var of local export_score {
 	replace missing_export = . if `var' == -1554
 }
 
-replace missing_export = 1 if rg_oper_exp==0
+replace missing_export = 1 if export_status==0
 
 mdesc missing_export
 display "We miss some information on export variables for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
 putdocx text ("We miss some information on export variables for `r(miss)' (`: display %9.2fc `r(percent)''%) out of `r(total)'.")	
 
-mdesc compexp_2020 if rg_oper_exp==1
+mdesc compexp_2020 if export_status==1
 display "We miss some information on export revenues specifically for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
 putdocx text ("We miss some information on export revenues specifically for `r(miss)' (`: display %9.2fc `r(percent)'''%) out of `r(total)'.")	
 
-mdesc exp_pays_avg if rg_oper_exp==1
+mdesc exp_pays_avg if export_status==1
 display "We miss some information on number of export countries specifically for `r(miss)' (`r(percent)'%) out of `r(total)'."
 putdocx paragraph
 putdocx text ("We miss some information on number of export countries specifically for `r(miss)' (`: display %9.2fc `r(percent)''%) out of `r(total)'.")	
@@ -283,7 +284,7 @@ putdocx pagebreak
 	* For the purposes of strata, I replace "i don't know'/'refused' with missing in key variables
 	
 	
-local missing_vars compexp_2020 comp_ca2020 exp_pays_avg rg_oper_exp
+local missing_vars compexp_2020 comp_ca2020 exp_pays_avg export_status
 
 foreach var of local missing_vars {
 	replace `var' = . if `var' == -888
@@ -327,7 +328,7 @@ g strat1_exports = 1
 
 sum compexp_2020, d
 replace strat1_exports = 2 if compexp_2020>`r(p75)' & compexp_2020!=.
-replace strat1_exports = 3 if rg_oper_exp==0
+replace strat1_exports = 3 if export_status==0
 
 	* E-commerce adoption and knowledge questions together
 	
@@ -345,8 +346,8 @@ egen strata1 = group(strat1_exports strat1_digitalisation)
 	
 g strat1_missing = 0
 replace strat1_missing = 1 if raw_indices==. 
-replace strat1_missing = 1 if rg_oper_exp==. 
-replace strat1_missing = 1 if compexp_2020==. & rg_oper_exp==1 	
+replace strat1_missing = 1 if export_status==. 
+replace strat1_missing = 1 if compexp_2020==. & export_status==1 	
 
 replace strata1 = -999 if strat1_missing==1
 
@@ -361,8 +362,8 @@ g strat2_exports = 1
 
 sum compexp_2020, d
 replace strat2_exports = 2 if compexp_2020>`r(p75)' & compexp_2020!=.
-replace strat2_exports = 3 if rg_oper_exp==0
-replace strat2_exports = 4 if rg_oper_exp==. | compexp_2020==.
+replace strat2_exports = 3 if export_status==0
+replace strat2_exports = 4 if export_status==. | compexp_2020==.
 
 	* E-commerce adoption and knowledge questions together
 	
@@ -390,8 +391,8 @@ g strat3_exports = 1
 
 sum compexp_2020, d
 replace strat3_exports = 2 if compexp_2020>`r(p75)' & compexp_2020!=.
-replace strat3_exports = 3 if rg_oper_exp==0
-replace strat3_exports = 4 if rg_oper_exp==. | compexp_2020==.
+replace strat3_exports = 3 if export_status==0
+replace strat3_exports = 4 if export_status==. | compexp_2020==.
 
 	* E-commerce adoption
 	
@@ -427,8 +428,8 @@ g strat4_exports = 1
 
 sum compexp_2020, d
 replace strat4_exports = 2 if compexp_2020>`r(p50)' & compexp_2020!=.
-replace strat4_exports = 3 if rg_oper_exp==0
-replace strat4_exports = 4 if rg_oper_exp==. | compexp_2020==.
+replace strat4_exports = 3 if export_status==0
+replace strat4_exports = 4 if export_status==. | compexp_2020==.
 
 	* E-commerce adoption
 	
@@ -523,6 +524,7 @@ replace strat5_exp = 4 if compexp_2020>=e_4 & compexp_2020!=.
 
 	* Mix the two exports into one substratum
 	
+	* Creating 5 groups that mix strat5_exp and strat5_countries
 g strat5_exports = 1 if strat5_exp==1 & strat5_countries==1
 
 replace strat5_exports = 2 if strat5_exp==1 & strat5_countries==2
@@ -545,8 +547,153 @@ replace strat5_exports = 4 if strat5_exp==4 & strat5_countries==3
 replace strat5_exports = 4 if strat5_exp==4 & strat5_countries==4
 
 egen strata5 = group(sub_strata5_ind strat5_exports)
+
 replace strata5 = 21 if strat5_exports==1
 
+
+/* --------------------------------------------------------------------
+	STRATA 6 - only two index strata 
+----------------------------------------------------------------------*/	
+
+	* First create a substratum for e-commerce adoption and knowledge questions together
+	* Do this by creating a hist or kdensity plot of raw_indices and checking for natural breaks
+
+hist raw_indices
+
+g strat6_digitalisation = 1
+replace strat6_digitalisation = 2 if raw_indices>=7.5 & raw_indices<11.5
+replace strat6_digitalisation = 3 if raw_indices>=11.5
+
+	* This breaks down the substratum into three, roughly equal sized groups
+
+	
+	* Now we will create a substratum with six buckets based on export values (countries and revenues)
+	
+	* First, for number of  export countries we create two buckets for low and high numbers
+	* (We do this using tab exp_pays_avg and looking at where distribution breaks)
+	* We keep all missing values of exp_pays_avg in the second category
+	* This is because they all seem to have above average compexp_2020
+	
+scalar c_1 = 0
+scalar c_2 = 3	
+
+	
+gen strat6_countries = 0
+replace strat6_countries = 1 if exp_pays_avg>=c_1 & exp_pays_avg<c_2 & exp_pays_avg!=.
+replace strat6_countries = 2 if exp_pays_avg==.
+replace strat6_countries = 2 if exp_pays_avg>=c_2 & exp_pays_avg!=.
+
+	* We do the same for total exporting revenue, by creating three buckets of roughly equal size
+	* In the case missing values are kept separate as there will be a stratum for them specifically
+
+scalar e_1 = 0
+scalar e_2 = 30000	
+scalar e_3 = 450000
+
+gen strat6_exp = 0
+replace strat6_exp = 1 if compexp_2020>=e_1 & compexp_2020<e_2 & compexp_2020!=.
+replace strat6_exp = 2 if compexp_2020>=e_2 & compexp_2020<e_3 & compexp_2020!=.
+replace strat6_exp = 3 if compexp_2020>=e_3 & compexp_2020!=.
+replace strat6_exp = . if compexp_2020==.
+
+	* Now we mix the two exporting substrata manually into 6 substrata
+
+
+gen strat6_exports = 1
+	* Low number of export countries and revenues
+replace strat6_exports = 2 if strat6_countries==1 & strat6_exp==2
+	* Low number of export countries and medium revenues
+replace strat6_exports = 3 if strat6_countries==1 & strat6_exp==3
+	* Low number of export countries and high revenues
+replace strat6_exports = 4 if strat6_countries==2 & strat6_exp==1
+	* Higher number of export countries and low revenues
+replace strat6_exports = 5 if strat6_countries==2 & strat6_exp==2	
+	* Higher number of export countries and medium revenues
+replace strat6_exports = 6 if strat6_countries==2 & strat6_exp==3
+	* Higher number of export countries and high revenues
+	
+	*** Now we mix and match these export substrata with the knowledge and digitalisation
+	*** indices substrata
+	*** First, use tab strat6_exports to check the sizes of current substrata
+	*** Export substrata == 3 is quite small (this corresponds to small number
+	*** of countries but large export revenues) – this one we'll split only 
+	*** in half based on the digitalisation indices (raw_indices)
+	
+	
+g strata6 = 0
+
+replace strata6 = 1.3 if strat6_exports==1 & strat6_digitalisation==1
+replace strata6 = 1.6 if strat6_exports==1 & strat6_digitalisation==2
+replace strata6 = 1.9 if strat6_exports==1 & strat6_digitalisation==3
+	
+replace strata6 = 2.3 if strat6_exports==2 & strat6_digitalisation==1
+replace strata6 = 2.6 if strat6_exports==2 & strat6_digitalisation==2
+replace strata6 = 2.9 if strat6_exports==2 & strat6_digitalisation==3
+
+replace strata6 = 3.4 if strat6_exports==3 
+bysort strat6_export: egen rawind_strata6 = median(raw_indices)
+replace strata6 = 3.8 if strat6_exports==3 & raw_indices>rawind_strata6
+
+drop rawind_strata6 
+
+sort id_plateforme, stable
+
+replace strata6 = 4.3 if strat6_exports==4 & strat6_digitalisation==1
+replace strata6 = 4.6 if strat6_exports==4 & strat6_digitalisation==2
+replace strata6 = 4.9 if strat6_exports==4 & strat6_digitalisation==3
+
+replace strata6 = 5.3 if strat6_exports==5 & strat6_digitalisation==1
+replace strata6 = 5.6 if strat6_exports==5 & strat6_digitalisation==2
+replace strata6 = 5.9 if strat6_exports==5 & strat6_digitalisation==3
+
+replace strata6 = 6.3 if strat6_exports==6 & strat6_digitalisation==1
+replace strata6 = 6.6 if strat6_exports==6 & strat6_digitalisation==2
+replace strata6 = 6.9 if strat6_exports==6 & strat6_digitalisation==3
+
+	*** Now we pull out a few exceptions to the above
+	
+	* First, firms that didn't export / no export status
+	
+replace strata6 = 7.4 if export_status==0
+bysort export_status: egen rawind_strata6 = median(raw_indices)
+replace strata6 = 7.8 if export_status==0 & raw_indices>rawind_strata6
+
+drop rawind_strata6 
+
+sort id_plateforme, stable
+
+
+	* Second, exporting firms with missing values for exports
+	* This can also be split into below/above median for digitalisation indices
+
+replace strata6 = 8.4 if compex==. & export_status==1
+bysort export_status: egen rawind_strata6 = median(raw_indices)
+replace strata6 = 8.8 if compex==. & export_status==1 & raw_indices>rawind_strata6
+
+drop rawind_strata6 
+
+sort id_plateforme, stable
+
+
+	* Finally, exporting firms with low export revenues but high overall revenues
+	* To find the thresholds, look at the top 90 percentile of total revenues
+	* Then check how many firms there are that have a low percentage of export
+	* revenues in total revenues (while still being exporting and non missing)
+
+	
+replace strata6 = 9 if exp_per<0.01 & export_status==1 & comp_ca2020>1400000 & compexp_2020!=.
+
+	*** Now check that the resulting strata are no smaller than 7-8: 
+	
+tab strata6
+
+	* Make manual adjustments as needed: 
+	* 4.3 and 4.6 are too small, I merge them: 
+	
+replace strata6 = 4.4 if strata6==4.3
+replace strata6 = 4.4 if strata6==4.6
+
+	* Et voilà! 
 
 ***********************************************************************
 * 	PART 3: Calculate variance by stratification approach
@@ -554,7 +701,6 @@ replace strata5 = 21 if strat5_exports==1
 
 putdocx paragraph
 putdocx text ("Changes in variance with stratification"), bold
-
 
 
 	* First, calculate SD for three main outcomes zscores overall: 
@@ -604,7 +750,7 @@ display "For firms in our sample, the export revenues has a standard deviation o
 local rawexports_sd_base: display %-25.2fc `r(sd)'
 putdocx paragraph
 putdocx text ("Export revenues"), linebreak bold
-putdocx text ("For firms in our sample, the export revenues has a standard deviation of `: display %9.2fc `r(sd)''."), linebreak	
+putdocx text ("For firms in our sample, the export revenues has a standard deviation of `: display %-25.2fc `r(sd)''."), linebreak	
 
 *** EXPORT DESTINATIONS
 	
@@ -631,7 +777,7 @@ putdocx text ("This approach creates strata for exports (above/below p75, no exp
 	
 bysort strata1: egen ksd_strata1 = sd(knowledge)
 sum ksd_strata1, d
-local s1_know : display %9.2fc  `r(sd)'
+local s1_know : display %9.2fc  `r(mean)'
 display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `knowledge_sd_base' originally).")
@@ -639,7 +785,7 @@ putdocx text ("With these strata, the knowledge index by stratum has an average 
 	*** E-commerce adoption
 bysort strata1: egen dsd_strata1 = sd(digtalvars)
 sum dsd_strata1, d
-local s1_ecomm : display %9.2fc  `r(sd)'
+local s1_ecomm : display %9.2fc  `r(mean)'
 display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `digital_sd_base' originally).")
@@ -647,7 +793,7 @@ putdocx text ("With these strata, the e-commerce adoption index by stratum has a
 	*** Export outcomes
 bysort strata1: egen esd_strata1 = sd(expoutcomes)
 sum esd_strata1, d
-local s1_exp : display %9.2fc  `r(sd)'
+local s1_exp : display %9.2fc  `r(mean)'
 display "With these strata, the export outcomes index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
@@ -656,7 +802,7 @@ putdocx text ("With these strata, the export outcomes index by stratum has an av
 	
 bysort strata1: egen ihsesd_strata1 = sd(ihs_exports)
 sum ihsesd_strata1, d
-local s1_ihse : display %9.2fc  `r(sd)'
+local s1_ihse : display %9.2fc  `r(mean)'
 display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
@@ -666,7 +812,7 @@ putdocx pagebreak
 	
 bysort strata1: egen exp_strata1 = sd(compexp_2020)
 sum exp_strata1, d
-local s1_erev : display %-25.2fc  `r(sd)'
+local s1_erev : display %-25.2fc  `r(mean)'
 display "With these strata, the export revenues by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export revenues by stratum has an average standard deviation of `: display %-25.2fc `r(mean)'' (compared to `rawexports_sd_base' originally)."), linebreak
@@ -675,7 +821,7 @@ putdocx text ("With these strata, the export revenues by stratum has an average 
 	
 bysort strata1: egen countries_strata1 = sd(exp_pays_avg)
 sum countries_strata1, d
-local s1_countries : display %9.2fc  `r(sd)'
+local s1_countries : display %9.2fc  `r(mean)'
 display "With these strata, the export destinations by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
@@ -699,7 +845,7 @@ putdocx text ("This approach creates strata is the same as the first, but missin
 	
 bysort strata2: egen ksd_strata2 = sd(knowledge)
 sum ksd_strata2, d
-local s2_know : display %9.2fc  `r(sd)'
+local s2_know : display %9.2fc  `r(mean)'
 display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `knowledge_sd_base' originally).")
@@ -707,7 +853,7 @@ putdocx text ("With these strata, the knowledge index by stratum has an average 
 	*** E-commerce adoption
 bysort strata2: egen dsd_strata2 = sd(digtalvars)
 sum dsd_strata2, d
-local s2_ecomm : display %9.2fc  `r(sd)'
+local s2_ecomm : display %9.2fc  `r(mean)'
 display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `digital_sd_base' originally).")
@@ -715,7 +861,7 @@ putdocx text ("With these strata, the e-commerce adoption index by stratum has a
 	*** Export outcomes
 bysort strata2: egen esd_strata2 = sd(expoutcomes)
 sum esd_strata2, d
-local s2_exp : display %9.2fc  `r(sd)'
+local s2_exp : display %9.2fc  `r(mean)'
 display "With these strata, the export outcomes index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
@@ -724,7 +870,7 @@ putdocx text ("With these strata, the export outcomes index by stratum has an av
 	
 bysort strata2: egen ihsesd_strata2 = sd(ihs_exports)
 sum ihsesd_strata2, d
-local s2_ihse : display %9.2fc  `r(sd)'
+local s2_ihse : display %9.2fc  `r(mean)'
 display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
@@ -737,7 +883,7 @@ tab2docx strata2
 	
 bysort strata2: egen exp_strata2 = sd(compexp_2020)
 sum exp_strata2, d
-local s2_erev : display %-25.2fc  `r(sd)'
+local s2_erev : display %-25.2fc  `r(mean)'
 display "With these strata, the export revenues by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export revenues by stratum has an average standard deviation of `: display %-25.2fc `r(mean)'' (compared to `rawexports_sd_base' originally)."), linebreak
@@ -746,7 +892,7 @@ putdocx text ("With these strata, the export revenues by stratum has an average 
 	
 bysort strata2: egen countries_strata2 = sd(exp_pays_avg)
 sum countries_strata2, d
-local s2_countries : display %9.2fc  `r(sd)'
+local s2_countries : display %9.2fc  `r(mean)'
 display "With these strata, the export destinations by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
@@ -765,7 +911,7 @@ putdocx text ("This approach creates separate (above/below median) strata for bo
 	
 bysort strata3: egen ksd_strata3 = sd(knowledge)
 sum ksd_strata3, d
-local s3_know : display %9.2fc  `r(sd)'
+local s3_know : display %9.2fc  `r(mean)'
 display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `knowledge_sd_base' originally).")
@@ -773,7 +919,7 @@ putdocx text ("With these strata, the knowledge index by stratum has an average 
 	*** E-commerce adoption
 bysort strata3: egen dsd_strata3 = sd(digtalvars)
 sum dsd_strata3, d
-local s3_ecomm : display %9.2fc  `r(sd)'
+local s3_ecomm : display %9.2fc  `r(mean)'
 display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `digital_sd_base' originally).")
@@ -781,7 +927,7 @@ putdocx text ("With these strata, the e-commerce adoption index by stratum has a
 	*** Export outcomes
 bysort strata3: egen esd_strata3 = sd(expoutcomes)
 sum esd_strata3, d
-local s3_exp : display %9.2fc  `r(sd)'
+local s3_exp : display %9.2fc  `r(mean)'
 display "With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''."
 putdocx paragraph
 putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
@@ -790,7 +936,7 @@ putdocx text ("With these strata, the export outcomes index by stratum has an av
 	
 bysort strata3: egen ihsesd_strata3 = sd(ihs_exports)
 sum ihsesd_strata3, d
-local s3_ihse : display %9.2fc  `r(sd)'
+local s3_ihse : display %9.2fc  `r(mean)'
 display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
@@ -803,7 +949,7 @@ tab2docx strata3
 	
 bysort strata3: egen exp_strata3 = sd(compexp_2020)
 sum exp_strata3, d
-local s3_erev : display %-25.2fc  `r(sd)'
+local s3_erev : display %-25.2fc  `r(mean)'
 display "With these strata, the export revenues by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export revenues by stratum has an average standard deviation of `: display %-25.2fc `r(mean)'' (compared to `rawexports_sd_base' originally)."), linebreak
@@ -812,7 +958,7 @@ putdocx text ("With these strata, the export revenues by stratum has an average 
 	
 bysort strata3: egen countries_strata3 = sd(exp_pays_avg)
 sum countries_strata3, d
-local s3_countries : display %9.2fc  `r(sd)'
+local s3_countries : display %9.2fc  `r(mean)'
 display "With these strata, the export destinations by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
@@ -832,7 +978,7 @@ putdocx text ("This approach is similar to the above, but creates export strata 
 	
 bysort strata4: egen ksd_strata4 = sd(knowledge)
 sum ksd_strata4, d
-local s4_know : display %9.2fc  `r(sd)'
+local s4_know : display %9.2fc  `r(mean)'
 display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `knowledge_sd_base' originally).")
@@ -840,7 +986,7 @@ putdocx text ("With these strata, the knowledge index by stratum has an average 
 	*** E-commerce adoption
 bysort strata4: egen dsd_strata4 = sd(digtalvars)
 sum dsd_strata4, d
-local s4_ecomm : display %9.2fc  `r(sd)'
+local s4_ecomm : display %9.2fc  `r(mean)'
 display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `digital_sd_base' originally).")
@@ -848,7 +994,7 @@ putdocx text ("With these strata, the e-commerce adoption index by stratum has a
 	*** Export outcomes
 bysort strata4: egen esd_strata4 = sd(expoutcomes)
 sum esd_strata4, d
-local s4_exp : display %9.2fc  `r(sd)'
+local s4_exp : display %9.2fc  `r(mean)'
 display "With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''."
 putdocx paragraph
 putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
@@ -857,7 +1003,7 @@ putdocx text ("With these strata, the export outcomes index by stratum has an av
 	
 bysort strata4: egen ihsesd_strata4 = sd(ihs_exports)
 sum ihsesd_strata4, d
-local s4_ihse : display %9.2fc  `r(sd)'
+local s4_ihse : display %9.2fc  `r(mean)'
 display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
@@ -866,7 +1012,7 @@ putdocx text ("With these strata, the IHS of export by stratum has an average st
 	
 bysort strata4: egen exp_strata4 = sd(compexp_2020)
 sum exp_strata4, d
-local s4_erev : display %-25.2fc  `r(sd)'
+local s4_erev : display %-25.2fc  `r(mean)'
 display "With these strata, the export revenues by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export revenues by stratum has an average standard deviation of `: display %-25.2fc `r(mean)'' (compared to `rawexports_sd_base' originally)."), linebreak
@@ -875,7 +1021,7 @@ putdocx text ("With these strata, the export revenues by stratum has an average 
 	
 bysort strata4: egen countries_strata4 = sd(exp_pays_avg)
 sum countries_strata4, d
-local s4_countries : display %9.2fc  `r(sd)'
+local s4_countries : display %9.2fc  `r(mean)'
 display "With these strata, the export destinations by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
@@ -898,7 +1044,7 @@ putdocx text ("This approach is manual: first four substrata for the knowledge a
 	
 bysort strata5: egen ksd_strata5 = sd(knowledge)
 sum ksd_strata5, d
-local s5_know : display %9.2fc  `r(sd)'
+local s5_know : display %9.2fc  `r(mean)'
 display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `knowledge_sd_base' originally).")
@@ -906,7 +1052,7 @@ putdocx text ("With these strata, the knowledge index by stratum has an average 
 	*** E-commerce adoption
 bysort strata5: egen dsd_strata5 = sd(digtalvars)
 sum dsd_strata5, d
-local s5_ecomm : display %9.2fc  `r(sd)'
+local s5_ecomm : display %9.2fc  `r(mean)'
 display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
 putdocx paragraph
 putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `digital_sd_base' originally).")
@@ -914,7 +1060,7 @@ putdocx text ("With these strata, the e-commerce adoption index by stratum has a
 	*** Export outcomes
 bysort strata5: egen esd_strata5 = sd(expoutcomes)
 sum esd_strata5, d
-local s5_exp : display %9.2fc  `r(sd)'
+local s5_exp : display %9.2fc  `r(mean)'
 display "With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''."
 putdocx paragraph
 putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
@@ -923,7 +1069,7 @@ putdocx text ("With these strata, the export outcomes index by stratum has an av
 	
 bysort strata5: egen ihsesd_strata5 = sd(ihs_exports)
 sum ihsesd_strata5, d
-local s5_ihse : display %9.2fc  `r(sd)'
+local s5_ihse : display %9.2fc  `r(mean)'
 display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
@@ -932,7 +1078,7 @@ putdocx text ("With these strata, the IHS of export by stratum has an average st
 	
 bysort strata5: egen exp_strata5 = sd(compexp_2020)
 sum exp_strata5, d
-local s5_erev : display %-25.2fc  `r(sd)'
+local s5_erev : display %-25.2fc  `r(mean)'
 display "With these strata, the export revenues by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export revenues by stratum has an average standard deviation of `: display %-25.2fc `r(mean)'' (compared to `rawexports_sd_base' originally)."), linebreak
@@ -941,7 +1087,7 @@ putdocx text ("With these strata, the export revenues by stratum has an average 
 	
 bysort strata5: egen countries_strata5 = sd(exp_pays_avg)
 sum countries_strata5, d
-local s5_countries : display %9.2fc  `r(sd)'
+local s5_countries : display %9.2fc  `r(mean)'
 display "With these strata, the export destinations by stratum has an average standard deviation of `r(mean)' ."
 putdocx paragraph
 putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
@@ -950,6 +1096,74 @@ putdocx paragraph
 putdocx text ("Size of strata for strata5"), linebreak bold
 tab2docx strata5
 putdocx pagebreak
+
+
+
+/* --------------------------------------------------------------------
+	STRATA 6
+----------------------------------------------------------------------*/	
+	
+putdocx paragraph
+putdocx text ("Strata6: average SDs"), linebreak bold
+putdocx text ("This approach is completely manual. First we create a substratum for the ecommerce and "), linebreak
+
+	*** Knowledge 
+	
+bysort strata6: egen ksd_strata6 = sd(knowledge)
+sum ksd_strata6, d
+local s6_know : display %9.2fc  `r(mean)'
+display "With these strata, the knowledge index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the knowledge index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `knowledge_sd_base' originally).")
+
+	*** E-commerce adoption
+bysort strata6: egen dsd_strata6 = sd(digtalvars)
+sum dsd_strata6, d
+local s6_ecomm : display %9.2fc  `r(mean)'
+display "With these strata, the e-commerce adoption index by stratum has an average standard deviation of `r(mean)'."
+putdocx paragraph
+putdocx text ("With these strata, the e-commerce adoption index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''' (compared to `digital_sd_base' originally).")
+
+	*** Export outcomes
+bysort strata6: egen esd_strata6 = sd(expoutcomes)
+sum esd_strata6, d
+local s6_exp : display %9.2fc  `r(mean)'
+display "With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)''."
+putdocx paragraph
+putdocx text ("With these strata, the export outcomes index by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `export_sd_base' originally).")
+
+	*** IHS EXPORTS
+	
+bysort strata6: egen ihsesd_strata6 = sd(ihs_exports)
+sum ihsesd_strata6, d
+local s6_ihse : display %9.2fc  `r(mean)'
+display "With these strata, the IHS of export by stratum has an average standard deviation of `r(mean)' ."
+putdocx paragraph
+putdocx text ("With these strata, the IHS of export by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `ihsexports_sd_base' originally)."), linebreak
+
+	*** EXPORT REVENUES
+	
+bysort strata6: egen exp_strata6 = sd(compexp_2020)
+sum exp_strata6, d
+local s6_erev : display %-25.2fc  `r(mean)'
+display "With these strata, the export revenues by stratum has an average standard deviation of `r(mean)' ."
+putdocx paragraph
+putdocx text ("With these strata, the export revenues by stratum has an average standard deviation of `: display %-25.2fc `r(mean)'' (compared to `rawexports_sd_base' originally)."), linebreak
+
+	*** EXPORT DESINATIONS
+	
+bysort strata6: egen countries_strata6 = sd(exp_pays_avg)
+sum countries_strata6, d
+local s6_countries : display %9.2fc  `r(mean)'
+display "With these strata, the export destinations by stratum has an average standard deviation of `r(mean)' ."
+putdocx paragraph
+putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
+
+putdocx paragraph
+putdocx text ("Size of strata for strata5"), linebreak bold
+tab2docx strata6
+putdocx pagebreak
+
 
 
 
@@ -962,29 +1176,43 @@ putdocx paragraph
 putdocx text ("To recap by outcome:"), linebreak 
 
 putdocx paragraph
-putdocx text ("For the knowledge index the original SD was `knowledge_sd_base'. With stratification it is `s1_know' for approach 1; `s2_know' for approach 2; `s3_know' for approach 3; `s4_know' for approach 4;  and `s5_know' for approach 5."), linebreak 
+putdocx text ("For the knowledge index the original SD was `knowledge_sd_base'. With stratification it is `s1_know' for approach 1; `s2_know' for approach 2; `s3_know' for approach 3; `s4_know' for approach 4;  `s5_know' for approach 5; and `s6_know' for approach 6."), linebreak 
 putdocx paragraph
 
-putdocx text ("For the ecommerce adoption index  the original SD was `digital_sd_base'. With stratification it is`s1_ecomm' for approach 1; `s2_ecomm' for approach 2; `s3_ecomm' for approach 3; `s4_ecomm' for approach 4;  and `s5_ecomm' for approach 5."), linebreak 
+putdocx text ("For the ecommerce adoption index  the original SD was `digital_sd_base'. With stratification it is`s1_ecomm' for approach 1; `s2_ecomm' for approach 2; `s3_ecomm' for approach 3; `s4_ecomm' for approach 4;  `s5_ecomm' for approach 5; and `s6_ecomm' for approach 6."), linebreak 
 
 putdocx paragraph
-putdocx text ("For the exporting index  the original SD was `export_sd_base'. With stratification it is `s1_exp' for approach 1; `s2_exp' for approach 2; `s3_exp' for approach 3; `s4_exp' for approach 4;  and `s5_exp' for approach 5."), linebreak 
+putdocx text ("For the exporting index  the original SD was `export_sd_base'. With stratification it is `s1_exp' for approach 1; `s2_exp' for approach 2; `s3_exp' for approach 3; `s4_exp' for approach 4;  `s5_exp' for approach 5'; and `s6_exp' for approach 6."), linebreak 
 
 putdocx paragraph
-putdocx text ("For the IHS of exports the original SD was `ihsexports_sd_base' : . With stratification it is `s1_ihse' for approach 1; `s2_ihse' for approach 2; `s3_ihse' for approach 3; `s4_ihse' for approach 4;  and `s5_ihse' for approach 5."), linebreak 
+putdocx text ("For the IHS of exports the original SD was `ihsexports_sd_base' : . With stratification it is `s1_ihse' for approach 1; `s2_ihse' for approach 2; `s3_ihse' for approach 3; `s4_ihse' for approach 4;  `s5_ihse' for approach 5; and `s6_ihse' for approach 6."), linebreak 
 
 putdocx paragraph
-putdocx text ("For the absolute export revenus the original SD was `rawexports_sd_base'. With stratification it is `s1_erev' for approach 1; `s2_erev' for approach 2; `s3_erev' for approach 3; `s4_erev' for approach 4;  and `s5_erev' for approach 5."), linebreak 
+putdocx text ("For the absolute export revenus the original SD was `rawexports_sd_base'. With stratification it is `s1_erev' for approach 1; `s2_erev' for approach 2; `s3_erev' for approach 3; `s4_erev' for approach 4;  `s5_erev' for approach 5; and `s6_erev' for approach 6."), linebreak 
 
 putdocx paragraph
-putdocx text ("For the number of destination countries the original SD was `exportcountries_sd_base'. With stratification it is `s1_countries' for approach 1; `s2_countries' for approach 2; `s3_countries' for approach 3; `s4_countries' for approach 4;  and `s5_countries' for approach 5."), linebreak 
+putdocx text ("For the number of destination countries the original SD was `exportcountries_sd_base'. With stratification it is `s1_countries' for approach 1; `s2_countries' for approach 2; `s3_countries' for approach 3; `s4_countries' for approach 4;  `s5_countries' for approach 5; and `s6_countries' for approach 6."), linebreak 
 
 
 
 
+***********************************************************************
+* 	PART 4: Save
+***********************************************************************
 
-
+	* Save doc
+	
 putdocx save stratification.docx, replace
+
+	* Pick one strata approach, delete others
+
+g strata = strata6
+
+drop strata1-strata6
+	
+cd "$bl_final"
+
+save "bl_final", replace
 
 
 

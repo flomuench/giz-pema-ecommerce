@@ -127,36 +127,24 @@ if (1) do "${bl_github}/bl_generate.do"
 /* --------------------------------------------------------------------
 	PART 3.6: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_open_question_checks.do"
- e/* --------------------------------------------------------------------
+if (0) do "${bl_github}/bl_open_question_checks.do"
+ /* --------------------------------------------------------------------
 	PART 3.7: Perform logical checks (and SAVE bl_final.dta)
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_test.do"
 /* --------------------------------------------------------------------
 	PART 3.8: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_statistics.do"
+if (0) do "${bl_github}/bl_statistics.do"
 /* --------------------------------------------------------------------
 	PART 3.9: Generate stratifiers
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_stratification.do"
+/* --------------------------------------------------------------------
+	PART 3.10: Randomise
+----------------------------------------------------------------------*/	
+if (1) do "${bl_github}/bl_randomisation.do"
 
-
-
-/* 
-
-
-new do file 3:
-- stratification
-
-new do file 4:
-- randomisation + balance check
-
-new do file 5: 
-- allocation of treated firms to treatment groups
-
-
- */
 
 
 
