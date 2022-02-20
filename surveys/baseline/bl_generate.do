@@ -47,7 +47,7 @@ replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_e
 replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex6 == 1
 replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex7 == 1
 replace dig_presence3_exscore = dig_presence3_exscore + 0.125 if dig_presence3_ex8 == 1
-lab var dig_presence3_exscore "Score on examples of digital channels used"
+lab var dig_presence3_exscore "Score on examples of digital marketplaces used"
 
 g digmark1 = 0.2 if dig_marketing_num19_sea == 1 | dig_marketing_num19_seo == 1
 
@@ -80,7 +80,8 @@ gen export_status = 0
 replace export_status = 1 if rg_oper_exp==1
 replace export_status = 1 if exp_avant21==1
 
-	*** Winsorise main accounting variables
+	*** Winsorise main accounting variables (FABIAN: Should you not transform the I dont knows (-999) into 0 before winsorizing?
+	*or is -999 outside the 99 percentile on negative profits?)
 	
 	* Total revenues is winsorised at 99percentile (only top)
 	
@@ -224,6 +225,7 @@ program define zscore /* opens a program called zscore */
 end
 
 	* calculate z score for all variables that are part of the index
+	*QUESTION FABIAN: Can we not include a dummy of whether the firm has a dig_marketIng_response and dig_service_respo? might be better than the share no? share is discrimating large firms*
 
 local knowledge temp_dig_con1 temp_dig_con2 temp_dig_con3 temp_dig_con4 temp_dig_con5 temp_dig_con6_score
 local digtalvars temp_dig_presence_score temp_dig_presence3_exscore temp_dig_miseajour1 temp_dig_miseajour2 temp_dig_miseajour3 temp_dig_payment1 temp_dig_payment2 temp_dig_payment3 temp_dig_vente temp_dig_marketing_lien temp_dig_marketing_ind1 temp_dig_marketing_ind2 temp_dig_marketing_score temp_dig_logistique_entrepot t_dig_logistique_retour_score temp_dig_service_satisfaction temp_dig_description1 temp_dig_description2 temp_dig_description3 temp_dig_mar_res_per temp_dig_ser_res_per 
