@@ -105,12 +105,17 @@ replace comp_benefice2020 = "421336" if id_plateforme == 261
 
 replace comp_benefice2020 = "1200000" if id_plateforme == 405
 
+replace compexp_2020 = "1084240" if id_plateforme == 466
+replace comp_ca2020 = "1753142" if id_plateforme == 466
+replace dig_revenues_ecom = "0" if id_plateforme == 466
+replace comp_benefice2020 = "148387" if id_plateforme == 466
+
 replace compexp_2020 = "0" if id_plateforme == 493
 
-replace compexp_2020 = "800000" if id_plateforme == 542
-replace comp_ca2020 = "10000000" if id_plateforme == 542
-replace dig_revenues_ecom = "20000" if id_plateforme == 542
-replace comp_benefice2020 = "500000" if id_plateforme == 542
+replace compexp_2020 = "2000000" if id_plateforme == 542
+replace comp_ca2020 = "16000000" if id_plateforme == 542
+replace dig_revenues_ecom = "0" if id_plateforme == 542
+replace comp_benefice2020 = "-999" if id_plateforme == 542
 
 replace exp_afrique_principal = "Cameroun" if id_plateforme == 592
 
@@ -120,11 +125,24 @@ replace compexp_2020 = "0" if id_plateforme == 632
 replace comp_ca2020 = "120000" if id_plateforme == 632
 replace comp_benefice2020 = "600" if id_plateforme == 632
 
+replace compexp_2020 = "1084240" if id_plateforme == 642
+replace comp_ca2020 = "1753142" if id_plateforme == 642
+replace dig_revenues_ecom = "0" if id_plateforme == 642
+replace comp_benefice2020 = "148387" if id_plateforme == 642
+
 replace investcom_2021 = "1000" if id_plateforme == 800
 
 replace comp_benefice2020= "45000" if id_plateforme == 841
+replace exp_pays_principal_avant21= "Maroc" if id_plateforme == 841
 
 replace comp_benefice2020= "3000" if id_plateforme == 931
+
+replace compexp_2020 = "2000000" if id_plateforme == 941
+replace comp_ca2020 = "4000000" if id_plateforme == 941
+replace dig_revenues_ecom = "0" if id_plateforme == 941
+replace comp_benefice2020 = "0" if id_plateforme == 941
+
+
 
 /*
 replace questions_needing_check = "expprep_norme2/exp_afrique_principal" if id_plateforme == 108
