@@ -61,12 +61,12 @@ decode sector, gen(Sector)
 * 	PART 2: control whether gender correctly assigned to company
 ***********************************************************************
 	* we can only compare initial gender/name with sample gender/name of firm rep (and CEO if provided)
-format rg_position_rep %-20s
-browse gender rg_gender_rep rg_gender_pdg name rg_nom_rep rg_position_rep if registered == 1
+*format rg_position_rep %-20s /* excluded in de-identified data */
+browse gender rg_gender_rep rg_gender_pdg name if registered == 1 /* final is de-identified, hence following variables not included: rg_nom_rep rg_position_rep */
 
 	* restrict browse only to firms where we observe mismatch in gender
-browse gender rg_gender_rep rg_gender_pdg name rg_nom_rep rg_position_rep if registered == 1 & rg_gender_pdg != gender
-
+browse gender rg_gender_rep rg_gender_pdg name if registered == 1 & rg_gender_pdg != gender
+/* final is de-identified, hence following variables not included: rg_nom_rep rg_position_rep */
 	
 	* generate a new (corrected) gender
 gen gender_rep = .
@@ -74,7 +74,8 @@ replace gender_rep = gender if rg_gender_rep == .
 replace gender_rep = rg_gender_rep if rg_gender_rep != .
 lab val gender_rep sex
 
-browse gender rg_gender_rep rg_gender_pdg name rg_nom_rep rg_position_rep if registered == 1 & rg_gender_pdg != gender
+browse gender rg_gender_rep rg_gender_pdg name if registered == 1 & rg_gender_pdg != gender
+/* final is de-identified, hence following variables not included: rg_nom_rep rg_position_rep */
 gen difgen1 = (gender != rg_gender_rep)
 tab difgen if registered == 1
 	* suggests 44 companies would have a change in gender of ceo would we take rep instead of ceo
