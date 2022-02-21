@@ -142,6 +142,8 @@ replace comp_ca2020 = "4000000" if id_plateforme == 941
 replace dig_revenues_ecom = "0" if id_plateforme == 941
 replace comp_benefice2020 = "0" if id_plateforme == 941
 
+replace comp_ca2020 = "143716171" if comp_ca2020=="14 371 6171"
+
 
 
 /*
@@ -1437,6 +1439,23 @@ drop if id_plateforme == 800 & heure == "15h38`00``"
 drop if id_plateforme == 803 & heure == "08h32`50``"
 drop if id_plateforme == 831 & heure == "15h45`46``"
 drop if id_plateforme == 859 & heure == "11h17`13``"
+
+	** Duplicates from 21.02.2022
+
+drop if id_plateforme == 98 & heure == "10h23`17``"
+	* This obs has more precise compexp_2020 and comp_ca2020 in the earlier versions: 
+replace compexp_2020 = 201801 if id_plateforme == 478
+replace comp_ca2020 = 2343425 if id_plateforme == 478
+replace car_pdg_educ = 5 if id_plateforme == 478
+drop if id_plateforme == 478 & heure == "22h05`58``"
+drop if id_plateforme == 599 & heure == "13h54`21``"
+drop if id_plateforme == 635 & heure == "12h04`06``"
+drop if id_plateforme == 688 & heure == "10h29`16``"
+drop if id_plateforme == 890 & heure == "16h08`19``"
+drop if id_plateforme == 928 & heure == "15h46`59``"
+
+
+
 
 replace dig_service_responsable= 2 if id_plateforme == 800
 replace investcom_2021= -999 if id_plateforme == 800
