@@ -30,10 +30,10 @@ cd "$bl_output/stratification"
 	* begin word file to export strata visualisations
 	
 putdocx clear	
-putdocx begin, pagenum(upper_roman) footer(footer1)
+putdocx begin
 putdocx paragraph, halign(center) 
 putdocx text ("Stratification options"), bold
-putdocx pagenumber
+
 
 
 ***********************************************************************

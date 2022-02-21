@@ -89,7 +89,7 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(sector, lab(labs(vsmal
 * 	PART 4: Export excel spreadsheet
 ***********************************************************************			 		
 
-local ecommercelist treatment id_plateforme sector
+local ecommercelist treatment id_plateforme sector subsector fte entr_bien_service entr_produit1 entr_produit2 entr_produit3 car_attend1 car_attend2 car_attend3 investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3
 
 export excel `ecommercelist' using "ecommerce_listfinale" if treatment==1, sheet("Groupe participants") sheetreplace firstrow(var) 
 export excel `ecommercelist' using "ecommerce_listfinale" if treatment==0, sheet("Groupe control") sheetreplace firstrow(var) 
