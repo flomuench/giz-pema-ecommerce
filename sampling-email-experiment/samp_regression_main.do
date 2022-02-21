@@ -27,26 +27,50 @@ cd "$samp_regressions"
 ***********************************************************************
 * 	PART 1: main effect
 ***********************************************************************
-logit registered i.treatment , vce(robust)
-outreg2 using main_effect, excel replace ctitle(logit)
+	* assignment based on baseline or registration data and if not available API data
+logit registered i.treatment, vce(robust)
+outreg2 using robust_gender_ceo, excel replace ctitle(logit)
 margins i.treatment, post
-outreg2 using main_effect, excel append ctitle(predicted probability)
-logit registered i.treatment##i.gender , vce(robust)
-outreg2 using main_effect, excel append ctitle(logit)
-margins i.treatment##i.gender, post
-outreg2 using main_effect, excel append ctitle(predicted probability)
-estimates store main_effect, title("Main effect")
-coefplot main_effect, drop(_cons) ///
-	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.1) ///
+outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
+logit registered i.treatment##i.gender_rep2, vce(robust)
+outreg2 using robust_gender_ceo, excel append ctitle(logit)
+margins i.treatment##i.gender_rep2, post
+outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
+estimates store robust_gender_ceo, title("Main effect")
+coefplot robust_gender_ceo, drop(_cons) ///
+	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.20) ///
 	graphr(color(white)) bgcol(white) plotr(color(white)) ///
 	title("{bf:How to attract (female) firms to an export support program?}") ///
-	subtitle("Full sample", size(small)) ///
-	note("Sample size = 4403 SMEs out of which 177 registered.", size(vsmall))
-gr export main_effect.png, replace
-logit registered i.treatment##i.gender i.strata2 , vce(robust)
-outreg2 using main_effect, excel append ctitle(logit)
-margins i.treatment##i.gender, post
-outreg2 using main_effect, excel append ctitle(predicted probability)
+	subtitle("Full sample (gender of firm CEO)", size(small)) ///
+	note("Initial gender replaced with firm CEO's gender. Sample size = 4848 SMEs out of which 177 registered.", size(vsmall))
+gr export robust_gender_ceo.png, replace
+logit registered i.treatment##i.gender_rep2 i.strata2 , vce(robust)
+outreg2 using robust_gender_ceo, excel append ctitle(logit)
+margins i.treatment##i.gender_rep2, post
+outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
+
+
+***********************************************************************
+* 	PART 1: bundled treatment vs. control
+***********************************************************************
+gen treated = .
+replace treated = 1 if treatment == 1 | treatment == 2
+replace treated = 0 if treatment == 0
+lab def treat2 1 "treated" 0 "control"
+lab var treated treat2
+
+logit registered i.treated, vce(robust)
+outreg2 using bundled, excel replace ctitle(logit)
+margins i.treated, post
+outreg2 using bundled, excel append ctitle(predicted probability)
+logit registered i.treated##i.gender_rep2, vce(robust)
+outreg2 using bundled, excel append ctitle(logit)
+margins i.treated##i.gender_rep2, post
+outreg2 using bundled, excel append ctitle(predicted probability)
+logit registered i.treated##i.gender_rep2 i.strata2 , vce(robust)
+outreg2 using bundled, excel append ctitle(logit)
+margins i.treated##i.gender_rep2, post
+outreg2 using bundled, excel append ctitle(predicted probability)
 
 ***********************************************************************
 * 	PART : test whether effect differs between female and male firms
@@ -98,28 +122,27 @@ outreg2 using robust_undelivered, excel append ctitle(predicted probability)
 ***********************************************************************
 * 	PART : robustness check: control whether different assignment of gender changes results
 ***********************************************************************
-	* assignment based on baseline or registration data and if not available API data
-logit registered i.treatment, vce(robust)
-outreg2 using robust_gender_ceo, excel replace ctitle(logit)
+	* gender assignment based on initial API assignment
+logit registered i.treatment , vce(robust)
+outreg2 using main_effect, excel replace ctitle(logit)
 margins i.treatment, post
-outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
-logit registered i.treatment##i.gender_rep2, vce(robust)
-outreg2 using robust_gender_ceo, excel append ctitle(logit)
-margins i.treatment##i.gender_rep2, post
-outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
-estimates store robust_gender_ceo, title("Main effect")
-coefplot robust_gender_ceo, drop(_cons) ///
-	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.20) ///
+outreg2 using main_effect, excel append ctitle(predicted probability)
+logit registered i.treatment##i.gender , vce(robust)
+outreg2 using main_effect, excel append ctitle(logit)
+margins i.treatment##i.gender, post
+outreg2 using main_effect, excel append ctitle(predicted probability)
+estimates store main_effect, title("Main effect")
+coefplot main_effect, drop(_cons) ///
+	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.1) ///
 	graphr(color(white)) bgcol(white) plotr(color(white)) ///
 	title("{bf:How to attract (female) firms to an export support program?}") ///
-	subtitle("Full sample (gender of firm CEO)", size(small)) ///
-	note("Initial gender replaced with firm CEO's gender. Sample size = 4848 SMEs out of which 177 registered.", size(vsmall))
-gr export robust_gender_ceo.png, replace
-logit registered i.treatment##i.gender_rep2 i.strata2 , vce(robust)
-outreg2 using robust_gender_ceo, excel append ctitle(logit)
-margins i.treatment##i.gender_rep2, post
-outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
-
+	subtitle("Full sample", size(small)) ///
+	note("Sample size = 4403 SMEs out of which 177 registered.", size(vsmall))
+gr export main_effect.png, replace
+logit registered i.treatment##i.gender i.strata2 , vce(robust)
+outreg2 using main_effect, excel append ctitle(logit)
+margins i.treatment##i.gender, post
+outreg2 using main_effect, excel append ctitle(predicted probability)
 
 	* assignment based on firm representative gender as provided at registration, API data otherwise
 logit registered i.treatment, vce(robust)
