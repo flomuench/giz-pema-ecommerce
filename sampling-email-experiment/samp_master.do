@@ -179,7 +179,7 @@ if (0) do "${samp_github}/samp_descriptive_statistics.do"
 /* --------------------------------------------------------------------
 	PART 5.2: regression analysis - main effect
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/samp_regression_main.do"
+if (1) do "${samp_github}/samp_regression_main.do"
 /* --------------------------------------------------------------------
 	PART 5.3: regression analysis - subgroup analysis
 ----------------------------------------------------------------------*/

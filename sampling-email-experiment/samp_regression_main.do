@@ -98,6 +98,29 @@ outreg2 using robust_undelivered, excel append ctitle(predicted probability)
 ***********************************************************************
 * 	PART : robustness check: control whether different assignment of gender changes results
 ***********************************************************************
+	* assignment based on baseline or registration data and if not available API data
+logit registered i.treatment, vce(robust)
+outreg2 using robust_gender_ceo, excel replace ctitle(logit)
+margins i.treatment, post
+outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
+logit registered i.treatment##i.gender_rep2, vce(robust)
+outreg2 using robust_gender_ceo, excel append ctitle(logit)
+margins i.treatment##i.gender_rep2, post
+outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
+estimates store robust_gender_ceo, title("Main effect")
+coefplot robust_gender_ceo, drop(_cons) ///
+	xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.20) ///
+	graphr(color(white)) bgcol(white) plotr(color(white)) ///
+	title("{bf:How to attract (female) firms to an export support program?}") ///
+	subtitle("Full sample (gender of firm CEO)", size(small)) ///
+	note("Initial gender replaced with firm CEO's gender. Sample size = 4848 SMEs out of which 177 registered.", size(vsmall))
+gr export robust_gender_ceo.png, replace
+logit registered i.treatment##i.gender_rep2 i.strata2 , vce(robust)
+outreg2 using robust_gender_ceo, excel append ctitle(logit)
+margins i.treatment##i.gender_rep2, post
+outreg2 using robust_gender_ceo, excel append ctitle(predicted probability)
+
+
 	* assignment based on firm representative gender as provided at registration, API data otherwise
 logit registered i.treatment, vce(robust)
 outreg2 using robust_gender_rep1, excel replace ctitle(logit)
