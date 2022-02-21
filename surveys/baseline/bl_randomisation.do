@@ -92,8 +92,8 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(sector, lab(labs(vsmal
 *2) Send the consultant the codebook and then he can make sense of the variables himself*
 * I added a bunch of variables about the firms knowledge and digital presence in case the consultant want to group by ability*
 local ecommercelist treatment id_plateforme sector subsector fte car_pdg_age entr_bien_service entr_produit1 ///
-entr_produit2 entr_produit3 car_attend1 car_attend2 car_attend3 investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3///
-raw_knowledge raw_digitalvars dig_presence_score dig_marketing_score dig_presence1 dig_presence2 dig_presence3
+entr_produit2 entr_produit3 car_attend1 car_attend2 car_attend3 investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 ///
+raw_knowledge raw_digtalvars dig_presence_score dig_marketing_score dig_presence1 dig_presence2 dig_presence3
 
 export excel `ecommercelist' using "ecommerce_listfinale" if treatment==1, sheet("Groupe participants") sheetreplace firstrow(var) 
 export excel `ecommercelist' using "ecommerce_listfinale" if treatment==0, sheet("Groupe control") sheetreplace firstrow(var) 
