@@ -704,6 +704,8 @@ replace strata6=404 if strata6==406
 replace strata6=700 if strata6==704
 replace strata6=700 if strata6==708	
 
+replace strata6=1100 if dig_revenues_ecom>=700000 & dig_revenues_ecom!=.
+
 	* Et voilà! 
 
 ***********************************************************************

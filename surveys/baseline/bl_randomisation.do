@@ -71,7 +71,7 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(strata, lab(labs(small
 ***********************************************************************
 		
 		* balance for continuous and few units categorical variables
-iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep, grpvar(treatment) save(baltab_email_experiment) replace ///
+iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep, grpvar(treatment) ftest save(baltab_email_experiment) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 		
