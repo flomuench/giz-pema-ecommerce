@@ -104,10 +104,10 @@ global bl_progress = "${bl_output}/progress-eligibility-characteristics"
 
 
 			* set seeds for replication
-set seed 22022022
-set sortseed 22022022
+			
+set seed 20222202
+set sortseed 20222202
 		
-
 ***********************************************************************
 
 * 	PART 3: 	Run do-files for data cleaning & survey progress
