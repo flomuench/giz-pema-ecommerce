@@ -74,7 +74,14 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(strata, lab(labs(small
 iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep, grpvar(treatment) ftest save(baltab_email_experiment) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
-		
+
+	* Manully check the f-test for joint orthogonality using hc3:
+	
+local balancevarlist fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep
+
+reg treatment `balancevarlist', vce(hc3)
+testparm `balancevarlist'		
+			 
 		* visualizing balance for categorical variables with multiple categories
 graph hbar (count), over(treatment, lab(labs(tiny))) over(sector, lab(labs(vsmall))) ///
 	title("Balance across sectors") ///
