@@ -88,12 +88,31 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(sector, lab(labs(vsmal
 ***********************************************************************
 * 	PART 4: Export excel spreadsheet
 ***********************************************************************			 		
-*We have two options here: 1) rename the variables so that the consultant understands them
-*2) Send the consultant the codebook and then he can make sense of the variables himself*
-* I added a bunch of variables about the firms knowledge and digital presence in case the consultant want to group by ability*
+
+
+	* save dta file with treatments and strata
+
+order id_plateforme treatment heure date ident_entreprise rg_age subsector
+
+cd "$bl_intermediate"
+
+merge m:m id_plateforme using contact_info.dta
+
+drop if _merge==2
+
+drop _merge
+	
+cd "$bl_final"
+
+save "bl_final", replace
+
+
+* Add a bunch of variables about the firms knowledge and digital presence in case the consultant want to group by ability*
 local ecommercelist treatment id_plateforme sector subsector fte car_pdg_age entr_bien_service entr_produit1 ///
 entr_produit2 entr_produit3 car_attend1 car_attend2 car_attend3 investcom_benefit3_1 investcom_benefit3_2 investcom_benefit3_3 ///
-raw_knowledge raw_digtalvars dig_presence_score dig_marketing_score dig_presence1 dig_presence2 dig_presence3
+raw_knowledge raw_digtalvars dig_presence_score dig_marketing_score dig_presence1 dig_presence2 dig_presence3 ///
+ dig_payment1 dig_payment2 dig_payment3 dig_description1 dig_description2 dig_description3 expprep expoutcomes ///
+ exp_pays_avg exp_pays_principal_avant21 exp_pays_principal2
 
 export excel `ecommercelist' using "ecommerce_listfinale" if treatment==1, sheet("Groupe participants") sheetreplace firstrow(var) 
 export excel `ecommercelist' using "ecommerce_listfinale" if treatment==0, sheet("Groupe control") sheetreplace firstrow(var) 
@@ -101,13 +120,7 @@ export excel `ecommercelist' using "ecommerce_listfinale" if treatment==0, sheet
 	* save word document with visualisations
 putdocx save results_randomisation.docx, replace
 
-	* save dta file with treatments and strata
 
-order 	id_plateforme treatment heure date ident_entreprise rg_age subsector
-	
-cd "$bl_final"
-
-save "bl_final", replace
 
 
 
