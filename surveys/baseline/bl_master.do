@@ -95,8 +95,8 @@ global bl_progress = "${bl_output}/progress-eligibility-characteristics"
 
 
 			* set seeds for replication
-set seed 8413195
-set sortseed 8413195
+set seed 2202022
+set sortseed 2202022
 		
 
 ***********************************************************************

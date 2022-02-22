@@ -948,6 +948,7 @@ replace dig_revenues_ecom = "0" if id_plateforme==962
 replace comp_benefice2020 = "150000" if id_plateforme==962
 replace needs_check = 0 if id_plateforme==962
 
+replace investcom_futur = "." if investcom_futur=="pas encore determiné" 
 
 
 
@@ -1184,7 +1185,104 @@ replace car_carempl_div3 = "`not_know'" if car_carempl_div3 == "?"
 replace exp_pays_21 = "-999" if exp_pays_21=="?"
 
 
+
+* Last additions 21.02.2022
+
+replace comp_ca2020 = "2200000" if id_plateforme==688
+replace compexp_2020 = "200000" if id_plateforme==688
+replace dig_revenues_ecom = "0" if id_plateforme==688
+replace comp_benefice2020 = "490000" if id_plateforme==688
+
+replace comp_ca2020 = "10000000" if id_plateforme==795
+replace compexp_2020 = "400000" if id_plateforme==795
+replace dig_revenues_ecom = "1000000" if id_plateforme==795
+replace comp_benefice2020 = "750000" if id_plateforme==795
+
+replace comp_ca2020 = "10000" if id_plateforme==890
+replace compexp_2020 = "0" if id_plateforme==890
+replace dig_revenues_ecom = "0" if id_plateforme==890
+replace comp_benefice2020 = "5000" if id_plateforme==890
+
+replace comp_benefice2020 = "1269000" if id_plateforme==216
+replace exp_avant21 = 1 if id_plateforme==216
+replace exp_pays_avant21 = 20 if id_plateforme==216
+replace exp_pays_principal_avant21 = "france" if id_plateforme==216
+replace exp_afrique = 1 if id_plateforme==216
+replace exp_afrique_principal = "kenya" if id_plateforme==216
+
+replace rg_oper_exp = 1 if id_plateforme==896
+replace exp_pays_principal2 = "france" if id_plateforme==896
+replace entr_produit1 = "Djeans" if id_plateforme==896
+
+replace exp_avant21 = 1 if id_plateforme==255
+replace exp_pays_avant21 = 2 if id_plateforme==255
+* Need to add 'export produit avant 2021'???
+replace exp_afrique = 0 if id_plateforme==255
+
+
+replace comp_ca2020 = "300000" if id_plateforme==146
+replace compexp_2020 = "300000" if id_plateforme==146
+replace dig_revenues_ecom = "0" if id_plateforme==146
+replace comp_benefice2020 = "120000" if id_plateforme==146
+
+replace comp_ca2020 = "1100000" if id_plateforme==259
+replace compexp_2020 = "14000000" if id_plateforme==259
+replace dig_revenues_ecom = "0" if id_plateforme==259
+replace comp_benefice2020 = "500000" if id_plateforme==259
+
+replace dig_revenues_ecom = "0" if id_plateforme==270
+
+replace comp_benefice2020 = "0" if id_plateforme==290
+replace investcom_futur = "0" if id_plateforme==290
+
+replace dig_revenues_ecom = "0" if id_plateforme==354
+
+replace dig_revenues_ecom = "0" if id_plateforme==369
+
+replace compexp_2020 = "2000000" if id_plateforme==466
+replace comp_ca2020 = "16000000" if id_plateforme==466
+replace dig_revenues_ecom = "0" if id_plateforme==466
+
+replace comp_benefice2020 = "83000" if id_plateforme==623
+replace comp_ca2020 = "750000" if id_plateforme==623
+replace compexp_2020 = "0" if id_plateforme==623
+replace dig_revenues_ecom = "0" if id_plateforme==623
+
+replace investcom_futur = "-999"  if id_plateforme==644 
+replace comp_benefice2020  = "0" if id_plateforme==644
+
+replace comp_benefice2020  = "0" if id_plateforme==668
+replace compexp_2020  = "0" if id_plateforme==668
+
+replace compexp_2020 = "300000" if id_plateforme==710
+replace comp_ca2020 = "300000" if id_plateforme==710
+replace comp_benefice2020 = "90000" if id_plateforme==710
+replace dig_revenues_ecom = "200000" if id_plateforme==710
+
+replace compexp_2020 = "7000" if id_plateforme==716
+replace comp_ca2020 = "400000" if id_plateforme==716
+replace comp_benefice2020 = "50000" if id_plateforme==716
+replace dig_revenues_ecom = "0" if id_plateforme==716
+
+replace comp_benefice2020 = "3672000" if id_plateforme==739
+
+replace exp_pays_principal_avant21 = "maroc" if id_plateforme==841
+replace comp_benefice2020 = "45000" if id_plateforme==841
+
+replace investcom_2021 = "20000" if id_plateforme==875
+replace investcom_futur = "50000" if id_plateforme==875
+replace car_carempl_dive2 = "5" if id_plateforme==875
+replace car_carempl_div1 = "9" if id_plateforme==875
+replace car_carempl_div3 = "0" if id_plateforme==875
+
+replace compexp_2020 = "2000000" if id_plateforme==941 
+replace comp_ca2020 = "4000000" if id_plateforme==941 
+replace dig_revenues_ecom = "0" if id_plateforme==941 
+replace comp_benefice2020 = "0" if id_plateforme==941
+
+
 }
+
 
 
 /*
@@ -1453,8 +1551,8 @@ drop if id_plateforme == 635 & heure == "12h04`06``"
 drop if id_plateforme == 688 & heure == "10h29`16``"
 drop if id_plateforme == 890 & heure == "16h08`19``"
 drop if id_plateforme == 928 & heure == "15h46`59``"
-
-
+drop if id_plateforme == 635 & heure == "13h55`09``"
+drop if id_plateforme == 795 & heure == "15h25`38``"
 
 
 replace dig_service_responsable= 2 if id_plateforme == 800
@@ -1733,6 +1831,22 @@ drop if id_plateforme == 961 & dup ==4
 
 	
 drop dup sum_allvars max_length
+
+	* Add entries that were dropped by survey institute
+	* because they couldn't reach them (they will be put into their own
+	* stratum for randomisation)
+	
+local new = _N + 1
+set obs `new'	
+replace id_plateforme = 729 if id_plateforme==. 
+
+local new = _N + 1
+set obs `new'	
+replace id_plateforme = 818 if id_plateforme==. 
+
+local new = _N + 1
+set obs `new'	
+replace id_plateforme = 821 if id_plateforme==. 
 
 
 	
