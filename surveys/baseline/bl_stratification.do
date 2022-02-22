@@ -552,7 +552,7 @@ replace strata5 = 21 if strat5_exports==1
 
 
 /* --------------------------------------------------------------------
-	STRATA 6 - only two index strata 
+	STRATA 6 - completely manual 
 ----------------------------------------------------------------------*/	
 
 	* First create a substratum for e-commerce adoption and knowledge questions together
@@ -561,8 +561,8 @@ replace strata5 = 21 if strat5_exports==1
 hist raw_indices
 
 g strat6_digitalisation = 1
-replace strat6_digitalisation = 2 if raw_indices>=7.5 & raw_indices<11.5
-replace strat6_digitalisation = 3 if raw_indices>=11.5
+replace strat6_digitalisation = 2 if raw_indices>=7.5 & raw_indices<11.25
+replace strat6_digitalisation = 3 if raw_indices>=11.25
 
 	* This breaks down the substratum into three, roughly equal sized groups
 
@@ -622,41 +622,41 @@ replace strat6_exports = 6 if strat6_countries==2 & strat6_exp==3
 	
 g strata6 = 0
 
-replace strata6 = 1.3 if strat6_exports==1 & strat6_digitalisation==1
-replace strata6 = 1.6 if strat6_exports==1 & strat6_digitalisation==2
-replace strata6 = 1.9 if strat6_exports==1 & strat6_digitalisation==3
+replace strata6 = 103 if strat6_exports==1 & strat6_digitalisation==1
+replace strata6 = 106 if strat6_exports==1 & strat6_digitalisation==2
+replace strata6 = 109 if strat6_exports==1 & strat6_digitalisation==3
 	
-replace strata6 = 2.3 if strat6_exports==2 & strat6_digitalisation==1
-replace strata6 = 2.6 if strat6_exports==2 & strat6_digitalisation==2
-replace strata6 = 2.9 if strat6_exports==2 & strat6_digitalisation==3
+replace strata6 = 203 if strat6_exports==2 & strat6_digitalisation==1
+replace strata6 = 206 if strat6_exports==2 & strat6_digitalisation==2
+replace strata6 = 209 if strat6_exports==2 & strat6_digitalisation==3
 
-replace strata6 = 3.4 if strat6_exports==3 
+replace strata6 = 304 if strat6_exports==3 
 bysort strat6_export: egen rawind_strata6 = median(raw_indices)
-replace strata6 = 3.8 if strat6_exports==3 & raw_indices>rawind_strata6
+replace strata6 = 308 if strat6_exports==3 & raw_indices>rawind_strata6
 
 drop rawind_strata6 
 
 sort id_plateforme, stable
 
-replace strata6 = 4.3 if strat6_exports==4 & strat6_digitalisation==1
-replace strata6 = 4.6 if strat6_exports==4 & strat6_digitalisation==2
-replace strata6 = 4.9 if strat6_exports==4 & strat6_digitalisation==3
+replace strata6 = 403 if strat6_exports==4 & strat6_digitalisation==1
+replace strata6 = 406 if strat6_exports==4 & strat6_digitalisation==2
+replace strata6 = 409 if strat6_exports==4 & strat6_digitalisation==3
 
-replace strata6 = 5.3 if strat6_exports==5 & strat6_digitalisation==1
-replace strata6 = 5.6 if strat6_exports==5 & strat6_digitalisation==2
-replace strata6 = 5.9 if strat6_exports==5 & strat6_digitalisation==3
+replace strata6 = 503 if strat6_exports==5 & strat6_digitalisation==1
+replace strata6 = 506 if strat6_exports==5 & strat6_digitalisation==2
+replace strata6 = 509 if strat6_exports==5 & strat6_digitalisation==3
 
-replace strata6 = 6.3 if strat6_exports==6 & strat6_digitalisation==1
-replace strata6 = 6.6 if strat6_exports==6 & strat6_digitalisation==2
-replace strata6 = 6.9 if strat6_exports==6 & strat6_digitalisation==3
+replace strata6 = 603 if strat6_exports==6 & strat6_digitalisation==1
+replace strata6 = 606 if strat6_exports==6 & strat6_digitalisation==2
+replace strata6 = 609 if strat6_exports==6 & strat6_digitalisation==3
 
 	*** Now we pull out a few exceptions to the above
 	
 	* First, firms that didn't export / no export status
 	
-replace strata6 = 7.4 if export_status==0
+replace strata6 = 704 if export_status==0
 bysort export_status: egen rawind_strata6 = median(raw_indices)
-replace strata6 = 7.8 if export_status==0 & raw_indices>rawind_strata6
+replace strata6 = 708 if export_status==0 & raw_indices>rawind_strata6
 
 drop rawind_strata6 
 
@@ -666,32 +666,43 @@ sort id_plateforme, stable
 	* Second, exporting firms with missing values for exports
 	* This can also be split into below/above median for digitalisation indices
 
-replace strata6 = 8.4 if compex==. & export_status==1
+replace strata6 = 804 if compex==. & export_status==1
 bysort export_status: egen rawind_strata6 = median(raw_indices)
-replace strata6 = 8.8 if compex==. & export_status==1 & raw_indices>rawind_strata6
+replace strata6 = 808 if compex==. & export_status==1 & raw_indices>rawind_strata6
 
 drop rawind_strata6 
 
 sort id_plateforme, stable
 
 
-	* Finally, exporting firms with low export revenues but high overall revenues
+	* Third, exporting firms with low export revenues but high overall revenues
 	* To find the thresholds, look at the top 90 percentile of total revenues
 	* Then check how many firms there are that have a low percentage of export
 	* revenues in total revenues (while still being exporting and non missing)
 
 	
-replace strata6 = 9 if exp_per<0.01 & export_status==1 & comp_ca2020>1400000 & compexp_2020!=.
+replace strata6 = 900 if exp_per<0.01 & export_status==1 & comp_ca2020>1400000 & compexp_2020!=.
+
+	* Finally, create a stratum for firms with completely missing data: 
+	
+replace strata6 = 1000 if id_plateforme==729
+replace strata6 = 1000 if id_plateforme==818
+replace strata6 = 1000 if id_plateforme==821
 
 	*** Now check that the resulting strata are no smaller than 7-8: 
 	
 tab strata6
 
 	* Make manual adjustments as needed: 
-	* 4.3 and 4.6 are too small, I merge them: 
+	* 403 and 406 are too small, merge them: 
 	
-replace strata6 = 4.4 if strata6==4.3
-replace strata6 = 4.4 if strata6==4.6
+replace strata6=404 if strata6==403
+replace strata6=404 if strata6==406
+
+	* 704 and 708 are too small, merge them:
+	
+replace strata6=700 if strata6==704
+replace strata6=700 if strata6==708	
 
 	* Et voilà! 
 
@@ -1160,7 +1171,7 @@ putdocx paragraph
 putdocx text ("With these strata, the export destinations by stratum has an average standard deviation of `: display %9.2fc `r(mean)'' (compared to `exportcountries_sd_base' originally)."), linebreak
 
 putdocx paragraph
-putdocx text ("Size of strata for strata5"), linebreak bold
+putdocx text ("Size of strata for strata6"), linebreak bold
 tab2docx strata6
 putdocx pagebreak
 

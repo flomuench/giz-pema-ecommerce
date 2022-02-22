@@ -38,7 +38,7 @@ putdocx text ("Results of randomisation"), bold linebreak
 
 	* Set a seed for today
 
-set seed 17022022
+set seed 22022022
 
 	* Sort 
 sort id_plateforme, stable
@@ -49,7 +49,7 @@ sort id_plateforme, stable
 ***********************************************************************
 
 	* random allocation, with seed generated random number on random.org between 1 million & 1 billion
-randtreat, gen(treatment) strata(strata) misfits(strata) setseed(905661364)
+randtreat, gen(treatment) strata(strata) misfits(strata) setseed(22022022)
 
 	* label treatment assignment status
 lab def treat_status 0 "Control" 1 "Treatment" 
@@ -71,7 +71,7 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(strata, lab(labs(small
 ***********************************************************************
 		
 		* balance for continuous and few units categorical variables
-iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg rg_oper_exp dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep, grpvar(treatment) save(baltab_email_experiment) replace ///
+iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep, grpvar(treatment) save(baltab_email_experiment) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 		
@@ -103,6 +103,8 @@ putdocx save results_randomisation.docx, replace
 
 	* save dta file with treatments and strata
 
+order 	id_plateforme treatment heure date ident_entreprise rg_age subsector
+	
 cd "$bl_final"
 
 save "bl_final", replace
