@@ -66,6 +66,15 @@ else if c(os) == "MacOSX" {
 }
 
 if c(os) == "Windows" {
+	global base_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+
+}
+else if c(os) == "MacOSX" {
+	global base_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+
+}
+
+if c(os) == "Windows" {
 	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
