@@ -1607,6 +1607,7 @@ drop if id_plateforme == 887
 
 drop if id_plateforme == 813
 	
+drop if id_plateforme == 351	
 
 * Correcting the second duplicates:
 
