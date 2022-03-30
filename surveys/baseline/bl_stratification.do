@@ -1228,10 +1228,18 @@ label var survey_round "which survey round?"
 
 label define label_survey_round  1 "registration" 2 "baseline" 3 "session1" 4 "session2" 5 "session3" 6 "session4" 7 "session5" 8 "session6" 9 "midline" 10 "endline" 
 label values survey_round  label_survey_round 
+
+***********************************************************************
+* 	PART 4: rename variables
+***********************************************************************
+rename rg_gender_rep gender_rep 
+rename rg_gender_pdg gender_pdg 
+rename rg_oper_exp oper_exp
+rename rg_age age
 */
 
 ***********************************************************************
-* 	PART 4: Save
+* 	PART 5: Save
 ***********************************************************************
 
 	* Save doc
