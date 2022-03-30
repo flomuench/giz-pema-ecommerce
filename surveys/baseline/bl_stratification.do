@@ -1207,7 +1207,28 @@ putdocx paragraph
 putdocx text ("For the number of destination countries the original SD was `exportcountries_sd_base'. With stratification it is `s1_countries' for approach 1; `s2_countries' for approach 2; `s3_countries' for approach 3; `s4_countries' for approach 4;  `s5_countries' for approach 5; and `s6_countries' for approach 6."), linebreak 
 
 
+***********************************************************************
+* 	PART 5:  create a new variable for survey round
+***********************************************************************
+/*
 
+generate survey_round= .
+replace survey_round= 1 if surveyround== "registration"
+replace survey_round= 2 if surveyround== "baseline"
+replace survey_round= 3 if surveyround== "session1"
+replace survey_round= 4 if surveyround== "session2"
+replace survey_round= 5 if surveyround== "session3"
+replace survey_round= 6 if surveyround== "session4"
+replace survey_round= 7 if surveyround== "session5"
+replace survey_round= 8 if surveyround== "session6"
+replace survey_round= 9 if surveyround== "midline"
+replace survey_round= 10 if surveyround== "endline"
+
+label var survey_round "which survey round?"
+
+label define label_survey_round  1 "registration" 2 "baseline" 3 "session1" 4 "session2" 5 "session3" 6 "session4" 7 "session5" 8 "session6" 9 "midline" 10 "endline" 
+label values survey_round  label_survey_round 
+*/
 
 ***********************************************************************
 * 	PART 4: Save
