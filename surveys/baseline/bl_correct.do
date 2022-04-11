@@ -959,21 +959,7 @@ replace investcom_futur = "." if investcom_futur=="pas encore determiné"
 ***********************************************************************
 * 	PART 3: use regular expressions to correct variables 		  			
 ***********************************************************************
-/* for reference and guidance, regularly these commands are used in this section
-gen XXX = ustrregexra(XXX, "^216", "")
-gen id_adminrect = ustrregexm(id_admin, "([0-9]){6,7}[a-z]")
 
-*replace id_adminrige = $check_again if id_adminrect == 1
-lab def correct 1 "correct" 0 "incorrect"
-lab val id_adminrect correct
-
-*/
-
-* Correction des variables investissement
-*replace investcom_2021 = ustrregexra( investcom_2021,"k","000")
-//replace investcom_futur = ustrregexra( investcom_futur,"dinars","")
-//replace investcom_futur = ustrregexra( investcom_futur,"dt","")
-//replace investcom_futur = ustrregexra( investcom_futur,"k","000")
 
 * Enlever tout les déterminants du nom des produits
 {
@@ -1005,7 +991,6 @@ replace investcom_futur = ustrregexra( investcom_futur ," dinars","")
 
 }
 
-* Remplacer tout les points par des virgules & Enlever les virgules au niveau des numéros de téléphone
 
 
 
@@ -1284,27 +1269,10 @@ replace comp_benefice2020 = "0" if id_plateforme==941
 }
 
 
-
-/*
-Quick check
-
-investcom_futur
-investcom_2021/investcom_futur
-dig_revenues_ecom
-comp_benefice2020
-car_carempl_div1
-car_carempl_dive2
-car_carempl_div3
-compexp_2020
-
-*/
-
 ***********************************************************************
 * 	PART 5:  Convert string to numerical variabales	  			
 ***********************************************************************
-* local destrvar XX
-*foreach x of local destrvar { 
-*destring `x', replace
+
 local destrvar investcom_futur investcom_2021 dig_revenues_ecom comp_benefice2020 car_carempl_div1 car_carempl_dive2 car_carempl_div3 compexp_2020 comp_ca2020 exp_pays_21
 foreach x of local destrvar {
 destring `x', replace
@@ -1854,9 +1822,7 @@ replace id_plateforme = 821 if id_plateforme==.
 ***********************************************************************
 * 	PART 11:  autres / miscellaneous adjustments
 ***********************************************************************
-	
-	
-	
+
 	
 	* Correct compexp_2020 for firms that do not export
 

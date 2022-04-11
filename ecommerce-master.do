@@ -10,7 +10,7 @@
 *			2) Prepare dynamic folder paths & globals
 *			3) Merge & append to create analysis data set
 *			4) Save as e-commerce database
-*			5) merge & append to create master data (pii)
+*			5) Merge & append to create master data (pii)
 *
 *	Author:  	Florian Muench & Amira Bouziri	& Teo Firpo & Fabian Scheifele						  	  
 *	ID variable: 	id_plateforme			  					  
@@ -39,7 +39,15 @@ set scheme plotplain
 ***********************************************************************
 	* set first level globals for code and data
 		* dynamic folder path to data
-global gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+
+if c(os) == "Windows" {
+	global gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+
+}
+else if c(os) == "MacOSX" {
+	global gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+
+}
 		
 		* folder path to survey data sets
 global reg_final = "${gdrive}/1-registration/data/final"
