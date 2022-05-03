@@ -55,15 +55,32 @@ duplicates tag rg_emailpdg, gen(dup_emailpdg)
 		* id_admin
 duplicates report id_admin
 	
-	* export master data set
+	* export ecommerce_regis_pii data set
 local pii1 "id_plateforme firmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 rg_telrep rg_telpdg rg_telephone2 rg_adresse* rg_siteweb rg_media matricule_fiscale codedouane matricule_cnss rg_legalstatus"
-export excel `pii1' using master_data_ecommerce, firstrow(var) replace
+
+	* save as stata master data
+preserve
+keep `pii1'
+
+    * transform byte variable of id_plateforme into string to match the baseline data
+
+tostring id_plateforme, gen(id_plateforme2) format(%15.0f)
+        drop id_plateforme
+        ren id_plateforme2 id_plateforme
+		
+	* change directory to final folder
+cd "$regis_final"
+
+	* save to final folder
+save "ecommerce_regis_pii", replace
+restore
+
+export excel `pii1' using ecommerce_regis_pii, firstrow(var) replace
+
 
 ***********************************************************************
 * 	PART 2:  generate de-identified regis_final		  			
 ***********************************************************************
-	* set directory to regis_final
-cd "$regis_final"
 	
 	* create variable to indicate surveyround
 gen survey = 1
