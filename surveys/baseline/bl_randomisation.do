@@ -75,7 +75,7 @@ iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ec
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 
-	* Manully check the f-test for joint orthogonality using hc3:
+	* Manually check the f-test for joint orthogonality using hc3:
 	
 local balancevarlist fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep
 
