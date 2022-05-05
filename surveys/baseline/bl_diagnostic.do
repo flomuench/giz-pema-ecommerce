@@ -117,16 +117,48 @@ lab var avg_expprep_diag "Average percentage of all export preparadness practice
 lab var sectoral_avg_expprep_diag "Sectoral average percentage of all export preparadness practices"
 
 
-	* change directory for diagnostic files
-cd "$bl_output/bl_diagnostic"
-set scheme s1color	 
-set graphics off 
+/* --------------------------------------------------------------------
+	PART 1.3: Create deciles for each diagnostic score
+----------------------------------------------------------------------*/
+
+
+sort ecom_dig
+xtile ecom_decile = ecom_dig, n(10)
+
+sort expprep_diag
+xtile expprep_decile = expprep_diag, n(10)
+
+lab var ecom_decile "Deciles for e-commerce/digitalisation score"
+lab var expprep_decile "Deciles for export preparadness score"
+
+
+	* Now create statements based on the deciles to be used in the text below 
+
+gen ecom_dig_text = " "
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile>9
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>=42.7391 & ecom_decile<10
+replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<42.7391 & ecom_dig>30.7826
+replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=30.7826
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=20.6522
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=10.1304
+
+gen expprep_text = " "
+replace expprep_text = "Votre entreprise se situe dans le tiers supérieur en termes d'adoption de pratiques de préparation à l'exportation." if expprep_decile==7
+replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de preparation à l'exportation." if expprep_decile==6
+replace expprep_text = "Votre entreprise se situe dans la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_decile==3
+replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_decile==2
+replace expprep_text = "Votre entreprise est classée dans les 20 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=50 &  expprep_diag>38
+replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<38
 
 
 ***********************************************************************
 * 	PART 2:  	make a loop to automate document creation			  *
 ***********************************************************************
-
+	
+	* change directory for diagnostic files
+cd "$bl_output/bl_diagnostic"
+set scheme s1color	 
+set graphics off 
 levelsof id_plateforme, local(levels_id) 
 
 foreach x of local levels_id{
@@ -194,8 +226,11 @@ graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==58, ///
 		
 gr export dig_score_test.png, replace
 putdocx paragraph, halign(center) 
+
 putdocx image dig_score_test.png, height (6 cm)
 
+putdocx paragraph
+putdocx text ("`=ecom_dig_text[58]'"), linebreak
 
 graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_plateforme==58, ///
 		subtitle ("Pourcentage de activités  adoptées") ///
@@ -209,6 +244,9 @@ graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_platefo
 gr export exp_score_test.png, replace
 putdocx paragraph, halign(center) 
 putdocx image exp_score_test.png, height (6 cm)
+putdocx paragraph
+putdocx text ("`=expprep_text[58]'"), linebreak
+
 
 putdocx paragraph
 putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
@@ -222,6 +260,6 @@ putdocx paragraph
 putdocx text ("Equipe PEMA"), linebreak bold
 
 
-putdocx save diagnostic_test.docx, replace
+putdocx save diagnostic_test2.docx, replace
 
 
