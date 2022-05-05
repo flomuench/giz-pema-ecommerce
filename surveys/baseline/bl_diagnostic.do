@@ -102,6 +102,7 @@ lab var sectoral_avg_ecom_dig "Sectoral average percentage of all e-commerce dig
 
 * Second, export preparedness practices: 
 
+
 egen expprep_raw = rowtotal(expprep_person expprep_cible expprep_norme expprep_demande)
 
 g expprep_diag = (expprep_raw/4)*100
@@ -120,10 +121,6 @@ lab var sectoral_avg_expprep_diag "Sectoral average percentage of all export pre
 cd "$bl_output/bl_diagnostic"
 set scheme s1color	 
 set graphics off 
-
-gen row_id= _n
-gen digital_avg = 15.3
-gen sector_avg = 12
 
 
 ***********************************************************************
@@ -175,24 +172,32 @@ putdocx text ("Nous réitérons nos remerciements pour votre participation et vo
 putdocx paragraph
 putdocx text ("Ce diagnostic prend la forme de deux scores: un score de digitalisation (regroupant les questions relatives au marketing digital, à la présence en ligne et à  la logistique) et un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…).")
 putdocx paragraph
-putdocx text ("Afin de pouvoir vous positionner par rapport aux entreprises participantes, de sonder votre niveau en termes de digitalisation et de mieux apprécier votre prédisposition à l’export, vous trouverez ci-dessous deux graphes regroupant 3 scores:")
-putdocx paragraph
-putdocx text ("Le premier correspond au  score individuel de votre entreprise.") 
-putdocx paragraph
-putdocx text ("Le second correspond à un score moyen de toutes les entreprises participantes sélectionnées du projet 'Commerce Électronique et Marketing Digital' de PEMA II.")
-putdocx paragraph
-putdocx text ("Le troisième correspond au score moyen des entreprises de votre secteur d’activité dans le  cadre de ce projet.")
+putdocx text ("Ci-dessous  vous trouverez deux graphiques avec trois barres chacun:")
+putdocx text ("-	La première (couleur) correspond au pourcentage de pratiques adoptées par votre entreprise."), bold
+putdocx text ("-	La deuxième (couleur) correspond au pourcentage moyen de pratiques adoptées par l'ensemble des entreprises interrogées."), bold
+putdocx text ("-	La troisième (couleur) correspond au pourcentage moyen de pratiques adoptées par l'ensemble des entreprises interrogées dans votre secteur.")
 
 
-graph hbar raw_digtalvars digital_avg sector_avg if id_plateforme==58
+graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==58
 gr export dig_score_test.png, replace
-putdocx paragraph, halign(left) 
-putdocx image dig_score_test.png, width (8.25 cm) height (6cm)
+putdocx paragraph, halign(center) 
+putdocx image dig_score_test.png, width (13.75 cm) height (10 cm)
 
-graph hbar expprep digital_avg sector_avg if id_plateforme==58
+
+
+
+graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==58
 gr export exp_score_test.png, replace
-putdocx paragraph, halign(left) 
-putdocx image exp_score_test.png, width (8.25 cm) height (6cm)
+putdocx paragraph, halign(center) 
+putdocx image exp_score_test.png, width (13.75 cm) height (10 cm)
+
+
+
+
+putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
+putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing numérique et votre commerce électronique ?"), bold 
+putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du diagnostic en novembre 2022 et 2023. A la fin du diagnostic complet, vous recevrez un autre rapport avec des recommandations individualisées.")
+
 
 putdocx save diagnostic_test.docx, replace
 
