@@ -1,16 +1,15 @@
 
 ***********************************************************************
-* 			E-commerce field experiment:  stratification								  		  
+* 			E-commerce field experiment:  diagnostic								  		  
 ***********************************************************************
 *																	   
-*	PURPOSE: Stratify firms that responded to baseline survey; select stratification approach						  								  
+*	PURPOSE: Create a diagnostic for e-commerce and export preparedness scores to share with the firms			  								  
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1)		Visualisation of candidate strata variables
-*	2)		Generate strata using different appraoches
-*	3)		Calculate variance by stratification approach
-*   4)		Save														  
+*	1)		Adapt variables for diagnostic scores
+*	2)		Automate writing of reports 
+*   3)		Save														  
 *
 *																 																      *
 *	Author:  	Teo Firpo & Fabian Scheifele													  
@@ -21,7 +20,6 @@
 
 ***********************************************************************
 * 	PART Start: Import the data
-
 ***********************************************************************
 
 	* import data
@@ -33,9 +31,9 @@ use "${bl_final}/bl_final", clear
 ***********************************************************************
 
 
-/* --------------------------------------------------------------------
-	PART 1.1: Modification of existing variables  
-----------------------------------------------------------------------*/
+/* --------------------------------------------------------------------------
+	PART 1.1: Modification of existing variables - e-commerce/digitalisation
+----------------------------------------------------------------------------*/
 
 * Scoring of online presence changes from fraction to full integers
 * to wait the extensive margin higher
@@ -66,6 +64,27 @@ foreach var of local ecomm_diagnostic {
 	replace `var' = 0 if `var'==-999
 }
 
+/* --------------------------------------------------------------------------
+	PART 1.2: Modification of existing variables - export preparedness
+----------------------------------------------------------------------------*/
+
+g expprep_person = 0
+replace expprep_person = 1 if expprep_responsable>0 & expprep_responsable!=.
+
+local expprep_diagnostic expprep_person expprep_cible expprep_norme expprep_demande
+
+foreach var of local expprep_diagnostic {
+	replace `var' = 0 if `var'==.
+	replace `var' = 0 if `var'==-999
+}
+
+lab var expprep_person "Dummy taking value of 1 if the firm has one or more people responsible for exports"
+
+/* --------------------------------------------------------------------
+	PART 1.2: Create scores (with overall and sector averages)
+----------------------------------------------------------------------*/
+
+* First, e-commerce / digitalisation practices: 
 
 egen ecom_dig_raw = rowtotal(dig_presence_score dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_marketing_lien dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm dig_marketing_ind1 dig_marketing_ind2  dig_logistique_entrepot_ext dig_logistique_entrepot dig_logistique_retour_score dig_logistique_retour_ext) 
 
@@ -75,13 +94,27 @@ egen avg_ecom_dig = mean(ecom_dig)
 
 egen sectoral_avg_ecom_dig = mean(ecom_dig), by(sector)
 
+lab var ecom_dig_raw "(Raw) sum of all e-commerce digitalisation practices"
+lab var ecom_dig "Percentage of all e-commerce digitalisation practices"
+lab var avg_ecom_dig "Average percentage of all e-commerce digitalisation practices"
+lab var sectoral_avg_ecom_dig "Sectoral average percentage of all e-commerce digitalisation practices"
 
 
-lab var ecom_dig_raw "(Raw) sum of all e-commerce digital marketing practices"
-lab var ecom_dig "Percentage of all e-commerce digital marketing practices"
-lab var avg_ecom_dig "Sample average of e-commerce digital marketing practices"
-lab var  sectoral_avg_ecom_dig "Sector averages of e-commerce digital marketing practices"
+* Second, export preparedness practices: 
 
+
+egen expprep_raw = rowtotal(expprep_person expprep_cible expprep_norme expprep_demande)
+
+g expprep_diag = (expprep_raw/4)*100
+
+egen avg_expprep_diag = mean(expprep_diag)
+
+egen sectoral_avg_expprep_diag = mean(expprep_diag), by(sector)
+
+lab var expprep_raw "Raw sum of all export preparadness practices"
+lab var expprep_diag "Percentage of all export preparadness practices"
+lab var avg_expprep_diag "Average percentage of all export preparadness practices"
+lab var sectoral_avg_expprep_diag "Sectoral average percentage of all export preparadness practices"
 
 
 	* change directory for diagnostic files
@@ -91,8 +124,9 @@ set graphics off
 
 
 ***********************************************************************
-* 	PART I:  	make a loop to automate document creation			  *
+* 	PART 2:  	make a loop to automate document creation			  *
 ***********************************************************************
+
 levelsof id_plateforme, local(levels_id) 
 
 foreach x of local levels_id{
