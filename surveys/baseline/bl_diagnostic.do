@@ -132,16 +132,33 @@ lab var ecom_decile "Deciles for e-commerce/digitalisation score"
 lab var expprep_decile "Deciles for export preparadness score"
 
 
-	* change directory for diagnostic files
-cd "$bl_output/bl_diagnostic"
-set scheme s1color	 
-set graphics off 
+	* Now create statements based on the deciles to be used in the text below 
+
+gen ecom_dig_text = " "
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile>9
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>=42.7391 & ecom_decile<10
+replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<42.7391 & ecom_dig>30.7826
+replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=30.7826
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=20.6522
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=10.1304
+
+gen expprep_text = " "
+replace expprep_text = "Votre entreprise se situe dans le tiers supérieur en termes d'adoption de pratiques de préparation à l'exportation." if expprep_decile==7
+replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de preparation à l'exportation." if expprep_decile==6
+replace expprep_text = "Votre entreprise se situe dans la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_decile==3
+replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_decile==2
+replace expprep_text = "Votre entreprise est classée dans les 20 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=50 &  expprep_diag>38
+replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<38
 
 
 ***********************************************************************
 * 	PART 2:  	make a loop to automate document creation			  *
 ***********************************************************************
-
+	
+	* change directory for diagnostic files
+cd "$bl_output/bl_diagnostic"
+set scheme s1color	 
+set graphics off 
 levelsof id_plateforme, local(levels_id) 
 
 foreach x of local levels_id{
@@ -199,6 +216,9 @@ putdocx paragraph, halign(center)
 putdocx image dig_score_test.png, width (13.75 cm) height (10 cm)
 
 
+putdocx paragraph
+putdocx text ("`=ecom_dig_text[58]'"), linebreak
+
 
 
 graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==58
@@ -207,14 +227,15 @@ putdocx paragraph, halign(center)
 putdocx image exp_score_test.png, width (13.75 cm) height (10 cm)
 
 
-
+putdocx paragraph
+putdocx text ("`=expprep_text[58]'"), linebreak
 
 putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
 putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing numérique et votre commerce électronique ?"), bold 
 putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du diagnostic en novembre 2022 et 2023. A la fin du diagnostic complet, vous recevrez un autre rapport avec des recommandations individualisées.")
 
 
-putdocx save diagnostic_test.docx, replace
+putdocx save diagnostic_test2.docx, replace
 
 
 
