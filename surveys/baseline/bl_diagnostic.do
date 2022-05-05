@@ -117,6 +117,21 @@ lab var avg_expprep_diag "Average percentage of all export preparadness practice
 lab var sectoral_avg_expprep_diag "Sectoral average percentage of all export preparadness practices"
 
 
+/* --------------------------------------------------------------------
+	PART 1.3: Create deciles for each diagnostic score
+----------------------------------------------------------------------*/
+
+
+sort ecom_dig
+xtile ecom_decile = ecom_dig, n(10)
+
+sort expprep_diag
+xtile expprep_decile = expprep_diag, n(10)
+
+lab var ecom_decile "Deciles for e-commerce/digitalisation score"
+lab var expprep_decile "Deciles for export preparadness score"
+
+
 	* change directory for diagnostic files
 cd "$bl_output/bl_diagnostic"
 set scheme s1color	 
