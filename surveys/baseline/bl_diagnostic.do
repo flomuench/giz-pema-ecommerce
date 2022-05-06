@@ -137,8 +137,8 @@ lab var expprep_decile "Deciles for export preparadness score"
 gen ecom_dig_text = " "
 replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile>9
 replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>=42.7391 & ecom_decile<10
-replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<42.7391 & ecom_dig>30.7826
-replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=30.7826
+replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<42.7391 & ecom_dig>31.80932
+replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=31.80932
 replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=20.6522
 replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=10.1304
 
@@ -161,95 +161,98 @@ set scheme s1color
 set graphics off 
 gen row_id = _n
 
-forvalues x = 1(1)3 {
-putdocx clear
-putdocx begin
-putdocx paragraph
-putdocx text ("`=expprep_text[`x']'"), linebreak
-putdocx text ("`=ecom_dig_text[`x']'"), linebreak
-local x id_plateforme[`x']
-display `x'
-putdocx save test_`x'.docx, replace
+
+levelsof id_plateforme, local(levels_id) 
+
+set rmsg on
+
+quietly{
+	foreach x of local levels_id {
+		noisily display "Working on `x' at $S_TIME"
+		putdocx clear
+		putdocx begin, font("Arial", 12) 
+
+		putdocx paragraph, halign(center)
+		putdocx image logos_cropped2.png, height (3 cm) linebreak
+		putdocx paragraph, halign (center)
+		putdocx text ("Scores du premier diagnostic - PEMA II GIZ “Commerce Electronique et Marketing Digital"), bold underline linebreak 
+		putdocx paragraph
+		putdocx text ("Cher(e) chef(fe) d’entreprise,")
+		putdocx paragraph
+		putdocx text ("Nous réitérons nos remerciements pour votre participation et vos réponses pour le premier sondage, à l’issue duquel, nous avons pu établir un premier diagnostic, s’inscrivant dans une série de trois diagnostics, que vous allez recevoir tout au long du projet.")
+		 
+		putdocx paragraph
+		putdocx text ("Ce diagnostic prend la forme de deux scores: un score de digitalisation (regroupant les questions relatives au marketing digital, à la présence en ligne et à  la logistique) et un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…).")
+		putdocx paragraph
+		putdocx text ("Ci-dessous  vous trouverez deux graphiques avec trois barres chacun:"), linebreak
+		putdocx paragraph
+		putdocx text ("		- La première (rouge) correspond au pourcentage de pratiques adoptées"), bold linebreak
+		putdocx text ("		  par votre entreprise."), bold linebreak
+		putdocx text ("		- La deuxième (orange) correspond au pourcentage moyen de pratiques"), bold linebreak
+		putdocx text ("		  adoptées par l'ensemble des entreprises interrogées."), bold linebreak
+		putdocx text ("		- La troisième (gris) correspond au pourcentage moyen de pratiques"), bold linebreak
+		putdocx text ("		  adoptées par l'ensemble des entreprises interrogées dans votre secteur."), bold linebreak
+
+
+
+		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', ///
+				subtitle ("Pourcentage de activités  adoptées") ///
+				title ("Commerce electronique et marketing numerique") ///
+				ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
+				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+				bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export dig_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+
+		putdocx image dig_score_test_`x'.png, height (6 cm)
+
+		preserve
+
+		keep if id_plateforme==`x'
+
+		putdocx paragraph
+		putdocx text ("`=ecom_dig_text[_n]'"), linebreak
+
+		graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_plateforme==`x', ///
+				subtitle ("Pourcentage de activités  adoptées") ///
+				title ("Preparation des exportations") ///
+				ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (inside) /// 
+				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+				bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export exp_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+		putdocx image exp_score_test_`x'.png, height (6 cm)
+		putdocx paragraph
+		putdocx text ("`=expprep_text[_n]'"), linebreak
+
+
+		putdocx paragraph
+		putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
+		putdocx paragraph
+		putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing numérique et votre commerce électronique ?"), bold linebreak 
+		putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du diagnostic en novembre 2022 et 2023."), linebreak 
+		putdocx text ("A la fin du diagnostic complet, vous recevrez un autre rapport avec des recommandations individualisées."), linebreak
+		putdocx paragraph
+		putdocx text ("Cordialement,"), linebreak 
+		putdocx paragraph
+		putdocx text ("Equipe PEMA"), linebreak bold
+
+		//local name_file id_plateforme[`x']
+		//display `name_file'
+		putdocx save diagnostic_`x'.docx, replace
+
+		restore
+	}
 }
 
-forvalues x = 1(1)236 {
 
-putdocx clear
-putdocx begin, font("Arial", 12) 
-
-putdocx paragraph, halign(center)
-putdocx image logos_cropped2.png, height (3 cm) linebreak
-putdocx paragraph, halign (center)
-putdocx text ("Scores du premier diagnostic - PEMA II GIZ “Commerce Electronique et Marketing Digital"), bold underline linebreak 
-putdocx paragraph
-putdocx text ("Cher(e) chef(fe) d’entreprise,")
-putdocx paragraph
-putdocx text ("Nous réitérons nos remerciements pour votre participation et vos réponses pour le premier sondage, à l’issue duquel, nous avons pu établir un premier diagnostic, s’inscrivant dans une série de trois diagnostics, que vous allez recevoir tout au long du projet.")
- 
-putdocx paragraph
-putdocx text ("Ce diagnostic prend la forme de deux scores: un score de digitalisation (regroupant les questions relatives au marketing digital, à la présence en ligne et à  la logistique) et un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…).")
-putdocx paragraph
-putdocx text ("Ci-dessous  vous trouverez deux graphiques avec trois barres chacun:"), linebreak
-putdocx paragraph
-putdocx text ("		- La première (couleur) correspond au pourcentage de pratiques adoptées"), bold linebreak
-putdocx text ("		  par votre entreprise."), bold linebreak
-putdocx text ("		- La deuxième (couleur) correspond au pourcentage moyen de pratiques"), bold linebreak
-putdocx text ("		  adoptées par l'ensemble des entreprises interrogées."), bold linebreak
-putdocx text ("		- La troisième (couleur) correspond au pourcentage moyen de pratiques"), bold linebreak
-putdocx text ("		  adoptées par l'ensemble des entreprises interrogées dans votre secteur."), bold linebreak
-
-
-
-graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if row_id==`x', ///
-		subtitle ("Pourcentage de activités  adoptées") ///
-		title ("Commerce electronique et marketing numerique") ///
-		ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
-		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
-		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
-		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
-		bar (3 ,fc("112 113 115") lc("112 113 115")) 
-		
-gr export dig_score_test_`x'.png, replace
-putdocx paragraph, halign(center) 
-
-putdocx image dig_score_test_`x'.png, height (6 cm)
-
-putdocx paragraph
-putdocx text ("`=ecom_dig_text[_n]'"), linebreak
-
-graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if row_id==`x', ///
-		subtitle ("Pourcentage de activités  adoptées") ///
-		title ("Preparation des exportations") ///
-		ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (inside) /// 
-		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
-		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
-		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
-		bar (3 ,fc("112 113 115") lc("112 113 115")) 
-		
-gr export exp_score_test_`x'.png, replace
-putdocx paragraph, halign(center) 
-putdocx image exp_score_test_`x'.png, height (6 cm)
-putdocx paragraph
-putdocx text ("`=expprep_text[_n]'"), linebreak
-
-
-putdocx paragraph
-putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
-putdocx paragraph
-putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing numérique et votre commerce électronique ?"), bold linebreak 
-putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du diagnostic en novembre 2022 et 2023."), linebreak 
-putdocx text ("A la fin du diagnostic complet, vous recevrez un autre rapport avec des recommandations individualisées."), linebreak
-putdocx paragraph
-putdocx text ("Cordialement,"), linebreak 
-putdocx paragraph
-putdocx text ("Equipe PEMA"), linebreak bold
-
-local name_file id_plateforme[`x']
-display `name_file'
-putdocx save diagnostic_`name_file'.docx, replace
-
-}
-
+set rmsg off
 
 *test code*
 /*
@@ -270,11 +273,11 @@ putdocx text ("Ce diagnostic prend la forme de deux scores: un score de digitali
 putdocx paragraph
 putdocx text ("Ci-dessous  vous trouverez deux graphiques avec trois barres chacun:"), linebreak
 putdocx paragraph
-putdocx text ("		- La première (couleur) correspond au pourcentage de pratiques adoptées"), bold linebreak
+putdocx text ("		- La première (rouge) correspond au pourcentage de pratiques adoptées"), bold linebreak
 putdocx text ("		  par votre entreprise."), bold linebreak
-putdocx text ("		- La deuxième (couleur) correspond au pourcentage moyen de pratiques"), bold linebreak
+putdocx text ("		- La deuxième (orange) correspond au pourcentage moyen de pratiques"), bold linebreak
 putdocx text ("		  adoptées par l'ensemble des entreprises interrogées."), bold linebreak
-putdocx text ("		- La troisième (couleur) correspond au pourcentage moyen de pratiques"), bold linebreak
+putdocx text ("		- La troisième (grise) correspond au pourcentage moyen de pratiques"), bold linebreak
 putdocx text ("		  adoptées par l'ensemble des entreprises interrogées dans votre secteur."), bold linebreak
 
 
