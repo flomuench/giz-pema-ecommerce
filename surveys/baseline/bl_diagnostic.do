@@ -236,7 +236,3 @@ putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du
 
 
 putdocx save diagnostic_test2.docx, replace
-
-
-
-
