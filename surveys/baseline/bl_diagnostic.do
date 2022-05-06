@@ -326,4 +326,3 @@ putdocx text ("Equipe PEMA"), linebreak bold
 
 putdocx save diagnostic_test2.docx, replace
 
-
