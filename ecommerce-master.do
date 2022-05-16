@@ -46,11 +46,10 @@ if c(os) == "Windows" {
 }
 else if c(os) == "MacOSX" {
 	global gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
-
 }
 		
 		* folder path to survey data sets
-global reg_final = "${gdrive}/1-registration/data/final"
+global reg_final = "${gdrive}/1-registration/final"
 global baseline_final = "${gdrive}/2-baseline/final"
 global midline_final = "${gdrive}/3-midline/final"
 global endline_final = "${gdrive}/4-endline/final"
@@ -66,8 +65,11 @@ use "${reg_final}/regis_final", clear
 cd "$baseline_final"
 
 		* merge 1:1 based on project id fxxx
-merge 1:1 id using bl_final
+merge 1:1 id_plateforme using bl_final
 
+keep if _merge == 3
+
+drop _merge
 /*	
 	* append registration +  baseline data with midline
 cd "$midline_final"
@@ -79,7 +81,7 @@ append using el_final
 */
 
 ***********************************************************************
-* 	PART 4: Save as aqe_database
+* 	PART 4: Save as ecommerce_database
 ***********************************************************************
 cd "$gdrive"
 save "ecommerce_database", replace
