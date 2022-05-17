@@ -61,12 +61,6 @@ local pii1 "id_plateforme firmname rg_nom_rep rg_position_rep rg_emailrep rg_ema
 	* save as stata master data
 preserve
 keep `pii1'
-
-    * transform byte variable of id_plateforme into string to match the baseline data
-
-tostring id_plateforme, gen(id_plateforme2) format(%15.0f)
-        drop id_plateforme
-        ren id_plateforme2 id_plateforme
 		
 	* change directory to final folder
 cd "$regis_final"
