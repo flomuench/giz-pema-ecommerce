@@ -47,8 +47,16 @@ ssc install coefplot, replace
 ***********************************************************************
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
+		
+if "`c(username)'" == "my rog"{
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+}
+else{
+		global gdrive = "C:/Users/`c(username)'/Google Drive"
+}
+
 		if c(os) == "Windows" {
-	global master_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master"
+	global master_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master"
 	global master_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/master"
 	global master_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -58,7 +66,7 @@ else if c(os) == "MacOSX" {
 	global master_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }	
 if c(os) == "Windows" {
-	global bl_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
+	global bl_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
 	global bl_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline"
 	global bl_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -69,7 +77,7 @@ else if c(os) == "MacOSX" {
 }
 
 if c(os) == "Windows" {
-	global base_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+	global base_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
 
 }
 else if c(os) == "MacOSX" {
@@ -78,7 +86,7 @@ else if c(os) == "MacOSX" {
 }
 
 if c(os) == "Windows" {
-	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
