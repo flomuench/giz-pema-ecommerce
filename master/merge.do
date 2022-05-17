@@ -52,3 +52,24 @@ drop _merge
 duplicates drop 
 drop sector subsector entr_bien_service entr_produit1
 save "ecommerce_master_contact", replace
+
+
+***********************************************************************
+* 	PART 4: merge registration with bl_final
+***********************************************************************
+
+
+
+
+
+
+***********************************************************************
+* 	PART 5: merge participation with previous merged set
+***********************************************************************
+
+
+
+
+***********************************************************************
+* 	PART 6: append mid-line with previous merged set
+***********************************************************************
