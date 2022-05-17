@@ -66,7 +66,13 @@ save "ecommerce_master_contact", replace
 ***********************************************************************
 * 	PART 5: merge participation with previous merged set
 ***********************************************************************
+clear
+import excel "${bl_raw}/Suivi mise en oeuvre_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+merge 1:1 id_plateforme using /*****To be determined by Siwar******/, keepusing(groupe module1 module2 module3 module4 module5)
+drop if id == ""
+drop _merge
 
+save /*****To be determined by Siwar******/, replace
 
 
 
