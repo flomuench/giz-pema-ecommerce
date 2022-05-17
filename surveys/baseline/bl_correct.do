@@ -1832,7 +1832,35 @@ replace id_plateforme = 821 if id_plateforme==.
 	
 
 ***********************************************************************
-* 	Save the changes made to the data		  			
+* 	Part 12: Save the changes made to the data		  			
 ***********************************************************************
 cd "$bl_intermediate"
 save "bl_inter", replace
+
+
+***********************************************************************
+* 	PART 13:  create + save bl_pii file	  			
+***********************************************************************
+	* put all pii variables into a local
+local pii id_plateforme heure date attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise ident_email_1 qsinonident ident_email_2 id_ident2 id_base_respondent id_nouveau_personne id_base_repondent id_repondent_position tel_sup1 tel_sup2
+
+	* save as stata master data
+preserve
+keep `pii'
+
+		
+save "ecommerce_bl_pii", replace
+restore
+
+	* export the pii data as new ecommerce_master_data 
+export excel `pii' using ecommerce_bl_pii, firstrow(var) replace
+
+***********************************************************************
+* 	PART 14:  save a de-identified final analysis file	
+***********************************************************************
+	* change directory to final folder
+cd "$bl_final"
+
+	* drop all pii
+drop `pii'
+*/

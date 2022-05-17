@@ -45,16 +45,3 @@ lab var rg_age "Registration CEO age"
 cd "$bl_intermediate"
 save "bl_inter", replace
 
-
-***********************************************************************
-* 	PART 4:  Load personal info and save
-***********************************************************************
-cd "$base_gdrive"
-
-import excel "master_data_ecommerce.xls", sheet("Sheet1") firstrow clear
-
-keep id_plateforme firmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_telrep rg_telpdg rg_adresse rg_siteweb rg_media
-
-cd "$bl_intermediate"
-save "contact_info", replace
-

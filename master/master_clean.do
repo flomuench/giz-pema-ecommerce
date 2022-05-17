@@ -13,8 +13,15 @@
 *	Requires:  	 regis_final.dta bl_final.dta 										  
 *	Creates:     regis_final.dta bl_final.dta
 
+
 ***********************************************************************
-* 	PART 1:    clean regis_final
+* 	PART 1:    clean ecommerce_master_contact
+***********************************************************************
+
+/*
+
+***********************************************************************
+* 	PART 2:    clean regis_final
 ***********************************************************************
 
 use "${regis_final}/regis_final", clear

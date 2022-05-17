@@ -59,35 +59,6 @@ rename DC attest2
 
 append using temp_bl_raw, force
 
-
-***********************************************************************
-* 	PART 2:  create + save bl_pii file	  			
-***********************************************************************
-	* put all pii variables into a local
-local pii Id_plateforme Nomdelapersonne Nomdelentreprise Merciderenseignerlenomcorr Adresseéléctronique Qsinonident K id_ident2 Commentvousappelezvous id_nouveau_personne id_base_repondent id_repondent_position tel_sup1 tel_sup2 I
-
-	* save as stata master data
-preserve
-keep `pii'
-
-    * rename Id_plateforme to merge it to pii regis
-rename Id_plateforme id_plateforme
-		
-save "ecommerce_bl_pii", replace
-restore
-
-	* export the pii data as new ecommerce_master_data 
-export excel `pii' using ecommerce_bl_pii, firstrow(var) replace
-
-***********************************************************************
-* 	PART 3:  save a de-identified final analysis file	
-***********************************************************************
-	* change directory to final folder
-cd "$bl_final"
-
-	* drop all pii
-drop `pii'
-
 ***********************************************************************
 * 	PART 4: re-importing raw data 						
 ***********************************************************************

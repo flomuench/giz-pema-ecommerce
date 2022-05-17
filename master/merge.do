@@ -18,13 +18,13 @@
 * 	PART 1: merge & append to create master data set (pii)
 ***********************************************************************
 	* merge registration with baseline data
-use "${regis_final}/ecommerce_regis_pii", clear
+use "${bl_intermediate}/ecommerce_bl_pii", clear
 		
 		* change directory to baseline folder for merge with baseline_final
-cd "$bl_raw"
+cd "$regis_final"
 
 		* merge 1:1 based on project id fxxx
-merge 1:m id using ecommerce_bl_pii
+merge 1:1 id_plateforme using ecommerce_regis_pii
 drop _merge
 
 ***********************************************************************
@@ -46,13 +46,9 @@ rename M emailrep
 rename O telrep
 Note: those 3 variables are repeated in the Update_file, what is that mean?
 */
-    * transform byte variable of id_plateforme into string to match the data
 
-tostring id_plateforme, gen(id_plateforme2) format(%15.0f)
-        drop id_plateforme
-        ren id_plateforme2 id_plateforme
-
-merge m:m id using ecommerce_master_contact
+merge m:m id_plateforme using ecommerce_master_contact
 drop _merge
+duplicates drop 
 drop sector subsector entr_bien_service entr_produit1
 save "ecommerce_master_contact", replace
