@@ -17,7 +17,13 @@
 ***********************************************************************
 * 	PART 1:    clean ecommerce_master_contact
 ***********************************************************************
+replace firmname = "tpad ( technical and practical assistance to development)" if id_plateforme == 572
+replace rg_nom_rep = "rana baabaa" if id_plateforme == 623
+replace firmname = "Central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642
+replace firmname = "MSB" if id_plateforme == 795
+replace firmname = "urba tech" if id_plateforme == 890
 
+drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise ident_email_1 qsinonident ident_email_2 id_ident2
 /*
 
 ***********************************************************************

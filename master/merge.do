@@ -15,7 +15,7 @@
 *	Requires: ecommerce_bl_pii.dta	ecommerce_regis_pii.dta										  
 *	Creates:  ecommerce_master_contact.dta			                                  
 ***********************************************************************
-* 	PART 1: merge & append to create master data set (pii)
+* 	PART 1: merge to create master data set (pii)
 ***********************************************************************
 	* merge baseline data with registration pii
 use "${bl_intermediate}/ecommerce_bl_pii", clear
@@ -26,6 +26,19 @@ cd "$regis_final"
 		* merge 1:1 based on project id_plateforme
 merge 1:1 id_plateforme using ecommerce_regis_pii
 drop _merge
+
+    * create panel ID
+gen survey_round=1
+
+***********************************************************************
+* 	PART 2: save as ecommerce_contact_database
+***********************************************************************
+cd "$master_gdrive"
+save "ecommerce_master_contact", replace
+
+***********************************************************************
+* 	PART 3: append to create master data set (pii)
+***********************************************************************
 
 /*
 	* append registration +  baseline data with midline
@@ -41,21 +54,19 @@ drop _merge
 
 */
 ***********************************************************************
-* 	PART 2: save as ecommerce_contact_database
-***********************************************************************
-cd "$master_gdrive"
-save "ecommerce_master_contact", replace
-
-***********************************************************************
 * 	PART 3: integrate and replace contact updates
 ***********************************************************************
 *Note: here should the Update_file.xlsx be downloaded from teams, renamed and uploaded again in 6-master
 
 clear
 import excel "${master_gdrive}/Update_file.xlsx", sheet("update_entreprises") firstrow clear
-
+duplicates report
+duplicates drop
 drop W-AU
+
 /*
+remove old infor
+reshape
 rename J firmname
 rename M emailrep
 rename O telrep
@@ -64,12 +75,12 @@ Note: those 3 variables are repeated in the Update_file, what is that mean?
 
 merge m:m id_plateforme using ecommerce_master_contact
 drop _merge
-duplicates drop 
+ 
 drop sector subsector entr_bien_service entr_produit1
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
-* 	PART 4: merge & append to create analysis data set
+* 	PART 4: merge to create analysis data set
 ***********************************************************************
 		* change directory to master folder for merge with regis + baseline (final)
 cd "$master_raw"
@@ -82,13 +93,17 @@ use "${regis_final}/regis_final", clear
 
 merge 1:1 id_plateforme using "${bl_final}/bl_final"
 
-keep if _merge==3
+keep if _merge==3 /* companies that were eligible and answered on the registration + baseline surveys */
 drop _merge
 
     * save as ecommerce_database
 
 save "ecommerce_database_raw", replace
 
+
+***********************************************************************
+* 	PART 5: append to create analysis data set
+***********************************************************************
 /*
 	* append registration +  baseline data with midline
 cd "$midline_final"
@@ -120,12 +135,6 @@ merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw"
     * save as ecommerce_database
 
 save "ecommerce_database_raw", replace
-
-***********************************************************************
-* 	PART 6: 
-***********************************************************************
-
-
 
 
 
