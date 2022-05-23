@@ -100,6 +100,11 @@ drop _merge
 
 save "ecommerce_database_raw", replace
 
+keep if treatment==1 
+
+    * save as ecommerce_database for the treatment group only
+
+save "ecommerce_database_raw_treatment", replace
 
 ***********************************************************************
 * 	PART 5: append to create analysis data set
@@ -125,16 +130,15 @@ import excel "${master_gdrive}/Suivi_ecommerce.xlsx", sheet("Suivi_formation") f
 keep id_plateforme groupe module1 module2 module3 module4 module5
 drop if id_plateforme== ""
 drop if id_plateforme== "id_plateforme"
-drop _merge
 encode id_plateforme, generate(id_plateforme2)
 drop id_plateforme
 rename id_plateforme2 id_plateforme
-merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw"
-
+merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw_treatment"
+drop _merge
 
     * save as ecommerce_database
 
-save "ecommerce_database_raw", replace
+save "ecommerce_database_raw_treatment", replace
 
 
 
