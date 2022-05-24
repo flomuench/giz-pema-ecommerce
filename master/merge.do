@@ -56,14 +56,15 @@ drop _merge
 ***********************************************************************
 * 	PART 3: integrate and replace contact updates
 ***********************************************************************
-*Note: here should the Update_file.xlsx be downloaded from teams, renamed and uploaded again in 6-master
+
+* import Update_file:
+* Note: here should the Update_file.xlsx be downloaded from teams, renamed and uploaded again in 6-master
 
 clear
 import excel "${master_gdrive}/Update_file.xlsx", sheet("update_entreprises") firstrow clear
 duplicates report
 duplicates drop
-drop W-AU
-
+drop W-AU treatment firmname region sector subsector entr_bien_service entr_produit1 siteweb media
 /*
 remove old infor
 reshape
@@ -72,11 +73,67 @@ rename M emailrep
 rename O telrep
 Note: those 3 variables are repeated in the Update_file, what is that mean?
 */
+rename surveyround sessions
+rename M firmname2
+rename P emailrep2
+rename R telrep2
 
-merge m:m id_plateforme using ecommerce_master_contact
+tab session, g(session)
+
+
+* 1) merge if session= 1
+preserve 
+keep if session1 ==1 
+
+     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information	
+foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
+	rename `x' new1_`x'
+}
+
+merge 1:1 id_plateforme using ecommerce_master_contact 
 drop _merge
- 
-drop sector subsector entr_bien_service entr_produit1
+save "ecommerce_master_contact", replace
+restore
+
+* 2) merge if session= 2
+preserve 
+keep if session2 ==1 
+
+     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information		
+foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
+	rename `x' new2_`x'
+}
+
+merge 1:1 id_plateforme using ecommerce_master_contact 
+drop _merge
+save "ecommerce_master_contact", replace
+restore
+
+* 3) merge if session= 3
+preserve 
+keep if session3 ==1 
+
+     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information		
+foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
+	rename `x' new3_`x'
+} 
+
+merge 1:1 id_plateforme using ecommerce_master_contact 
+drop _merge
+save "ecommerce_master_contact", replace
+restore
+
+* 4)  merge if session= 4
+keep if session4 ==1 
+
+     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information		
+foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
+	rename `x' new4_`x'
+} 
+
+merge 1:1 id_plateforme using ecommerce_master_contact 
+drop _merge
+drop session1 session2 session3 session4
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
@@ -100,11 +157,6 @@ drop _merge
 
 save "ecommerce_database_raw", replace
 
-keep if treatment==1 
-
-    * save as ecommerce_database for the treatment group only
-
-save "ecommerce_database_raw_treatment", replace
 
 ***********************************************************************
 * 	PART 5: append to create analysis data set
@@ -130,17 +182,15 @@ import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") f
 keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
 drop if id_plateforme== ""
 drop if id_plateforme== "id_plateforme"
-encode id_plateforme, generate(id_plateforme2)
-drop id_plateforme
-rename id_plateforme2 id_plateforme
+destring id_plateforme,replace
 
-merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw_treatment"
+merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw"
 drop _merge
 
 
     * save as ecommerce_database
 
-save "ecommerce_database_raw_treatment", replace
+save "ecommerce_database_raw", replace
 
 
 
