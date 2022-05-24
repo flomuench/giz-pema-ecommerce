@@ -133,8 +133,10 @@ drop if id_plateforme== "id_plateforme"
 encode id_plateforme, generate(id_plateforme2)
 drop id_plateforme
 rename id_plateforme2 id_plateforme
+
 merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw_treatment"
 drop _merge
+
 
     * save as ecommerce_database
 
