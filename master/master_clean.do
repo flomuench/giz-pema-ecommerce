@@ -17,6 +17,7 @@
 ***********************************************************************
 * 	PART 1:    clean ecommerce_master_contact
 ***********************************************************************
+use "${master_gdrive}/ecommerce_master_contact", clear
 replace firmname = "tpad ( technical and practical assistance to development)" if id_plateforme == 572
 replace rg_nom_rep = "rana baabaa" if id_plateforme == 623
 replace firmname = "central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642

@@ -130,12 +130,21 @@ export excel `ecommercelist' using "ecommerce_listfinale" if treatment==0, sheet
 	* save word document with visualisations
 putdocx save results_randomisation.docx, replace
 
+***********************************************************************
+* 	PART 5: Add variable treatment to ecommerce_bl_pii
+***********************************************************************		
+preserve
+keep id_plateforme treatment
 
+* change directory to regis folder for merge with regis_final
+cd "$bl_intermediate"
 
+		* merge 1:1 based on project id_plateforme
+merge 1:1 id_plateforme using ecommerce_bl_pii
+drop _merge
 
-
-
-
+save "ecommerce_bl_pii", replace
+restore
 
 
 
