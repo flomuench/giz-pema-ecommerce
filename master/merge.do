@@ -126,8 +126,8 @@ append using el_final
 
 *Note: here should the Suivi_mise_en_oeuvre_ecommerce.xlsx be downloaded from teams, legend deleted, renamed and uploaded again in 6-master
 clear 
-import excel "${master_gdrive}/Suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
-keep id_plateforme groupe module1 module2 module3 module4 module5
+import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
 drop if id_plateforme== ""
 drop if id_plateforme== "id_plateforme"
 encode id_plateforme, generate(id_plateforme2)
