@@ -64,7 +64,7 @@ clear
 import excel "${master_gdrive}/Update_file.xlsx", sheet("update_entreprises") firstrow clear
 duplicates report
 duplicates drop
-drop W-AU treatment firmname region sector subsector entr_bien_service entr_produit1 siteweb media
+drop W-AU treatment firmname region sector subsector entr_bien_service entr_produit1 siteweb media Update
 /*
 remove old infor
 reshape
@@ -73,63 +73,12 @@ rename M emailrep
 rename O telrep
 Note: those 3 variables are repeated in the Update_file, what is that mean?
 */
-rename surveyround sessions
+
 rename M firmname2
 rename P emailrep2
 rename R telrep2
 
-tab session, g(session)
-
-
-* 1) merge if session= 1
-preserve 
-keep if session1 ==1 
-
-     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information	
-foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
-	rename `x' new1_`x'
-}
-
-merge 1:1 id_plateforme using ecommerce_master_contact 
-drop _merge
-save "ecommerce_master_contact", replace
-restore
-
-* 2) merge if session= 2
-preserve 
-keep if session2 ==1 
-
-     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information		
-foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
-	rename `x' new2_`x'
-}
-
-merge 1:1 id_plateforme using ecommerce_master_contact 
-drop _merge
-save "ecommerce_master_contact", replace
-restore
-
-* 3) merge if session= 3
-preserve 
-keep if session3 ==1 
-
-     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information		
-foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
-	rename `x' new3_`x'
-} 
-
-merge 1:1 id_plateforme using ecommerce_master_contact 
-drop _merge
-save "ecommerce_master_contact", replace
-restore
-
-* 4)  merge if session= 4
-keep if session4 ==1 
-
-     * rename variables so that can be merged 1:1 and it dosn't replace the old contact information		
-foreach x in emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse {
-	rename `x' new4_`x'
-} 
+reshape wide emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse, i(id_plateforme) j(surveyround, string)
 
 merge 1:1 id_plateforme using ecommerce_master_contact 
 drop _merge
