@@ -50,6 +50,7 @@ set scheme plotplain
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 			* to sampling folder
 if c(os) == "Windows" {
+	global output = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
 	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
@@ -66,6 +67,7 @@ global samp_intermediate "${samp_gdrive}/intermediate"
 global samp_final = "${samp_gdrive}/final"
 
 					* output (regression tables, figures)
+global final_output = "${output}/ecommerce_experiment_paper"
 global samp_output = "${samp_gdrive}/output"
 global samp_figures = "${samp_output}/descriptive-statistics-figures"
 global samp_randomisation = "${samp_output}/randomisation_results"
