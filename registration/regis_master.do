@@ -54,6 +54,7 @@ set scheme plotplain
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 if c(os) == "Windows" {
+	global output = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
 	global gdrive_data =  "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
 	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
@@ -88,6 +89,10 @@ global samp_final = "${samp_gdrive}/final"
 
 
 			* output (regression tables, figures)
+global final_output = "${output}/ecommerce_experiment_paper"
+global final_figures = "${final_output}/figures"
+global final_tables = "${final_output}/tables"
+
 global regis_output = "${regis_gdrive}/output"
 global regis_figures = "${regis_output}/descriptive-statistics-figures"
 global regis_progress = "${regis_output}/progress-eligibility-characteristics"

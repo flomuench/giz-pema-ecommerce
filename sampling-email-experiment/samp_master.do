@@ -68,6 +68,9 @@ global samp_final = "${samp_gdrive}/final"
 
 					* output (regression tables, figures)
 global final_output = "${output}/ecommerce_experiment_paper"
+global final_figures = "${final_output}/figures"
+global final_tables = "${final_output}/tables"
+
 global samp_output = "${samp_gdrive}/output"
 global samp_figures = "${samp_output}/descriptive-statistics-figures"
 global samp_randomisation = "${samp_output}/randomisation_results"

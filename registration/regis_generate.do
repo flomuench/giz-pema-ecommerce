@@ -93,6 +93,9 @@ rename `Genderpdg' rg_gender_pdg
 replace rg_gender_pdg = 0 if rg_gender_pdg == 2
 lab values rg_gender_pdg sex
 
+gen female_share = rg_fte_femmes/rg_fte
+lab var female_share "share of female employees"
+
 ***********************************************************************
 * 	PART 3: factor variable onshore 			  										  
 ***********************************************************************
@@ -144,6 +147,11 @@ encode rg_exportstatus, gen(rg_expstatus)
 drop rg_exportstatus
 lab var rg_expstatus "Régime d'export de l'entreprise"
 
+tab rg_expstatus, gen(expstatus)
+lab var expstatus1 "no export"
+lab var expstatus2 "partial exporter"
+lab var expstatus3 "exclusive exporter"
+
 
 ***********************************************************************
 * 	PART 8: age
@@ -156,6 +164,7 @@ order rg_age, a(date_created)
 ***********************************************************************
 gen presence_enligne = (rg_siteweb != "" | rg_media != ""), b(rg_siteweb)
 lab def enligne 1 "présente enligne" 0 "ne pas présente enligne"
+lab var presence_enligne "webpage or social media account (1 = yes)"
 lab values presence_enligne enligne
 
 ***********************************************************************

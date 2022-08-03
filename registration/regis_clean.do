@@ -128,12 +128,12 @@ rename enregistrermescoordonnéessur rg_enregistrement_coordonnees
 *lab var X ""
 label variable rg_nom_rep "nom et prénom du representant"
 label variable rg_position_rep "qualité & fonction du representant"
-label variable rg_gender_rep "sexe du representant"
+label variable rg_sex_rep "Representative gender (1 = female)"
 label variable rg_telrep "téléphone du representant"
 label variable rg_emailrep "adresse mail du representant"
 label variable rg_telpdg "téléphone du PDG"
 label variable rg_emailpdg "adresse mail du PDG"
-label variable rg_sex_pdg "sexe du PDG"
+label variable rg_sex_pdg "CEO gender (1 = female)"
 label variable rg_adresse "adresse du siège social"
 label variable firmname "nom de l'entreprise"
 
@@ -151,20 +151,21 @@ label variable rg_onshore "entreprise résidente en Tunisie"
 
 			* Controls
 label variable date_created "Date création de l'entreprise"
-label variable rg_fte "nombre d'employés de l'entreprise"
-label variable rg_fte_femmes "nombre d'employées féminin de l'entreprise"
-label variable rg_capital "capital social"
+label variable rg_fte "employees"
+label variable rg_fte_femmes "female employees"
+label variable rg_capital "capital"
 label variable sector "domaine"
 label variable subsector " secteur d'acvitivté"
+label var rg_age "age"
 
 			* Export
 label variable rg_exportstatus "régime d'exportation"
 label variable rg_export "est-ce que l'entreprise a au moins une opération d'export"
 label variable rg_exportable "est ce que l'entreprise a un produit exportable"
-label variable rg_intexp "intention d'exporter ou non"
+label variable rg_intexp "intention to export"
 
 	* Section suivi
-label variable moyen_com "moyen de communication ayant permis de découvrir l'existence du programme"
+label variable moyen_com "communication channel"
 label variable rg_confidentialite "Partager utiliser les données confidentielles"
 label variable rg_partage_donnees "Partager/utiliser les données collectées et anonymisées"
 label variable rg_enregistrement_coordonnees "Enregistrer mes coordonnées sur sa base de données"
@@ -177,12 +178,11 @@ label variable rg_enregistrement_coordonnees "Enregistrer mes coordonnées sur s
 ***********************************************************************
 * 	PART 7: 	Label variables values	  			
 ***********************************************************************
-{
+
 /*
 lab def labelname 1 "" 2 "" 3 ""
 lab val variablename labelname
 */
-}
 
 ***********************************************************************
 * 	PART 8: Removing trail and leading spaces in from string variables  			
@@ -194,6 +194,16 @@ foreach x of local strvars {
 replace `x' = stritrim(strtrim(`x'))
 }
 }
+
+***********************************************************************
+* 	PART 9: translation
+***********************************************************************
+	* means of communication
+replace moyen_com = "giz newsletter" if moyen_com == "bulletin d'information giz"
+replace moyen_com = "government website" if moyen_com == "site institution gouvernmentale"
+replace moyen_com = "giz website" if moyen_com == "site web de la giz"
+replace moyen_com = "cepex website" if moyen_com == "site web du cepex"
+
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

@@ -58,13 +58,13 @@ graph bar (count), over(dateinscription, label(angle(60) labsize(vsmall))) ///
 	xline(22586,  lpat(dash) lcolor(red)) ///
 	addlabel addlabopts(mlabposition(12))
 */
-	
-format %-td dateinscription 
+
+cd "$final_figures"
+format %-td dateinscription
+lab var dateinscription "registration date"
 graph twoway histogram dateinscription, frequency width(1) ///
 		tlabel(02nov2021(1)07dec2021, angle(60) labsize(vsmall)) ///
-		ytitle("nombre d'enregistrement") ///
-		title("{bf:Campagne de communication: Enregistrement par jour}") ///
-		subtitle("{it: Envoie des emails en rouge}") ///
+		ytitle("registrations") ///
 		tline(22586 22592 22600 22609 22613, lcolor(red) lpattern(dash)) 
 gr export enregistrement_par_jour.png, replace
 putpdf paragraph, halign(center) 
@@ -74,19 +74,38 @@ putpdf pagebreak
 		
 	
 	* communication channels
-graph bar (count), over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
-	title("Enregistrement selon les moyens de communication") ///
-	ytitle("nombre d'enregistrement") 
+graph hbar (count), over(moyen_com, sort(1) lab(labsize(vsmall))) blabel(total, position(center)) ///
+	ytitle("registrations") 
 graph export moyen_com.png, replace 
 putpdf paragraph, halign(center) 
 putpdf image moyen_com.png
 putpdf pagebreak
 
+
+	* balance table
+cd "$final_tables"
+local variables rg_fte female_share rg_age rg_capital expstatus1 expstatus2 expstatus3 rg_intention rg_gender_pdg rg_gender_rep presence_enligne
+iebaltab `variables' if rg_fte <= 200, grpvar(moyen_com) save(baltab_com_with_pvalues) replace ///
+			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine starsnoadd ///
+			 format(%12.2fc)	
+iebaltab `variables' if rg_fte <= 200, grpvar(moyen_com) savetex(baltab_com_wo_pvalues) replace ///
+			 vce(robust) rowvarlabels balmiss(mean) onerow stdev notecombine nottest ///
+			 format(%12.2fc)	
+
+cd "$regis_progress"
 	* taille des entreprises selon chaines de com
-graph box rg_fte, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
+graph bar rg_fte if rg_fte <= 200, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
 	title("Nombre des employés des entreprises selon moyen de communication") ///
 	ytitle("Nombre des employés")
+	
+graph bar rg_age if rg_fte < 200, over(moyen_com, sort(1) lab(labsize(tiny))) blabel(total) ///
+	title("Age des entreprises selon moyen de communication") ///
+	ytitle("age")
 
+	
+graph hbar if rg_fte <= 200, over(moyen_com, sort(1) lab(labsize(tiny))) over(sector, lab(labsize(tiny))) blabel(bar, format(%9.1fc) size(tiny)) ///
+	title("Sector des entreprises selon moyen de communication") ///
+	ytitle("sector")
 
 
 ***********************************************************************
