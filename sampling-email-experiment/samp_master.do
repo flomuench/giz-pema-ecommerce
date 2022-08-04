@@ -49,9 +49,22 @@ set scheme plotplain
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 			* to sampling folder
+		
+if "`c(username)'" == "my rog"{
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+}
+else{
+		global gdrive = "C:/Users/`c(username)'/Google Drive"
+}
+
+
 if c(os) == "Windows" {
+<<<<<<< Updated upstream
 	global output = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
 	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
+=======
+	global samp_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
+>>>>>>> Stashed changes
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -83,7 +96,7 @@ global samp_emaillists = "${samp_output}/email_lists"
 
 		* to registration folder
 if c(os) == "Windows" {
-	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -100,7 +113,7 @@ global regis_checks = "${regis_gdrive}/checks"
 
 		* to baseline folder
 if c(os) == "Windows" {
-	global bl_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
+	global bl_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
 	global bl_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline"
 	global bl_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
