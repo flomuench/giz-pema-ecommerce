@@ -24,7 +24,7 @@
 ***********************************************************************
 use "${regis_raw}/regis_raw", clear
 
-{
+
 	* string
 ds, has(type string) 
 local strvars "`r(varlist)'"
@@ -48,15 +48,15 @@ rename Datedecréation date_created_str
 		* registration
 format Dateinscription %td
 
-}
+
 	
 ***********************************************************************
 * 	PART 2: 	Drop all text windows from the survey		  			
 ***********************************************************************
-{
+
 *drop VARNAMES
 drop Groupe
-}
+
 
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			
@@ -66,9 +66,6 @@ rename *, lower
 ***********************************************************************
 * 	PART 4: 	Order the variables in the data set		  			
 ***********************************************************************
-{
-
-}
 
 ***********************************************************************
 * 	PART 5: 	Rename the variables in line with GIZ contact list final	  			
@@ -123,12 +120,12 @@ rename enregistrermescoordonnéessur rg_enregistrement_coordonnees
 ***********************************************************************
 * 	PART 6: 	Label the variables		  			
 ***********************************************************************
-{
+
 		* Section contact details
 *lab var X ""
 label variable rg_nom_rep "nom et prénom du representant"
 label variable rg_position_rep "qualité & fonction du representant"
-label variable rg_sex_rep "Representative gender (1 = female)"
+label variable rg_gender_rep "Representative gender (1 = female)"
 label variable rg_telrep "téléphone du representant"
 label variable rg_emailrep "adresse mail du representant"
 label variable rg_telpdg "téléphone du PDG"
@@ -156,7 +153,6 @@ label variable rg_fte_femmes "female employees"
 label variable rg_capital "capital"
 label variable sector "domaine"
 label variable subsector " secteur d'acvitivté"
-label var rg_age "age"
 
 			* Export
 label variable rg_exportstatus "régime d'exportation"
@@ -171,7 +167,7 @@ label variable rg_partage_donnees "Partager/utiliser les données collectées et
 label variable rg_enregistrement_coordonnees "Enregistrer mes coordonnées sur sa base de données"
 
 		* Section eligibility
-}
+
 
 
 
@@ -187,13 +183,13 @@ lab val variablename labelname
 ***********************************************************************
 * 	PART 8: Removing trail and leading spaces in from string variables  			
 ***********************************************************************
-{
+
 ds, has(type string) 
 local strvars "`r(varlist)'"
 foreach x of local strvars {
-replace `x' = stritrim(strtrim(`x'))
+	replace `x' = stritrim(strtrim(`x'))
 }
-}
+
 
 ***********************************************************************
 * 	PART 9: translation
