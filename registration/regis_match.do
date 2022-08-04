@@ -1,181 +1,203 @@
 ***********************************************************************
-* 			registration fuzzy match									  	  
+* 			registration fuzzy merge - (1) perfect & candidate matches							  	  
 ***********************************************************************
 *																	    
 *	PURPOSE: match companies registered to those in our experimental sample				  							  
 *																	  
 *																	  
 *	OUTLINE:														  
-*	1) import corrected matches & save as dta		 
-*	2) Load regis_inter (list of registrations) 							  
-*	3) Fuzzy matching on the email of the main rep (rg_emailrep) 							    		  				  
-*	4) Fuzzy matching on the email of the CEO/PDG (rg_emailpdg) 
-*	5) Merge with original files to allow manual verification			  
-*	6) save & export potential matches for manual check 																						  															      
-*	Author:  	Teo Firpo						  
-*	ID variable: no id variable defined				  
+*	1) fuzzy merge based on firmname		 
+*	2) fuzzy merge based on email_rep
+*	3) fuzzy merge based on email_pdg
+*														    
+*	Author:  	Teo Firpo, Florian Münch					  
+*	ID variable: id_plateforme, id_email				  
 *	Requires: regis_inter.dta, giz_contact_list_final 	  								  
-*	Creates:  regis_match_intermediate.xls	                          
-*									
+*	Creates:  matches.dta, candidates.dta									
 
 								  
 ***********************************************************************
 * 	PART 1: import corrected matches & save as dta  			
 ***********************************************************************
 
-	cd "$regis_inter"
+	cd "$regis_intermediate"
 	
-		* import corrected observations
-import excel "${regis_intermediate}/regis_corrected_matches.xlsx", firstrow clear
-
-		* save as dta file
-save "regis_corrected_matches", replace
-
-***********************************************************************
-* 	PART 2: Load regis_inter (list of registrations)
-***********************************************************************
-
-use "regis_inter", clear
-
+	use "regis_inter", clear
 	
+***********************************************************************
+* 	PART 2: Fuzzy matching based on firm name
+***********************************************************************
+/* 
+	To use the fuzzy matching package, we need the two
+	firmname vars to be called the same in both data set,
+	which is the case
+	*/
+
+	******************** Now do fuzzy matching
+
+	reclink firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(10)
+	
+/* Result should be: 
+	N = 949, matched = 610, exact = 100, unmatched = 301
+																			*/
+	
+	******************** formating
+	
+	format rg_emailpdg rg_emailrep %20s
+	format firmname Ufirmname %40s	
+	
+	******************** save perfect matches
+	preserve
+	
+	drop if firmname == ""
+	
+	keep if score == 1
+	
+	keep id_plateforme id_email firmname rg_emailpdg rg_emailrep score treatment
+	
+	gen matched_on = "firmname"
+	
+	save "matches", replace
+	
+	restore
+
+/* Result should be: 
+	matches.dta N = 100
+																			*/
+	
+	******************** save candidate matches with score > 0.9
+	preserve
+	
+	drop if firmname == ""
+	
+	keep if score > 0.9
+	
+	keep id_plateforme id_email firmname rg_emailpdg rg_emailrep score treatment
+	
+	gen matched_on = "firmname"
+	
+	save "candidates", replace
+	
+	restore
+	
+/* Result should be: 
+	candidates.dta N = 698
+																			*/
+		
 ***********************************************************************
 * 	PART 3: Fuzzy matching on the email of the main rep (rg_emailrep)
 ***********************************************************************
 
-	******************** To use the fuzzy matching package, we need the two
-	******************** email vars to be called the same; so we create a 
-	******************** duplicate var called 'email' 
-	******************** (as in giz_contact_list_final) 
+use "regis_inter", clear
+
+	******************** harmonize name of email variable
 
 	gen email = rg_emailrep
 
 	******************** Now do fuzzy matching
 
-	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_corrected_matches")
+	reclink email using "${samp_gdrive}/final/giz_contact_list_final",	///
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(10) exclude(matches)
+	
+/* Result should be: 
+	N after excl. matches = 811, N=940, matched = 737, exact = 134, unmatched = 174
+																			*/
 
-	******************** Don't keep those that did not match at all:
+	******************** save perfect matches
+	preserve
 	
-	drop if score==.
+	drop if email == ""
 	
-	keep id_plateforme id_email score
+	keep if score == 1
 	
-	gen matchedon = "rep_email"
-		
-	******************** Add to existing data 
+	keep id_plateforme id_email rg_emailpdg rg_emailrep score treatment
+	
+	gen matched_on = "email_rep"
+	
+	append using "matches"
+	
+	save "matches", replace
+	
+	restore
+	
+/* Result should be: N in matches = 234 */
+	
+	******************** save candidate matches with score > 0.9
+	preserve
+	
+	drop if email == ""
+	
+	keep if score > 0.9
+	
+	keep id_plateforme id_email rg_emailpdg rg_emailrep score treatment
+	
+	gen matched_on = "email_rep"
+	
+	append using "candidates"
+	
+	save "candidates", replace
+	
+	restore
 
-	*append using "regis_matched"
-	
-	save "regis_potential_matches", replace
+/* Result should be: N in candidates = 1275 */
 	
 ***********************************************************************
-* 	PART 4: Fuzzy matching on the email of the CEO/PDG (rg_emailpdg)
+* 	PART 5: Fuzzy matching on the email of the main pdg (rg_emailpdg)
 ***********************************************************************
-	
-	use "regis_inter", clear
-	
-	******************** As above generate a dup email variable
-	
+
+use "regis_inter", clear
+
+	******************** harmonize name of email variable
+
 	gen email = rg_emailpdg
-	
-	******************** A couple rows don't have this email; drop them
-	
-	drop if email==""
-	
-	reclink email firmname using "${samp_gdrive}/final/giz_contact_list_final",	///
-	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(100 1) exclude("regis_corrected_matches")
 
-	drop if score==.
-	
-	keep id_plateforme id_email score
+	******************** Now do fuzzy matching
 
-	gen matchedon = "pdg_email"
-		
-	append using "regis_potential_matches"
+	reclink email using "${samp_gdrive}/final/giz_contact_list_final",	///
+	idmaster(id_plateforme) idusing(id_email) gen(score) wmatch(10) exclude(matches)
 	
-	save "regis_potential_matches", replace
-	
-	******************** As there are many duplicates, rank them by score
-	******************** and identify the duplicates
-	
-	gsort id_plateforme -score id_email
-	
-	*drop dup
-	
-	gen dup = 0
-	replace dup = 1 if id_plateforme[_n]==id_plateforme[_n+1] & id_email[_n]==id_email[_n+1] & score[_n]==score[_n+1]
-	drop if dup==1
-	drop dup
-	
-	by id_plateforme: gen dup = _n
-	
-	******************** Label new vars
-	
-	lab var matchedon "Identifies on what basis the contact was matched"
-	lab var score "Matching score"
-	lab var id_email "ID from original GIZ mailing list (giz_contact_list_final)"
-	lab var dup "Duplicates (in order from top scoring)"
+/* Result should be: 
+	N after excl. matches = 677, N=949, matched = 600, exact = 41, unmatched = 311
+																			*/
 
-***********************************************************************
-* 	PART 5: Merge with original files to allow manual verification
-***********************************************************************	
+	******************** save perfect matches
+	preserve
 	
-	******************** First append matches done previously:
+	drop if email == ""
 	
-	*append using "regis_fuzzy_merge_done"
+	keep if score == 1
 	
-	******************** Merge with regis_inter
-		
-	merge m:m id_plateforme using "regis_inter"
+	keep id_plateforme id_email rg_emailpdg rg_emailpdg score treatment
 	
-	keep if _merge==3
+	gen matched_on = "email_pdg"
 	
-	******************** Keep only identifying vars (rename them for clarity)
+	append using "matches"
 	
-	keep id_plateforme id_email score matchedon dup rg_emailpdg rg_emailrep ///
-	firmname rg_adresse id_admin rg_fte sector rg_expstatus
+	save "matches", replace
 	
-	rename firmname rg_firmname
-	rename sector rg_sector
+	restore
 	
-	******************** Merge with giz_contact_list_final
-	
-	merge m:m id_email using "${samp_gdrive}/final/giz_contact_list_final" 
-	
-	******************** Keep only identifying vars (rename them for clarity)
-	
-	keep if _merge==3 
-	
-	keep id_plateforme id_email score matchedon dup rg_emailpdg rg_emailrep ///
-	rg_firmname rg_adresse id_admin rg_fte rg_sector rg_expstatus firmname ///
-	name email fte treatment sector export town  
-	
-	rename firmname samp_firmname
-	rename sector samp_sector
-	rename name samp_name
-	rename email samp_email
-	rename fte samp_fte
-	rename export samp_expstatus
-	rename town samp_town
-	
-	******************** Order to allow manual verification
-	
-	order id_plateforme id_email score matchedon dup ///
-		  samp_email rg_emailpdg rg_emailrep ///
-		  rg_firmname samp_firmname samp_town rg_adresse  ///
-		  samp_fte rg_fte samp_expstatus rg_expstatus 
-	
-	
-	gsort id_plateforme -score id_email
-	
-	
-***********************************************************************
-* 	PART 6: save & export potential matches for manual check
-***********************************************************************	
-	* save list of potential matches as dta file & export as Excel for manuel check
-	
-	save "regis_potential_matches", replace
-	
-	export excel using "$regis_intermediate/regis_potential_matches", firstrow(variables) replace
+/* Result should be: N in matches = 275 */
 
+	
+	******************** save candidate matches with score > 0.9
+	preserve
+	
+	drop if email == ""
+	
+	keep if score > 0.9
+	
+	keep id_plateforme id_email rg_emailpdg rg_emailpdg score treatment
+	
+	gen matched_on = "email_pdg"
+	
+	append using "candidates"
+	
+	save "candidates", replace
+	
+	restore
+	
+
+/* Result should be: N in candidates = 1875 */
 
