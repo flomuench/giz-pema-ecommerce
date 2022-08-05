@@ -102,11 +102,14 @@ br
 	* sort observations such that will always remain in this order
 gsort matched_on -score
 gen id_candidates = _n
+order id_candidates, a(id_email)
+
+br
 
 gen correct_match = 0
 
-local obs 1 2
-foreach obs of local obs {
+local flo_obs 540 541 542 543 544 545 546 547 548 549 550 551 552 553 555 557 558 559 560 561 562 563 564 565 566 567 568 569 571 573 574 583 586 588 589 594 595 599 606 605 604 610 612 619 620 618 616 623 627 635 639 642 645 651 656 653 664 666 668 665 672 679 697 709 683 692 680 730 725 758 789 798 813 802 829 828
+foreach obs of local flo_obs {
 	replace correct_match = 1 if id_candidates == `obs'
 }
 
