@@ -135,7 +135,6 @@ if (0) do "${regis_github}/regis_open_question_checks.do"
 if (0) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 
 
-/* 
 ***********************************************************************
 * 	PART 5: 	Run do-files for fuzzy merge/matching email adresses
 ***********************************************************************
@@ -147,7 +146,9 @@ PART 5.1: Fuzzy merge registered with sameple firms
 	Requires: regis_inter.dta, giz_contact_list_final 
 	Creates: regis_potential_matches.xls & dta, regis_fuzzy_merge_done.dta
 ----------------------------------------------------------------------*/	
-if (0) do "${regis_github}/regis_match.do"
+if (1) do "${regis_github}/regis_match.do"
+
+
 
 /* --------------------------------------------------------------------
 PART 5.2: 
@@ -156,14 +157,14 @@ PART 5.2:
 	Creates: regis_matched.dta, regis_done.dta
 ----------------------------------------------------------------------*/
 
-if (0) do "${regis_github}/regis_saving_match.do"
+*if (0) do "${regis_github}/regis_manuel_match.do"
 
-*/
+
 
 --------------------------------------------------------------------
 	PART 6.1: merge-in administrative information on export behaviour + list for baseline
 ----------------------------------------------------------------------*/
-if (1) do "${regis_github}/regis_verification.do"
+if (0) do "${regis_github}/regis_verification.do"
 
 
 /* --------------------------------------------------------------------

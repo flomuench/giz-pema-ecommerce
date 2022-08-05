@@ -54,7 +54,7 @@
 	
 	keep if score == 1
 	
-	keep id_plateforme id_email firmname rg_emailpdg rg_emailrep score treatment
+	keep id_plateforme id_email email firmname Ufirmname rg_emailpdg rg_emailrep score treatment
 	
 	gen matched_on = "firmname"
 	
@@ -71,9 +71,9 @@
 	
 	drop if firmname == ""
 	
-	keep if score > 0.9
+	keep if score > 0.9 & score < 1
 	
-	keep id_plateforme id_email firmname rg_emailpdg rg_emailrep score treatment
+	keep id_plateforme id_email email firmname Ufirmname rg_emailpdg rg_emailrep score treatment
 	
 	gen matched_on = "firmname"
 	
@@ -82,7 +82,7 @@
 	restore
 	
 /* Result should be: 
-	candidates.dta N = 698
+	candidates.dta N = 297
 																			*/
 		
 ***********************************************************************
@@ -111,7 +111,7 @@ use "regis_inter", clear
 	
 	keep if score == 1
 	
-	keep id_plateforme id_email rg_emailpdg rg_emailrep score treatment
+	keep id_plateforme id_email firmname Uemail email rg_emailpdg rg_emailrep score treatment
 	
 	gen matched_on = "email_rep"
 	
@@ -128,9 +128,9 @@ use "regis_inter", clear
 	
 	drop if email == ""
 	
-	keep if score > 0.9
+	keep if score > 0.9 & score < 1
 	
-	keep id_plateforme id_email rg_emailpdg rg_emailrep score treatment
+	keep id_plateforme id_email firmname email Uemail rg_emailpdg rg_emailrep score treatment
 	
 	gen matched_on = "email_rep"
 	
@@ -140,7 +140,7 @@ use "regis_inter", clear
 	
 	restore
 
-/* Result should be: N in candidates = 1275 */
+/* Result should be: N in candidates = 297 + 269 */
 	
 ***********************************************************************
 * 	PART 5: Fuzzy matching on the email of the main pdg (rg_emailpdg)
@@ -168,7 +168,7 @@ use "regis_inter", clear
 	
 	keep if score == 1
 	
-	keep id_plateforme id_email rg_emailpdg rg_emailpdg score treatment
+	keep id_plateforme id_email firmname email Uemail rg_emailpdg rg_emailpdg score treatment
 	
 	gen matched_on = "email_pdg"
 	
@@ -186,9 +186,9 @@ use "regis_inter", clear
 	
 	drop if email == ""
 	
-	keep if score > 0.9
+	keep if score > 0.9 & score < 1
 	
-	keep id_plateforme id_email rg_emailpdg rg_emailpdg score treatment
+	keep id_plateforme id_email firmname email Uemail rg_emailpdg rg_emailpdg score treatment
 	
 	gen matched_on = "email_pdg"
 	
@@ -199,5 +199,5 @@ use "regis_inter", clear
 	restore
 	
 
-/* Result should be: N in candidates = 1875 */
+/* Result should be: N in candidates = 297 + 269 + 272 = 838 */
 
