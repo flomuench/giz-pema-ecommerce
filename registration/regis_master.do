@@ -53,10 +53,18 @@ set scheme plotplain
 ***********************************************************************
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
+				
+if "`c(username)'" == "my rog"{
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+}
+else{
+		global gdrive = "C:/Users/`c(username)'/Google Drive"
+}
+
 if c(os) == "Windows" {
-	global output = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
-	global gdrive_data =  "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
-	global regis_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global output = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
+	global gdrive_data =  "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+	global regis_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 	global regis_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -68,7 +76,7 @@ else if c(os) == "MacOSX" {
 }
 
 if c(os) == "Windows" {
-	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
+	global samp_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
