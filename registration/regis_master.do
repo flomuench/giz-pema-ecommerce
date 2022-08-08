@@ -156,25 +156,19 @@ PART 5.1: Fuzzy merge registered with sameple firms
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_match.do"
 
-
-
 /* --------------------------------------------------------------------
 PART 5.2: 
 	NOTE: Before running this the excel spreadsheet needs to be manually checked
 	Requires: regis_match_intermediate.xls
 	Creates: regis_matched.dta, regis_done.dta
 ----------------------------------------------------------------------*/
-
-*if (0) do "${regis_github}/regis_manuel_match.do"
-
+if (1) do "${regis_github}/regis_manual_match.do"
 
 
---------------------------------------------------------------------
+/*--------------------------------------------------------------------
 	PART 6.1: merge-in administrative information on export behaviour + list for baseline
 ----------------------------------------------------------------------*/
 if (0) do "${regis_github}/regis_verification.do"
-
-
 /* --------------------------------------------------------------------
 	PART 6.2: master data + deidentified regis_final for analysis
 ----------------------------------------------------------------------*/
