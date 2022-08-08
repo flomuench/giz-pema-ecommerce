@@ -150,29 +150,29 @@ if (0) do "${regis_github}/regis_progress_eligibility_characteristics.do"
 /* --------------------------------------------------------------------
 
 PART 5.1: Fuzzy merge registered with sameple firms
-	NOTE: After this is run, the excel spreadsheet needs to be manually checked
-	Requires: regis_inter.dta, giz_contact_list_final 
-	Creates: regis_potential_matches.xls & dta, regis_fuzzy_merge_done.dta
+	Requires: giz_contact_list_final 
+	Creates: matches.dta, candidates.dta
 ----------------------------------------------------------------------*/	
 if (1) do "${regis_github}/regis_match.do"
-
 /* --------------------------------------------------------------------
-PART 5.2: 
-	NOTE: Before running this the excel spreadsheet needs to be manually checked
+PART 5.2: Determines matches among candidates and merge matches.dta and candidates with regis_inter
 	Requires: regis_match_intermediate.xls
 	Creates: regis_matched.dta, regis_done.dta
 ----------------------------------------------------------------------*/
 if (1) do "${regis_github}/regis_manual_match.do"
 
-
+***********************************************************************
+* 	PART 6: Legal verification by partners + de-identification 
+***********************************************************************
 /*--------------------------------------------------------------------
 	PART 6.1: merge-in administrative information on export behaviour + list for baseline
 ----------------------------------------------------------------------*/
-if (0) do "${regis_github}/regis_verification.do"
+if (1) do "${regis_github}/regis_verification.do"
 /* --------------------------------------------------------------------
 	PART 6.2: master data + deidentified regis_final for analysis
+	Creates: regis_final.dta & ecommerce_regis_pii
 ----------------------------------------------------------------------*/
-if (0) do "${regis_github}/regis_masterdata_deidentify.do"
+if (1) do "${regis_github}/regis_masterdata_deidentify.do"
 
 
 

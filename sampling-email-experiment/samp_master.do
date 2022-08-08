@@ -124,34 +124,35 @@ set sortseed 8413195
 /* --------------------------------------------------------------------
 	PART 3.1: Import & raw data
 ----------------------------------------------------------------------*/		
-if (0) do "${samp_github}/samp_import.do"
+if (1) do "${samp_github}/samp_import.do"
 /* --------------------------------------------------------------------
 	PART 3.2: Clean raw data & save as intermediate data
 	NOTE: no observation values are changed
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_clean.do"
+if (1) do "${samp_github}/samp_clean.do"
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 	NOTE: observational values are changed, observations are dropped
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_correct.do"
+if (1) do "${samp_github}/samp_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Generate variables for analysis or implementation
 	NOTE: id_email
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_generate.do"
+if (1) do "${samp_github}/samp_generate.do"
 /* --------------------------------------------------------------------
 	PART 3.5: Stratification
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_stratification.do"
+if (1) do "${samp_github}/samp_stratification.do"
 /* --------------------------------------------------------------------
 	PART 3.6: Randomisation
+	Creates: giz_contact_list_final
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_randomisation_manual.do"
+if (1) do "${samp_github}/samp_randomisation_manual.do"
 /* --------------------------------------------------------------------
 	PART 3.7: identify hand-coded email adresses with bounce message
 ----------------------------------------------------------------------*/	
-if (0) do "${samp_github}/samp_bounce.do"
+if (1) do "${samp_github}/samp_bounce.do"
 
 
 ***********************************************************************
@@ -159,20 +160,23 @@ if (0) do "${samp_github}/samp_bounce.do"
 ***********************************************************************
 /* --------------------------------------------------------------------
 	PART 4.1: merge with matches & registration data
+	Requires: giz_contact_list_final.dta
+	Creates: email_experiment.dta
 ----------------------------------------------------------------------*/
 if (1) do "${samp_github}/samp_merge_registration.do"
 /* --------------------------------------------------------------------
 	PART 4.2: clean as necessary after merge with registration data
 ----------------------------------------------------------------------*/
-if (1) do "${samp_github}/samp_correct_generate.do"
+* resume work here
+if (0) do "${samp_github}/samp_correct_generate.do"
 /* --------------------------------------------------------------------
 	PART 4.3: merge registered companies with baseline data
 ----------------------------------------------------------------------*/
-if (1) do "${samp_github}/samp_merge_baseline.do"
+if (0) do "${samp_github}/samp_merge_baseline.do"
 /* --------------------------------------------------------------------
 	PART 4.4: clean as necessary after merge with baseline data
 ----------------------------------------------------------------------*/
-if (1) do "${samp_github}/samp_correct_generate2.do"
+if (0) do "${samp_github}/samp_correct_generate2.do"
 
 ***********************************************************************
 * 	PART 5: 	Run do-files for merging with registration + baseline data
@@ -184,7 +188,7 @@ if (0) do "${samp_github}/samp_descriptive_statistics.do"
 /* --------------------------------------------------------------------
 	PART 5.2: regression analysis - main effect
 ----------------------------------------------------------------------*/
-if (1) do "${samp_github}/samp_regression_main.do"
+if (0) do "${samp_github}/samp_regression_main.do"
 /* --------------------------------------------------------------------
 	PART 5.3: regression analysis - subgroup analysis
 ----------------------------------------------------------------------*/

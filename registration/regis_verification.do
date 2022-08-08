@@ -17,7 +17,7 @@
 * 	PART 0:  set environment + create pdf file for export		  			
 ***********************************************************************
 	* import file
-use "${regis_intermediate}/regis_inter", clear
+use "${regis_intermediate}/regis_inter", clear 		/* N = 911 */
 
 	* set directory to checks folder
 cd "$regis_intermediate"
@@ -49,7 +49,7 @@ restore
 * 	PART 2:  correct for changes in matricule fiscal 	  			
 ***********************************************************************
 	* harmonize the names of the unique fiscal identifier in both data files
- rename id_admin matricule_fiscale
+rename id_admin matricule_fiscale
 
 	* correct in master with new matricule fiscale from administrative verification
 replace matricule_fiscale = "1324038w" if firmname == "cymod international"
@@ -70,16 +70,23 @@ codebook matricule_fiscale /* only 4 are missing */
 duplicates report matricule_fiscale
 duplicates tag matricule_fiscale, gen(dup_matfis)
 browse firmname matricule_fiscale rg_nom_rep rg_emailrep rg_emailpdg rg_siteweb rg_media if dup_matfis > 0
-		* only duplicates in terms of matricule fiscale are the firms with missing one
+		* drop duplicates of firms that have no matricule fiscale as not eligible
+drop if matricule_fiscale == ""
+		
+		* drop duplicates of firms with dual registration as only one slot per company
+drop if id_plateforme == 100
+drop if id_plateforme == 150
+drop if id_plateforme == 343
+drop if id_plateforme == 215
+drop if id_plateforme == 611
 	
+
 ***********************************************************************
 * 	PART 3:  merge 	  			
 ***********************************************************************
 	* merge regis_intermediate with admin info
-drop if matricule_fiscale == ""
 merge 1:1 matricule_fiscale using "verified_ecommerce_eligibles_pme"
-browse if _merge == 2
-*export excel matricule_fiscale nom_entreprise-export2021 using "verif_unmerged" if _merge == 2, replace firstrow(var)
+
 drop code_douane site_web Téléphone reseaux_sociaux date_created onshore employes
 gen finally_eligible = 0
 replace finally_eligible = 1 if _merge == 3

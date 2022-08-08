@@ -10,101 +10,119 @@
 *	2)	 merge with initial population based on id_email
 *	3)	 merge with registration data to get controls for registered firms
 *	4) 	 save as email_experiment.dta in final folder
-*																 																      *
+*
 *	Author:  	Florian													  
 *	ID variable: 	none			  									  
 *	Requires:		giz_contact_list_final.dta & regis_corrected_matches 
 *	Creates:		giz_contact_list_inter.dta					  
 *																	  
 ***********************************************************************
-* 	PART Start: import the data + save it in samp_final folder				  										  *
+* 	PART Start: import the data + save it in samp_final folder
 ***********************************************************************
 	* set the directory
 cd "$samp_final"
 
-	* import the registration data from another folder
-import excel "${regis_intermediate}/regis_corrected_matches.xlsx", firstrow clear
+*use "${samp_final}/giz_contact_list_final", clear
 
+***********************************************************************
+* 	PART 2: merge with perfect matches and candidate matches
+***********************************************************************
+************* perfect matches
+	* import perfect matches
+use "${regis_intermediate}/matches", clear
 
-	* save as dta in samp_final folder
-save "regis_corrected_matches", replace
+	* format data
+lab var matched_on "Identifies on what basis the contact was matched"
+lab var score "Matching score"
+lab var id_email "ID from original GIZ mailing list (giz_contact_list_final)"
+format %-30s firmname Ufirmname email rg_emailpdg rg_emailrep
+order id_plateforme id_email score firmname Ufirmname email /*Uemail*/ rg_emailpdg rg_emailrep
 
-	* make sur id_email & id_plateforme are unique identifiers
-keep in 1/185
-drop X-Z
-lab var id_email "email used for sampling/communication campaign"
-lab var id_plateforme "email firm used to register"
-format samp_email rg_email* *firm* %-30s
-format id_plateforme id_email dup %-9.0g
-format score %-20.0g
-sort id_email
-*browse
+	* remove duplicates to enable unique merge (duplicates arrise as some firms registered multiple times; they are separately removed within regis.do workflow)
+			* id_plateforme
+duplicates report id_plateforme /* 0 */
 
-		* check for duplicates in terms of id_email 
-duplicates report id_email
-/* suggests: 7 firms with one duplicate */
-duplicates tag id_email, gen(did_email)
-order did_email, a(id_email)
-*browse if did_email == 1
-
-		* drop all duplicates of id_email based on samp_email comparison with rg_email
-*duplicates drop id_email, force
-drop if id_plateforme == 188 & id_email == 113
-drop if id_plateforme == 315 & id_email == 473
-drop if id_plateforme == 297 & id_email == 585 & score == .958896815776824951
-drop if id_plateforme == 570 | id_plateforme == 291
-drop if id_plateforme == 557 | id_plateforme == 344
-drop if id_plateforme == 211 & id_email == 3064 & score == .953646540641784668
-
-
-		* check for duplicates in terms of id_plateforme
-			* same firm but different emails for sampling
-duplicates report id_plateforme
-/* suggests: 10 firms with one duplicate */
-sort id_plateforme
-duplicates tag id_plateforme, gen(did_plateforme)
-order did_plateforme, a(did_email)
-*browse if did_plateforme == 1
-*br id_plateforme samp_name samp_firmname rg_firmname treat sample *gender* samp_email rg_emailrep rg_emailpdg if did_plateforme == 1
+			* id_email
+duplicates report id_email /* 7 */
+duplicates list id_email /* 7 */
+duplicates tag id_email, gen(dup_id_email)
+br if dup_id_email > 0
+			
+			* remove duplicates in terms of id_email
+duplicates drop id_email, force  /* new N = 268 */
 		
-	* rename 
-rename treatment treat
-lab var treat "treatment indicator as in regis_corrected_matches"
-
-	* save as dta in samp_final folder
-save "regis_corrected_matches", replace
-
-	* contains 177 firms
-
-***********************************************************************
-* 	PART 1: merge matches with initial population (giz_contact_list_final) based on id_email				  										  *
-***********************************************************************
-use "${samp_final}/giz_contact_list_final", clear
-sort id_email
-	* contains 4847 firms
-	
-merge 1:m id_email using "regis_corrected_matches"
-	* all 177 corrected matches were matched
-	* after matching: 4848 firms
-
-	* generate a dummy to indicate
-gen sample = .
-replace sample = 1 if _merge == 3
-replace sample = 2 if _merge == 1
-drop if _merge == 2
-	* drop merge variable & rg_expstatus (due to solve format mismatch for matching)
-drop _merge rg_expstatus
-
-	* 
-order id_email id_plateforme *firmname email samp_email rg_emailpdg rg_emailrep
-order matchedon-sample, a(export)
-
-	* save as email_experiment.dta in sampling final folder
+			* merge based on id_email
+merge 1:1 id_email using "${samp_gdrive}/final/giz_contact_list_final"
+gen registered = 0
+replace registered = 1 if _merge == 3
+drop _merge
+			
+			* save as new giz_contact_list_final
 save "email_experiment", replace
 
+
+	
+************* candidate matches
+	* import candidates matches
+use "${regis_intermediate}/candidates", clear
+
+	* format data
+lab var matched_on "Identifies on what basis the contact was matched"
+lab var score "Matching score"
+lab var id_email "ID from original GIZ mailing list (giz_contact_list_final)"
+format %-30s firmname Ufirmname email rg_emailpdg rg_emailrep
+order id_plateforme id_email score firmname Ufirmname email /*Uemail*/ rg_emailpdg rg_emailrep
+
+	* sort observations such that will always remain in this order
+gsort matched_on -score
+gen id_candidates = _n
+order id_candidates, a(id_email)
+
+	* create new variable that identifies the manually verified matches
+gen correct_match = 0
+
+	* replace all obs with correct_match = 1 as identified via eye-balling
+local observations 532 533 530 536 528 502 494 483 473 436 383 365 363 350 478 313 289 314 289 273 272 271 203 111 91 96 82 83 84 42 29 24 12 11 7 3 2 1 505 540 541 542 543 544 545 546 547 548 549 550 551 552 553 555 557 558 559 560 561 562 563 564 565 566 567 568 569 571 573 574 583 586 588 589 594 595 599 606 605 604 610 612 619 620 618 616 623 627 635 639 642 651 656 653 664 666 668 665 672 679 683 680 730 725 758 789 798 813 802 
+foreach obs of local observations {
+	replace correct_match = 1 if id_candidates == `obs'
+}
+
+tab correct_match /* result should be N = 108 */
+	
+	* remove candidates which we identified as no match
+keep if correct_match == 1
+
+	* remove duplicates where id_plateforme and id_email is identifical as there is no loss of information
+duplicates report id_plateforme id_email
+duplicates tag id_plateforme id_email, gen(dup_both)
+br if dup_both > 0
+duplicates drop id_plateforme id_email, force /* new N = 100 */
+
+	* check remaining candidates for duplicates
+duplicates report id_plateforme /* there should be zero duplicates for id_plateforme */
+sort id_email
+duplicates report id_email
+duplicates tag id_email, gen(dup_id_email)
+br if dup_id_email > 0
+
+	* drop duplicates in terms of id_email
+duplicates drop id_email, force /* new N = 95 */
+		
+	* merge based on id_email
+merge 1:1 id_email using "${samp_final}/email_experiment"
+	* add obs to perfect matches
+replace registered = 1 if _merge == 3
+drop _merge
+
+
+	* save as new giz contact list
+save "email_experiment", replace
+	
+
 ***********************************************************************
-* 	PART 2: merge with registration data to get controls for registered firms				  										  *
+* 	PART 2: merge with registration data to get additional control/explanatory variables
 ***********************************************************************
+/*
 use "${regis_final}/regis_final", clear
 
 merge m:m id_plateforme using "email_experiment"

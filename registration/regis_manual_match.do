@@ -64,13 +64,17 @@ br
 ***********************************************************************
 	preserve
 		merge 1:1 id_plateforme using regis_inter
+		gen identified = 0
+		replace identified = 1 if _merge == 3
 		drop _merge
 		save "regis_inter", replace
 	restore
 
 ***********************************************************************
-* 	PART 1.4: merge with sampling data
+/* 	PART 1.4: merge with sampling data --> this part has been integrated into the samp.do workflow 
+	see samp_merge_registration, line 28 ff */
 ***********************************************************************
+/*
 	preserve
 		br if dup_id_email > 0 /* eyeballing suggests same firm with two registrations, so no loss of information when dropped */
 		duplicates drop id_email, force
@@ -78,7 +82,7 @@ br
 		drop _merge
 		save "giz_contact_list_final", replace
 	restore
-
+*/
 ***********************************************************************
 * 	PART 2: Candidate matches - candidates.dta - import and format
 ***********************************************************************
@@ -137,18 +141,22 @@ br if dup_id_email > 0
 ***********************************************************************
 	preserve
 		merge 1:1 id_plateforme using regis_inter
+		replace identified = 1 if _merge == 3
+		drop _merge
 		save "regis_inter", replace
 	restore
 
 ***********************************************************************
-* 	PART 2.4: merge with sampling data
+/* 	PART 2.4: merge with sampling data --> this part has been integrated into the samp.do workflow 
+	see samp_merge_registration, line 65 ff */
 ***********************************************************************
+/*
 	preserve
-		duplicates drop id_email, force
+		duplicates drop id_email, force /* new N = 95 */
 		merge 1:1 id_email using "${samp_gdrive}/final/giz_contact_list_final"
 		save "giz_contact_list_final", replace
 	restore
-	
+*/
 
 
 	

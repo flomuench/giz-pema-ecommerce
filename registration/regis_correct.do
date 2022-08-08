@@ -429,7 +429,8 @@ duplicates tag firmname, gen(dup_firmname)
 
 duplicates tag firmname rg_emailpdg rg_emailrep, gen(full_dup)
 
-/*
+/* DO NOT UNSTART THIS LIST OTHERWISE THE CODE WONT WORK
+	* THIS WAS INITIAL WORK BUT DUPLICATES NEED TO BE REMOVED AT LATER STAGE FOR WORKFLOW REASONS --> see regis_verification.do line 77
 	* drop duplicates
 drop if id_plateforme == 357
 drop if id_plateforme == 610
