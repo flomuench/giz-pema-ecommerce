@@ -156,8 +156,6 @@ PART 5.1: Fuzzy merge registered with sameple firms
 if (1) do "${regis_github}/regis_match.do"
 /* --------------------------------------------------------------------
 PART 5.2: Determines matches among candidates and merge matches.dta and candidates with regis_inter
-	Requires: regis_match_intermediate.xls
-	Creates: regis_matched.dta, regis_done.dta
 ----------------------------------------------------------------------*/
 if (1) do "${regis_github}/regis_manual_match.do"
 
@@ -166,6 +164,7 @@ if (1) do "${regis_github}/regis_manual_match.do"
 ***********************************************************************
 /*--------------------------------------------------------------------
 	PART 6.1: merge-in administrative information on export behaviour + list for baseline
+	Creates: regis_for_email_experiment.dta used in analysis of email experiment
 ----------------------------------------------------------------------*/
 if (1) do "${regis_github}/regis_verification.do"
 /* --------------------------------------------------------------------
