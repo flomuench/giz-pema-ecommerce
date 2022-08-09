@@ -14,27 +14,41 @@
 *	Creates:		giz_contact_list_inter.dta					  
 *																	  
 ***********************************************************************
-* 	PART Start: import the data + save it in samp_final folder				  										  *
+* 	PART Start: import the data
 ***********************************************************************
-	* set the directory to baseline folder
-cd "$bl_final"
-
-	* load email experiment data
-use "${samp_final}/email_experiment", clear
-drop _merge
-	
-	*
-sort id_plateforme 
-forvalues x = 373(1)5043 { 
-	replace id_plateforme = -`x' in `x'
-}
-
-	* merge email experimemt with baseline data
-merge 1:1 id_plateforme using bl_final
-
-	* check results
-
-	* change directory back to email experiment/sampling folder
-		* save updated, merged data set
+	* set the directory
 cd "$samp_final"
+
+use "email_experiment", clear
+
+***********************************************************************
+* 	PART 2: merge with registration data set based on id_plateforme
+***********************************************************************
+* note: bl_final contains 236 firms/obs
+merge m:1 id_plateforme using "${bl_final}/bl_final"
+
+gen baseline_available = 0
+replace baseline_available = 1 if _merge == 3
+
+/*
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                         5,187
+        from master                     5,187  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                               239  (_merge==3)
+    -----------------------------------------
+*/
+* 239 matches because three companies with different id_email but same id_plateforme
+duplicates list id_plateforme if _merge == 3
+
+
+drop _merge
+
+***********************************************************************
+* 	PART 3: save as email experiment data
+***********************************************************************
 save "email_experiment", replace
+
+

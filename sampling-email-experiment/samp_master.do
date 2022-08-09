@@ -163,16 +163,15 @@ if (1) do "${samp_github}/samp_bounce.do"
 	Requires: giz_contact_list_final.dta
 	Creates: email_experiment.dta
 ----------------------------------------------------------------------*/
-if (1) do "${samp_github}/samp_merge_registration.do"
+if (1) do "${samp_github}/samp_merge_matches.do"
 /* --------------------------------------------------------------------
 	PART 4.2: clean as necessary after merge with registration data
 ----------------------------------------------------------------------*/
-* resume work here
-if (0) do "${samp_github}/samp_correct_generate.do"
+if (1) do "${samp_github}/samp_merge_registration.do"
 /* --------------------------------------------------------------------
 	PART 4.3: merge registered companies with baseline data
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/samp_merge_baseline.do"
+if (1) do "${samp_github}/samp_merge_baseline.do"
 /* --------------------------------------------------------------------
 	PART 4.4: clean as necessary after merge with baseline data
 ----------------------------------------------------------------------*/
