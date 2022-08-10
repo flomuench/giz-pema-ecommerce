@@ -37,7 +37,7 @@ replace gender_dif = 1 if gender != rg_gender_pdg & gender != . & rg_gender_pdg 
 replace gender_dif = 1 if gender != car_sex_pdg & gender != . & car_sex_pdg != .	  /* 8 */
 	
 	* br firms with different CEO gender
-browse firmname id_plateforme id_email gender rg_gender_rep rg_gender_pdg car_sex_pdg name rg_position_rep rg_nom_rep if gender_dif_pdg == 1
+browse firmname id_plateforme id_email  gender name rg_nom_rep rg_position_rep rg_gender_rep  rg_gender_pdg car_sex_pdg  if gender_dif_pdg == 1
 
 	* generate a CEO corrected gender dummy
 gen gender_pdg_corrected = gender
@@ -57,6 +57,15 @@ gen gender_pdg_corrected = gender
 	replace gender_pdg_corrected = 1 if id_plateforme == 688 & id_email == 4621
 	replace gender_pdg_corrected = 1 if id_plateforme == 419 & id_email == 1981
 	replace gender_pdg_corrected = 1 if id_plateforme == 349 & id_email == 517
+	replace gender_pdg_corrected = 0 if id_plateforme == 309 & id_email == 1326
+	replace gender_pdg_corrected = 1 if id_plateforme == 370 & id_email == 3086
+	replace gender_pdg_corrected = 0 if id_plateforme == 586 & id_email == 145
+	replace gender_pdg_corrected = 1 if id_plateforme == 589 & id_email == 1527
+	replace gender_pdg_corrected = 1 if id_plateforme == 736 & id_email == 50
+	replace gender_pdg_corrected = 1 if id_plateforme == 889 & id_email == 3707
+
+	
+*	id_plateforme = 589, id_email = 1527
 * ligne 4361 id_plateforme = 409, id_email = 934 "africa flying and engineering"
 	
 	* create a dummy for all firms were initial gender is different from representative gender (rep registered firm and rep dif gender)
