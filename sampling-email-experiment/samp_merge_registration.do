@@ -45,6 +45,10 @@ firms that were in our database and registered = 336
 total number of firms	= 4514 + 573 + 333 = 5426
 */
 
+gen sample = _merge
+lab def subsample 1 "contacted & not registered" 2 "not contacted & registered" 3 "contacted & registered"
+lab values sample subsample
+
 drop _merge
 
 ***********************************************************************
