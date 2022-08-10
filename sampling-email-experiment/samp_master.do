@@ -182,7 +182,7 @@ if (1) do "${samp_github}/samp_merge_baseline.do"
 /* --------------------------------------------------------------------
 	PART 4.4: clean as necessary after merge with baseline data
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/samp_correct_generate2.do"
+if (1) do "${samp_github}/samp_correct_gender.do"
 
 ***********************************************************************
 * 	PART 5: 	Run do-files for merging with registration + baseline data
