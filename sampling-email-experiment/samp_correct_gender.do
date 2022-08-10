@@ -70,13 +70,16 @@ gen gender_pdg_corrected = gender
 	
 	* create a dummy for all firms were initial gender is different from representative gender (rep registered firm and rep dif gender)
 gen gender_dif_rep = 0
-replace gender_dif_rep = 1 if gender != rg_gender_rep & gender != . & rg_gender_rep != .  /* 73 */
+replace gender_dif_rep = 1 if gender != rg_gender_rep & gender != . & rg_gender_rep != .  /* 52 */
 
 	* br firms with different rep
+browse firmname id_plateforme id_email gender name rg_nom_rep rg_position_rep rg_gender_rep  rg_gender_pdg car_sex_pdg  if gender_dif_rep == 1
 
+	
+	
 	* generate a Rep corrected gender
 gen gender_rep_corrected = gender
-replace 
+*replace 
 
 
 ***********************************************************************
