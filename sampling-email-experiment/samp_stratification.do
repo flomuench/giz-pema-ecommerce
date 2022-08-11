@@ -293,7 +293,7 @@ label define strata2_categories 1 "Women - Textiles, leather & shoes" ///
 	16 "Women - undefined" 17 "Men - undefined"
 	
 lab values strata2 strata2_categories
-
+lab var strata2 "strata used for ecommerce email experiment"
 
 ***********************************************************************
 * 	PART 3: visualise number of observations per strata				  										  
