@@ -162,4 +162,8 @@ iebaltab `variables' registered == 1, grpvar(moyen_com) savetex(baltab_ecom_regi
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine nottest  ///
 			 format(%12.2fc)
 			 
-
+***********************************************************************
+* 	PART 7: registration by strata2 & sector
+***********************************************************************	
+gr hbar (count), over(registered, lab(labsize(vsmall))) over(strata2) ///
+	blabel(bar, format(%9.0fc))

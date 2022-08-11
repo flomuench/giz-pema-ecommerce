@@ -98,6 +98,8 @@ gen not_delivered = .
 replace not_delivered = 0 if _merge == 1
 replace not_delivered = 1 if _merge == 3
 
+lab var not_delivered "bounce email"
+
 /*
 merge 1:m email using giz_contact_list_bounce, update replace
 	
