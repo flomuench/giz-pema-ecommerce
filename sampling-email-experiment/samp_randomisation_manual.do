@@ -166,7 +166,13 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(strata2, lab(labs(smal
 		
 		
 		* balance for continuous and few units categorical variables
+			* Excel
 iebaltab fte export1 export2 Size1-Size4 Origin1 Origin2, grpvar(treatment) save(baltab_email_experiment) replace ///
+			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
+			 format(%12.2fc)
+			 
+			 * Latex
+iebaltab fte export1 export2 Size1-Size4 Origin1 Origin2, grpvar(treatment) savetex(baltab_email_experiment) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 		
