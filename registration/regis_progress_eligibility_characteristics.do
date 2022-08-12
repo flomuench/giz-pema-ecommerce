@@ -81,6 +81,9 @@ putpdf paragraph, halign(center)
 putpdf image moyen_com.png
 putpdf pagebreak
 
+	* communication channels by district
+graph pie, over(moyen_com) by(district)
+
 
 	* balance table
 cd "$final_tables"

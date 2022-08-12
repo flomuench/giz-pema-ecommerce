@@ -95,25 +95,41 @@ esttab `regressions' using registration.tex, replace ///
 ***********************************************************************
 * 	PART 1b: main effect on registration using OLS model
 ***********************************************************************
-/*
+
 		*(c1) simple treatment dummy
-_eststo registration_c1, r: regress registered i.treatment, vce(robust)
+_eststo registration_ols_c1, r: regress registered i.treatment, vce(robust)
 
 		*(c2) interaction with gender
-_eststo registration_c2, r: regress registered i.treatment##i.gender, vce(robust)
+_eststo registration_ols_c2, r: regress registered i.treatment##i.gender, vce(robust)
 
+rename gender gender3
+rename gender_pdg_corrected gender
 		* (c3) gender corrected ceo
-_eststo registration_c3, r: logit registered i.treatment##i.gender_pdg_corrected, vce(robust)
+_eststo registration_ols_c3, r: regress registered i.treatment##i.gender, vce(robust)
+rename gender gender_pdg_corrected
 
 		* (c4) gender corrected rep
-_eststo registration_c4, r: logit registered i.treatment##i.gender_rep_corrected, vce(robust)
-
+rename gender_rep_corrected gender
+_eststo registration_ols_c4, r: regress registered i.treatment##i.gender, vce(robust)
+rename gender gender_rep_corrected
+rename gender3 gender
 			
-		* (c3) adding strata
-_eststo registration_c3, r: regress registered i.treatment i.strata2, vce(robust)
+		* (c5) adding strata
+_eststo registration_ols_c5, r: regress registered i.treatment i.strata2, vce(robust)
 
-
-
+		* create latex table
+local regressions registration_ols_c1 registration_ols_c2 registration_ols_c3 registration_ols_c4 registration_ols_c5
+esttab `regressions' using registration_ols.tex, replace ///
+	mtitles("Treatment dummy" "Gender interaction" "CEO gender corrected" "Rep. gender corrected" "Strata controls") ///
+	label ///
+	b(2) ///
+	se(2) ///
+	star(* 0.1 ** 0.05 *** 0.01) ///
+	drop(*.strata2) ///
+	scalars("Strata controls") ///
+	nobaselevels ///
+	addnotes("All models are estimated in Stata 15 SE using OLS regressions." "In column (3), algorithm based firms' gender assignment has been corrected manually based on the name of the person who registered the company and (s)he being the CEO." "In column (4), the same correction as in column(3) but gender is now defined as that of the person who registered the company even if that person was not the CEO." "When strata controls are included, we do not include an interaction term with gender given strata are based on gender." "The sample is reduced to 3894 as we exclude 953 firms with malfunctioning email addresses." )
+	
 
 ***********************************************************************
 * 	PART 1c: bundled treatment vs. control
@@ -122,20 +138,47 @@ gen treated = .
 replace treated = 1 if treatment == 1 | treatment == 2
 replace treated = 0 if treatment == 0
 lab def treat2 1 "treated" 0 "control"
-lab var treated treat2
+lab val treated treat2
 
-logit registered i.treated, vce(robust)
-outreg2 using bundled, excel replace ctitle(logit)
-margins i.treated, post
-outreg2 using bundled, excel append ctitle(predicted probability)
-logit registered i.treated##i.gender_rep2, vce(robust)
-outreg2 using bundled, excel append ctitle(logit)
-margins i.treated##i.gender_rep2, post
-outreg2 using bundled, excel append ctitle(predicted probability)
-logit registered i.treated##i.gender_rep2 i.strata2 , vce(robust)
-outreg2 using bundled, excel append ctitle(logit)
-margins i.treated##i.gender_rep2, post
-outreg2 using bundled, excel append ctitle(predicted probability)
+		*(c1) treatment dummy
+_eststo registration_bundled_c1, r: logit registered i.treated if not_delivered == 0, vce(robust)
+_eststo registration_bundled_m1, r: margins i.treated, post
+
+		*(c2) interaction with gender
+_eststo registration_bundled_c2, r: logit registered i.treated##i.gender if not_delivered == 0, vce(robust)
+_eststo registration_bundled_m2, r: margins i.treated##i.gender, post
+
+		* c(3)alternative, CEO corrected gender definition
+rename gender gender3
+rename gender_pdg_corrected gender
+_eststo registration_bundled_c3, r: logit registered i.treated##i.gender if not_delivered == 0, vce(robust)
+_eststo registration_bundled_m3, r: margins i.treated##i.gender, post
+rename gender gender_pdg_corrected
+
+		* c(4)alternative, CEO + Rep corrected gender definition
+rename gender_rep_corrected gender
+_eststo registration_bundled_c4, r: logit registered i.treated##i.gender if not_delivered == 0, vce(robust)
+_eststo registration_bundled_m4, r: margins i.treated##i.gender, post
+rename gender gender_rep_corrected
+rename gender3 gender
+
+		* (c5) adding strata
+_eststo registration_bundled_c5, r: logit registered i.treated i.strata2 if not_delivered == 0, vce(robust)
+_eststo registration_bundled_m5, r: margins i.treated, post /* strata to small to measure interaction effect */
+
+	* create a Latex table
+local regressions registration_bundled_c1 registration_bundled_m1 registration_bundled_c2 registration_bundled_m2 registration_bundled_c3 registration_bundled_m3 registration_bundled_c4 registration_bundled_m4 registration_bundled_c5 registration_bundled_m5
+esttab `regressions' using registration_bundled.tex, replace ///
+	mtitles("beta" "pp" "beta" "pp" "beta" "pp" "beta" "pp" "beta" "pp") ///
+	label ///
+	b(2) ///
+	se(2) ///
+	star(* 0.1 ** 0.05 *** 0.01) ///
+	drop(*.strata2) ///
+	scalars("Strata controls") ///
+	nobaselevels ///
+	addnotes("All models are estimated in Stata 15 SE using logistic regressions." "PP stands for predicted probability." "In column (3), algorithm based firms' gender assignment has been corrected manually based on the name of the person who registered the company and (s)he being the CEO." "In column (4), the same correction as in column(3) but gender is now defined as that of the person who registered the company even if that person was not the CEO." "When strata controls are included, we do not include an interaction term with gender given strata are based on gender." "The sample is reduced to 3894 as we exclude 953 firms with malfunctioning email addresses." )
+	
 
 ***********************************************************************
 * 	PART : test whether effect differs between female and male firms
@@ -151,7 +194,7 @@ margins i.treatment##i.gender, post
 test _b[1.treatment#1.gender] = _b[1.treatment#0.gender]
 /* one can reject the hypothesis that coefficents female#treat vs. male#trat are not different;
 CI overlap slightly 2.6-4.57% for male free childcare vs. 4.31-10.88% for female represented firms */
-*/
+
 
 
 ***********************************************************************
