@@ -26,45 +26,38 @@ cd "$samp_regressions"
 
 
 ***********************************************************************
-* 	PART 1: sub-group analysis by sector
+* 	PART 1: how the firms attracted by control, childcare and video differ?
 ***********************************************************************
-	* use preserve not to loose the rest of the data
-preserve 
-	
-	* create regression tables + coefficient plots for each sector
-		* select the sector for which we can do subgroup analysis based on 
-			* descriptive statistics = sufficient observations
-levelsof Sector if registered != 0, local(sector_sufficient_n)
-foreach x of local sector_sufficient_n {
-	estimates clear
-	* (1) logit - just treatment effect
-	logit registered i.treatment if Sector == "`x'", vce(robust)
-	outreg2 using "`x'", excel replace ctitle(logit)
-	
-	* (2) predicted probability - just treatment effect
-	margins i.treatment, post
-	outreg2 using "`x'", excel append ctitle(predicted probability)
-	
-	* (3) logit - interaction effect
-	logit registered i.treatment##i.gender if Sector == "`x'", vce(robust)
-	outreg2 using "`x'", excel append ctitle(logit)
-	
-	* (4) predicted probabilty - interaction effect
-	margins i.treatment##i.gender, post
-	outreg2 using "`x'", excel append ctitle(predicted probability)
-	
-	* coefficient plot of treatment + interaction effect
-	estimates store sector
-	coefplot sector, drop(_cons) ///
-		xtitle("Predicted probability of registration", size(small)) xlab(0.01(0.01)0.2) ///
-		graphr(color(white)) bgcol(white) plotr(color(white)) ///
-		title("{bf:How to attract (female) firms to an export support program?}") ///
-		subtitle("Sector `x'", size(small)) ///
-		note("Sample size = ?", size(vsmall))
-	gr export "`x'.png", replace
-	
-}
-restore
+	* continuous variables
+cd "$final_tables"
+winsor2 rg_fte, cuts(0 99)
+rename rg_fte_w w_rg_fte
+local variables1 w_rg_fte female_share rg_gender_pdg rg_gender_rep presence_enligne rg_age 
+local variables2 rg_capital rg_resident rg_produitexp rg_oper_exp rg_intention
+local variables3 w_compca w_compbe w_compexp w_compdrev
+			
+			* as Excel
+iebaltab `variables1' `variables2' `variables3' if inrange(rg_capital,0,10000000) & inrange(rg_age, 0, 100) & inrange(rg_fte, 0, 250), ///
+		grpvar(treatment) save(post_ecommerce_differences) replace ///
+		vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
+		format(%12.2fc)
+			 
+			* as tex
+iebaltab `variables1' `variables2' `variables3' if inrange(rg_capital,0,10000000) & inrange(rg_age, 0, 100) & inrange(rg_fte, 0, 250), ///
+		grpvar(treatment) savetex(post_ecommerce_differences) replace ///
+		vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
+		format(%12.2fc)
+		 
+	* categorical variables
+		* district
+		
+		
+		* sector
+		
+		
+		* origin
+		
+		
 
 
 ***********************************************************************

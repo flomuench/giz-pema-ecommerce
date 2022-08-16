@@ -65,7 +65,7 @@ lab var dateinscription "registration date"
 graph twoway histogram dateinscription, frequency width(1) ///
 		tlabel(02nov2021(1)07dec2021, angle(60) labsize(vsmall)) ///
 		ytitle("registrations") ///
-		tline(22586 22592 22600 22609 22613, lcolor(red) lpattern(dash)) 
+		tline(22586 22587 22588 22593 22594 22595 22600 22601 22602 22606 22607 22608 22614 22615 22616 22621, lcolor(red) lpattern(dash)) 
 gr export enregistrement_par_jour.png, replace
 putpdf paragraph, halign(center) 
 putpdf image enregistrement_par_jour.png
