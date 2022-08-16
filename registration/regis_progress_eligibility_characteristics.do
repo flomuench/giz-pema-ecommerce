@@ -82,7 +82,14 @@ putpdf image moyen_com.png
 putpdf pagebreak
 
 	* communication channels by district
-graph pie, over(moyen_com) by(district)
+
+set scheme cleanplots
+graph pie, over(moyen_com) by(district, note("")) ///
+	legend(cols(5)) 
+	sort descending /* ordering of the pie slices - largest first at 12 o'clock */
+	
+	
+set scheme plotplain
 
 
 	* balance table

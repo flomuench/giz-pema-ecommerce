@@ -568,6 +568,11 @@ replace rg_adresse2 = "av ahmed mrad, cité des pins boumhel bassatine 2097" if 
 replace rg_adresse2 = "rue de l'usine charguia2" if id_plateforme == 768
 replace rg_adresse2 = "000, zi ettaamir, sousse 4003" if id_plateforme == 748
 
+	* correct districts
+replace district = "Tozeur" if district == "Tozeur "
+replace district = "Jendouba" if district == "Jendouba "
+
+
 ***********************************************************************
 * 	PART 10:  autres / miscallaneous adjustments
 ***********************************************************************
@@ -575,6 +580,7 @@ replace rg_adresse2 = "000, zi ettaamir, sousse 4003" if id_plateforme == 748
 replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
 replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
 replace moyen_com = "" if moyen_com == "---"
+	
 
 	* correct wrong response categories for subsectors
 replace subsector = "industries chimiques" if subsector == "industrie chimique"
