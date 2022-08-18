@@ -40,6 +40,11 @@ save "districts", replace
 merge 1:1 id_plateforme using districts
 drop _merge
 
+
+	* correct districts
+replace district = "Tozeur" if district == "Tozeur "
+replace district = "Jendouba" if district == "Jendouba "
+
 ***********************************************************************
 * 	PART 3: factor variable sector & subsector 			  										  
 ***********************************************************************
