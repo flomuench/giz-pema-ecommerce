@@ -122,9 +122,26 @@ duplicates drop email, force
 	
 drop _merge
 
-
+			 
 ***********************************************************************
-* 	PART 7: save final, export excel final
+* 	PART 7: Balance tables after bounces
+***********************************************************************
+	* Do bounces kill balance?
+		* Excel
+local balancevar "fte export1 export2 Size1-Size4 "
+iebaltab `balancevar' if not_delivered == 0, grpvar(treatment) save(baltab_email_after_bounce) replace ///
+     	 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
+		 format(%12.2fc)
+		 
+
+		* Tex
+local balancevar "fte export1 export2 Size1-Size4 "
+iebaltab `balancevar' if not_delivered == 0, grpvar(treatment) savetex(baltab_email_after_bounce) replace ///
+     	 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
+		 format(%12.2fc)
+		 
+***********************************************************************
+* 	PART 8: save final, export excel final
 ***********************************************************************
 	* excel
 export excel "giz_contact_list_final", replace firstrow(var)
