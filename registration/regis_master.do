@@ -42,6 +42,7 @@ ssc install strgroup
 ssc install stripplot
 net install http://www.stata.com/users/kcrow/tab2docx
 ssc install labutil
+net install grc1leg2.pkg, from (http://digital.cgdev.org/doc/stata/MO/Misc/)
 */
 
 

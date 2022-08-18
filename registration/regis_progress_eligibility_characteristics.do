@@ -88,6 +88,20 @@ graph pie, over(moyen_com) by(district, note("")) ///
 	legend(cols(5)) 
 	sort descending /* ordering of the pie slices - largest first at 12 o'clock */
 	
+graph pie if urban == 1 & district != "Autres", ///
+	over(moyen_com) by(district, note("") legend(on all)) ///
+	legend(cols(5)) ///
+	plabel(_all sum) /// show the number of observation per pie slice
+	name(moyen_com_urban, replace)
+gr export moyen_com_urban.png, replace
+	
+graph pie if urban == 0, ///
+	over(moyen_com) ///
+	by(district, note("") legend(on all)) ///
+	legend(cols(5)) ///
+	plabel(_all sum) /// show the number of observation per pie slice
+	name(moyen_com_rural, replace)
+gr export moyen_com_rural.png, replace
 	
 set scheme plotplain
 

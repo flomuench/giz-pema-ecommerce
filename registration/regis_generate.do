@@ -44,6 +44,18 @@ drop _merge
 	* correct districts
 replace district = "Tozeur" if district == "Tozeur "
 replace district = "Jendouba" if district == "Jendouba "
+replace district = "Manouba" if district == "Manouba  "
+replace district = "Manouba" if district == "Tebourba"
+
+	* create urbaine - ruraux dummmy
+gen urban = 1
+	local districts "Bizerte Beja Nabeul Zaghouan Siliana Kef Kairouan Mahdia Tozeur Kebili Tataouine Medenine"
+	foreach gouvernorat of local districts {
+		replace urban = 0 if district == "`gouvernorat'"
+	}
+lab def rural 1 "urban" 0 "rural"
+lab val urban rural
+lab var urban "HQ in urban vs. rural district"
 
 ***********************************************************************
 * 	PART 3: factor variable sector & subsector 			  										  
