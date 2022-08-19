@@ -96,6 +96,8 @@ cd "$master_raw"
 clear 
 
 use "${regis_final}/regis_final", clear
+*rename email treatment indicator to avoid replacement
+rename treatment treatment_email
 
 merge 1:1 id_plateforme using "${bl_final}/bl_final"
 
