@@ -18,7 +18,7 @@
 * 	PART 1: import the answers from questionnaire as Excel				  										  *
 ***********************************************************************
 cd "$bl2_raw"
-import excel "${regis_raw}/Webpresence answers.xlsx", firstrow clear
+import excel "Webpresence answers.xlsx", firstrow clear
 
 
 ***********************************************************************
