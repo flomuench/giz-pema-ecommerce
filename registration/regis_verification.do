@@ -16,11 +16,15 @@
 ***********************************************************************
 * 	PART 0:  set environment + create pdf file for export		  			
 ***********************************************************************
+	* set directory to checks folder
+cd "$regis_intermediate"
+
 	* import file
 use "${regis_intermediate}/regis_inter", clear 		/* N = 911 */
 
-	* set directory to checks folder
-cd "$regis_intermediate"
+	* save data as for use in email experiment analysis
+save "regis_for_email_experiment", replace
+
 
 ***********************************************************************
 * 	PART 1:  import admin info		  			

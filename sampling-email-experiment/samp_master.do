@@ -49,9 +49,16 @@ set scheme plotplain
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 			* to sampling folder
+if "`c(username)'" == "my rog"{
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+}
+else{
+		global gdrive = "C:/Users/`c(username)'/Google Drive"
+}
+
 if c(os) == "Windows" {
-	global output = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
-	global samp_gdrive = "C:/Users/`c(username)'/Google Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
+	global output = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output"
+	global samp_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/0-sampling-email-experiment"
 	global samp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/sampling-email-experiment"
 	global samp_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -163,20 +170,19 @@ if (1) do "${samp_github}/samp_bounce.do"
 	Requires: giz_contact_list_final.dta
 	Creates: email_experiment.dta
 ----------------------------------------------------------------------*/
-if (1) do "${samp_github}/samp_merge_registration.do"
+if (1) do "${samp_github}/samp_merge_matches.do"
 /* --------------------------------------------------------------------
 	PART 4.2: clean as necessary after merge with registration data
 ----------------------------------------------------------------------*/
-* resume work here
-if (0) do "${samp_github}/samp_correct_generate.do"
+if (1) do "${samp_github}/samp_merge_registration.do"
 /* --------------------------------------------------------------------
 	PART 4.3: merge registered companies with baseline data
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/samp_merge_baseline.do"
+if (1) do "${samp_github}/samp_merge_baseline.do"
 /* --------------------------------------------------------------------
 	PART 4.4: clean as necessary after merge with baseline data
 ----------------------------------------------------------------------*/
-if (0) do "${samp_github}/samp_correct_generate2.do"
+if (1) do "${samp_github}/samp_correct_gender.do"
 
 ***********************************************************************
 * 	PART 5: 	Run do-files for merging with registration + baseline data

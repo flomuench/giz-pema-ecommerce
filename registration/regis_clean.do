@@ -192,16 +192,6 @@ foreach x of local strvars {
 
 
 ***********************************************************************
-* 	PART 9: translation
-***********************************************************************
-	* means of communication
-replace moyen_com = "giz newsletter" if moyen_com == "bulletin d'information giz"
-replace moyen_com = "government website" if moyen_com == "site institution gouvernmentale"
-replace moyen_com = "giz website" if moyen_com == "site web de la giz"
-replace moyen_com = "cepex website" if moyen_com == "site web du cepex"
-
-
-***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
 cd "$regis_intermediate"

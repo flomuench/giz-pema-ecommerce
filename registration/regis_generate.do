@@ -27,9 +27,38 @@
 ***********************************************************************
 use "${regis_intermediate}/regis_inter", clear
 
+***********************************************************************
+* 	PART 2:  Define non-response categories  			
+***********************************************************************
+	* import Excel file with hand-coded districts based on written adresses
+	preserve
+import excel "${regis_raw}/districts.xlsx", firstrow clear
+save "districts", replace
+	restore
+	
+	* merge for import
+merge 1:1 id_plateforme using districts
+drop _merge
+
+
+	* correct districts
+replace district = "Tozeur" if district == "Tozeur "
+replace district = "Jendouba" if district == "Jendouba "
+replace district = "Manouba" if district == "Manouba  "
+replace district = "Manouba" if district == "Tebourba"
+
+	* create urbaine - ruraux dummmy
+gen urban = 1
+	local districts "Bizerte Beja Nabeul Zaghouan Siliana Kef Kairouan Mahdia Tozeur Kebili Tataouine Medenine"
+	foreach gouvernorat of local districts {
+		replace urban = 0 if district == "`gouvernorat'"
+	}
+lab def rural 1 "urban" 0 "rural"
+lab val urban rural
+lab var urban "HQ in urban vs. rural district"
 
 ***********************************************************************
-* 	PART 2: factor variable sector & subsector 			  										  
+* 	PART 3: factor variable sector & subsector 			  										  
 ***********************************************************************
 label define sector_name 1 "Agriculture & Peche" ///
 	2 "Artisanat" ///
@@ -76,7 +105,7 @@ lab values subsector subsector_name
 format %-25.0fc *sector
 
 ***********************************************************************
-* 	PART 2: factor variable gender 			  										  
+* 	PART 4: factor variable gender 			  										  
 ***********************************************************************
 label define sex 1 "female" 0 "male"
 tempvar Gender
@@ -97,7 +126,7 @@ gen female_share = rg_fte_femmes/rg_fte
 lab var female_share "share of female employees"
 
 ***********************************************************************
-* 	PART 3: factor variable onshore 			  										  
+* 	PART 5: factor variable onshore 			  										  
 ***********************************************************************
 lab def onshore 1 "résidente" 0 "non résidente"
 encode rg_onshore, gen(rg_resident)
@@ -108,7 +137,7 @@ lab val rg_resident onshore
 lab var rg_resident "HQ en Tunisie"
 
 ***********************************************************************
-* 	PART 4: factor variable produit exportable		  										  
+* 	PART 6: factor variable produit exportable		  										  
 ***********************************************************************
 lab def exportable 1 "produit exportable" 0 "produit non exportable"
 encode rg_exportable, gen(rg_produitexp)
@@ -119,7 +148,7 @@ lab val rg_produitexp exportable
 lab var rg_produitexp "Entreprise pense avoir un produit exportable"
 
 ***********************************************************************
-* 	PART 5: factor variable intention exporter			  										  
+* 	PART 7: factor variable intention exporter			  										  
 ***********************************************************************
 lab def intexp 1 "intention export" 0 "pas d'intention à exporter"
 encode rg_intexp, gen(rg_intention)
@@ -130,7 +159,7 @@ lab val rg_intention intexp
 lab var rg_intention "Entreprise a l'intention d'exporter dans les prochains 12 mois"
 
 ***********************************************************************
-* 	PART 6: dummy une opération d'export			  										  
+* 	PART 8: dummy une opération d'export			  										  
 ***********************************************************************
 lab def oper_exp 1 "Opération d'export" 0 "Pas d'opération d'export"
 encode rg_export, gen(rg_oper_exp)
@@ -141,7 +170,7 @@ lab val rg_oper_exp oper_exp
 lab var rg_oper_exp "Entreprise a realisé une opération d'export"
 
 ***********************************************************************
-* 	PART 7: factor variable export status		  										  
+* 	PART 9: factor variable export status		  										  
 ***********************************************************************
 encode rg_exportstatus, gen(rg_expstatus)
 drop rg_exportstatus
@@ -154,13 +183,13 @@ lab var expstatus3 "exclusive exporter"
 
 
 ***********************************************************************
-* 	PART 8: age
+* 	PART 10: age
 ***********************************************************************
 gen rg_age = round((td(30nov2021)-date_created)/365.25,2)
 order rg_age, a(date_created)
 
 ***********************************************************************
-* 	PART 8: dummy site web ou réseau social
+* 	PART 11: dummy site web ou réseau social
 ***********************************************************************
 gen presence_enligne = (rg_siteweb != "" | rg_media != ""), b(rg_siteweb)
 lab def enligne 1 "présente enligne" 0 "ne pas présente enligne"
@@ -168,7 +197,7 @@ lab var presence_enligne "webpage or social media account (1 = yes)"
 lab values presence_enligne enligne
 
 ***********************************************************************
-* 	PART 10: eligibiliy dummy
+* 	PART 12: eligibiliy dummy
 ***********************************************************************
 gen eligible = (id_admin_correct == 1 & rg_resident == 1 & rg_fte >= 6 & rg_fte <= 199 & rg_produitexp == 1 & rg_intention == 1 & rg_oper_exp == 1 & rg_age>=2)
 lab def eligible 1 "éligible" 0 "inéligible"

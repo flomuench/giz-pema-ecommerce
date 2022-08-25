@@ -82,7 +82,7 @@ reshape wide emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg t
 
 merge 1:1 id_plateforme using ecommerce_master_contact 
 drop _merge
-drop session1 session2 session3 session4
+*drop session1 session2 session3 session4
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
@@ -96,11 +96,17 @@ cd "$master_raw"
 clear 
 
 use "${regis_final}/regis_final", clear
+*rename email treatment indicator to avoid replacement
+rename treatment treatment_email
 
 merge 1:1 id_plateforme using "${bl_final}/bl_final"
 
 keep if _merge==3 /* companies that were eligible and answered on the registration + baseline surveys */
 drop _merge
+
+*generate surveyround variable
+gen surveyround = 1
+lab var surveyround "1-baseline 2-midline 3-endline"
 
     * save as ecommerce_database
 
@@ -136,7 +142,13 @@ destring id_plateforme,replace
 merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw"
 drop _merge
 
-
+*generate take up variable
+gen take_up = 0
+replace take_up = 1 if present>2 & present<.
+lab var take_up "1 if company was present in 3/5 trainings"
+gen take_up2 = 0
+replace take_up2 = 1 if present>0 & present<.
+lab var take_up2 "alternative take-up indicator, 1 if present in at least one training"
     * save as ecommerce_database
 
 save "ecommerce_database_raw", replace

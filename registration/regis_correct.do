@@ -568,13 +568,20 @@ replace rg_adresse2 = "av ahmed mrad, cité des pins boumhel bassatine 2097" if 
 replace rg_adresse2 = "rue de l'usine charguia2" if id_plateforme == 768
 replace rg_adresse2 = "000, zi ettaamir, sousse 4003" if id_plateforme == 748
 
+
+
+
 ***********************************************************************
 * 	PART 10:  autres / miscallaneous adjustments
 ***********************************************************************
 	* correct the response categories for moyen de communication
-replace moyen_com = "site institution gouvernmentale" if moyen_com == "site web d'une autre institution gouvernementale" 
-replace moyen_com = "bulletin d'information giz" if moyen_com == "bulletin d'information de la giz"
+replace moyen_com = "government website" if moyen_com == "site web d'une autre institution gouvernementale" 
+replace moyen_com = "giz newsletter" if moyen_com == "bulletin d'information de la giz"
 replace moyen_com = "" if moyen_com == "---"
+replace moyen_com = "giz website" if moyen_com == "site web de la giz"
+replace moyen_com = "cepex website" if moyen_com == "site web du cepex"
+replace moyen_com = "giz email" if moyen_com == "courriel giz"
+	
 
 	* correct wrong response categories for subsectors
 replace subsector = "industries chimiques" if subsector == "industrie chimique"

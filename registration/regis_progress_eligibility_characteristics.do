@@ -65,7 +65,7 @@ lab var dateinscription "registration date"
 graph twoway histogram dateinscription, frequency width(1) ///
 		tlabel(02nov2021(1)07dec2021, angle(60) labsize(vsmall)) ///
 		ytitle("registrations") ///
-		tline(22586 22592 22600 22609 22613, lcolor(red) lpattern(dash)) 
+		tline(22586 22587 22588 22593 22594 22595 22600 22601 22602 22606 22607 22608 22614 22615 22616 22621, lcolor(red) lpattern(dash)) 
 gr export enregistrement_par_jour.png, replace
 putpdf paragraph, halign(center) 
 putpdf image enregistrement_par_jour.png
@@ -80,6 +80,30 @@ graph export moyen_com.png, replace
 putpdf paragraph, halign(center) 
 putpdf image moyen_com.png
 putpdf pagebreak
+
+	* communication channels by district
+
+set scheme cleanplots
+graph pie, over(moyen_com) by(district, note("")) ///
+	legend(cols(5)) 
+	sort descending /* ordering of the pie slices - largest first at 12 o'clock */
+	
+graph pie if urban == 1 & district != "Autres", ///
+	over(moyen_com) by(district, note("") legend(on all)) ///
+	legend(cols(5)) ///
+	plabel(_all sum) /// show the number of observation per pie slice
+	name(moyen_com_urban, replace)
+gr export moyen_com_urban.png, replace
+	
+graph pie if urban == 0, ///
+	over(moyen_com) ///
+	by(district, note("") legend(on all)) ///
+	legend(cols(5)) ///
+	plabel(_all sum) /// show the number of observation per pie slice
+	name(moyen_com_rural, replace)
+gr export moyen_com_rural.png, replace
+	
+set scheme plotplain
 
 
 	* balance table
