@@ -64,13 +64,13 @@ else{
 
 if c(os) == "Windows" {
 	global bl2_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global bl2_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/baseline presence enligne"
+	global bl2_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
 	global bl2_backup = "C:/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
 }
 
 else if c(os) == "MacOSX" {
 	global bl2_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/baseline presence enligne"
+	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
 	global bl2_backup = "/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
 }		
 		
