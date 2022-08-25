@@ -80,19 +80,22 @@ putpdf image raw_knowledge.png
 putpdf pagebreak
 
 	* Digital Presence
-graph hbar (count),  over(dig_presence1) blabel (bar)
+graph hbar (count),  over(dig_presence1) blabel (bar) ///
+	title("Number of firms with a website")
 graph export dig_presence1.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_presence1.png
 putpdf pagebreak
 
-graph hbar (count),  over(dig_presence2) blabel (bar)
+graph hbar (count),  over(dig_presence2) blabel (bar) ///
+	title("No. of firms with a social media account")
 graph export dig_presence2.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_presence2.png
 putpdf pagebreak
 
-graph hbar (count),  over(dig_presence3) blabel (bar)
+graph hbar (count),  over(dig_presence3) blabel (bar) ///
+	title("Number of firms present on an online marketplace")
 graph export dig_presence3.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_presence3.png
@@ -105,7 +108,8 @@ putpdf paragraph, halign(center)
 putpdf image platforms_used.png
 putpdf pagebreak
 
-graph hbar (mean) dig_description1 dig_description2 dig_description3 dig_miseajour1 dig_miseajour2 dig_miseajour3, blabel (bar) ///
+graph hbar (mean) dig_description1 dig_description2 dig_description3 ///
+	dig_miseajour1 dig_miseajour2 dig_miseajour3, blabel (bar) ///
 legend(pos(9) cols(1) label(1 "1:Website desc.") label(2 "Social media desc.") label(3 "Platform desc.") label(4 "Website updating") label(5 "Social media updating") label(6 "Platform updating")) ///
 title("Description and updating of channel") subtitle ("1= product and firm description, 0.5 product or firm desc. 0.75=weekly update, 0.5=monthly, 0.25=annually")
 graph export description_updates.png, replace
@@ -114,19 +118,24 @@ putpdf image description_updates.png
 putpdf pagebreak
 
 
-graph hbar (count), over(dig_payment1) blabel (bar) title("Website: paying and ordering online") subtitle("1=paying and ordering, 0.5=ordering only")
+graph hbar (count), over(dig_payment1) blabel (bar) ///
+	title("Website: paying and ordering online") ///
+	subtitle("1=paying and ordering, 0.5=ordering only")
 graph export dig_payment1.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_payment1.png
 putpdf pagebreak
 
-graph hbar (count), over(dig_payment2) blabel (bar) title("Social Media: paying and ordering online") subtitle("1=paying and ordering, 0.5=ordering only")
+graph hbar (count), over(dig_payment2) blabel (bar) ///
+ title("Social Media: paying and ordering online") ///
+ subtitle("1=paying and ordering, 0.5=ordering only")
 graph export dig_payment2.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_payment2.png
 putpdf pagebreak
 
-graph hbar (count), over(dig_payment3) blabel (bar) title("Platform: paying and ordering online") subtitle("1=paying and ordering, 0.5=ordering only")
+graph hbar (count), over(dig_payment3) blabel (bar) ///
+title("Platform: paying and ordering online") subtitle("1=paying and ordering, 0.5=ordering only")
 graph export dig_payment3.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_payment3.png
