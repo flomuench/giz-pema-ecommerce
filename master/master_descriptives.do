@@ -111,7 +111,7 @@ putpdf pagebreak
 graph hbar (mean) dig_description1 dig_description2 dig_description3 ///
 	dig_miseajour1 dig_miseajour2 dig_miseajour3, blabel (bar) ///
 legend(pos(9) cols(1) label(1 "1:Website desc.") label(2 "Social media desc.") label(3 "Platform desc.") label(4 "Website updating") label(5 "Social media updating") label(6 "Platform updating")) ///
-title("Description and updating of channel") subtitle ("1= product and firm description, 0.5 product or firm desc. 0.75=weekly update, 0.5=monthly, 0.25=annually")
+title("Description and updating of channel") subtitle ("1= product and firm description, 0.5 product or firm desc. 0.75=weekly update, 0.5=monthly, 0.25=annually", size(vsmall))
 graph export description_updates.png, replace
 putpdf paragraph, halign(center) 
 putpdf image description_updates.png
@@ -150,9 +150,17 @@ legend(pos(9) cols(1) label(1 "1: Other") label(2 "2:Blog") label(3 "3: Mail") l
 label(6 "6: SEA")label(7 "7: SEO") label(8 "8: Social Media")) ///
 title("Digital Marketing Activities, no. of firms")
 
+graph hbar (count) , over(dig_marketing_respons_bin) blabel (bar) ///
+legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No")  ///
+title("Does the company have a digital marketing employee?")
+
+graph hbar (count) , over(dig_service_responsable_bin) blabel (bar) ///
+legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No")  ///
+title("Does the company have someone that manages online orders?")
+
 
 hist digtalvars, ///
-	title("Zscores of digital scores") ///
+	title("Average of Z-scores: E-commerce and digital marketing practices") ///
 	xtitle("Zscores")
 graph export digital_zscores.png, replace
 putpdf paragraph, halign(center) 
@@ -162,7 +170,7 @@ putpdf pagebreak
 	* For comparison, the 'raw' index: 
 	
 hist raw_digtalvars, ///
-	title("Raw sum of all digital scores") ///
+	title("Raw sum of all E-commerce and digital marketing practices") ///
 	xtitle("Sum")
 graph export raw_digital.png, replace
 putpdf paragraph, halign(center) 
