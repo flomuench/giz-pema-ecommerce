@@ -23,8 +23,25 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
 
+
 ***********************************************************************
-*PART 1.1. Recreate z-scores with control mean and control SD 
+*PART 1.1. Generate new variables or change variables create from bl_generate
+***********************************************************************	
+*Since most firms have at most zero, one or two FTE and online orders 
+*we use a binary indicator instead of continous or share of FTE, which sometimes
+*leads to absurd, difficult to compare figures (small firms have 5/6 employees working on it, others 1/180)
+
+gen dig_service_responsable_bin = 0
+replace dig_service_responsable_bin= 1 if dig_service_responsable>0 & dig_service_responsable<.
+lab var dig_service_responsable_bin "Firms has digital marketing employee (1) or not(0)"
+
+gen dig_marketing_respons_bin = 0
+replace dig_marketing_respons_bin = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
+lab var dig_service_responsable_bin "Firms has employee dealing with online orders"
+
+
+***********************************************************************
+*PART 1.2. Recreate z-scores with control mean and control SD 
 *(in BL was done with overall mean/SD)
 ***********************************************************************	
 capture program drop zscore
@@ -52,14 +69,23 @@ foreach var of local  allvars {
 
 
 	* calculate z score for all variables that are part of the index
-	*QUESTION FABIAN: Can we not include a dummy of whether the firm has a dig_marketIng_response and dig_service_respo? might be better than the share no? share is discrimating large firms*
-
+	
 local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
-local digtalvars dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per 
+local digtalvars dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 ///
+	dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien ///
+	dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score ///
+	dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_service_responsable_bin dig_marketing_respons_bin 
+	
+local dig_vitrine_index dig_presence_score dig_presence3_exscore dig_description1 ///
+		dig_description2 dig_description3 dig_miseajour1 dig_miseajour2 dig_miseajour3 ///
+		dig_payment1 dig_payment2 dig_payment3 dig_vente 
+local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
+		dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin 
+local dig_logistic_index dig_logistique_entrepot dig_logistique_retour_score
 local expprep expprep_cible expprep_norme expprep_demande exp_prep_res_per
 local exportcomes exp_pays_avg exp_per
 
-foreach z in knowledge digtalvars expprep exportcomes {
+foreach z in knowledge digtalvars dig_vitrine expprep exportcomes {
 	foreach x of local `z'  {
 			zscore `x' 
 		}
