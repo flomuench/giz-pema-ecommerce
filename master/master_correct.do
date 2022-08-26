@@ -20,6 +20,7 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 ***********************************************************************
 * 	PART 1: Baseline and registration data
 ***********************************************************************
+*Take-up data
 replace groupe = "Sfax 1" if id_plateforme==78
 replace groupe = "Sidi Bouzid" if id_plateforme==82
 replace groupe = "Sfax 1" if id_plateforme==107
@@ -35,6 +36,14 @@ replace groupe = "Sfax 1" if id_plateforme==956
 
 encode groupe, gen (groupe_factor)
 
+*Export
+local ihs_vars ihs_ca ihs_profits ihs_exports ihs_digrevenue
+foreach var of local  ihs_vars {
+	replace `var' = . if `var' <0 
 
+}
+
+*firms that have not exported in the past and did not report an export value for 2020 will be assumed zero
+replace compexp_2020 = 0 if compexp_2020 ==. & exp_avant21 ==0
 
 save "${master_intermediate}/ecommerce_master_inter", replace

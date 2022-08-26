@@ -13,7 +13,7 @@
 *	Author:  	Fabian Scheifele							    
 *	ID variable: id_platforme		  					  
 *	Requires:  	ecommerce_master_inter.dta
-*	Creates:	ecommerce_master_inter.dta
+*	Creates:	ecommerce_master_final.dta
 
 										  
 
@@ -22,7 +22,6 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 ***********************************************************************
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
-
 
 ***********************************************************************
 *PART 1.1. Generate new variables or change variables create from bl_generate
@@ -39,6 +38,36 @@ gen dig_marketing_respons_bin = 0
 replace dig_marketing_respons_bin = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
 lab var dig_service_responsable_bin "Firms has employee dealing with online orders"
 
+gen expprep_responsable_bin = 0
+replace expprep_responsable_bin =1 if expprep_responsable>0 & expprep_responsable_bin<.
+lab var expprep_responsable_bin "Firm has employee dealing with exports"
+
+*generate sector dummies as ordinal/categorical variable has no meaning
+gen agri=0
+replace agri=1 if sector==1
+gen artisanat=0
+replace artisanat=1 if sector==2
+gen commerce_int=0
+replace commerce_int=1 if sector==3
+gen industrie=0
+replace industrie=1 if sector==4
+gen service=0
+replace service=1 if sector==5
+gen tic=0
+replace tic=1 if sector==6
+
+lab var agri "dummy for sector=1"
+lab var artisanat "dummy for sector=2"
+lab var commerce_int "dummy for sector=3"
+lab var industrie "dummy for sector=4"
+lab var service "dummy for sector=5"
+lab var tic "dummy for sector=6"
+
+*regenerate IHS exports after slight modification of underlying variable
+drop ihs_exports w_compexp
+winsor compexp_2020, gen(w_compexp) p(0.01) highonly
+gen ihs_exports = log(w_compexp + sqrt((w_compexp*w_compexp)+1))
+lab var ihs_exports "IHS of exports in 2002"
 
 ***********************************************************************
 *PART 1.2. Recreate z-scores with control mean and control SD 
@@ -82,10 +111,10 @@ local dig_vitrine_index dig_presence_score dig_presence3_exscore dig_description
 local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
 		dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin 
 local dig_logistic_index dig_logistique_entrepot dig_logistique_retour_score
-local expprep expprep_cible expprep_norme expprep_demande exp_prep_res_per
+local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
 local exportcomes exp_pays_avg exp_per
 
-foreach z in knowledge digtalvars dig_vitrine expprep exportcomes {
+foreach z in knowledge digtalvars expprep exportcomes {
 	foreach x of local `z'  {
 			zscore `x' 
 		}
@@ -95,12 +124,28 @@ foreach z in knowledge digtalvars dig_vitrine expprep exportcomes {
 drop knowledge digtalvars expprep expoutcomes 
 *Calculate the index value: average of zscores 
 egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_scorez)
-egen digtalvars = rowmean(dig_presence_scorez dig_presence3_exscorez dig_miseajour1z dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_score dig_service_satisfactionz dig_description1z dig_description2z dig_description3z dig_mar_res_perz dig_ser_res_perz)
-egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez exp_prep_res_perz)
+egen digtalvars = rowmean(dig_presence_scorez dig_presence3_exscorez dig_miseajour1z ///
+		dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z ///
+		dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z ///
+		dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_score ///
+		dig_service_satisfactionz dig_description1z dig_description2z dig_description3z ///
+		dig_service_responsable_binz dig_marketing_respons_binz)
+egen dig_vitrine_index = rowmean(dig_presence_scorez dig_presence3_exscorez dig_description1z ///
+		dig_description2z dig_description3z dig_miseajour1z dig_miseajour2z dig_miseajour3z ///
+		dig_payment1z dig_payment2z dig_payment3z dig_ventez )
+		
+egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
+		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///
+		dig_marketing_respons_binz)
+egen  dig_logistic_index = rowmean (dig_logistique_entrepotz dig_logistique_retour_scorez)
+egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz)
 egen expoutcomes = rowmean(exp_pays_avgz exp_perz)
 
 lab var knowledge "Index for digitalisation knowledge"
-label var digtalvars   "Index digitalisation"
+label var digtalvars   "Index of all e-commerce and dig marketing activities"
+lab var dig_vitrine_index "Index relating to quantity and quality of online presence"
+lab var dig_marketing_index "Index relating to quantity and quality of digital marketing activities"
+lab var dig_logistic_index "Index relating to scope of used logistics and return possibilites"
 label var expprep "Index export preparation"
 label var expoutcomes "Index export outcomes"
 
@@ -113,4 +158,4 @@ gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
 
 
-save "${master_intermediate}/ecommerce_master_inter", replace
+save "${master_intermediate}/ecommerce_master_final", replace

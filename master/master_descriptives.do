@@ -17,13 +17,15 @@
 ***********************************************************************
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
-use "${master_intermediate}/ecommerce_master_inter", clear
+use "${master_intermediate}/ecommerce_master_final", clear
 		
 		* change directory to regis folder for merge with regis_final
 cd "${master_gdrive}/output"
 
 *Check whether balance table changed with new z-score calculation
-iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
+iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom ///
+comp_benefice2020 knowledge digtalvars dig_vitrine_index dig_marketing_index dig_logistic_index ///
+ expoutcomes expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 
@@ -32,7 +34,7 @@ iebaltab fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ec
 correlate compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep
 
 *What drives participation
-logit take_up i.groupe_factor sector subsector fte compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep if treatment==1
+logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports ihs_ca exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep if treatment==1
 logit take_up knowledge if treatment==1
 * Scatter plot
 graph twoway (lfitci take_up knowledge) (scatter take_up knowledge) if treatment ==1
@@ -41,8 +43,10 @@ graph twoway (lfitci take_up knowledge) (scatter take_up knowledge) if treatment
 tab take_up subsector if treatment==1
 *OBSERVATION: 11 out of the 38 companies that did not show up for at least 3 trainings are from agriculture. 
 
-
-
+***********************************************************************
+* 	PART 2: Some regressions
+***********************************************************************
+reg ihs_export ihs_ca agri artisanat commerce_int industrie service tic dig_vitrine_index dig_marketing_index fte car_pdg_age rg_age , robust
 ***********************************************************************
 *** PDF with graphs  			
 ***********************************************************************
@@ -151,11 +155,11 @@ label(6 "6: SEA")label(7 "7: SEO") label(8 "8: Social Media")) ///
 title("Digital Marketing Activities, no. of firms")
 
 graph hbar (count) , over(dig_marketing_respons_bin) blabel (bar) ///
-legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No")  ///
+legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have a digital marketing employee?")
 
 graph hbar (count) , over(dig_service_responsable_bin) blabel (bar) ///
-legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No")  ///
+legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have someone that manages online orders?")
 
 
@@ -255,7 +259,47 @@ putpdf paragraph, halign(center)
 putpdf image raw_ca_fte.png
 putpdf pagebreak
 
+***********************************************************************
+* 	PART 3:  Who are the digitally advanced firms? 
+***********************************************************************
+graph hbar (count), over(subsector, sort(1) descending label(labs(vsmall))) blabel(bar) ///
+ title("Number of firms by subsector")
+graph export count_subsector.png, replace
+graph hbar (count), over(sector, sort(1) descending label(labs(vsmall))) blabel(bar) ///
+ title("Number of firms by sector")
+graph export count_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image count_subsector.png
+putpdf paragraph, halign(center) 
+putpdf image count_sector.png
+putpdf pagebreak
 
+graph hbar (mean) digtalvars, over(subsector, sort(1) descending label(labs(vsmall))) ///
+ blabel(n, format(%9.2f)) title ("Average of total digital index (z-score), by subsector")
+graph export digitalvars_subsector.png, replace
+
+graph hbar (mean) digtalvars, over(sector, sort(1) descending label(labs(vsmall))) ///
+ blabel(total, format(%9.2f)) title ("Average of total digital index (z-score), by sector")
+graph export digitalvars_sector.png, replace
+
+putpdf paragraph, halign(center) 
+putpdf image digitalvars_subsector.png
+putpdf paragraph, halign(center) 
+putpdf image digitalvars_sector.png
+putpdf pagebreak
+	
+graph hbar (mean) dig_vitrine_index, over(subsector, sort(1) descending label(labs(vsmall))) ///
+ blabel(total, format(%9.2f)) title ("Average online presence quality/quantity (z-score), by sector")
+graph export dig_vitrine_subsector.png, replace
+
+graph hbar (mean) dig_vitrine_index, over(sector, sort(1) descending label(labs(vsmall))) ///
+ blabel(total, format(%9.2f)) title ("Average of total digital index (z-score), by sector")
+graph export dig_vitrine_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_vitrine_subsector.png
+putpdf paragraph, halign(center) 
+putpdf image dig_vitrine_sector.png
+putpdf pagebreak
 	
 ***********************************************************************
 * 	PART 4:  save pdf
