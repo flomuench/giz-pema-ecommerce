@@ -2,7 +2,7 @@
 * 			correct do file, second part baseline e-commerce				  
 ***********************************************************************
 *																	  
-*	PURPOSE: 
+*	PURPOSE: correct the questionnaire answers intermediate data
 *																	  
 *	OUTLINE: 	PART 1: Import the data
 *				PART 2: Turn binary questions numerical	
@@ -23,19 +23,7 @@
 use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 
 ***********************************************************************
-* 	PART 2: Turn binary questions numerical
-***********************************************************************
-
-local binaryvars Lentreprisedisposetelledun Lecontenuestillisiblepare Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes Danslecasducommerceinterent Lesiteestilproposédansune Existetildesliensversunma U Lapageduréseausocialcomport Lapageduréseausocialcontien Lapageduréseausocialcontie Estcequelentreprisepossède Lapagedisposetelledelopti AK Leprofildelentreprisecontie Leprofildelentreprisefourni
- 
-foreach var of local binaryvars {
-	capture replace `var' = "1" if strpos(`var', "oui")
-	capture replace `var' = "0" if strpos(`var', "non")
-
-}
-
-***********************************************************************
-*	PART 3: Recode observations 
+*	PART 2: Recode observations 
 ***********************************************************************
 
 	*rsocial media and website name and logo existance
@@ -75,7 +63,7 @@ replace web_purchase = "0.5" if web_purchase == "commander seulement"
 replace web_purchase = "1" if web_purchase == "commander et payer directement sur site"
 
 ***********************************************************************
-* 	PART 4: Fix missing values
+* 	PART 3: Fix missing values
 ***********************************************************************
 
 local notyesnovariables web_logoname entreprise_models web_externals web_contact web_quality web_purchase ///
@@ -87,7 +75,7 @@ replace `var' = "." if `var' ==""
 }
 
 ***********************************************************************
-* 	PART 5: Save the data
+* 	PART 4: Save the data
 ***********************************************************************
 
 save "${bl2_intermediate}/Webpresence_answers_inter", replace
