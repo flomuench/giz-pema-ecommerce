@@ -2,15 +2,16 @@
 * 			clean do file, second part baseline e-commerce			  *					  
 ***********************************************************************
 *																	  
-*	PURPOSE: clean the questionnaire answers raw data						  
+*	PURPOSE: clean the questionnaire answers intermediate data						  
 *																	  
 *	OUTLINE: 	PART 1: Import the data
 *				PART 2: Removing whitespace & format string & lower case
-*				PART 3: Drop variables	  
-*				PART 4: Rename variables
-*				PART 5: Label variables 
-*				PART 6: Label the variables values        											
-*				PART 7: Save the data
+*				PART 3: Turn binary questions numerical
+*				PART 4: Drop variables	  
+*				PART 5: Rename variables
+*				PART 6: Label variables 
+*				PART 7: Label the variables values        											
+*				PART 8: Save the data
 *													  
 *	Author:  								    
 *	ID variable: 		  					  
@@ -23,11 +24,13 @@
 
 use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 
+
 ***********************************************************************
 * 	PART 2:    Removing whitespace & format string & lower case
 ***********************************************************************
 
 	*remove leading and trailing white space
+
 {
 ds, has(type string) 
 local strvars "`r(varlist)'"
@@ -44,6 +47,18 @@ format %-20s `strvars'
 	*make all string lower case
 foreach x of local strvars {
 replace `x'= lower(`x')
+}
+
+***********************************************************************
+* 	PART 3: Turn binary questions numerical
+***********************************************************************
+
+local binaryvars Lentreprisedisposetelledun Lecontenuestillisiblepare Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes Danslecasducommerceinterent Lesiteestilproposédansune Existetildesliensversunma U Lapageduréseausocialcomport Lapageduréseausocialcontien Lapageduréseausocialcontie Estcequelentreprisepossède Lapagedisposetelledelopti AK Leprofildelentreprisecontie Leprofildelentreprisefourni
+ 
+foreach var of local binaryvars {
+	capture replace `var' = "1" if strpos(`var', "oui")
+	capture replace `var' = "0" if strpos(`var', "non")
+
 }
 
 ***********************************************************************
@@ -151,8 +166,12 @@ lab var facebook_link "link to facebook account"
 ***********************************************************************
 
 	*Label simple Yes's & No's
-local yesnovariables entreprise_web web_product web_multimedia web_aboutus web_norms entreprise_partners web_languages web_coherent web_external_purchase ///
+local yesnovariables entreprise_web web_product web_multimedia web_aboutus web_norms web_languages web_coherent web_external_purchase ///
 entreprise_social social_external_website social_photos social_description social_facebook facebook_shop social_insta insta_description insta_externals
+
+*destring these variables
+destring `yesnovariables', replace
+format `yesnovariables' %-9.0fc
 
 	*label the variables
 label define yesno 1 "Yes" 0 "No"
@@ -160,10 +179,6 @@ label define yesno 1 "Yes" 0 "No"
 foreach var of local yesnovariables {
 	label values `var' yesno 
 }
-
-	*destring these variables
-destring `yesnovariables', replace
-format `yesnovariables' %-9.0fc
 
 ***********************************************************************
 * 	PART 7: 	Save the data	  			

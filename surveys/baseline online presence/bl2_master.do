@@ -101,13 +101,13 @@ if (1) do "${bl2_github}/bl2_import.do"
 /* --------------------------------------------------------------------
 	PART 3.2: Clean raw data & save as intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_clean.do"
+if (1) do "${bl2_github}/bl2_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_correct.do"
+if (1) do "${bl2_github}/bl2_clean.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Export pdf with descriptive statistics on responses
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl2_statistics.do"
+if (0) do "${bl_github}/bl2_generate.do"
 /* --------------------------------------------------------------------
