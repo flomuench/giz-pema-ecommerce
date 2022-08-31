@@ -95,8 +95,6 @@ foreach var of local  allvars {
 	
 }
 
-
-
 	* calculate z score for all variables that are part of the index
 	
 local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
@@ -113,6 +111,7 @@ local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_in
 local dig_logistic_index dig_logistique_entrepot dig_logistique_retour_score
 local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
 local exportcomes exp_pays_avg exp_per
+local dig_presence dig_presence1 dig_presence2 dig_presence3
 
 foreach z in knowledge digtalvars expprep exportcomes {
 	foreach x of local `z'  {
@@ -141,6 +140,28 @@ egen  dig_logistic_index = rowmean (dig_logistique_entrepotz dig_logistique_reto
 egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz)
 egen expoutcomes = rowmean(exp_pays_avgz exp_perz)
 
+*Generate one index per channel and weight them according to their baseline levels 
+*best developed channel at BL gets 50% weight, second best 30% and third 20%
+*While presence on multiple channels is desirable, the importance of each might vary and BL levels 
+*indicate original importance
+
+egen web_indexz = rowmean (dig_miseajour1z dig_description1z dig_payment1z)
+egen social_media_indexz = rowmean(dig_miseajour2z dig_description2z dig_payment2z)
+egen platform_indexz = rowmean(dig_presence3_exscorez dig_miseajour3z dig_description3z dig_payment3z)
+egen max_presencez = rowmax(web_indexz social_media_indexz platform_indexz)
+egen min_presencez = rowmin(web_indexz social_media_indexz platform_indexz)
+gen mid_presencez = web_indexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
+
+*final weighted indicator
+gen dig_presence_weightedz = 0.5*max_presencez+ ///
+		0.1*min_presencez+0.3*mid_presencez+0.1*dig_ventez
+
+*re-taking z-score so that distribution gets adjusted
+zscore dig_presence_weightedz
+
+*drop temporary variables*
+*drop web_index	social_media_index	platform_index max_presence min_presence mid_presence
+
 lab var knowledge "Index for digitalisation knowledge"
 label var digtalvars   "Index of all e-commerce and dig marketing activities"
 lab var dig_vitrine_index "Index relating to quantity and quality of online presence"
@@ -148,7 +169,26 @@ lab var dig_marketing_index "Index relating to quantity and quality of digital m
 lab var dig_logistic_index "Index relating to scope of used logistics and return possibilites"
 label var expprep "Index export preparation"
 label var expoutcomes "Index export outcomes"
+label var dig_presence_weightedz "Weighted e-commerce index (z-score)"
 
+***********************************************************************
+*PART 1.3. Create alternative % -index (%of maximum points possible)
+***********************************************************************	
+*knowledge
+egen knowledge_share=rowtotal(dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score)
+replace knowledge_share=knowledge_share/6
+egen web_share=rowtotal(dig_miseajour1 dig_description1 dig_payment1)
+replace web_share=web_share/3
+egen social_m_share=rowtotal(dig_miseajour2 dig_description2 dig_payment2)
+replace social_m_share=social_m_share/3
+egen platform_share=rowtotal(dig_presence3_exscore dig_miseajour3 dig_description3 dig_payment3)
+replace platform_share=platform_share/4
+egen dig_marketing_share=rowtotal(dig_marketing_lien dig_marketing_ind1 ///
+		dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin ///
+		dig_marketing_respons_bin)
+replace dig_marketing_share	= dig_marketing_share/7
+egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_score)
+replace dig_logistic_share = dig_logistic_share/ 2
 
 ***********************************************************************
 *PART 1.2. Take-up data
