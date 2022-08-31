@@ -9,7 +9,7 @@
 *				PART 2: Prepare dynamic folder paths & globals		  
 *				PART 3: Run all do-files                          											  
 *																	  
-*	Author:  								    
+*	Author:  			Ayoub Chamakhi					    
 *	ID variable: 		  					  
 *	Requires:  	  										  
 *	Creates:  
@@ -23,7 +23,7 @@ clear all
 graph drop _all
 scalar drop _all
 set more off
-set graphics off /* switch off to on to display graphs */
+set graphics on /* switch off to on to display graphs */
 capture program drop zscore /* drops the program programname */
 qui cap log c
 
@@ -57,9 +57,6 @@ set scheme plotplain
 if "`c(username)'" == "Azra"{
 		global gdrive = "C:/Users/Azra/Google Drive Streaming/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 		
-}
-else if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele"{
-		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
 else{
 		global gdrive = "C:/Users/`c(username)'/Google Drive"
