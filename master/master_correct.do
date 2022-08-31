@@ -50,8 +50,15 @@ replace compexp_2020 = 0 if compexp_2020 ==. & exp_avant21 ==0
 local vars dig_description1 dig_description2 dig_description3 
 foreach var of local  vars {
 	replace `var' = .5 if `var'==0.49 | `var'==0.51
+<<<<<<< Updated upstream
 
 }
 
+=======
+}
+
+replace dig_con6_score=1 if dig_con6_score==0.99
+
+>>>>>>> Stashed changes
 
 save "${master_intermediate}/ecommerce_master_inter", replace
