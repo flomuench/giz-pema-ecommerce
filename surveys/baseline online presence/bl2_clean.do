@@ -24,9 +24,8 @@
 
 use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 
-
 ***********************************************************************
-* 	PART 2:    Removing whitespace & format string & lower case
+* 	PART 2:    Removing whitespace & format string and date & lower case 
 ***********************************************************************
 
 	*remove leading and trailing white space
@@ -43,23 +42,14 @@ replace `x' = stritrim(strtrim(`x'))
 ds, has(type string) 
 local strvars "`r(varlist)'"
 format %-20s `strvars'
-
+	
 	*make all string lower case
 foreach x of local strvars {
 replace `x'= lower(`x')
 }
 
-***********************************************************************
-* 	PART 3: Turn binary questions numerical
-***********************************************************************
-
-local binaryvars Lentreprisedisposetelledun Lecontenuestillisiblepare Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes Danslecasducommerceinterent Lesiteestilproposédansune Existetildesliensversunma U Lapageduréseausocialcomport Lapageduréseausocialcontien Lapageduréseausocialcontie Estcequelentreprisepossède Lapagedisposetelledelopti AK Leprofildelentreprisecontie Leprofildelentreprisefourni
- 
-foreach var of local binaryvars {
-	capture replace `var' = "1" if strpos(`var', "oui")
-	capture replace `var' = "0" if strpos(`var', "non")
-
-}
+	*fix date
+format Zeitstempel Quandétaitlavantdernierpubl %td
 
 ***********************************************************************
 * 	PART 3: Drop variables    
@@ -165,20 +155,67 @@ lab var facebook_link "link to facebook account"
 * 	PART 6: 	Label the variables values	  			
 ***********************************************************************
 
-	*Label simple Yes's & No's
+	*label simple yesnos
 local yesnovariables entreprise_web web_product web_multimedia web_aboutus web_norms web_languages web_coherent web_external_purchase ///
 entreprise_social social_external_website social_photos social_description social_facebook facebook_shop social_insta insta_description insta_externals
 
-*destring these variables
+	*destring yesnos variables
 destring `yesnovariables', replace
 format `yesnovariables' %-9.0fc
 
-	*label the variables
 label define yesno 1 "Yes" 0 "No"
 
 foreach var of local yesnovariables {
 	label values `var' yesno 
 }
+
+	*label logoname
+local logoname web_logoname social_logoname
+
+	*destring logoname variables
+destring `logoname', replace
+format `logoname' %-9.0fc
+
+label define logo 2 "name and logo" 1 "name or logo" 0 "neither"
+
+foreach var of local logoname {
+	label values `var' logo 
+}
+
+	*label entreprise models
+destring entreprise_models, replace
+format entreprise_models %-9.0fc
+
+label define models  2 "entreprise sells to customers and businesses" 1 "entreprise sells to customers or businesses"
+label value entreprise_models models 
+
+	*label entreprise partners
+destring entreprise_partners, replace
+format entreprise_partners %-9.0fc
+
+label define partners 2 "shows partners on website" 1 "sells only to customers (no b2b)" 0 "does not show partners"
+label value entreprise_partners partners
+
+	*label web externals
+destring web_externals, replace
+format web_externals %-9.0fc
+
+label define externals 2 "all external links are working" 1 "some external links work" 0 "no external link or not working ones"
+label value web_externals externals
+
+	*label web quality
+destring web_quality, replace
+format web_quality %-9.0fc
+
+label define quality 2 "contnet loads correctly" 1 "some content is lagging" 0 "website is full of bugs"
+label value web_quality quality
+
+	*label web purchase
+destring web_purchase, replace
+format web_purchase %-9.0fc
+
+label define purchase 2 "can order and purchase" 1 "can only order" 0 "neither order nor purchase"
+label value web_purchase purchase
 
 ***********************************************************************
 * 	PART 7: 	Save the data	  			

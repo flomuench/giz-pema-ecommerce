@@ -5,10 +5,11 @@
 *	PURPOSE: correct the questionnaire answers intermediate data
 *																	  
 *	OUTLINE: 	PART 1: Import the data
-*				PART 2: Turn binary questions numerical	
+*				PART 2: Turn binary questions numerical
 *				PART 3: Recode observations
 *				PART 4: Fix missing values
-*				PART 5: Save the data
+*				PART 5: Remove incorrect entries
+*				PART 6: Save the data
 *													
 *																	  
 *	Author:  								    
@@ -23,59 +24,87 @@
 use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 
 ***********************************************************************
-*	PART 2: Recode observations 
+* 	PART 2: Turn binary questions numerical
 ***********************************************************************
 
-	*rsocial media and website name and logo existance
-local logonamevars social_logoname web_logoname
+local binaryvars Lentreprisedisposetelledun Lecontenuestillisiblepare Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes ///
+Lesiteestilproposédansune Existetildesliensversunma U Lapageduréseausocialcomport Lapageduréseausocialcontien Lapageduréseausocialcontie Estcequelentreprisepossède Lapagedisposetelledelopti ///
+AK Leprofildelentreprisecontie Leprofildelentreprisefourni
+ 
+foreach var of local binaryvars {
+	capture replace `var' = "1" if strpos(`var', "Oui")
+	capture replace `var' = "0" if strpos(`var', "Non")
+
+}
+
+***********************************************************************
+*	PART 3: Recode observations 
+***********************************************************************
+
+	*social media and website name and logo existance
+local logonamevars Lapageduréseausocialindique LesiteWebindiquetilclairem
 foreach var of local logonamevars {
-	capture replace `var' = "1" if strpos(`var', "nom et logo")
-	capture replace `var' = "0.49" if strpos(`var', "logo uniquement")
-	capture replace `var' = "0.5" if strpos(`var', "nom seulement")
-	capture replace `var' = "0" if strpos(`var', "ni le nom ni le logo ne sont clairement indiqués")
+	capture replace `var' = "2" if strpos(`var', "Nom et logo")
+	capture replace `var' = "1" if strpos(`var', "Logo uniquement")
+	capture replace `var' = "1" if strpos(`var', "Nom seulement")
+	capture replace `var' = "0" if strpos(`var', "Ni le nom ni le logo ne sont clairement indiqués")
 
 
 }	
 
 	*entreprise selling methods
-replace entreprise_models = "1" if entreprise_models == "l’entreprise semble vendre à la fois aux consommateurs et aux entreprises."
-replace entreprise_models = "0" if entreprise_models == "l'entreprise vend à d'autres entreprises (b2b)."
-replace entreprise_models = "0.01" if entreprise_models == "l'entreprise vend à des consommateurs (personnes physiques)."
+replace Lentreprisevendellesonprodu = "2" if Lentreprisevendellesonprodu == "L’entreprise semble vendre à la fois aux consommateurs et aux entreprises."
+replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "L'entreprise vend à d'autres entreprises (B2B)."
+replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "L'entreprise vend à des consommateurs (personnes physiques)."
+replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "projets de développement local et régional "
 
 	*entreprise partners
-replace entreprise_partners ="0.5" if entreprise_partners == "l'entreprise ne vend qu'aux particuliers"
+replace Danslecasducommerceinterent ="2" if Danslecasducommerceinterent == "Oui"
+replace Danslecasducommerceinterent ="1" if Danslecasducommerceinterent == "l'entreprise ne vend qu'aux particuliers"
+replace Danslecasducommerceinterent ="0" if Danslecasducommerceinterent == "Non"
+
 
 	*web external links
-replace web_externals = "1" if web_externals == "oui, tous les liens externes fonctionnent correctement"
-replace web_externals = "0.5" if web_externals == "certains liens se chargent mais d'autres non"
-replace web_externals = "0.01" if web_externals == "le site web ne comporte pas de liens externes"
-replace web_externals = "0" if web_externals == "aucun des liens externes ne se charge correctement"
+replace Estcequelesliensexternesfo = "2" if Estcequelesliensexternesfo == "Oui, tous les liens externes fonctionnent correctement"
+replace Estcequelesliensexternesfo = "1" if Estcequelesliensexternesfo == "Certains liens se chargent mais d'autres non"
+replace Estcequelesliensexternesfo = "0" if Estcequelesliensexternesfo == "Le site web ne comporte pas de liens externes"
+replace Estcequelesliensexternesfo = "0" if Estcequelesliensexternesfo == "Aucun des liens externes ne se charge correctement"
 
 
 	*web quality
-replace web_quality = "0" if web_quality == "ni le texte ni le contenu visuel ne se charge rapidement"
-replace web_quality = "0.5" if web_quality == "l'un des deux contenus, textuel ou visuel, est long à charger mais l'autre se charge rapidement"
-replace web_quality = "1" if web_quality == "le contenu visuel et textuel se charge bien"
+	
+replace Lecontenusechargetilcorrec = "2" if Lecontenusechargetilcorrec == "Le contenu visuel et textuel se charge bien"
+replace Lecontenusechargetilcorrec = "1" if Lecontenusechargetilcorrec == "L'un des deux contenus, textuel ou visuel, est long à charger mais l'autre se charge rapidement"
+replace Lecontenusechargetilcorrec = "0" if Lecontenusechargetilcorrec == "Ni le texte ni le contenu visuel ne se charge rapidement"
 
 	*web purchase possbilities
-replace web_purchase = "0" if web_purchase == "ni commander ni payer"
-replace web_purchase = "0.5" if web_purchase == "commander seulement"
-replace web_purchase = "1" if web_purchase == "commander et payer directement sur site"
+replace Pouvezvousacheteroucommander = "2" if Pouvezvousacheteroucommander == "Commander et payer directement sur site"
+replace Pouvezvousacheteroucommander = "1" if Pouvezvousacheteroucommander == "Commander seulement"
+replace Pouvezvousacheteroucommander = "0" if Pouvezvousacheteroucommander == "Ni commander ni payer"
 
 ***********************************************************************
-* 	PART 3: Fix missing values
+* 	PART 4: Fix missing values
 ***********************************************************************
 
-local notyesnovariables web_logoname entreprise_models web_externals web_contact web_quality web_purchase ///
-web_external_names social_logoname social_contact social_contact social_others facebook_creation facebook_reviews ///
-facebook_reviews_avg insta_subs insta_contact socials_link facebook_link
+local notyesnovariables LesiteWebindiquetilclairem Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes  Lentreprisevendellesonprodu ///
+Danslecasducommerceinterent Estcequelesliensexternesfo Lesiteestilproposédansune Parmilespossibilitésdecontac Lecontenuestillisiblepare Lecontenusechargetilcorrec Pouvezvousacheteroucommander  ///
+Existetildesliensversunma Siouiversquellesplacesdem Lapageduréseausocialindique Lapageduréseausocialcomport Lapageduréseausocialcontien Lapageduréseausocialcontie Z Quandétaitladernierepublicat ///
+Pourlequeldesréseauxsociaux Estcequelentreprisepossède Quelleestladatedecréationd Combiendeavislapagepossède Quelleestlamoyennedesavisa Lapagedisposetelledelopti AK Quelestlenombredefollowers ///
+Leprofildelentreprisecontie Leprofildelentreprisecontie Leprofildelentreprisefourni Parmilesinformationsdecontac Veuillezcollercidessousleli Veuillezcollerleliendelapa
 
 foreach var of local notyesnovariables {
 replace `var' = "." if `var' ==""
 }
 
 ***********************************************************************
-* 	PART 4: Save the data
+* 	PART 5: Remove incorrect entries
 ***********************************************************************
 
-save "${bl2_intermediate}/Webpresence_answers_inter", replace
+	*remove baity.tn added by student as external purchase link
+replace Siouiversquellesplacesdem = "." if Siouiversquellesplacesdem == "baity.tn"
+
+***********************************************************************
+* 	PART 6: Save the data
+***********************************************************************
+
+save "${bl2_intermediate}/Webpresence_answers_intermediate", replace

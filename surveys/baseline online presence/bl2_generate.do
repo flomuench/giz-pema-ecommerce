@@ -5,9 +5,10 @@
 *	PURPOSE: generate new variables in the questionnaire answers intermediate data								  
 *																	  
 *	OUTLINE: 	PART 1: Import the data	  
-*				PART 2: 		  
-*				PART 3: 
-*				PART 4: Save the data
+*				PART 2: Generate date	  
+*				PART 3: Generate multiple-choice questions
+*				PART 4: Generate date difference facebook posts
+*				PART 5: Save the data
 *                         											  
 *																	  
 *	Author:  			Ayoub Chamakhi					    
@@ -20,14 +21,26 @@
 
 use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 
-***********************************************************************
-*	PART 2: 
-***********************************************************************
-
-
 
 ***********************************************************************
-*	PART 4: Save the data
+* 	PART 2: Generate date		  			
+***********************************************************************
+
+gen date1 = date(social_last_publication, "MDY")
+format date1 %td
+
+***********************************************************************
+* 	PART 3: Generate multiple-choice questions		  			
+***********************************************************************
+
+gen linkedin = regexm(social_others, "linkedin")
+***********************************************************************
+* 	PART 4: Generate date difference facebook posts		  			
+***********************************************************************
+
+gen diff = date1 - social_beforelast_publication
+***********************************************************************
+* 	PART 5: 	Save the data
 ***********************************************************************
 
 save "${bl2_intermediate}/Webpresence_answers_inter", replace
