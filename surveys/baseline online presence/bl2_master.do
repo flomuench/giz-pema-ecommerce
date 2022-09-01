@@ -107,7 +107,7 @@ if (1) do "${bl2_github}/bl2_correct.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${bl2_github}/bl2_clean.do"
 /* --------------------------------------------------------------------
-	PART 3.4: Export pdf with descriptive statistics on responses
+	PART 3.4: Generate new variables in intermediate data
 ----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/bl2_generate.do"
+if (1) do "${bl_github}/bl2_generate.do"
 /* --------------------------------------------------------------------
