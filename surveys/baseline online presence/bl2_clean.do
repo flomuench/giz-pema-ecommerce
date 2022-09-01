@@ -4,19 +4,19 @@
 *																	  
 *	PURPOSE: clean the questionnaire answers intermediate data						  
 *																	  
-*	OUTLINE: 	PART 1: Import the data
-*				PART 2: Removing whitespace & format string & lower case
-*				PART 3: Turn binary questions numerical
-*				PART 4: Drop variables	  
-*				PART 5: Rename variables
-*				PART 6: Label variables 
-*				PART 7: Label the variables values        											
-*				PART 8: Save the data
-*													  
-*	Author:  								    
-*	ID variable: 		  					  
-*	Requires:  	 Webpresence_answers_intermediate.dta								  
-*	Creates:     Webpresence_answers_intermediate.dta
+*	OUTLINE: 		 PART 1: Import the data
+*					 PART 2: Removing whitespace & format string & lower case
+*					 PART 3: Turn binary questions numerical
+*					 PART 4: Drop variables	  
+*					 PART 5: Rename variables
+*					 PART 6: Label variables 
+*				 	 PART 7: Label the variables values        											
+*					 PART 8: Save the data
+*					 								  
+*	Author:  	 	 Ayoub Chamakhi					    
+*	ID variable: 	 id_platform		  					  
+*	Requires:  		 Webpresence_answers_intermediate.dta								  
+*	Creates:    	 Webpresence_answers_intermediate.dta
 
 ***********************************************************************
 * 	PART 1:    Import the data
@@ -62,7 +62,7 @@ drop Quelestvotrenometprénom
 ***********************************************************************
 
 rename Zeitstempel submission_date
-rename Quelestlidentifiantdelapla id
+rename Quelestlidentifiantdelapla id_platform
 rename Lentreprisedisposetelledun entreprise_web
 rename LesiteWebindiquetilclairem web_logoname
 rename Leproduitserviceestildécrit web_product
