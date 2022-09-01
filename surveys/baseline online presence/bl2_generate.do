@@ -43,4 +43,4 @@ gen datediff = date1 - social_beforelast_publication
 * 	PART 5: 	Save the data
 ***********************************************************************
 
-save "${bl2_intermediate}/Webpresence_answers_inter", replace
+save "${bl2_intermediate}/Webpresence_answers_intermediate", replace
