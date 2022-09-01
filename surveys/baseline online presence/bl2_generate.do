@@ -38,7 +38,7 @@ gen linkedin = regexm(social_others, "linkedin")
 * 	PART 4: Generate date difference facebook posts		  			
 ***********************************************************************
 
-gen diff = date1 - social_beforelast_publication
+gen datediff = date1 - social_beforelast_publication
 ***********************************************************************
 * 	PART 5: 	Save the data
 ***********************************************************************
