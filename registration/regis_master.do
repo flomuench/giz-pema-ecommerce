@@ -55,7 +55,7 @@ set scheme plotplain
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 				
-if "`c(username)'" == "my rog"{
+if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele"{
 		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
 else{

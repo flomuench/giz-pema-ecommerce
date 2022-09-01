@@ -154,22 +154,13 @@ gen mid_presencez = web_indexz+social_media_indexz+platform_indexz-max_presencez
 
 *final weighted indicator
 gen dig_presence_weightedz = 0.5*max_presencez+ ///
-		0.1*min_presencez+0.3*mid_presencez+0.1*dig_ventez
+		0.2*min_presencez+0.3*mid_presencez
 
-*re-taking z-score so that distribution gets adjusted
-zscore dig_presence_weightedz
 
 *drop temporary variables*
 *drop web_index	social_media_index	platform_index max_presence min_presence mid_presence
 
-lab var knowledge "Index for digitalisation knowledge"
-label var digtalvars   "Index of all e-commerce and dig marketing activities"
-lab var dig_vitrine_index "Index relating to quantity and quality of online presence"
-lab var dig_marketing_index "Index relating to quantity and quality of digital marketing activities"
-lab var dig_logistic_index "Index relating to scope of used logistics and return possibilites"
-label var expprep "Index export preparation"
-label var expoutcomes "Index export outcomes"
-label var dig_presence_weightedz "Weighted e-commerce index (z-score)"
+
 
 ***********************************************************************
 *PART 1.3. Create alternative % -index (%of maximum points possible)
@@ -191,11 +182,32 @@ egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_s
 replace dig_logistic_share = dig_logistic_share/ 2
 
 ***********************************************************************
-*PART 1.2. Take-up data
+*PART 1.4. Take-up data
 ***********************************************************************	
 *create simplified group variable (tunis vs. non-tunis)
 gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
 
+***********************************************************************
+*PART 1.4. Label new variables
+***********************************************************************
+lab var knowledge "Z-score index for e-commerce knowledge"
+lab var knowledge_share "% of knowledge questions answered correctly"
+label var digtalvars   "Index of all e-commerce and dig marketing activities"
+lab var dig_vitrine_index "Z-score index relating to quantity and quality of online presence"
+lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
+lab var dig_marketing_share "Share of digital marketing practices"
+lab var dig_logistic_index "Z-score index on logistics and return possibilites"
+label var expprep "Z-score index export preparation"
+label var expoutcomes "Index export outcomes"
+label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
+lab var web_indexz "Z-score index of web presence"
+lab var web_share "Web presence score in %"
+lab var social_media_indexz "Z-score index of social media presence"
+lab var social_m_share "Social media presence score in %"
+lab var platform_indexz "Z-score index of platform presence"
+lab var platform_share "Platform presence score in %"
+lab var dig_logistic_share "Logistic and return score in %"
+lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 
 save "${master_intermediate}/ecommerce_master_final", replace
