@@ -160,7 +160,7 @@ if (1) do "${master_github}/master_descriptives.do"
 /*--------------------------------------------------------------------
 	PART 4.2: Power calculations with baseline data
 ----------------------------------------------------------------------*/		
-if (1) do "${master_github}/master_power.do"
+if (0) do "${master_github}/master_power.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Regressions

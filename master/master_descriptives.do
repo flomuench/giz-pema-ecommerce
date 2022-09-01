@@ -24,7 +24,7 @@ cd "${master_gdrive}/output"
 
 *Check whether balance table changed with new z-score calculation
 iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom ///
-comp_benefice2020 knowledge digtalvars dig_vitrine_index dig_marketing_index dig_logistic_index ///
+comp_benefice2020 knowledge dig_presence_weightedz web_indexz social_media_indexz platform_indexz dig_marketing_index dig_logistic_index ///
  expoutcomes expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
@@ -73,15 +73,16 @@ putpdf paragraph, halign(center)
 putpdf image knowledge_zscores.png
 putpdf pagebreak
 
-	* For comparison, the 'raw' index: 
+	* For comparison, the 'share' index: 
 	
-hist raw_knowledge, ///
-	title("Raw sum of all knowledge scores") ///
-	xtitle("Sum")
-graph export raw_knowledge.png, replace
+hist knowledge_share, ///
+	title("Share of knowledge questions answered correct") ///
+	xtitle("%")
+graph export knowledge_share.png, replace
 putpdf paragraph, halign(center) 
-putpdf image raw_knowledge.png
+putpdf image knowledge_share.png
 putpdf pagebreak
+
 
 	* Digital Presence
 graph hbar (count),  over(dig_presence1) blabel (bar) ///
@@ -130,6 +131,7 @@ putpdf paragraph, halign(center)
 putpdf image dig_payment1.png
 putpdf pagebreak
 
+
 graph hbar (count), over(dig_payment2) blabel (bar) ///
  title("Social Media: paying and ordering online") ///
  subtitle("1=paying and ordering, 0.5=ordering only")
@@ -143,6 +145,65 @@ title("Platform: paying and ordering online") subtitle("1=paying and ordering, 0
 graph export dig_payment3.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_payment3.png
+putpdf pagebreak
+
+hist dig_presence_weightedz, ///
+title("Weighted z-score: Online presence") 
+graph export dig_presence_weightedz.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_presence_weightedz.png
+putpdf pagebreak
+
+
+hist web_indexz, ///
+title("z-score: Web presence") 
+graph export web_indexz.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_indexz.png
+putpdf pagebreak
+
+hist web_share, ///
+title("Share of Web presence") 
+graph export web_share.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_share.png
+putpdf pagebreak
+
+
+hist social_media_indexz, ///
+title("z-score: Social media presence") 
+graph export social_media_indexz.png, replace
+putpdf paragraph, halign(center) 
+putpdf image social_media_indexz.png
+putpdf pagebreak
+
+hist social_m_share, ///
+title("Share of Social media presence") 
+graph export social_m_share.png, replace
+putpdf paragraph, halign(center) 
+putpdf image social_m_share.png
+putpdf pagebreak
+
+
+hist platform_indexz, ///
+title("z-score: Platform presence") 
+graph export platform_indexz.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_indexz.png
+putpdf pagebreak
+
+hist platform_share, ///
+title("z-score: Platform presence") 
+graph export platform_share.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_share.png
+putpdf pagebreak
+
+graph hbar (count), over(dig_vente) blabel(total) ///
+title("Number of companies that have sold online in 2021")
+graph export dig_vente.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_vente.png
 putpdf pagebreak
 
 *Digital Marketing
@@ -163,22 +224,22 @@ legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have someone that manages online orders?")
 
 
-hist digtalvars, ///
-	title("Average of Z-scores: E-commerce and digital marketing practices") ///
+hist dig_marketing_index, ///
+	title("Average of Z-scores: Digital marketing practices") ///
 	xtitle("Zscores")
-graph export digital_zscores.png, replace
+graph export dig_marketing_index.png, replace
 putpdf paragraph, halign(center) 
-putpdf image digital_zscores.png
+putpdf image dig_marketing_index.png
 putpdf pagebreak
 
-	* For comparison, the 'raw' index: 
+	* For comparison, the shares: 
 	
-hist raw_digtalvars, ///
-	title("Raw sum of all E-commerce and digital marketing practices") ///
+hist dig_marketing_share, ///
+	title("Share of digital marketing practices") ///
 	xtitle("Sum")
-graph export raw_digital.png, replace
+graph export dig_marketing_share.png, replace
 putpdf paragraph, halign(center) 
-putpdf image raw_digital.png
+putpdf image dig_marketing_share.png
 putpdf pagebreak
 
 	* Export preparation Z-scores
@@ -201,25 +262,6 @@ putpdf paragraph, halign(center)
 putpdf image raw_expprep.png
 putpdf pagebreak
 
-	* Export outcomes Z-scores
-	
-hist expoutcomes, ///
-	title("Zscores of export outcomes questions") ///
-	xtitle("Zscores")
-graph export expoutcomes_zscores.png, replace
-putpdf paragraph, halign(center) 
-putpdf image expoutcomes_zscores.png
-putpdf pagebreak
-
-	* For comparison, the 'raw' index:
-	
-hist raw_expoutcomes, ///
-	title("Raw sum of all export outcomes questions") ///
-	xtitle("Sum")
-graph export raw_expoutcomes.png, replace
-putpdf paragraph, halign(center) 
-putpdf image raw_expoutcomes.png
-putpdf pagebreak
 
 
 *Scatter plot comparing exports and Chiffre d'affaire (0,44 correlation there are 5 firms with high CA and little or no exports)
@@ -274,33 +316,65 @@ putpdf paragraph, halign(center)
 putpdf image count_sector.png
 putpdf pagebreak
 
-graph hbar (mean) digtalvars, over(subsector, sort(1) descending label(labs(vsmall))) ///
- blabel(n, format(%9.2f)) title ("Average of total digital index (z-score), by subsector")
-graph export digitalvars_subsector.png, replace
-
-graph hbar (mean) digtalvars, over(sector, sort(1) descending label(labs(vsmall))) ///
- blabel(total, format(%9.2f)) title ("Average of total digital index (z-score), by sector")
-graph export digitalvars_sector.png, replace
-
+graph hbar dig_presence_weightedz, over(sector) blabel (bar) ///
+	title("Weighted Z-score index of online presence") 
+graph export dig_presence_weightedz_sector.png, replace
 putpdf paragraph, halign(center) 
-putpdf image digitalvars_subsector.png
-putpdf paragraph, halign(center) 
-putpdf image digitalvars_sector.png
+putpdf image dig_presence_weightedz_sector.png
 putpdf pagebreak
-	
-graph hbar (mean) dig_vitrine_index, over(subsector, sort(1) descending label(labs(vsmall))) ///
- blabel(total, format(%9.2f)) title ("Average online presence quality/quantity (z-score), by sector")
-graph export dig_vitrine_subsector.png, replace
 
-graph hbar (mean) dig_vitrine_index, over(sector, sort(1) descending label(labs(vsmall))) ///
- blabel(total, format(%9.2f)) title ("Average of total digital index (z-score), by sector")
-graph export dig_vitrine_sector.png, replace
+graph hbar dig_presence_weightedz, over(subsector) blabel (bar) ///
+	title("Weighted Z-score index of online presence") ///
+	subtitle("Subsectors")
+graph export dig_presence_weightedz_sector.png, replace
 putpdf paragraph, halign(center) 
-putpdf image dig_vitrine_subsector.png
-putpdf paragraph, halign(center) 
-putpdf image dig_vitrine_sector.png
+putpdf image dig_presence_weightedz_sector.png
 putpdf pagebreak
-	
+
+
+graph hbar web_indexz, over(sector) blabel (bar) ///
+	title("Z-score index of web presence") 
+graph export web_indexz_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_indexz_sector.png
+putpdf pagebreak
+
+graph hbar web_share, over(sector) blabel (bar) ///
+	title("Web presence score in %") 
+graph export web_share_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_share_sector.png
+putpdf pagebreak
+
+
+graph hbar social_media_indexz, over(sector) blabel (bar) ///
+	title("Z-score index of social media presence") 
+graph export social_media_indexz_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_indexz_sector.png
+putpdf pagebreak
+
+graph hbar social_m_share, over(sector) blabel (bar) ///
+	title("Social media score in %") 
+graph export web_share_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_share_sector.png
+putpdf pagebreak
+
+
+graph hbar platform_indexz, over(sector) blabel (bar) ///
+	title("Z-score index of platform presence") 
+graph export platform_indexz_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_indexz_sector.png
+putpdf pagebreak
+
+graph hbar platform_share, over(sector) blabel (bar) ///
+	title("Platform presence score in %") 
+graph export platform_share_sector.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_share_sector.png
+putpdf pagebreak
 ***********************************************************************
 * 	PART 4:  save pdf
 ***********************************************************************
