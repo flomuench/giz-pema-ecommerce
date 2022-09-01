@@ -10,7 +10,7 @@
 *				PART 3: Run all do-files                          											  
 *																	  
 *	Author:  			Ayoub Chamakhi					    
-*	ID variable: 		  					  
+*	ID variable: 		id_platform  					  
 *	Requires:  	  										  
 *	Creates:  
 ***********************************************************************
@@ -110,4 +110,8 @@ if (1) do "${bl2_github}/bl2_clean.do"
 	PART 3.4: Generate new variables in intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${bl2_github}/bl2_generate.do"
+/* --------------------------------------------------------------------
+	PART 3.5: Create statistics on social media of SMEs	
+----------------------------------------------------------------------*/	
+if (1) do "${bl2_github}/bl2_statistics.do"
 /* --------------------------------------------------------------------

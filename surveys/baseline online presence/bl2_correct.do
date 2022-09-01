@@ -12,10 +12,10 @@
 *				PART 6: Save the data
 *													
 *																	  
-*	Author:  								    
-*	ID variable: 		  					  
-*	Requires:  	Webpresence_answers_intermediate.dta
-*	Creates:	Webpresence_answers_intermediate.dta
+*	Author:  		Ayoub Chamakhi							    
+*	ID variable: 	id_platform	  					  
+*	Requires:  		Webpresence_answers_intermediate.dta
+*	Creates:		Webpresence_answers_intermediate.dta
 
 ***********************************************************************
 * 	PART 1: Import the data
@@ -60,7 +60,7 @@ replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "pro
 
 	*entreprise partners
 replace Danslecasducommerceinterent ="2" if Danslecasducommerceinterent == "Oui"
-replace Danslecasducommerceinterent ="1" if Danslecasducommerceinterent == "l'entreprise ne vend qu'aux particuliers"
+replace Danslecasducommerceinterent ="." if Danslecasducommerceinterent == "l'entreprise ne vend qu'aux particuliers"
 replace Danslecasducommerceinterent ="0" if Danslecasducommerceinterent == "Non"
 
 
