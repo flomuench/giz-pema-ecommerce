@@ -45,6 +45,9 @@ foreach var of local  ihs_vars {
 
 *firms that have not exported in the past and did not report an export value for 2020 will be assumed zero
 replace compexp_2020 = 0 if compexp_2020 ==. & exp_avant21 ==0
+replace exp_pays_21=0 if compexp_2020==0
+replace exp_pays_21=. if exp_pays_21==-999
+
 
 *Reduce variables with two equal medium levels from 4 to 3 dimensions
 local vars dig_description1 dig_description2 dig_description3 

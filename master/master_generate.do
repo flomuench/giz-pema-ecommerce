@@ -69,6 +69,28 @@ winsor compexp_2020, gen(w_compexp) p(0.01) highonly
 gen ihs_exports = log(w_compexp + sqrt((w_compexp*w_compexp)+1))
 lab var ihs_exports "IHS of exports in 2002"
 
+
+*create final export status variable and delete other to avoid confusion
+gen exporter2020=.
+replace exporter2020=1 if compexp_2020 >0 & compexp_2020<. 
+replace exporter2020=0 if compexp_2020 == 0 
+lab var exporter2020 "dummy if company exported in the year 2020"
+
+gen ever_exported=0
+replace ever_exported=1 if compexp_2020>0 & compexp_2020<. 
+replace ever_exported=1 if exp_avant21==1
+replace ever_exported=1 if export2021=="oui" | export2020=="oui" | export2019 =="oui" | export2018=="oui" |export2017=="oui"
+replace ever_exported=0 if exp_avant21==0
+lab var ever_exported "dummy if company has exported some time in the past 5 years"
+drop export2* export_status rg_expstatus expstatus* exp_avant21
+
+*generate domestic revenue from total revenue and exports
+gen dom_rev2020= comp_ca2020-compexp_2020
+lab var dom_rev2020 "Domestic revenue 2020"
+winsor dom_rev2020, gen(w_dom_rev2020) p(0.01) highonly
+ihstrans w_dom_rev2020
+
+
 ***********************************************************************
 *PART 1.2. Recreate z-scores with control mean and control SD 
 *(in BL was done with overall mean/SD)
