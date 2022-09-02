@@ -12,7 +12,7 @@
 *                         											  
 *																	  
 *	Author:  			Ayoub Chamakhi					    
-*	ID variable: 		id_platform  					  
+*	ID variable: 		id_platforme  					  
 *	Requires:  	  		Webpresence_answers_intermediate.dta									  
 *	Creates:  			Webpresence_answers_final.dta
 ***********************************************************************
@@ -25,8 +25,8 @@ use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 * 	PART 2: Generate date		  			
 ***********************************************************************
 
-gen date1 = date(social_last_publication, "MDY")
-format date1 %td
+gen social_last_publication2 = date(social_last_publication, "MDY")
+format social_last_publication2 %td
 
 ***********************************************************************
 * 	PART 3: Generate multiple-choice questions		  			
@@ -38,7 +38,7 @@ gen linkedin = regexm(social_others, "linkedin")
 * 	PART 4: Generate date difference facebook posts		  			
 ***********************************************************************
 
-gen datediff = date1 - social_beforelast_publication	
+gen datediff = social_last_publication2 - social_beforelast_publication	
 *label it
 ***********************************************************************
 * 	PART 5: 	Save the data

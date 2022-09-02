@@ -10,7 +10,7 @@
 *				PART 3: Run all do-files                          											  
 *																	  
 *	Author:  			Ayoub Chamakhi					    
-*	ID variable: 		id_platform  					  
+*	ID variable: 		id_platforme 					  
 *	Requires:  	  										  
 *	Creates:  
 ***********************************************************************
