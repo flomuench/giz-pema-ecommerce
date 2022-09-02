@@ -110,7 +110,7 @@ lab var surveyround "1-baseline 2-midline 3-endline"
 
     * save as ecommerce_database
 
-save "ecommerce_database_raw", replace
+save "${master_raw}/ecommerce_database_raw", replace
 
 
 ***********************************************************************
@@ -151,7 +151,7 @@ replace take_up2 = 1 if present>0 & present<.
 lab var take_up2 "alternative take-up indicator, 1 if present in at least one training"
     * save as ecommerce_database
 
-save "ecommerce_database_raw", replace
+save "${master_raw}/ecommerce_database_raw", replace
 
 
 
