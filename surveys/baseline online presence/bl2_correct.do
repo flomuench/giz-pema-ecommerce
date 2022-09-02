@@ -4,16 +4,17 @@
 *																	  
 *	PURPOSE: correct the questionnaire answers intermediate data
 *																	  
-*	OUTLINE: 	PART 1: Import the data
+*	OUTLINE: 	PART 1: Import the data 
 *				PART 2: Turn binary questions numerical
 *				PART 3: Recode observations
 *				PART 4: Fix missing values
-*				PART 5: Remove incorrect entries
-*				PART 6: Save the data
+*				PART 5: Drop invalid duplicates
+*				PART 6: Remove incorrect entries
+*				PART 7: Save the data
 *													
 *																	  
 *	Author:  		Ayoub Chamakhi							    
-*	ID variable: 	id_platform	  					  
+*	ID variable: 	id_platforme	  					  
 *	Requires:  		Webpresence_answers_intermediate.dta
 *	Creates:		Webpresence_answers_intermediate.dta
 
@@ -23,8 +24,9 @@
 
 use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
 
+
 ***********************************************************************
-* 	PART 2: Turn binary questions numerical
+* 	PART 3: Turn binary questions numerical
 ***********************************************************************
 
 local binaryvars Lentreprisedisposetelledun Lecontenuestillisiblepare Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes ///
@@ -38,7 +40,7 @@ foreach var of local binaryvars {
 }
 
 ***********************************************************************
-*	PART 3: Recode observations 
+*	PART 4: Recode observations 
 ***********************************************************************
 
 	*social media and website name and logo existance
@@ -83,7 +85,7 @@ replace Pouvezvousacheteroucommander = "1" if Pouvezvousacheteroucommander == "C
 replace Pouvezvousacheteroucommander = "0" if Pouvezvousacheteroucommander == "Ni commander ni payer"
 
 ***********************************************************************
-* 	PART 4: Fix missing values
+* 	PART 5: Fix missing values
 ***********************************************************************
 
 local notyesnovariables LesiteWebindiquetilclairem Leproduitserviceestildécrit Ladescriptionduproduitservic Lesitecomportetilunesectio Lesiteprésentetildesnormes  Lentreprisevendellesonprodu ///
@@ -97,14 +99,37 @@ replace `var' = "." if `var' ==""
 }
 
 ***********************************************************************
-* 	PART 5: Remove incorrect entries
+* 	PART 5: Drop invalid duplicates
+***********************************************************************
+
+drop if Quelestlidentifiantdelapla == 166 & Lesitecomportetilunesectio == "0"
+drop if Quelestlidentifiantdelapla == 255 & Estcequelesliensexternesfo == "1"
+drop if Quelestlidentifiantdelapla == 346 & Estcequelesliensexternesfo == "1" 
+drop if Quelestlidentifiantdelapla == 381 & U =="0"
+drop if Quelestlidentifiantdelapla == 381 & Pourlequeldesréseauxsociaux == "Instagram"
+drop if Quelestlidentifiantdelapla == 505 & Lesitecomportetilunesectio == "1"
+drop if Quelestlidentifiantdelapla == 524 & Estcequelesliensexternesfo == "0"
+drop if Quelestlidentifiantdelapla == 646 & Pourlequeldesréseauxsociaux == "Youtube, Instgram / Facebook"
+drop if Quelestlidentifiantdelapla == 646 & Pourlequeldesréseauxsociaux == "Youtube, Instagram"
+drop if Quelestlidentifiantdelapla == 833 & Pourlequeldesréseauxsociaux == "Linkedin"
+drop if Quelestlidentifiantdelapla == 833 & Pourlequeldesréseauxsociaux == "Youtube, Linkedin, Instagram"
+drop if Quelestlidentifiantdelapla == 867 & U =="1"
+drop if Quelestlidentifiantdelapla == 925 & U =="0"
+
+***********************************************************************
+* 	PART 6: Fix incorrect entries
 ***********************************************************************
 
 	*remove baity.tn added by student as external purchase link
 replace Siouiversquellesplacesdem = "." if Siouiversquellesplacesdem == "baity.tn"
 
+	*fix date entry errors*
+replace Quandétaitladernierepublicat = trim(Quandétaitladernierepublicat)
+replace Quandétaitladernierepublicat = "06/16/2022" if Quandétaitladernierepublicat == "3/17/2021"
+replace Quandétaitladernierepublicat = "8/3/2022" if Quandétaitladernierepublicat == "8/3/0202"
+
 ***********************************************************************
-* 	PART 6: Save the data
+* 	PART 7: Save the data
 ***********************************************************************
 
 save "${bl2_intermediate}/Webpresence_answers_intermediate", replace

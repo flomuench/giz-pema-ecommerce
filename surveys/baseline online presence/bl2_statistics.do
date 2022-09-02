@@ -12,7 +12,7 @@
 *                         											  
 *																	  
 *	Author:  			Ayoub Chamakhi					    
-*	ID variable: 		id_platform  					  
+*	ID variable: 		id_platforme  					  
 *	Requires:  	  		Webpresence_answers_final.dta									  
 *	Creates:  			baseline2_statistics.pdf
 ***********************************************************************

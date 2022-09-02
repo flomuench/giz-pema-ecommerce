@@ -12,7 +12,7 @@
 *	4)	save the answers as dta file in intermediate folder
 *																 																      *
 *	Author:   			Ayoub Chamakhi											  
-*	ID variable: 		id_platform  									  
+*	ID variable: 		id_platforme  									  
 *	Requires:			Webpresence answers.xlsx
 *	Creates:			Webpresence_answers_intermediate	Webpresence_answers_raw.dta
 *	Creates:			bl2_Idwebsites.xlsv					bl2_Idwebsites.dta				

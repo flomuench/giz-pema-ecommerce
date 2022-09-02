@@ -14,7 +14,7 @@
 *					 PART 8: Save the data
 *					 								  
 *	Author:  	 	 Ayoub Chamakhi					    
-*	ID variable: 	 id_platform		  					  
+*	ID variable: 	 id_platforme		  					  
 *	Requires:  		 Webpresence_answers_intermediate.dta								  
 *	Creates:    	 Webpresence_answers_intermediate.dta
 
@@ -62,7 +62,7 @@ drop Quelestvotrenometprénom
 ***********************************************************************
 
 rename Zeitstempel submission_date
-rename Quelestlidentifiantdelapla id_platform
+rename Quelestlidentifiantdelapla id_platforme
 rename Lentreprisedisposetelledun entreprise_web
 rename LesiteWebindiquetilclairem web_logoname
 rename Leproduitserviceestildécrit web_product
