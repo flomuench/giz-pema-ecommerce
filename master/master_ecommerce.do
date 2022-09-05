@@ -75,7 +75,16 @@ else if c(os) == "MacOSX" {
 	global bl_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline"
 	global bl_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
-
+if c(os) == "Windows" {
+	global bl2_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
+	global bl2_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
+	global bl2_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
+else if c(os) == "MacOSX" {
+	global bl2_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
+	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
+	global bl2_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
+}
 if c(os) == "Windows" {
 	global base_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
 
@@ -110,6 +119,7 @@ global bl_intermediate "${bl_gdrive}/intermediate"
 global bl_final = "${bl_gdrive}/final"
 global bl_checks = "${bl_gdrive}/checks"
 global bl_output = "${bl_gdrive}/output"
+global bl2_final ="${bl2_gdrive}/final"
 global regis_raw = "${regis_gdrive}/raw"
 global regis_intermediate "${regis_gdrive}/intermediate"
 global regis_final = "${regis_gdrive}/final"
