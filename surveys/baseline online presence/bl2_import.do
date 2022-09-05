@@ -11,7 +11,7 @@
 *	3)	remove websites and save the websites in separate file with id	
 *	4)	save the answers as dta file in intermediate folder
 *																 																      *
-*	Author:   			Ayoub Chamakhi											  
+*	Author:   			Ayoub Chamakhi & Fabian Scheifele											  
 *	ID variable: 		id_platforme  									  
 *	Requires:			Webpresence answers.xlsx
 *	Creates:			Webpresence_answers_intermediate	Webpresence_answers_raw.dta
@@ -41,7 +41,7 @@ drop Zeitstempel Quelestvotrenometprénom Lentreprisedisposetelledun LesiteWebin
  Quelleestladatedecréationd Combiendeavislapagepossède Quelleestlamoyennedesavisa Lapagedisposetelledelopti AK Quelestlenombredepublicatio Quelestlenombredefollowers Leprofildelentreprisecontie ///
  Leprofildelentreprisefourni Parmilesinformationsdecontac Veuillezcollercidessousleli Veuillezcollerleliendelapa
  
-rename Quelestlidentifiantdelapla Id
+rename Quelestlidentifiantdelapla id_platforme
 rename Veuillezcollerleliendusite Website
 save "${bl2_intermediate}/bl2_IdWebsites", replace
 export excel "${bl2_intermediate}/b12_Idwebsites", replace
