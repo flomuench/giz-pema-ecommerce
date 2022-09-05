@@ -112,6 +112,12 @@ lab var surveyround "1-baseline 2-midline 3-endline"
 
 save "${master_raw}/ecommerce_database_raw", replace
 
+merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
+keep if _merge==3
+drop _merge
+save "${master_raw}/ecommerce_database_raw", replace
+
+
 
 ***********************************************************************
 * 	PART 5: append to create analysis data set
