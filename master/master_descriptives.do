@@ -23,18 +23,23 @@ use "${master_intermediate}/ecommerce_master_final", clear
 cd "${master_gdrive}/output"
 
 *Check whether balance table changed with new z-score calculation
-iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom ///
-comp_benefice2020 knowledge dig_presence_weightedz web_indexz social_media_indexz platform_indexz dig_marketing_index dig_logistic_index ///
+iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
+comp_benefice2020 knowledge dig_presence_weightedz web_indexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
  expoutcomes expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
-
+			 
+iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
+comp_benefice2020 knowledge dig_presence_weightedz web_indexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
+ expoutcomes expprep, grpvar(treatment) ftest savetex(baltab_baseline) replace ///
+			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
+			 format(%12.2fc)
 			 
 *correlation matrix of selected variables
-correlate compexp_2020 comp_ca2020 exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep
+correlate compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep
 
 *What drives participation
-logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports ihs_ca exp_pays_avg export_status dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep if treatment==1
+logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports ihs_ca exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep if treatment==1
 logit take_up knowledge if treatment==1
 * Scatter plot
 graph twoway (lfitci take_up knowledge) (scatter take_up knowledge) if treatment ==1

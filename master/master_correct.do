@@ -57,6 +57,15 @@ foreach var of local  vars {
 }
 
 replace dig_con6_score=1 if dig_con6_score==0.99
+replace dig_presence_score=1 if dig_presence_score<0.34 & dig_presence_score>0.32
+replace dig_presence_score=2 if dig_presence_score<0.67 & dig_presence_score>0.65
+replace dig_presence_score=3 if dig_presence_score<1 & dig_presence_score>0.98
 
+*Editing variable that come from digital stocktake
+replace social_facebook=0 if social_facebook==.
+local fb_vars facebook_likes facebook_subs facebook_reviews facebook_reviews facebook_shop
+foreach var of local fb_vars {
+replace `var' = 0 if social_facebook == 0
+}
 
 save "${master_intermediate}/ecommerce_master_inter", replace
