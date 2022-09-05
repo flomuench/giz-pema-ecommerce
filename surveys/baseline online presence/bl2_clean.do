@@ -13,7 +13,7 @@
 *				 	 PART 7: Label the variables values        											
 *					 PART 8: Save the data
 *					 								  
-*	Author:  	 	 Ayoub Chamakhi					    
+*	Author:  	 	 Ayoub Chamakhi & Fabian Scheifele					    
 *	ID variable: 	 id_platforme		  					  
 *	Requires:  		 Webpresence_answers_intermediate.dta								  
 *	Creates:    	 Webpresence_answers_intermediate.dta
@@ -163,7 +163,7 @@ entreprise_social social_external_website social_photos social_description socia
 destring `yesnovariables', replace
 format `yesnovariables' %-9.0fc
 
-label define yesno 1 "Yes" 0 "No"
+label define yesno 1 "yes" 0 "no"
 
 foreach var of local yesnovariables {
 	label values `var' yesno 
@@ -217,19 +217,6 @@ format web_purchase %-9.0fc
 label define purchase 2 "can order and purchase" 1 "can only order" 0 "neither order nor purchase"
 label value web_purchase purchase
 
-
-
-*destring remaining numeric variables
-local numvars facebook_reviews facebook_reviews_avg insta_subs id_plateforme
-foreach var of local numvars {
-	destring `var', replace 
-}
-
-*correct wrong entries (please check again, as entry is just 999999)
-replace facebook_reviews= . if id_plateforme== 545
-replace facebook_reviews_avg= . if id_plateforme== 545
-replace facebook_likes= . if id_plateforme== 545
-replace facebook_subs= . if id_plateforme== 545
 ***********************************************************************
 * 	PART 7: 	Save the data	  			
 ***********************************************************************
