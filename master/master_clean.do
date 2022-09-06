@@ -48,8 +48,11 @@ lab values treatment treatment_status
 
 
 
+	* numeric 
+ds, has(type numeric) 
+local numvars "`r(varlist)'"
+format %-25.2fc `numvars'
 
-
-
+format %-25.0fc id_plateforme
 
 save "${master_intermediate}/ecommerce_master_inter", replace

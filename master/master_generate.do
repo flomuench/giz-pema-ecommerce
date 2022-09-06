@@ -97,8 +97,15 @@ ihstrans w_dom_rev2020
 ***********************************************************************	
 capture program drop zscore
 program define zscore /* opens a program called zscore */
-	sum `1' if treatment == 0
+	sum `1' if treatment == 0 
 	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
+end
+
+*create program that calculate z-score conditional on value in other variable
+capture program drop zscorecond
+program define zscorecond /* opens a program called zscore */
+	sum `1' if treatment == 0 & `2'>0 & `2'<.
+	gen `1'z = (`1' - r(mean))/r(sd) if `2'>0 & `2'<.
 end
 
 *Definition of all variables that are being used in index calculation*
@@ -114,25 +121,56 @@ foreach var of local  allvars {
 	replace `var' = 0 if `var' == -1998
 	replace `var' = 0 if `var' == -1776 
 	replace `var' = 0 if `var' == -1554
-	
 }
 
-	* calculate z score for all variables that are part of the index
-	
+	* Creation of the weighted e-commerce presence index without penalizing non-existant channels 
+*web index
+zscorecond dig_miseajour1 dig_presence1
+zscorecond dig_description1 dig_presence1
+zscorecond dig_payment1 dig_presence1
+egen webindexz = rowmean (dig_miseajour1z dig_description1z dig_payment1z)
+
+*alternative method: first summing up raw poitns and then taking zscore
+/*egen webindex1 = rowtotal (dig_miseajour1 dig_description1 dig_payment1) ///
+ if dig_presence1>0 & dig_presence1<.
+zscore webindex1
+*/
+
+*social media index
+zscorecond dig_miseajour2 dig_presence2
+zscorecond dig_description2 dig_presence2
+zscorecond dig_payment2 dig_presence2
+
+egen social_media_indexz = rowmean (dig_miseajour2z dig_description2z dig_payment2z)
+
+*platform index
+zscorecond dig_miseajour3 dig_presence3
+zscorecond dig_description3 dig_presence3
+zscorecond dig_payment3 dig_presence3
+zscorecond dig_presence3_exscore dig_presence3
+egen platform_indexz = rowmean (dig_miseajour3z dig_description3z ///
+dig_payment3z dig_presence3_exscorez)
+
+*CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
+egen max_presencez = rowmax(webindexz social_media_indexz platform_indexz)
+egen min_presencez = rowmin(webindexz social_media_indexz platform_indexz)
+gen mid_presencez = webindexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
+
+gen presence_index_weighted= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
+if dig_presence_score==1
+replace presence_index_weighted=0.7*max_presence +0.3*min_presencez ///
+if dig_presence_score>0.65 & dig_presence_score<0.67 
+replace presence_index_weighted=max_presence if dig_presence_score>0.32 & dig_presence_score<0.34
+
+*add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
+replace presence_index_weighted = presence_index_weighted+0.2*dig_presence_score
+
+
+*other indices
 local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
-local digtalvars dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 ///
-	dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien ///
-	dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score ///
-	dig_service_satisfaction dig_description1 dig_description2 dig_description3 dig_service_responsable_bin dig_marketing_respons_bin 
-	
-local dig_vitrine_index dig_presence_score dig_presence3_exscore dig_description1 ///
-		dig_description2 dig_description3 dig_miseajour1 dig_miseajour2 dig_miseajour3 ///
-		dig_payment1 dig_payment2 dig_payment3 dig_vente 
 local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
 		dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin 
-local dig_logistic_index dig_logistique_entrepot dig_logistique_retour_score
 local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
-local exportcomes exp_pays_avg exp_per
 local dig_presence dig_presence1 dig_presence2 dig_presence3
 
 foreach z in knowledge digtalvars expprep exportcomes {
@@ -145,38 +183,10 @@ foreach z in knowledge digtalvars expprep exportcomes {
 drop knowledge digtalvars expprep expoutcomes 
 *Calculate the index value: average of zscores 
 egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_scorez)
-egen digtalvars = rowmean(dig_presence_scorez dig_presence3_exscorez dig_miseajour1z ///
-		dig_miseajour2z dig_miseajour3z dig_payment1z dig_payment2z dig_payment3z ///
-		dig_ventez dig_marketing_lienz dig_marketing_ind1z dig_marketing_ind2z ///
-		dig_marketing_scorez dig_logistique_entrepotz dig_logistique_retour_score ///
-		dig_service_satisfactionz dig_description1z dig_description2z dig_description3z ///
-		dig_service_responsable_binz dig_marketing_respons_binz)
-egen dig_vitrine_index = rowmean(dig_presence_scorez dig_presence3_exscorez dig_description1z ///
-		dig_description2z dig_description3z dig_miseajour1z dig_miseajour2z dig_miseajour3z ///
-		dig_payment1z dig_payment2z dig_payment3z dig_ventez )
-		
 egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
 		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///
 		dig_marketing_respons_binz)
-egen  dig_logistic_index = rowmean (dig_logistique_entrepotz dig_logistique_retour_scorez)
 egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz)
-egen expoutcomes = rowmean(exp_pays_avgz exp_perz)
-
-*Generate one index per channel and weight them according to their baseline levels 
-*best developed channel at BL gets 50% weight, second best 30% and third 20%
-*While presence on multiple channels is desirable, the importance of each might vary and BL levels 
-*indicate original importance
-
-egen web_indexz = rowmean (dig_miseajour1z dig_description1z dig_payment1z)
-egen social_media_indexz = rowmean(dig_miseajour2z dig_description2z dig_payment2z)
-egen platform_indexz = rowmean(dig_presence3_exscorez dig_miseajour3z dig_description3z dig_payment3z)
-egen max_presencez = rowmax(web_indexz social_media_indexz platform_indexz)
-egen min_presencez = rowmin(web_indexz social_media_indexz platform_indexz)
-gen mid_presencez = web_indexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
-
-*final weighted indicator
-gen dig_presence_weightedz = 0.5*max_presencez+ ///
-		0.2*min_presencez+0.3*mid_presencez
 
 
 *drop temporary variables*
