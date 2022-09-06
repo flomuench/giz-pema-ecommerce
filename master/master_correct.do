@@ -56,7 +56,9 @@ foreach var of local  vars {
 
 }
 
-replace dig_con6_score=1 if dig_con6_score==0.99
+replace dig_con6_score = 1 if dig_con6_score >0.98 & dig_con6_score<.
+replace dig_presence_score =1 if dig_presence_score >0.98 & dig_presence_score<.
+
 
 
 save "${master_intermediate}/ecommerce_master_inter", replace
