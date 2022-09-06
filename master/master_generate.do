@@ -214,6 +214,23 @@ egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_s
 replace dig_logistic_share = dig_logistic_share/ 2
 
 ***********************************************************************
+*PART 1.4. Additional indicators from social media baseline stocktaking
+***********************************************************************	
+*Winsorizing and IHS transformation of likes and followers data
+local sm_data facebook_likes facebook_subs facebook_reviews
+foreach var of local sm_data{
+winsor `var', gen(w_`var') p(0.01) highonly
+ihstrans w_`var'
+}
+*no winsorizing needed for this one
+ihstrans insta_subs
+
+lab var ihs_w_facebook_likes "no. of FB likes, winsorized 99th and IHS transformed"
+lab var ihs_w_facebook_sub "no. of FB followers, winsorized 99th and IHS transformed"
+lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
+lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
+
+***********************************************************************
 *PART 1.4. Take-up data
 ***********************************************************************	
 *create simplified group variable (tunis vs. non-tunis)
@@ -221,7 +238,7 @@ gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
 
 ***********************************************************************
-*PART 1.4. Label new variables
+*PART 1.5. Label new variables
 ***********************************************************************
 lab var knowledge "Z-score index for e-commerce knowledge"
 lab var knowledge_share "% of knowledge questions answered correctly"

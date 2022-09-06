@@ -13,7 +13,7 @@
 *				PART 7: Save the data
 *													
 *																	  
-*	Author:  		Ayoub Chamakhi							    
+*	Author:  		Ayoub Chamakhi & Fabian Scheifele							    
 *	ID variable: 	id_platforme	  					  
 *	Requires:  		Webpresence_answers_intermediate.dta
 *	Creates:		Webpresence_answers_intermediate.dta
@@ -127,6 +127,31 @@ replace Siouiversquellesplacesdem = "." if Siouiversquellesplacesdem == "baity.t
 replace Quandétaitladernierepublicat = trim(Quandétaitladernierepublicat)
 replace Quandétaitladernierepublicat = "06/16/2022" if Quandétaitladernierepublicat == "3/17/2021"
 replace Quandétaitladernierepublicat = "8/3/2022" if Quandétaitladernierepublicat == "8/3/0202"
+
+	*destring remaining numeric variables
+local numvars Combiendeavislapagepossède Quelleestlamoyennedesavisa Quelestlenombredefollowers Quelestlidentifiantdelapla
+foreach var of local numvars {
+	destring `var', replace 
+}
+
+	*checked & swapped to correct, this was the only outlier. 
+replace Combiendeavislapagepossède= . if Quelestlidentifiantdelapla== 545
+replace Quelleestlamoyennedesavisa= . if Quelestlidentifiantdelapla== 545
+replace QuelestlenombredeLikes= . if Quelestlidentifiantdelapla== 545
+replace Quelestlenombredabonnés= . if Quelestlidentifiantdelapla== 545
+
+	*change website to an unique entry
+replace Parmilesinformationsdecontac = "web site" if Parmilesinformationsdecontac == "site web"
+replace Parmilesinformationsdecontac = "web site" if Parmilesinformationsdecontac == "page web"
+replace Parmilesinformationsdecontac = "web site" if Parmilesinformationsdecontac == "website"
+
+	*correct facebook creation date errors
+replace Quelleestladatedecréationd = trim(Quelleestladatedecréationd)
+replace Quelleestladatedecréationd = "12/10/2018" if Quelleestladatedecréationd == "11/11/1111"
+replace Quelleestladatedecréationd = "9/28/2013" if Quelleestladatedecréationd == "9/28/0213"
+replace Quelleestladatedecréationd = "9/26/2013" if Quelleestladatedecréationd == "1/2/1900"
+replace Quelleestladatedecréationd = "11/25/2009" if Quelleestladatedecréationd == "1/2/1900"
+replace Quelleestladatedecréationd = "3/13/2019" if Quelleestladatedecréationd == "1/2/1900"
 
 ***********************************************************************
 * 	PART 7: Save the data
