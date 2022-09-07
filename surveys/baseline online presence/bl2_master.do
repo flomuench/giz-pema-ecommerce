@@ -57,13 +57,11 @@ set scheme plotplain
 if "`c(username)'" == "Azra" {
 		global gdrive= "C:/Users/Azra/Google Drive Streaming/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
-if "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "my rog"{
+else if "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "my rog" {
 global gdrive= "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+
 }
 
-else{
-		global gdrive = "C:/Users/`c(username)'/Google Drive"
-}
 
 if c(os) == "Windows" {
 	global bl2_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"

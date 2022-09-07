@@ -124,7 +124,7 @@ gen facebook_creation_formated = date(facebook_creation, "MDY")
 format facebook_creation_formated %td
 lab var facebook_creation_formated "formated date of facebook creation day"
 
-gen facebook_age = round((td(05sep2022)-facebook_creation_formated)/365.25,1)
+gen facebook_age = round((td(05sep2022)-facebook_creation_formated)/365.25,.01)
 lab var facebook_age "age of facebook account"
 
 ***********************************************************************
@@ -136,18 +136,6 @@ lab var datediff "difference between last two facebook publications in days"
 
 gen posting_rate= 1/datediff
 lab var posting_rate "1/days between two last posts"
-
-***********************************************************************
-* 	PART 5: Re-scale multi-level variable to max. of 1		  			
-***********************************************************************
-* in case you have a variable that has several levels re-scale such that highest level is 1. 
-*e.g. if so far you have 0, 1 ,2, 3 re-scale to 0,0.33, 0.66 and 1
-
-
-***********************************************************************
-* 	PART 6: Re-scale multi-level variable to max. of 1		  			
-***********************************************************************
-
 
 ***********************************************************************
 * 	PART 6: 	Save the data
