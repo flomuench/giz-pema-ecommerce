@@ -54,7 +54,7 @@ drop _merge
 
 */
 ***********************************************************************
-* 	PART 3: integrate and replace contact updates
+* 	PART 4: integrate and replace contact updates
 ***********************************************************************
 
 * import Update_file:
@@ -83,10 +83,17 @@ reshape wide emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg t
 merge 1:1 id_plateforme using ecommerce_master_contact 
 drop _merge
 *drop session1 session2 session3 session4
+
+
+*UPDATE MATRICULE FISCALE WHERE NECESSARY
+
+
+
+
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
-* 	PART 4: merge to create analysis data set
+* 	PART 5: merge to create analysis data set
 ***********************************************************************
 		* change directory to master folder for merge with regis + baseline (final)
 cd "$master_raw"
@@ -120,7 +127,7 @@ save "${master_raw}/ecommerce_database_raw", replace
 
 
 ***********************************************************************
-* 	PART 5: append to create analysis data set
+* 	PART 6: append to create analysis data set
 ***********************************************************************
 /*
 	* append registration +  baseline data with midline
@@ -134,7 +141,7 @@ append using el_final
 */
 
 ***********************************************************************
-* 	PART 5: merge with participation data
+* 	PART 7: merge with participation data
 ***********************************************************************
 
 *Note: here should the Suivi_mise_en_oeuvre_ecommerce.xlsx be downloaded from teams, legend deleted, renamed and uploaded again in 6-master
