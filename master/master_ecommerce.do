@@ -165,12 +165,12 @@ if (1) do "${master_github}/master_generate.do"
 /*--------------------------------------------------------------------
 	PART 4.1: Descriptive statistics
 ----------------------------------------------------------------------*/		
-if (1) do "${master_github}/master_descriptives.do"
+if (0) do "${master_github}/master_descriptives.do"
 
 /*--------------------------------------------------------------------
 	PART 4.2: Power calculations with baseline data
 ----------------------------------------------------------------------*/		
-if (0) do "${master_github}/master_power.do"
+if (1) do "${master_github}/master_power.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Regressions
