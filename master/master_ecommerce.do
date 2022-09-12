@@ -51,8 +51,12 @@ ssc install coefplot, replace
 if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele"{
 		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
-else{
-		global gdrive = "C:/Users/`c(username)'/Google Drive"
+else if "`c(username)'" == "Azra" {
+		global gdrive= "C:/Users/Azra/Google Drive Streaming/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
+		*old one
+		*global gdrive = "C:/Users/`c(username)'/Google Drive"
+		*change for ayoub
+		
 }
 
 		if c(os) == "Windows" {

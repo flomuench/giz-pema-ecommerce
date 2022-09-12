@@ -86,6 +86,71 @@ drop _merge
 
 
 *UPDATE MATRICULE FISCALE WHERE NECESSARY
+	*making all matricule_fiscale uppercase
+replace matricule_fiscale = upper(matricule_fiscale)
+
+	*correcting entries
+
+replace matricule_fiscale = "0858234G" if id_plateforme == 427
+replace matricule_fiscale = "0009951F" if id_plateforme == 443
+replace matricule_fiscale = "1230487A" if id_plateforme == 511
+replace matricule_fiscale = "0002495X" if id_plateforme == 724
+replace matricule_fiscale = "0752330Y" if id_plateforme == 769
+replace matricule_fiscale = "0383708H" if id_plateforme == 810
+replace matricule_fiscale = "0557321F" if id_plateforme == 78
+replace matricule_fiscale = "0977263A" if id_plateforme == 82
+replace matricule_fiscale = "0620862R" if id_plateforme == 122
+replace matricule_fiscale = "0916623S" if id_plateforme == 144
+replace matricule_fiscale = "0411643S" if id_plateforme == 153
+replace matricule_fiscale = "0950448R" if id_plateforme == 183
+replace matricule_fiscale = "0418325L" if id_plateforme == 237
+replace matricule_fiscale = "0005540X" if id_plateforme == 240
+replace matricule_fiscale = "0426073G" if id_plateforme == 244
+replace matricule_fiscale = "1012776R" if id_plateforme == 381
+replace matricule_fiscale = "0598608V" if id_plateforme == 416
+replace matricule_fiscale = "0510043A" if id_plateforme == 466
+replace matricule_fiscale = "0945413W" if id_plateforme == 489
+replace matricule_fiscale = "1066365" if id_plateforme == 508
+replace matricule_fiscale = "1776211C" if id_plateforme == 519
+replace matricule_fiscale = "0840123K" if id_plateforme == 521
+replace matricule_fiscale = "0945162W" if id_plateforme == 568
+replace matricule_fiscale = "0933473V" if id_plateforme == 587
+replace matricule_fiscale = "1618296V" if id_plateforme == 643
+replace matricule_fiscale = "0447064W" if id_plateforme == 644
+replace matricule_fiscale = "1261600C" if id_plateforme == 698
+replace matricule_fiscale = "0910604N" if id_plateforme == 714
+replace matricule_fiscale = "0849850A" if id_plateforme == 747
+replace matricule_fiscale = "0035648A" if id_plateforme == 764
+replace matricule_fiscale = "0341549F" if id_plateforme == 767
+replace matricule_fiscale = "0011580T" if id_plateforme == 782
+replace matricule_fiscale = "0036963N" if id_plateforme == 791
+replace matricule_fiscale = "1434685K" if id_plateforme == 800
+replace matricule_fiscale = "0006013G" if id_plateforme == 820	
+replace matricule_fiscale = "0719484A" if id_plateforme == 833
+replace matricule_fiscale = "0736255L" if id_plateforme == 861
+replace matricule_fiscale = "0010690V" if id_plateforme == 873
+replace matricule_fiscale = "1585667W" if id_plateforme == 890
+replace matricule_fiscale = "0036115D" if id_plateforme == 899
+replace matricule_fiscale = "0736406H" if id_plateforme == 909
+replace matricule_fiscale = "0708451F" if id_plateforme == 910
+
+
+
+*CHANGING FIRM NAMES & CREATING A DUMMY INCASE
+	*dummy creation
+generate firmname_change = 0
+replace firmname_change = 1 if firmname == "-888"
+
+*firmname changes
+replace firmname = "SOUTH MEDITERRANEAN UNIVERSITY" if id_plateforme == 795
+replace firmname = "AVIATION TRAINING CENTER OF TUNISIA SA" if id_plateforme == 95
+replace firmname = "ECOMEVO" if id_plateforme == 172
+replace firmname = "Entreprise Bochra" if id_plateforme == 332
+replace firmname = "TPAD" if id_plateforme == 572
+replace firmname = "HOLYA INTERIOS" if id_plateforme == 708
+replace firmname = "URBA TECH" if id_plateforme == 890
+replace firmname = "Etamial" if id_plateforme == 642
+
 
 
 
