@@ -51,8 +51,12 @@ ssc install coefplot, replace
 if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele"{
 		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
-else{
-		global gdrive = "C:/Users/`c(username)'/Google Drive"
+else if "`c(username)'" == "Azra" {
+		global gdrive= "C:/Users/Azra/Google Drive Streaming/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
+		*old one
+		*global gdrive = "C:/Users/`c(username)'/Google Drive"
+		*change for ayoub
+		
 }
 
 		if c(os) == "Windows" {
@@ -165,12 +169,12 @@ if (1) do "${master_github}/master_generate.do"
 /*--------------------------------------------------------------------
 	PART 4.1: Descriptive statistics
 ----------------------------------------------------------------------*/		
-if (1) do "${master_github}/master_descriptives.do"
+if (0) do "${master_github}/master_descriptives.do"
 
 /*--------------------------------------------------------------------
 	PART 4.2: Power calculations with baseline data
 ----------------------------------------------------------------------*/		
-if (0) do "${master_github}/master_power.do"
+if (1) do "${master_github}/master_power.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Regressions

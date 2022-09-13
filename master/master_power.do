@@ -31,44 +31,46 @@ putexcel A1 = "Power calculations", bold border(bottom) left
 putexcel A2:I2 = "", border(top)
 	
 	* define column headings
-putexcel A2 = "", border(bottom) hcenter
-putexcel B2 = "Export at all", border(bottom) hcenter
-putexcel C2 = "IHS export sales", border(bottom) hcenter
-putexcel D2 = "Countries exported", border(bottom) hcenter
-putexcel E2 = "E-commerce practices index", border(bottom) hcenter
-putexcel F2 = "Any E-commerce sales (binary)", border(bottom) hcenter
-putexcel G2 = "E-commerce/Dig.Marketing Knowledge Index", border(bottom) hcenter
-putexcel H2 = "Domestic Revenue", border(bottom) hcenter
-putexcel I2 = "Number of FB likes (IHS-transformed)", border(bottom) hcenter
+putexcel A2 = "", border(bottom) 
+putexcel B2 = "Export at all", border(bottom) 
+putexcel C2 = "IHS export sales", border(bottom) 
+putexcel D2 = "Countries exported", border(bottom) 
+putexcel E2 = "E-commerce practices index", border(bottom) 
+putexcel F2 = "Any E-commerce sales (binary)", border(bottom) 
+putexcel G2 = "E-commerce/Dig.Marketing Knowledge Index", border(bottom) 
+putexcel H2 = "Domestic Revenue", border(bottom) 
+putexcel I2 = "Number of FB likes (IHS-transformed)", border(bottom) 
 putexcel J2 = "Digital Marketing Practices Index (z-score)"
 putexcel K2 = "Number of e-commerce channels"
+putexcel L2 = "Export preparation index"
 
 * define first column
-putexcel A3 = "A. Parameters from baseline data", italic left
+putexcel A3 = "A. Parameters from baseline data", bold left
 
 *define row headings
-putexcel A4 = "Baseline mean", hcenter
-putexcel A5 = "Baseline SD", hcenter
-putexcel A6 = "Residual SD", hcenter
-putexcel A7 = "1-year autocorrelation", hcenter
-putexcel A9 = "B. Assumed treatment effect", italic left
-putexcel A10= "Assumed take-up", hcenter
-putexcel A11= "take-up adjusted treatment effect", hcenter
-putexcel A12 = "as a percentage change", hcenter
-putexcel A13 = "C. Power of take-up adjusted treatment effect", italic left
-putexcel A14 = "comparison of means", hcenter
-putexcel A15 = "after controll for strata", hcenter
-putexcel A16 = "Ancova 1-year before", hcenter
-putexcel A17 = "D. MDE at 80% power and 66% take up (compare with assumed treatment effect)", italic left
-putexcel A18 = "comparison of means", hcenter
-putexcel A19 = "after controll for strata", hcenter
-putexcel A20 = "Ancova 1-year before", hcenter
-putexcel A21 = "Notes:"
+putexcel A4 = "Baseline mean", 
+putexcel A5 = "Baseline SD", 
+putexcel A6 = "Residual SD", 
+putexcel A7 = "autocorrelation between baseline and follow-up values", 
+putexcel A8 = "B.Assumption on treatment effect and take-up",bold
+putexcel A9 = "Treatment effect on treated", 
+putexcel A10= "Take-up", 
+putexcel A11= "Average treatment effect (take-up adjusted)", 
+putexcel A12 = "as a percentage change", 
+putexcel A13 = "C. Power of take-up adjusted treatment effect", bold left
+putexcel A14 = "comparison of means", 
+putexcel A15 = "after controll for strata", 
+putexcel A16 = "Ancova 1-year before", 
+putexcel A17 = "D. MDE at 80% power and 66% take up (compare with assumed ToT)", bold left
+putexcel A18 = "comparison of means", 
+putexcel A19 = "after controlling for strata", 
+putexcel A20 = "Ancova (controlling for BL and strata)", 
+putexcel A21 = "Notes:", bold
 putexcel A22 = "Assuming a survey attrition of 10% at endline, reducing sample from 236 to 212 firms"
-putexcel A23 = "MDE denotes minimum detectable effect size."
+putexcel A23 = "MDE = minimum detectable effect size."
 putexcel A24 = "Residual SD is standard deviation after controlling for strata fixed effects."
-putexcel A25 = "One-year autocorrelation come from baseline survey held in Feb 2022."
-putexcel A25 = "For knowledge index variables percentage change was omitted because baseline mean of exactly zero."
+putexcel A25 = "Autocorrelation come from baseline survey held in Feb 2022."
+putexcel A25 = "For index variables with mean of zero percentage change was omitted."
 
 ***********************************************************************
 * 	PART 2:    estimate power 
@@ -96,8 +98,8 @@ program define power /* opens a program called power */
 end
 *Assuming 15 pp increase for exporter status in 2023*
 power exporter2020 B 0.15
-*Assuming 10% increase in exports
-power ihs_exports C  0.104
+*Assuming 10% increase in exports (10% increase is 0.095 in IHS units)
+power ihs_exports C  0.095
 *Assuming one additional market (on average) for those participating in training
 power exp_pays_21 D 1
 *assuming a 1/4 SD (0.672) as an effect on the index
@@ -110,10 +112,10 @@ power dig_vente F 0.15
 power knowledge G 0.165
 
 *Assuming 10% increase in revenue
-power ihs_w_dom_rev2020 H 0.1054
+power ihs_w_dom_rev2020 H 0.095
 
-*Assuming 10% increase in revenue
-power ihs_w_facebook_likes I 0.167
+*Assuming 20% increase in revenue
+power ihs_w_facebook_likes I 0.18
 
 *assuming 16 pp increase in dig_marketing (0.25 SD) after adjusting for take up
 power dig_marketing_index J 0.16
@@ -122,6 +124,8 @@ power dig_marketing_index J 0.16
 *assuming 0.19 increase in average number of online channels
 power dig_presence_score K 0.19
 
+*assuming 0.2 (0.33 SD) increase in export preparation activities
+power expprep L 0.2
 
 *For IHS figure precentage change equals the mean difference, needs to be adjusted manually
 putexcel C12=7.00, hcenter nformat(number_d2)
@@ -132,6 +136,7 @@ putexcel I12=11.0
 
 putexcel G12=""
 putexcel J12=""
+putexcel L12=""
 ***********************************************************************
 * 	PART 2.2:  Calculating power (manual part, as sampsi does not take locals)
 ***********************************************************************
@@ -176,17 +181,17 @@ putexcel B20 = 0.106, hcenter nformat(number_d2)
 * 	PART 2.3.:     IHS export sales
 ***********************************************************************
 	* comparison of means
-sampsi 10.04 10.144, n1(107) n2(105) sd1(6.24) sd2(6.24)
+sampsi 10.04 10.103, n1(107) n2(105) sd1(6.24) sd2(6.24)
 local power = r(power)
 putexcel C14 = `power', hcenter nformat(number_d2)
 
 	* after controlling for strata_final --> add
-sampsi 10.04 10.144, n1(107) n2(105) sd1(3.28) sd2(3.28)
+sampsi 10.04 10.103, n1(107) n2(105) sd1(3.28) sd2(3.28)
 local power = r(power)
 putexcel C15 = `power', hcenter nformat(number_d2)
 
 	* Ancova 1 year before
-sampsi 10.04 10.144, n1(107) n2(105) sd1(3.28) sd2(3.28) pre(1) post(1) r1(0.8)
+sampsi 10.04 10.103, n1(107) n2(105) sd1(3.28) sd2(3.28) pre(1) post(1) r1(0.8)
 local power = r(power)
 putexcel C16 = `power', hcenter nformat(number_d2)
 
@@ -349,18 +354,18 @@ putexcel G20 = 0.18, hcenter nformat(number_d2)
 * 	PART 2.5.:     Domestic revenue
 ***********************************************************************
 	* comparison of means
-sampsi 10.54 10.61, n1(107) n2(105) sd1(6.79) sd2(6.79)
+sampsi 10.54 10.603, n1(107) n2(105) sd1(6.79) sd2(6.79)
 local power = r(power)
 putexcel H14 = `power', hcenter nformat(number_d2)
 
 	* after controlling for strata_final --> add
-sampsi 10.54 10.61, n1(107) n2(105) sd1(6.14) sd2(6.14)
+sampsi 10.54 10.603, n1(107) n2(105) sd1(6.14) sd2(6.14)
 local power = r(power)
 putexcel H15 = `power', hcenter nformat(number_d2)
 
 
 	* Ancova 1 year before
-sampsi 10.54 10.61, n1(107) n2(105) sd1(6.14) sd2(6.14) pre(1) post(1) r1(0.8)
+sampsi 10.54 10.603, n1(107) n2(105) sd1(6.14) sd2(6.14) pre(1) post(1) r1(0.8)
 local power = r(power)
 putexcel H16 = `power', hcenter nformat(number_d2)
 
@@ -384,17 +389,17 @@ putexcel H20 = 2.21, hcenter nformat(number_d2)
 * 	PART 2.5.:     Facebook followers (IHS-transformed)
 ***********************************************************************
 	* comparison of means
-sampsi 8.33 8.44, n1(107) n2(105) sd1(2.62) sd2(2.62)
+sampsi 8.33 8.45, n1(107) n2(105) sd1(2.62) sd2(2.62)
 local power = r(power)
 putexcel I14 = `power', hcenter nformat(number_d2)
 
 	* after controlling for strata_final --> add
-sampsi 8.33 8.44, n1(107) n2(105) sd1(2.38) sd2(2.38)
+sampsi 8.33 8.45, n1(107) n2(105) sd1(2.38) sd2(2.38)
 local power = r(power)
 putexcel I15 = `power', hcenter nformat(number_d2)
 
 	* Ancova 1 year before
-sampsi 8.33 8.44, n1(107) n2(105) sd1(2.38) sd2(2.38) pre(1) post(1) r1(0.8)
+sampsi 8.33 8.45, n1(107) n2(105) sd1(2.38) sd2(2.38) pre(1) post(1) r1(0.8)
 local power = r(power)
 putexcel I16 = `power', hcenter nformat(number_d2)
 
@@ -450,7 +455,7 @@ local power = r(power)
 putexcel J20 = 0.136, hcenter nformat(number_d2)
 
 ***********************************************************************
-* 	PART 2.6.:     Digital marketing practices Index
+* 	PART 2.6.:     Number of e-commerce channels
 ***********************************************************************
 	* comparison of means
 sampsi 1.84 1.97, n1(107) n2(105) sd1(0.68) sd2(0.68)
@@ -481,3 +486,37 @@ putexcel K19 = 0.32, hcenter nformat(number_d2)
 sampsi 1.84 1.97, n1(107) n2(105) sd1(0.53) sd2(0.53) pre(1) post(1) r1(0.8)
 local power = r(power)
 putexcel K20 = 0.2, hcenter nformat(number_d2)
+
+***********************************************************************
+* 	PART 2.7.:     Export preparation index 
+***********************************************************************
+sampsi 0 0.13, n1(107) n2(105) sd1(0.60) sd2(0.60)
+local power = r(power)
+putexcel L14 = `power', hcenter nformat(number_d2)
+
+	* after controlling for strata_final --> add
+sampsi 0 0.13, n1(107) n2(105) sd1(0.52) sd2(0.52)
+local power = r(power)
+putexcel L15 = `power', hcenter nformat(number_d2)
+
+	* Ancova 1 year before
+sampsi 0 0.13, n1(107) n2(105) sd1(0.52) sd2(0.52) pre(1) post(1) r1(0.8)
+local power = r(power)
+putexcel L16 = `power', hcenter nformat(number_d2)
+
+	* comparison of means
+sampsi 0 0.23, n1(107) n2(105) sd1(0.60) sd2(0.60)
+local power = r(power)
+*dividing by 0.66 to get the effect required for the treated
+putexcel L18 = 0.35, hcenter nformat(number_d2)
+
+	* after controlling for strata_final --> add
+sampsi 0 0.2, n1(107) n2(105) sd1(0.52) sd2(0.52)
+local power = r(power)
+*dividing by 0.66 to get the effect required for the treated
+putexcel L19 = 0.30, hcenter nformat(number_d2)
+
+	* Ancova 1 year before
+sampsi 0 0.12, n1(107) n2(105) sd1(0.52) sd2(0.52) pre(1) post(1) r1(0.8)
+local power = r(power)
+putexcel L20 = 0.18, hcenter nformat(number_d2)

@@ -156,14 +156,14 @@ egen max_presencez = rowmax(webindexz social_media_indexz platform_indexz)
 egen min_presencez = rowmin(webindexz social_media_indexz platform_indexz)
 gen mid_presencez = webindexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
 
-gen presence_index_weighted= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
+gen dig_presence_weightedz= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
 if dig_presence_score==1
-replace presence_index_weighted=0.7*max_presence +0.3*min_presencez ///
+replace dig_presence_weightedz=0.7*max_presence +0.3*min_presencez ///
 if dig_presence_score>0.65 & dig_presence_score<0.67 
-replace presence_index_weighted=max_presence if dig_presence_score>0.32 & dig_presence_score<0.34
+replace dig_presence_weightedz=max_presence if dig_presence_score>0.32 & dig_presence_score<0.34
 
 *add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
-replace presence_index_weighted = presence_index_weighted+0.2*dig_presence_score
+replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
 
 
 *other indices
@@ -173,7 +173,7 @@ local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_in
 local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
 local dig_presence dig_presence1 dig_presence2 dig_presence3
 
-foreach z in knowledge digtalvars expprep exportcomes {
+foreach z in knowledge dig_marketing_index expprep exportcomes {
 	foreach x of local `z'  {
 			zscore `x' 
 		}
@@ -242,21 +242,16 @@ replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tuni
 ***********************************************************************
 lab var knowledge "Z-score index for e-commerce knowledge"
 lab var knowledge_share "% of knowledge questions answered correctly"
-label var digtalvars   "Index of all e-commerce and dig marketing activities"
-lab var dig_vitrine_index "Z-score index relating to quantity and quality of online presence"
 lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
 lab var dig_marketing_share "Share of digital marketing practices"
-lab var dig_logistic_index "Z-score index on logistics and return possibilites"
 label var expprep "Z-score index export preparation"
-label var expoutcomes "Index export outcomes"
 label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
-lab var web_indexz "Z-score index of web presence"
+lab var webindexz "Z-score index of web presence"
 lab var web_share "Web presence score in %"
 lab var social_media_indexz "Z-score index of social media presence"
 lab var social_m_share "Social media presence score in %"
 lab var platform_indexz "Z-score index of platform presence"
 lab var platform_share "Platform presence score in %"
-lab var dig_logistic_share "Logistic and return score in %"
 lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 
 save "${master_intermediate}/ecommerce_master_final", replace

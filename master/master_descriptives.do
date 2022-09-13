@@ -24,22 +24,22 @@ cd "${master_gdrive}/output"
 
 *Check whether balance table changed with new z-score calculation
 iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
-comp_benefice2020 knowledge dig_presence_weightedz web_indexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
- expoutcomes expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
+comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
+  expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 			 
 iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
-comp_benefice2020 knowledge dig_presence_weightedz web_indexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
- expoutcomes expprep, grpvar(treatment) ftest savetex(baltab_baseline) replace ///
+comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
+  expprep, grpvar(treatment) ftest savetex(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 			 
 *correlation matrix of selected variables
-correlate compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep
+correlate compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge  expprep
 
 *What drives participation
-logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports ihs_ca exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge digtalvars expoutcomes expprep if treatment==1
+logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports ihs_ca exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge  expprep if treatment==1
 logit take_up knowledge if treatment==1
 * Scatter plot
 graph twoway (lfitci take_up knowledge) (scatter take_up knowledge) if treatment ==1
@@ -51,7 +51,7 @@ tab take_up subsector if treatment==1
 ***********************************************************************
 * 	PART 2: Some regressions
 ***********************************************************************
-reg ihs_export ihs_ca agri artisanat commerce_int industrie service tic dig_vitrine_index dig_marketing_index fte car_pdg_age rg_age , robust
+reg ihs_export ihs_ca agri artisanat commerce_int industrie service tic  dig_marketing_index fte car_pdg_age rg_age , robust
 ***********************************************************************
 *** PDF with graphs  			
 ***********************************************************************
@@ -60,7 +60,7 @@ putpdf clear
 putpdf begin 
 putpdf paragraph
 
-putpdf text ("E-commerce: survey progress, firm characteristics"), bold linebreak
+putpdf text ("E-commerce: Baseline Statistics and firm characteristics"), bold linebreak
 
 putpdf text ("Date: `c(current_date)'"), bold linebreak
 
@@ -160,11 +160,11 @@ putpdf image dig_presence_weightedz.png
 putpdf pagebreak
 
 
-hist web_indexz, ///
+hist webindexz, ///
 title("z-score: Web presence") 
-graph export web_indexz.png, replace
+graph export webindexz.png, replace
 putpdf paragraph, halign(center) 
-putpdf image web_indexz.png
+putpdf image webindexz.png
 putpdf pagebreak
 
 hist web_share, ///
@@ -277,12 +277,12 @@ graph export raw_exp_ca.png, replace
 putpdf paragraph, halign(center) 
 putpdf image raw_exp_ca.png
 putpdf pagebreak
-correlate compexp_2020 comp_ca2020 knowledge digtalvars  
+correlate compexp_2020 comp_ca2020 knowledge   
 
 *Scatter plot comparing knowledge and digitalisation index
-corr knowledge digtalvars
+corr knowledge 
 local corr : di %4.3f r(rho)
-twoway scatter knowledge digtalvars  || lfit knowledge digtalvars, ytitle("Knowledge index raw") xtitle("Digitilisation Index raw") subtitle(correlation `corr')
+twoway scatter knowledge dig_presence_weightedz  || lfit knowledge dig_presence_weightedz , ytitle("Knowledge index raw") xtitle("Digitilisation Index raw") subtitle(correlation `corr')
 graph export raw_knowledge_digital.png, replace
 putpdf paragraph, halign(center) 
 putpdf image raw_knowledge_digital.png
@@ -337,11 +337,11 @@ putpdf image dig_presence_weightedz_sector.png
 putpdf pagebreak
 
 
-graph hbar web_indexz, over(sector) blabel (bar) ///
+graph hbar webindexz, over(sector) blabel (bar) ///
 	title("Z-score index of web presence") 
-graph export web_indexz_sector.png, replace
+graph export webindexz_sector.png, replace
 putpdf paragraph, halign(center) 
-putpdf image web_indexz_sector.png
+putpdf image webindexz_sector.png
 putpdf pagebreak
 
 graph hbar web_share, over(sector) blabel (bar) ///
@@ -356,7 +356,7 @@ graph hbar social_media_indexz, over(sector) blabel (bar) ///
 	title("Z-score index of social media presence") 
 graph export social_media_indexz_sector.png, replace
 putpdf paragraph, halign(center) 
-putpdf image web_indexz_sector.png
+putpdf image webindexz_sector.png
 putpdf pagebreak
 
 graph hbar social_m_share, over(sector) blabel (bar) ///
@@ -379,6 +379,47 @@ graph hbar platform_share, over(sector) blabel (bar) ///
 graph export platform_share_sector.png, replace
 putpdf paragraph, halign(center) 
 putpdf image platform_share_sector.png
+putpdf pagebreak
+
+graph hbar (count), over(expprep_cible) blabel(bar) ///
+	title("Number of firms that have done (1) or plan(0.5) an export market analysis", size(small))
+graph export expprep_cible.png, replace
+putpdf paragraph, halign(center) 
+putpdf image expprep_cible.png
+putpdf pagebreak
+
+graph hbar (count), over(expprep_norme) blabel(bar) ///
+	title("Number of firms that have a quality certificate", size(small))
+graph export expprep_norme.png, replace
+putpdf paragraph, halign(center) 
+putpdf image expprep_norme.png
+putpdf pagebreak
+
+graph hbar (count), over(expprep_demande) blabel(bar) ///
+	title("Number of firms that can meet extra demand", size(small))
+graph export expprep_demande.png, replace
+putpdf paragraph, halign(center) 
+putpdf image expprep_demande.png
+putpdf pagebreak
+
+graph hbar (count), over(expprep_responsable_bin) blabel(bar) ///
+	title("Number of firms with export employee", size(small))
+graph export expprep_responsable_bin.png, replace
+putpdf paragraph, halign(center) 
+putpdf image expprep_responsable_bin.png
+putpdf pagebreak
+
+stripplot expprep_responsable if expprep_responsable<50 , ///
+	title("Distribution of export employees numbers", size(small))
+graph export exprep_responsable_hist.png, replace
+putpdf paragraph, halign(center) 
+putpdf image exprep_responsable_hist.png
+putpdf pagebreak
+
+hist expprep
+graph export expprep.png, replace
+putpdf paragraph, halign(center) 
+putpdf image expprep.png
 putpdf pagebreak
 ***********************************************************************
 * 	PART 4:  save pdf
