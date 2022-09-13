@@ -106,7 +106,6 @@ replace matricule_fiscale = "0950448R" if id_plateforme == 183
 replace matricule_fiscale = "0418325L" if id_plateforme == 237
 replace matricule_fiscale = "0005540X" if id_plateforme == 240
 replace matricule_fiscale = "0426073G" if id_plateforme == 244
-replace matricule_fiscale = "1012776R" if id_plateforme == 381
 replace matricule_fiscale = "0598608V" if id_plateforme == 416
 replace matricule_fiscale = "0510043A" if id_plateforme == 466
 replace matricule_fiscale = "0945413W" if id_plateforme == 489
@@ -133,15 +132,31 @@ replace matricule_fiscale = "1585667W" if id_plateforme == 890
 replace matricule_fiscale = "0036115D" if id_plateforme == 899
 replace matricule_fiscale = "0736406H" if id_plateforme == 909
 replace matricule_fiscale = "0708451F" if id_plateforme == 910
+replace matricule_fiscale = "0598608V" if id_plateforme == 416
+replace matricule_fiscale = "1230487A" if id_plateforme == 511
+replace matricule_fiscale = "0496192B/ 0749702G" if id_plateforme == 765
 
 
+*create dummy for missing matricule
+gen matricule_missing =0 
+replace matricule_missing = 1 if id_plateforme == 427 
+replace matricule_missing = 1 if id_plateforme == 77 
+ replace matricule_missing = 1 if id_plateforme == 114 
+ replace matricule_missing = 1 if id_plateforme == 206 
+ replace matricule_missing = 1 if id_plateforme == 381 
+  replace matricule_missing = 1 if id_plateforme ==505 
+ replace matricule_missing = 1 if id_plateforme == 620 
+ replace matricule_missing = 1 if id_plateforme == 642 
+ replace matricule_missing = 1 if id_plateforme == 742 
+ replace matricule_missing = 1 if id_plateforme == 752 
+ replace matricule_missing = 1 if id_plateforme == 763 
+ replace matricule_missing = 1 if id_plateforme == 827 
+ replace matricule_missing = 1 if id_plateforme == 841 
+ replace matricule_missing = 1 if id_plateforme == 927 
+ replace matricule_missing = 1 if id_plateforme == 931 
+ replace matricule_missing = 1 if id_plateforme ==956
 
-*CHANGING FIRM NAMES & CREATING A DUMMY INCASE
-	*dummy creation
-generate firmname_change = 0
-replace firmname_change = 1 if firmname == "-888"
-
-*firmname changes
+*Adding FIRM NAMES to those that did not provide in the baseline 
 replace firmname = "SOUTH MEDITERRANEAN UNIVERSITY" if id_plateforme == 795
 replace firmname = "AVIATION TRAINING CENTER OF TUNISIA SA" if id_plateforme == 95
 replace firmname = "ECOMEVO" if id_plateforme == 172
@@ -150,8 +165,20 @@ replace firmname = "TPAD" if id_plateforme == 572
 replace firmname = "HOLYA INTERIOS" if id_plateforme == 708
 replace firmname = "URBA TECH" if id_plateforme == 890
 replace firmname = "Etamial" if id_plateforme == 642
+replace firmname = "ENTREPOTS FRIGORIFIQUES DU CENTRE" if id_plateforme == 416
 
+save "ecommerce_master_contact", replace
 
+*merge participation data to contact master
+clear 
+import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
+drop if id_plateforme== ""
+drop if id_plateforme== "id_plateforme"
+destring id_plateforme,replace
+
+merge 1:1 id_plateforme using "${master_gdrive}/ecommerce_master_contact"
+drop _merge
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
@@ -206,7 +233,7 @@ append using el_final
 * 	PART 7: merge with participation data
 ***********************************************************************
 
-*Note: here should the Suivi_mise_en_oeuvre_ecommerce.xlsx be downloaded from teams, legend deleted, renamed and uploaded again in 6-master
+*merge participation file to have take up data also in analysis file
 clear 
 import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
 keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
