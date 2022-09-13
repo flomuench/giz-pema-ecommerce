@@ -152,9 +152,6 @@ replace firmname = "URBA TECH" if id_plateforme == 890
 replace firmname = "Etamial" if id_plateforme == 642
 
 
-
-
-
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
