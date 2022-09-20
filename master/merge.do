@@ -91,7 +91,7 @@ replace matricule_fiscale = upper(matricule_fiscale)
 
 	*correcting entries
 
-replace matricule_fiscale = "0858234G" if id_plateforme == 427
+*replace matricule_fiscale = "0858234G" if id_plateforme == 427
 replace matricule_fiscale = "0009951F" if id_plateforme == 443
 replace matricule_fiscale = "1230487A" if id_plateforme == 511
 replace matricule_fiscale = "0002495X" if id_plateforme == 724
@@ -138,23 +138,33 @@ replace matricule_fiscale = "0496192B/ 0749702G" if id_plateforme == 765
 
 
 *create dummy for missing matricule
-gen matricule_missing =0 
-replace matricule_missing = 1 if id_plateforme == 427 
+gen matricule_missing =0  
 replace matricule_missing = 1 if id_plateforme == 77 
- replace matricule_missing = 1 if id_plateforme == 114 
- replace matricule_missing = 1 if id_plateforme == 206 
- replace matricule_missing = 1 if id_plateforme == 381 
-  replace matricule_missing = 1 if id_plateforme ==505 
- replace matricule_missing = 1 if id_plateforme == 620 
- replace matricule_missing = 1 if id_plateforme == 642 
- replace matricule_missing = 1 if id_plateforme == 742 
- replace matricule_missing = 1 if id_plateforme == 752 
- replace matricule_missing = 1 if id_plateforme == 763 
- replace matricule_missing = 1 if id_plateforme == 827 
- replace matricule_missing = 1 if id_plateforme == 841 
- replace matricule_missing = 1 if id_plateforme == 927 
- replace matricule_missing = 1 if id_plateforme == 931 
- replace matricule_missing = 1 if id_plateforme ==956
+replace matricule_missing = 1 if id_plateforme == 114 
+replace matricule_missing = 1 if id_plateforme == 206 
+replace matricule_missing = 1 if id_plateforme == 381 
+replace matricule_missing = 1 if id_plateforme ==505 
+replace matricule_missing = 1 if id_plateforme == 620 
+replace matricule_missing = 1 if id_plateforme == 642 
+replace matricule_missing = 1 if id_plateforme == 742 
+replace matricule_missing = 1 if id_plateforme == 752 
+replace matricule_missing = 1 if id_plateforme == 763 
+replace matricule_missing = 1 if id_plateforme == 827 
+replace matricule_missing = 1 if id_plateforme == 841 
+replace matricule_missing = 1 if id_plateforme == 927 
+replace matricule_missing = 1 if id_plateforme == 931 
+replace matricule_missing = 1 if id_plateforme ==956
+ 
+*create dummy for physical matricule fiscale
+gen matricule_physique = 0
+replace matricule_physique = 1 if id_plateforme == 427
+
+*replace
+replace matricule_fiscale = "1591619A" if id_plateforme == 427
+
+*create dummy for moral matricule fiscale
+
+*replace
 
 *Adding FIRM NAMES to those that did not provide in the baseline 
 replace firmname = "SOUTH MEDITERRANEAN UNIVERSITY" if id_plateforme == 795
