@@ -140,27 +140,45 @@ replace matricule_fiscale = "0496192B/ 0749702G" if id_plateforme == 765
 *create dummy for missing matricule
 gen matricule_missing =0  
 replace matricule_missing = 1 if id_plateforme == 77 
-replace matricule_missing = 1 if id_plateforme == 114 
-replace matricule_missing = 1 if id_plateforme == 206 
-replace matricule_missing = 1 if id_plateforme == 381 
-replace matricule_missing = 1 if id_plateforme ==505 
-replace matricule_missing = 1 if id_plateforme == 620 
-replace matricule_missing = 1 if id_plateforme == 642 
-replace matricule_missing = 1 if id_plateforme == 742 
-replace matricule_missing = 1 if id_plateforme == 752 
-replace matricule_missing = 1 if id_plateforme == 763 
+replace matricule_missing = 1 if id_plateforme == 381  
 replace matricule_missing = 1 if id_plateforme == 827 
 replace matricule_missing = 1 if id_plateforme == 841 
-replace matricule_missing = 1 if id_plateforme == 927 
-replace matricule_missing = 1 if id_plateforme == 931 
-replace matricule_missing = 1 if id_plateforme ==956
+replace matricule_missing = 1 if id_plateforme == 956
  
 *create dummy for physical matricule fiscale
 gen matricule_physique = 0
 replace matricule_physique = 1 if id_plateforme == 427
+replace matricule_physique = 1 if id_plateforme == 114 
+replace matricule_physique = 1 if id_plateforme == 206
+replace matricule_physique = 1 if id_plateforme == 505
+replace matricule_physique = 1 if id_plateforme == 620
+replace matricule_physique = 1 if id_plateforme == 642
+replace matricule_physique = 1 if id_plateforme == 742
+replace matricule_physique = 1 if id_plateforme == 752
+replace matricule_physique = 1 if id_plateforme == 763
+replace matricule_physique = 1 if id_plateforme == 927
+replace matricule_physique = 1 if id_plateforme == 931
+replace matricule_physique = 1 if id_plateforme == 927
+
 
 *replace
 replace matricule_fiscale = "1591619A" if id_plateforme == 427
+replace matricule_fiscale = "1211885E" if id_plateforme == 114
+replace matricule_fiscale = "0496140N" if id_plateforme == 206
+replace matricule_fiscale = "1172183K" if id_plateforme == 505
+replace matricule_fiscale = "1577031R" if id_plateforme == 620
+replace matricule_fiscale = "1109532D" if id_plateforme == 642
+replace matricule_fiscale = "1407099T" if id_plateforme == 742
+replace matricule_fiscale = "1553223V" if id_plateforme == 752
+replace matricule_fiscale = "1575123L" if id_plateforme == 763
+replace matricule_fiscale = "1299421C" if id_plateforme == 927
+replace matricule_fiscale = "1473584Y" if id_plateforme == 931
+replace matricule_fiscale = "1299421C" if id_plateforme == 927
+
+
+
+
+
 
 *create dummy for moral matricule fiscale
 
