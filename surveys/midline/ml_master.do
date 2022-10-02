@@ -1,5 +1,5 @@
 ***********************************************************************
-* 			master do file second part baseline (google forms), e-commerce 				  *					  
+* 			master do file for midline ecommernce	 				  *					  
 ***********************************************************************
 *																	  
 *	PURPOSE: make all data work reproducible from first import to analysis
@@ -9,8 +9,8 @@
 *				PART 2: Prepare dynamic folder paths & globals		  
 *				PART 3: Run all do-files                          											  
 *																	  
-*	Author:  			Ayoub Chamakhi & Fabian Scheifele					    
-*	ID variable: 		id_platforme 					  
+*	Author:  								    
+*	ID variable: 		id_plateforme 					  
 *	Requires:  	  										  
 *	Creates:  
 ***********************************************************************
@@ -67,31 +67,31 @@ else{
 
 
 if c(os) == "Windows" {
-	global bl2_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global bl2_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
-	global bl2_backup = "C:/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
+	global ml_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/3-midline"
+	global ml_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/midline"
+	global ml_backup = "C:/Users/`c(username)'/Documents/midline-back-up"
 }
 
 else if c(os) == "MacOSX" {
-	global bl2_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
-	global bl2_backup = "/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
+	global bl2_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/3-midline"
+	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/midline"
+	global bl2_backup = "/Users/`c(username)'/Documents/midline-back-up"
 }		
 		
 
 		* paths within gdrive
 			* data
-global bl2_raw = "${bl2_gdrive}/raw"
-global bl2_intermediate "${bl2_gdrive}/intermediate"
-global bl2_final = "${bl2_gdrive}/final"
-global bl2_output = "${bl2_gdrive}/output"
+global ml_raw = "${bl2_gdrive}/raw"
+global ml_intermediate "${bl2_gdrive}/intermediate"
+global ml_final = "${bl2_gdrive}/final"
+global ml_output = "${bl2_gdrive}/output"
 
 
 
 			* set seeds for replication
 			
-set seed 11323211
-set sortseed 11323211
+set seed 11343211
+set sortseed 11343211
 		
 ***********************************************************************
 
@@ -101,21 +101,29 @@ set sortseed 11323211
 /* --------------------------------------------------------------------
 	PART 3.1: Import & raw data
 ----------------------------------------------------------------------*/		
-if (1) do "${bl2_github}/bl2_import.do"
+if (1) do "${ml_github}/ml_import.do"
 /* --------------------------------------------------------------------
 	PART 3.2: Clean raw data & save as intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_correct.do"
+if (1) do "${ml_github}/ml_clean.do"
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_clean.do"
+if (1) do "${ml_github}/ml_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Generate new variables in intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_generate.do"
+if (1) do "${ml_github}/ml_generate.do"
 /* --------------------------------------------------------------------
-	PART 3.5: Create statistics on social media of SMEs	
+	PART 3.5: export open text or number variables for RA check
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_statistics.do"
+if (1) do "${ml_github}/ml_open_question_check.do"
+/* --------------------------------------------------------------------
+	PART 3.6: Perform logical checks
+----------------------------------------------------------------------*/	
+if (1) do "${ml_github}/ml_test.do"
+/* --------------------------------------------------------------------
+	PART 3.7: Create statistics	for the survey
+----------------------------------------------------------------------*/	
+if (1) do "${ml_github}/ml_descriptives.do"
 /* --------------------------------------------------------------------
