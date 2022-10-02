@@ -90,8 +90,6 @@ drop _merge
 replace matricule_fiscale = upper(matricule_fiscale)
 
 	*correcting entries
-
-*replace matricule_fiscale = "0858234G" if id_plateforme == 427
 replace matricule_fiscale = "0009951F" if id_plateforme == 443
 replace matricule_fiscale = "1230487A" if id_plateforme == 511
 replace matricule_fiscale = "0002495X" if id_plateforme == 724
@@ -135,32 +133,8 @@ replace matricule_fiscale = "0708451F" if id_plateforme == 910
 replace matricule_fiscale = "0598608V" if id_plateforme == 416
 replace matricule_fiscale = "1230487A" if id_plateforme == 511
 replace matricule_fiscale = "0496192B/ 0749702G" if id_plateforme == 765
-
-
-*create dummy for missing matricule
-
-gen matricule_incorrect =0 
-replace matricule_incorrect = 1 if id_plateforme == 427 
-replace matricule_incorrect = 1 if id_plateforme == 77 
- replace matricule_incorrect = 1 if id_plateforme == 114 
- replace matricule_incorrect = 1 if id_plateforme == 206 
- replace matricule_incorrect = 1 if id_plateforme == 381 
-  replace matricule_incorrect = 1 if id_plateforme ==505 
- replace matricule_incorrect = 1 if id_plateforme == 620 
- replace matricule_incorrect = 1 if id_plateforme == 642 
- replace matricule_incorrect = 1 if id_plateforme == 742 
- replace matricule_incorrect = 1 if id_plateforme == 752 
- replace matricule_incorrect = 1 if id_plateforme == 763 
- replace matricule_incorrect = 1 if id_plateforme == 827 
- replace matricule_incorrect = 1 if id_plateforme == 841 
- replace matricule_incorrect = 1 if id_plateforme == 927 
- replace matricule_incorrect = 1 if id_plateforme == 931 
- replace matricule_incorrect = 1 if id_plateforme ==956
-
- *create dummy for cases where matricule fiscale relates physical person
- gen matricule_personne=0
- *replace matricule_personne =1 if id_plateforme== 
-
+	
+*missing matricule
 gen matricule_missing =0  
 replace matricule_missing = 1 if id_plateforme == 77 
 replace matricule_missing = 1 if id_plateforme == 381  
@@ -197,17 +171,6 @@ replace matricule_fiscale = "1575123L" if id_plateforme == 763
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
 replace matricule_fiscale = "1473584Y" if id_plateforme == 931
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
-
-
-
-
-
-
-*create dummy for moral matricule fiscale
-
-*replace
-
-
 
 save "ecommerce_master_contact", replace
 
@@ -302,7 +265,7 @@ replace telrep = ustrregexra( telrep,"-888","")
 
 export excel id_plateforme firmname nom_rep treatment status ///
 emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
- matricule_incorrect matricule_fiscale using "midline_contactlist", firstrow(var) sheetreplace
+ matricule_missing matricule_fiscale using "midline_contactlist", firstrow(var) sheetreplace
 
 save "ecommerce_master_contact", replace
 
