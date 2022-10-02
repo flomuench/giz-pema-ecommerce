@@ -263,10 +263,44 @@ replace telrep = ustrregexra( telrep,"//","")
 replace telrep = ustrregexra( telrep," ","")
 replace telrep = ustrregexra( telrep,"-888","")
 
-export excel id_plateforme firmname nom_rep treatment status ///
+*clean email adress line to have 1 email adress per column
+replace emailrep = "contact@siele.com.tn" if id_plateforme==105
+replace rg_email2 = "sieletn@gmail.com" if id_plateforme==105
+
+replace emailrep = "sales@entrust-trade.com" if id_plateforme==107
+replace rg_email2 = "abdelkarim.mokhtar@gmail.com" if id_plateforme==107
+
+replace emailrep = "commercial@generaleindustrie.com" if id_plateforme==231
+replace rg_email2 = "youss2009@yahoo.fr" if id_plateforme==107
+
+replace emailrep = "mehdi.elarbi@leplus.tn" if id_plateforme==275
+replace rg_email2 = "salimchaabouni@gmail.com" if id_plateforme==275
+
+replace emailrep = "contact@cidattes.tn" if id_plateforme==345
+replace rg_email2 = " moez.abid2@gmail.com" if id_plateforme==345
+
+replace emailrep = "melken.kosksi@varat-tunisie.com" if id_plateforme==440
+replace rg_email2 = "d.marketing@varat- tunisie.com" if id_plateforme==440
+
+replace emailrep = "imene.agili@scapcb.com" if id_plateforme==443
+replace rg_email2 = "ikbel.benmabrouk@scapcb.com" if id_plateforme==443
+
+replace emailrep = "info@ecovillage.com.tn" if id_plateforme==493
+replace rg_email2 = "oumeima.ferjaoui@gmail.com" if id_plateforme==493
+
+replace emailrep = "bhwalid.centrax@topnet.tn" if id_plateforme==715
+replace rg_email2 = "sondes.sridi@gmail.com" if id_plateforme==715
+
+replace emailrep = "eddar.lamedina@gmail.com" if id_plateforme==810
+replace rg_email2 = "dali2808@gmail.com" if id_plateforme==810
+
+replace emailrep = "city.design.13@gmail.com" if id_plateforme==890
+replace rg_email2 = "mohamedaliragoubi@yahoo.fr" if id_plateforme==890
+
+/*export excel id_plateforme firmname nom_rep treatment status ///
 emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
 matricule_physique matricule_missing matricule_fiscale using "midline_contactlist", firstrow(var) sheetreplace
-
+*/
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
