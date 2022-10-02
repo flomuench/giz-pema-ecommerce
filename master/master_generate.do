@@ -65,10 +65,16 @@ lab var tic "dummy for sector=6"
 
 *regenerate IHS exports after slight modification of underlying variable
 drop ihs_exports w_compexp
-winsor compexp_2020, gen(w_compexp) p(0.01) highonly
-gen ihs_exports = log(w_compexp + sqrt((w_compexp*w_compexp)+1))
-lab var ihs_exports "IHS of exports in 2002"
+winsor compexp_2020, gen(w99_compexp) p(0.01) highonly
+winsor compexp_2020, gen(w97_compexp) p(0.03) highonly
+winsor compexp_2020, gen(w95_compexp) p(0.05) highonly
 
+gen ihs_exports99 = log(w99_compexp + sqrt((w99_compexp*w99_compexp)+1))
+lab var ihs_exports99 "IHS of exports in 2020, wins.99th"
+gen ihs_exports97 = log(w97_compexp + sqrt((w97_compexp*w97_compexp)+1))
+lab var ihs_exports97 "IHS of exports in 2020, wins.97th"
+gen ihs_exports95 = log(w95_compexp + sqrt((w95_compexp*w95_compexp)+1))
+lab var ihs_exports95 "IHS of exports in 2020, wins.95th"
 
 *create final export status variable and delete other to avoid confusion
 gen exporter2020=.
@@ -89,6 +95,21 @@ gen dom_rev2020= comp_ca2020-compexp_2020
 lab var dom_rev2020 "Domestic revenue 2020"
 winsor dom_rev2020, gen(w_dom_rev2020) p(0.01) highonly
 ihstrans w_dom_rev2020
+
+*re-generate total revenue with additional winsors
+drop ihs_ca w_compca
+winsor comp_ca2020, gen(w99_comp_ca2020) p(0.01) highonly
+winsor comp_ca2020, gen(w97_comp_ca2020) p(0.03) highonly
+winsor comp_ca2020, gen(w95_comp_ca2020) p(0.05) highonly
+
+gen ihs_revenue99 = log(w99_comp_ca2020 + sqrt((w99_comp_ca2020*w99_comp_ca2020)+1))
+lab var ihs_revenue99 "IHS of revenue in 2020, wins.99th"
+gen ihs_revenue97 = log(w97_comp_ca2020 + sqrt((w97_comp_ca2020*w97_comp_ca2020)+1))
+lab var ihs_revenue97 "IHS of revenue in 2020, wins.97th"
+gen ihs_revenue95 = log(w95_comp_ca2020 + sqrt((w95_comp_ca2020*w95_comp_ca2020)+1))
+lab var ihs_revenue95 "IHS of revenue in 2020, wins.95th"
+
+
 
 
 ***********************************************************************
@@ -122,6 +143,15 @@ foreach var of local  allvars {
 	replace `var' = 0 if `var' == -1776 
 	replace `var' = 0 if `var' == -1554
 }
+
+replace dig_revenues_ecom=. if dig_revenues_ecom== -999 | dig_revenues_ecom== -888
+drop ihs_digrevenue w_compdrev
+winsor dig_revenues_ecom, gen(w95_dig_rev20) p(0.05) highonly
+ihstrans w95_dig_rev20
+winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly
+ihstrans w97_dig_rev20
+winsor dig_revenues_ecom, gen(w99_dig_rev20) p(0.01) highonly
+ihstrans w99_dig_rev20
 
 	* Creation of the weighted e-commerce presence index without penalizing non-existant channels 
 *web index

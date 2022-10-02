@@ -57,8 +57,8 @@ foreach var of local logonamevars {
 	*entreprise selling methods
 replace Lentreprisevendellesonprodu = "2" if Lentreprisevendellesonprodu == "L’entreprise semble vendre à la fois aux consommateurs et aux entreprises."
 replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "L'entreprise vend à d'autres entreprises (B2B)."
-replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "L'entreprise vend à des consommateurs (personnes physiques)."
-replace Lentreprisevendellesonprodu = "1" if Lentreprisevendellesonprodu == "projets de développement local et régional "
+replace Lentreprisevendellesonprodu = "0" if Lentreprisevendellesonprodu == "L'entreprise vend à des consommateurs (personnes physiques)."
+replace Lentreprisevendellesonprodu = "." if Lentreprisevendellesonprodu == "projets de développement local et régional "
 
 	*entreprise partners
 replace Danslecasducommerceinterent ="2" if Danslecasducommerceinterent == "Oui"

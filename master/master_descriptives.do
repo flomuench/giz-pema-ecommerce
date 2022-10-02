@@ -23,13 +23,13 @@ use "${master_intermediate}/ecommerce_master_final", clear
 cd "${master_gdrive}/output"
 
 *Check whether balance table changed with new z-score calculation
-iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
+iebaltab fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
 comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
   expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 			 
-iebaltab fte ihs_exports ihs_ca ihs_digrevenue ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
+iebaltab fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
 comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
   expprep, grpvar(treatment) ftest savetex(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
@@ -39,7 +39,7 @@ comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz
 correlate compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge  expprep
 
 *What drives participation
-logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports ihs_ca exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge  expprep if treatment==1
+logit take_up i.groupe_factor agri artisanat commerce_int industrie service tic fte ihs_exports95 ihs_revenue95 exp_pays_avg exporter2020 dig_revenues_ecom comp_benefice2020 knowledge  expprep if treatment==1
 logit take_up knowledge if treatment==1
 * Scatter plot
 graph twoway (lfitci take_up knowledge) (scatter take_up knowledge) if treatment ==1
@@ -51,7 +51,62 @@ tab take_up subsector if treatment==1
 ***********************************************************************
 * 	PART 2: Some regressions
 ***********************************************************************
-reg ihs_export ihs_ca agri artisanat commerce_int industrie service tic  dig_marketing_index fte car_pdg_age rg_age , robust
+reg ihs_exports95 ihs_revenue95 agri artisanat commerce_int industrie service tic ///
+  dig_marketing_index fte car_pdg_age rg_age , robust
+  
+  
+ ***********************************************************************
+* 	PART 3: Outlier checks
+*********************************************************************** 
+winsor dom_rev2020, gen(w95_dom_rev2020) p(0.05) highonly 
+winsor dom_rev2020, gen(w97_dom_rev2020) p(0.03) highonly 
+stripplot w_dom_rev2020 dom_rev2020 w95_dom_rev2020 w97_dom_rev2020
+graph export dom_rev2020_outlier.png, replace
+
+twoway (hist w_dom_rev2020, frac lcolor(gs12) fcolor(gs12)) ///
+(hist w95_dom_rev2020, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("Domestic Revenues 99th (red: Domestic Revenues winsorized 95)") 
+
+stripplot compexp_2020  w99_compexp w97_compexp w95_compexp
+graph export compexp_2020_outlier.png, replace
+
+twoway (hist w99_compexp, frac lcolor(gs12) fcolor(gs12)) ///
+(hist w95_compexp, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("Export Revenues 99 (red: Export Revenues winsorized 95)")  
+graph export compexp_2020_hist.png, replace
+
+twoway (hist ihs_exports99, frac lcolor(gs12) fcolor(gs12)) ///
+(hist ihs_exports95, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("IHS export 99 (red: IHS export 95)")  
+graph export ihs_exports95_hist.png, replace
+
+stripplot comp_ca2020  w99_comp_ca2020 w97_comp_ca2020 w95_comp_ca2020
+graph export comp_ca2020_outlier.png, replace
+
+twoway (hist w99_comp_ca2020, frac lcolor(gs12) fcolor(gs12)) ///
+(hist w95_comp_ca2020, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("Total Revenues 99 (red: Total Revenues winsorized 95)")  
+graph export comp_ca2020_hist.png, replace
+
+twoway (hist ihs_revenue99, frac lcolor(gs12) fcolor(gs12)) ///
+(hist ihs_revenue95, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("IHS revenue 99 (red: IHS revenue 95)")  
+graph export ihs_revenue_hist.png, replace
+ 
+ 
+stripplot dig_revenues_ecom w99_dig_rev20 w97_dig_rev20 w95_dig_rev20
+graph export dig_revenue_strip.png, replace
+
+twoway (hist w99_dig_rev20, frac lcolor(gs12) fcolor(gs12)) ///
+(hist w95_dig_rev20, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("Dig Revenues 99 (red: Dig Revenues winsorized 95)")  
+graph export digrev2020_hist.png, replace
+
+twoway (hist ihs_w99_dig_rev20, frac lcolor(gs12) fcolor(gs12)) ///
+(hist ihs_w95_dig_rev20, frac fcolor(none) lcolor(red)), ///
+legend(off) xtitle("IHS dig revenue 99 (red: IHS dig revenue 95)")  
+graph export ihs_digrevenue_hist.png, replace
+ 
 ***********************************************************************
 *** PDF with graphs  			
 ***********************************************************************
@@ -66,8 +121,14 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 
 
 putpdf paragraph, halign(center) 
-putpdf text ("E-commerce training: Z scores"), bold linebreak
 
+
+* B2B vs. B2C
+graph hbar (count), over(entreprise_model) blabel(total)
+graph export b2b.png, replace
+putpdf paragraph, halign(center) 
+putpdf image b2b.png
+putpdf pagebreak
 	* Knowledge of digital Z-scores
 	
 hist knowledge, ///
