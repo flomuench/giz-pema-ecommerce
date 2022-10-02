@@ -186,7 +186,7 @@ foreach var of local logoname {
 destring entreprise_models, replace
 format entreprise_models %-9.0fc
 
-label define models  2 "entreprise sells to customers and businesses" 1 "entreprise sells to customers or businesses"
+label define models  2 "B2B & B2B" 1 "B2B" 0"B2C"
 label value entreprise_models models 
 
 	*label entreprise partners

@@ -138,6 +138,29 @@ replace matricule_fiscale = "0496192B/ 0749702G" if id_plateforme == 765
 
 
 *create dummy for missing matricule
+
+gen matricule_incorrect =0 
+replace matricule_incorrect = 1 if id_plateforme == 427 
+replace matricule_incorrect = 1 if id_plateforme == 77 
+ replace matricule_incorrect = 1 if id_plateforme == 114 
+ replace matricule_incorrect = 1 if id_plateforme == 206 
+ replace matricule_incorrect = 1 if id_plateforme == 381 
+  replace matricule_incorrect = 1 if id_plateforme ==505 
+ replace matricule_incorrect = 1 if id_plateforme == 620 
+ replace matricule_incorrect = 1 if id_plateforme == 642 
+ replace matricule_incorrect = 1 if id_plateforme == 742 
+ replace matricule_incorrect = 1 if id_plateforme == 752 
+ replace matricule_incorrect = 1 if id_plateforme == 763 
+ replace matricule_incorrect = 1 if id_plateforme == 827 
+ replace matricule_incorrect = 1 if id_plateforme == 841 
+ replace matricule_incorrect = 1 if id_plateforme == 927 
+ replace matricule_incorrect = 1 if id_plateforme == 931 
+ replace matricule_incorrect = 1 if id_plateforme ==956
+
+ *create dummy for cases where matricule fiscale relates physical person
+ gen matricule_personne=0
+ *replace matricule_personne =1 if id_plateforme== 
+
 gen matricule_missing =0  
 replace matricule_missing = 1 if id_plateforme == 77 
 replace matricule_missing = 1 if id_plateforme == 381  
@@ -184,6 +207,39 @@ replace matricule_fiscale = "1299421C" if id_plateforme == 927
 
 *replace
 
+
+
+save "ecommerce_master_contact", replace
+
+*merge participation data to contact master
+clear 
+import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+keep id_plateforme groupe firmname region nom_rep emailrep telrep module1 module2 module3 module4 module5 present absent
+drop if id_plateforme== ""
+drop if id_plateforme== "id_plateforme"
+destring id_plateforme,replace
+rename firmname firmname2
+
+merge 1:1 id_plateforme using "${master_gdrive}/ecommerce_master_contact"
+drop _merge
+
+
+*export excel for el amouri
+*considered treated once attended at least 3
+gen treated=0
+replace treated=1 if present>2 & present<.
+
+gen status= "groupe control" 
+replace status= "participant" if present>0 & present<.
+replace status= "no show" if present==0
+
+*change firmname where applicable
+replace firmname2=firmname if id_plateforme==599
+replace firmname=firmname2 if treatment==1
+replace firmname = "bizerta agri industry / oilyssa" if id_plateforme==354
+replace firmname = "3P Perfection, Prix, Propreté" if id_plateforme==144
+replace firmname = "3d wave" if id_plateforme==392
+
 *Adding FIRM NAMES to those that did not provide in the baseline 
 replace firmname = "SOUTH MEDITERRANEAN UNIVERSITY" if id_plateforme == 795
 replace firmname = "AVIATION TRAINING CENTER OF TUNISIA SA" if id_plateforme == 95
@@ -195,18 +251,59 @@ replace firmname = "URBA TECH" if id_plateforme == 890
 replace firmname = "Etamial" if id_plateforme == 642
 replace firmname = "ENTREPOTS FRIGORIFIQUES DU CENTRE" if id_plateforme == 416
 
-save "ecommerce_master_contact", replace
+drop firmname2* 
 
-*merge participation data to contact master
-clear 
-import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
-keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
-drop if id_plateforme== ""
-drop if id_plateforme== "id_plateforme"
-destring id_plateforme,replace
+*replace where representative changed
+replace nom_rep=rg_nom_rep if treatment==0
+replace nom_rep= "Abdelkarim Mokhtar" if id_plateforme==107
+replace nom_rep= "Ikbel ben mbarouk" if id_plateforme==443
+replace nom_rep= "sondes sridi" if id_plateforme==715
 
-merge 1:1 id_plateforme using "${master_gdrive}/ecommerce_master_contact"
-drop _merge
+*telephone numbers
+replace telrep=rg_telrep if treatment==0 
+replace telrep=telrep+"/"+telrepsession1+"/"+ telrep2session1 +"/" ///
+ + telrepsession2 +"/"+ telrep2session2 +"/" + telrepsession3 +"/" ///
+ + telrep2session3 +"/"+ telrepsession4 +"/"+telrep2session4
+
+drop telrepsession1 telrep2session1 telrepsession2 ///
+ telrep2session2 telrepsession3 telrep2session3 telrepsession4 telrep2session4
+ 
+drop telpdgsession1 telpdgsession2 telpdgsession3 telpdgsession4 rg_telrep
+
+replace emailrep = rg_emailrep if treatment==0
+drop emailrepsession1 emailrep2session1 emailrepsession2 emailrep2session2 emailrepsession3 emailrep2session3 emailrepsession4 emailrep2session4
+drop emailpdgsession1 emailpdgsession2 emailpdgsession3 emailpdgsession4
+drop rg_emailrep 
+drop ident_email*
+drop if treatment==.
+
+*Change nom_rep where another person filled out the baseline 
+replace nom_rep = id_base_repondent if id_plateforme == 108 | id_plateforme == 122 | id_plateforme == 185 | id_plateforme == 195 ///
+ | id_plateforme == 254  | id_plateforme == 521 
+
+
+gen bl_respondent_diff =0 
+replace bl_respondent_diff = 1 if id_plateforme == 108 | id_plateforme == 122 | id_plateforme == 185 | id_plateforme == 195 ///
+ | id_plateforme == 254  | id_plateforme == 521 | id_plateforme == 511 | id_plateforme == 628| id_plateforme == 586
+ 
+
+lab var bl_respondent_diff "Baseline respondent different than person from registration"
+lab var id_base_respondent "Name of person that filled out baseline if different from rg_nom_rep"
+lab var rg_nom_rep "Name of representative at registration"
+lab var nom_rep "Name of firm's participant or representative (for control)" 
+
+*additional name variables dropped, as nom_rep was changed were applicable
+drop nom_repsession*
+   
+replace telrep = ustrregexra( telrep,"//////","")   
+replace telrep = ustrregexra( telrep,"//","")   
+replace telrep = ustrregexra( telrep," ","")
+replace telrep = ustrregexra( telrep,"-888","")
+
+export excel id_plateforme firmname nom_rep treatment status ///
+emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
+ matricule_incorrect matricule_fiscale using "midline_contactlist", firstrow(var) sheetreplace
+
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
