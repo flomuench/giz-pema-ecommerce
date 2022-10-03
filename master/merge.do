@@ -301,6 +301,11 @@ replace rg_email2 = "mohamedaliragoubi@yahoo.fr" if id_plateforme==890
 emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
 matricule_physique matricule_missing matricule_fiscale using "midline_contactlist", firstrow(var) sheetreplace
 */
+
+*excel for CEPEX
+export excel id_plateforme matricule_physique matricule_missing matricule_fiscale ///
+ using "matricule_fiscale_ecommerce", firstrow(var) sheetreplace
+
 save "ecommerce_master_contact", replace
 
 ***********************************************************************
