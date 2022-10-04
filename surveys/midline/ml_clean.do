@@ -22,7 +22,7 @@
 * 	PART 1:    Import the data
 ***********************************************************************
 
-use "${ml_intermediate}/something_intermediate", clear
+use "${ml_intermediate}/ml_intermediate", clear
 
 ***********************************************************************
 * 	PART 2:    Removing whitespace & format string and date & lower case 
