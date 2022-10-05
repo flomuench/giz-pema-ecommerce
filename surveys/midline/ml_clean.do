@@ -136,6 +136,7 @@ lab var ssa_action5 "introduction d'un système de facilitation des échanges, i
 
 lab var tel_supl "numéro de téléphone supplémentaire"
 
+
 ***********************************************************************
 * 	PART 5: 	Label the variables values	  			
 ***********************************************************************
