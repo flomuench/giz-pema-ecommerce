@@ -59,7 +59,9 @@ rename *, lower
 ***********************************************************************
 * 	PART 4: 	Label the variables		  			
 ***********************************************************************
-
+lab var varname "varlabel"
+* copier-coller pour les variables qui sont identiques à la baseline
+* definer des nouvelles labels pour des nouvelles variables
 
 ***********************************************************************
 * 	PART 5: 	Label the variables values	  			
