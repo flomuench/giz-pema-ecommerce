@@ -24,7 +24,7 @@ replace firmname = "central cold stores / مخازن التبريد بالوسط
 replace firmname = "msb" if id_plateforme == 795
 replace firmname = "urba tech" if id_plateforme == 890
 
-drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise ident_email_1 qsinonident ident_email_2 id_ident2
+drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise qsinonident
 cd "${master_gdrive}"
 save "ecommerce_master_contact", replace
 
