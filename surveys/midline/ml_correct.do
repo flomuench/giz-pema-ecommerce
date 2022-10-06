@@ -27,7 +27,7 @@
 ***********************************************************************
 * 	PART 1:  Define non-response categories  			
 ***********************************************************************
-use "${ml_intermediate}/ml_inter", clear
+use "${ml_intermediate}/ml_intermediate", clear
 
 {
 	* replace "-" with missing value
@@ -73,7 +73,7 @@ sort date heure, stable
 ***********************************************************************
 *2.1 Remove commas, dots, dt and dinar Turn zero, zéro into 0 for all numeric vars
  
-local numvars ca_2021 ca_exp_2021 profit_2021 ca_2020_cor ca_2019_cor exprep_inv inno_rd 
+local numvars dig_revenues_ecom
 * we may add these variables to check if they changed to string variables: ca_exp2018_cor  ca_exp2019_cor ca_exp2020_cor ca_2018_cor 
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
@@ -125,5 +125,6 @@ replace `var' = "`not_know'" if `var' =="لا أعرف"
 ***********************************************************************
 * 	Part 9: Save the changes made to the data		  			
 ***********************************************************************
-cd "$bl_intermediate"
-save "bl_inter", replace
+cd "$ml_intermediate"
+save "ml_intermediate", replace
+
