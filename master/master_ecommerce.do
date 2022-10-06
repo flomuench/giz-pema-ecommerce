@@ -59,15 +59,16 @@ else{
 }
 
 		if c(os) == "Windows" {
-	global master_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master"
-	global master_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/master"
-	global master_backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
+	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+	global github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce"
+	global backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
 else if c(os) == "MacOSX" {
-	global master_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master"
-	global master_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/master"
-	global master_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
+	global gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+	global github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce"
+	global backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }	
+/*
 if c(os) == "Windows" {
 	global bl_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
 	global bl_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline"
@@ -107,31 +108,36 @@ else if c(os) == "MacOSX" {
 	global regis_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 	global regis_backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
-
+*/
 		
 * paths within gdrive
 			* data
-global master_intermediate "${master_gdrive}/intermediate"
-global master_final = "${master_gdrive}/final"
-global master_checks = "${master_gdrive}/checks"
-global master_output = "${master_gdrive}/output"
-global master_raw = "${master_gdrive}/raw"
+global master_intermediate "${gdrive}/6-master/intermediate"
+global master_final = "${gdrive}/6-master/final"
+global master_checks = "${gdrive}/6-master/checks"
+global master_output = "${gdrive}/6-master/output"
+global master_raw = "${gdrive}/6-master/raw"
+global master_gdrive ="${gdrive}/6-master"
 
-global bl_raw = "${bl_gdrive}/raw"
-global bl_intermediate "${bl_gdrive}/intermediate"
-global bl_final = "${bl_gdrive}/final"
-global bl_checks = "${bl_gdrive}/checks"
-global bl_output = "${bl_gdrive}/output"
-global bl2_final ="${bl2_gdrive}/final"
-global regis_raw = "${regis_gdrive}/raw"
-global regis_intermediate "${regis_gdrive}/intermediate"
-global regis_final = "${regis_gdrive}/final"
-global regis_checks = "${regis_gdrive}/checks"
+global bl_raw = "${gdrive}/2-baseline/raw"
+global bl_intermediate "${gdrive}/2-baseline/intermediate"
+global bl_final = "${gdrive}/2-baseline/final"
+global bl_checks = "${gdrive}/2-baseline/checks"
+global bl_output = "${gdrive}/2-baseline/output"
 
-			* output (regression tables, figures)
-global bl_output = "${bl_gdrive}/output"
-global bl_figures = "${bl_output}/descriptive-statistics-figures"
-global bl_progress = "${bl_output}/progress-eligibility-characteristics"
+global bl2_final ="${gdrive}/2b-baseline presence enligne/final"
+global regis_raw = "${gdrive}/1-registration/raw"
+global regis_intermediate "${gdrive}/1-registration/intermediate"
+global regis_final = "${gdrive}/1-registration/final"
+global regis_checks = "${gdrive}/1-registration/checks"
+
+global ml_raw = "${gdrive}/3-midline/raw"
+global ml_intermediate = "${gdrive}/3-midline/intermediate"
+global ml_final = "${gdrive}/3-midline/final"
+
+* paths within github
+			* code
+global master_github "${github}/master"
 
 		
 			* set seeds for replication
@@ -168,12 +174,12 @@ if (1) do "${master_github}/master_generate.do"
 /*--------------------------------------------------------------------
 	PART 4.1: Descriptive statistics
 ----------------------------------------------------------------------*/		
-if (1) do "${master_github}/master_descriptives.do"
+if (0) do "${master_github}/master_descriptives.do"
 
 /*--------------------------------------------------------------------
 	PART 4.2: Power calculations with baseline data
 ----------------------------------------------------------------------*/		
-if (1) do "${master_github}/master_power.do"
+if (0) do "${master_github}/master_power.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2: Regressions

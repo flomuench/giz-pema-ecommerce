@@ -64,7 +64,6 @@ lab var service "dummy for sector=5"
 lab var tic "dummy for sector=6"
 
 *regenerate IHS exports after slight modification of underlying variable
-drop ihs_exports w_compexp
 winsor compexp_2020, gen(w99_compexp) p(0.01) highonly
 winsor compexp_2020, gen(w97_compexp) p(0.03) highonly
 winsor compexp_2020, gen(w95_compexp) p(0.05) highonly
@@ -88,7 +87,7 @@ replace ever_exported=1 if exp_avant21==1
 replace ever_exported=1 if export2021=="oui" | export2020=="oui" | export2019 =="oui" | export2018=="oui" |export2017=="oui"
 replace ever_exported=0 if exp_avant21==0
 lab var ever_exported "dummy if company has exported some time in the past 5 years"
-drop export2* export_status rg_expstatus expstatus* exp_avant21
+
 
 *generate domestic revenue from total revenue and exports
 gen dom_rev2020= comp_ca2020-compexp_2020
@@ -97,7 +96,7 @@ winsor dom_rev2020, gen(w_dom_rev2020) p(0.01) highonly
 ihstrans w_dom_rev2020
 
 *re-generate total revenue with additional winsors
-drop ihs_ca w_compca
+
 winsor comp_ca2020, gen(w99_comp_ca2020) p(0.01) highonly
 winsor comp_ca2020, gen(w97_comp_ca2020) p(0.03) highonly
 winsor comp_ca2020, gen(w95_comp_ca2020) p(0.05) highonly
@@ -145,7 +144,6 @@ foreach var of local  allvars {
 }
 
 replace dig_revenues_ecom=. if dig_revenues_ecom== -999 | dig_revenues_ecom== -888
-drop ihs_digrevenue w_compdrev
 winsor dig_revenues_ecom, gen(w95_dig_rev20) p(0.05) highonly
 ihstrans w95_dig_rev20
 winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly
@@ -209,8 +207,7 @@ foreach z in knowledge dig_marketing_index expprep exportcomes {
 		}
 }	
 
-*drop indices defined in bl_generate
-drop knowledge digtalvars expprep expoutcomes 
+
 *Calculate the index value: average of zscores 
 egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_scorez)
 egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///

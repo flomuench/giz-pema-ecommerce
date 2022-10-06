@@ -171,7 +171,7 @@ replace matricule_fiscale = "1575123L" if id_plateforme == 763
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
 replace matricule_fiscale = "1473584Y" if id_plateforme == 931
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
-
+replace matricule_fiscale = "1172183K" if id_plateforme == 505
 save "ecommerce_master_contact", replace
 
 *merge participation data to contact master
@@ -368,6 +368,16 @@ save "${master_raw}/ecommerce_database_raw", replace
 merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
 keep if _merge==3
 drop _merge
+
+*drop index and other variables can
+drop ihs_exports w_compexp
+drop export2* export_status rg_expstatus expstatus* exp_avant21
+drop ihs_ca w_compca
+drop ihs_digrevenue w_compdrev
+drop knowledge digtalvars expprep expoutcomes 
+
+rename car_carempl_dive2 car_carempl_div2
+lab var car_carempl_div2 "nombre de jeunes dans l'entreprise"
 save "${master_raw}/ecommerce_database_raw", replace
 
 
@@ -375,14 +385,15 @@ save "${master_raw}/ecommerce_database_raw", replace
 ***********************************************************************
 * 	PART 6: append to create analysis data set
 ***********************************************************************
-/*
-	* append registration +  baseline data with midline
-cd "$midline_final"
-append using ml_final
 
+	* append registration +  baseline data with midline
+cd "$ml_final"
+append using ml_final
+sort id_plateforme, stable
+drop survey_type survey
 
 	* append with endline
-cd "$endline_final"
+/*cd "$endline_final"
 append using el_final
 */
 
