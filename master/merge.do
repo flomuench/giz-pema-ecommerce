@@ -309,6 +309,21 @@ replace rg_email2 = "o.elljmi@alpha-engineering.com.tn" if id_plateforme==185
 replace emailrep = "issam@skills-net.info" if id_plateforme==526
 replace rg_email2 = "molk@skills-net.info" if id_plateforme==526
 
+replace emailrep = "zaidiwided4@gmail.com" if id_plateforme==642
+
+replace emailrep = "ilyes.bhy@gmail.com" if id_plateforme==670
+
+replace emailrep = "nagara.nourelhouda@gmail.com" if id_plateforme==706
+
+replace emailrep = "community@i3c.com.tn" if id_plateforme==732
+
+replace emailrep = "haithem.garali@tti-elecsa.tn" if id_plateforme==761
+
+replace emailrep = "dhouibnabil@gmail.com" if id_plateforme==791
+
+replace emailrep = "commercial@paf.com.tn" if id_plateforme==820
+
+replace emailrep = "meriam.tarmiz@africhrome.com" if id_plateforme==873
 
 
 export excel id_plateforme firmname nom_rep treatment status ///
