@@ -49,7 +49,8 @@ replace `x'= lower(`x')
 }
 
 	*fix date
-format heure %td
+format Date %td
+
 
 ***********************************************************************
 * 	PART 3: 	Make all variables names lower case		  			
@@ -59,7 +60,7 @@ rename *, lower
 ***********************************************************************
 * 	PART 4: 	Label the variables		  			
 ***********************************************************************
-lab var varname "varlabel"
+/*lab var varname "varlabel"
 * copier-coller pour les variables qui sont identiques à la baseline
 * definer des nouvelles labels pour des nouvelles variables
 
@@ -91,7 +92,7 @@ foreach var of local agreevariables {
 label define label_list_group 1 "treatment_group" 0 "control_group"
 label values list_group label_list_group 
 
-
+*/
 ***********************************************************************
 * 	Part 6: Save the changes made to the data		  			
 ***********************************************************************

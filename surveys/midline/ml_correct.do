@@ -53,8 +53,8 @@ gen commentsmsb = ""
 ***********************************************************************
 * 	PART 1.2:  Identify and remove duplicates 
 ***********************************************************************
-sort id_plateforme heuredébut, stable
-quietly by id_plateforme heuredébut:  gen dup = cond(_N==1,0,_n)
+sort id_plateforme heute, stable
+quietly by id_plateforme heure:  gen dup = cond(_N==1,0,_n)
 drop if dup>1
 
 /*duplicates report id_plateforme heuredébut
@@ -67,7 +67,7 @@ drop if dup>1
 *please check them individually and drop (actually el-amouri is supposed to that)
 
 *restore original order
-sort date heuredébut, stable
+sort date heure, stable
 ***********************************************************************
 * 	PART 2:  Automatic corrections
 ***********************************************************************

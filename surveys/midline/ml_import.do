@@ -20,7 +20,7 @@
 * 	PART 1: import the answers from questionnaire as Excel				  										  *
 ***********************************************************************
 
-import excel "${ml_raw}/ml_raw", firstrow clear
+import excel "${ml_raw}/ml_raw.xlsx", firstrow clear
 
 ***********************************************************************
 * 	PART 4: save the answers as dta file in intermediate folder 			  						

@@ -254,6 +254,9 @@ lab var bl_respondent_diff "Baseline respondent different than person from regis
 lab var id_base_respondent "Name of person that filled out baseline if different from rg_nom_rep"
 lab var rg_nom_rep "Name of representative at registration"
 lab var nom_rep "Name of firm's participant or representative (for control)" 
+lab var emailrep "Email of firm's participant or representative (for control)" 
+lab var rg_email2 "alternative Email of firm's representative/participant" 
+lab var rg_emailpdg "email of CEO"
 
 *additional name variables dropped, as nom_rep was changed were applicable
 drop nom_repsession*
@@ -297,10 +300,22 @@ replace rg_email2 = "dali2808@gmail.com" if id_plateforme==810
 replace emailrep = "city.design.13@gmail.com" if id_plateforme==890
 replace rg_email2 = "mohamedaliragoubi@yahoo.fr" if id_plateforme==890
 
-/*export excel id_plateforme firmname nom_rep treatment status ///
+replace emailrep = "nadiayaichexpert@gmail.com" if id_plateforme==140
+replace rg_email2 = "rania-inj@outlook.com" if id_plateforme==140
+
+replace emailrep = "contact@alpha-engineering.com.tn" if id_plateforme==185
+replace rg_email2 = "o.elljmi@alpha-engineering.com.tn" if id_plateforme==185
+
+replace emailrep = "issam@skills-net.info" if id_plateforme==526
+replace rg_email2 = "molk@skills-net.info" if id_plateforme==526
+
+
+
+export excel id_plateforme firmname nom_rep treatment status ///
 emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
-matricule_physique matricule_missing matricule_fiscale using "midline_contactlist", firstrow(var) sheetreplace
-*/
+matricule_physique matricule_missing matricule_fiscale using "midline_contactlist", ///
+firstrow(var) sheetreplace
+
 
 *excel for CEPEX
 export excel id_plateforme matricule_physique matricule_missing matricule_fiscale ///
