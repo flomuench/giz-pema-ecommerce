@@ -73,18 +73,18 @@ if c(os) == "Windows" {
 }
 
 else if c(os) == "MacOSX" {
-	global bl2_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/3-midline"
-	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/midline"
-	global bl2_backup = "/Users/`c(username)'/Documents/midline-back-up"
+	global ml_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/3-midline"
+	global ml_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/midline"
+	global ml_backup = "/Users/`c(username)'/Documents/midline-back-up"
 }		
 		
 
 		* paths within gdrive
 			* data
-global ml_raw = "${bl2_gdrive}/raw"
-global ml_intermediate "${bl2_gdrive}/intermediate"
-global ml_final = "${bl2_gdrive}/final"
-global ml_output = "${bl2_gdrive}/output"
+global ml_raw = "${ml_gdrive}/raw"
+global ml_intermediate "${ml_gdrive}/intermediate"
+global ml_final = "${ml_gdrive}/final"
+global ml_output = "${ml_gdrive}/output"
 
 
 

@@ -53,8 +53,8 @@ gen commentsmsb = ""
 ***********************************************************************
 * 	PART 1.2:  Identify and remove duplicates 
 ***********************************************************************
-sort id_plateforme heuredébut, stable
-quietly by id_plateforme heuredébut:  gen dup = cond(_N==1,0,_n)
+sort id_plateforme heute, stable
+quietly by id_plateforme heure:  gen dup = cond(_N==1,0,_n)
 drop if dup>1
 
 /*duplicates report id_plateforme heuredébut
@@ -126,4 +126,5 @@ replace `var' = "`not_know'" if `var' =="لا أعرف"
 * 	Part 9: Save the changes made to the data		  			
 ***********************************************************************
 cd "$ml_intermediate"
-save "ml_final", replace
+save "ml_intermediate", replace
+
