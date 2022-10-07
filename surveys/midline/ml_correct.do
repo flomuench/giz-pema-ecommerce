@@ -44,10 +44,7 @@ local not_know    = -999
 local refused     = -888
 
 	* replace, gen, label
-gen check_again = 0
-gen questions_needing_checks = ""
-gen commentsmsb = ""
-*/
+
 }
 
 ***********************************************************************
@@ -75,7 +72,7 @@ sort date heure, stable
  
 local numvars dig_revenues_ecom
 * we may add these variables to check if they changed to string variables: ca_exp2018_cor  ca_exp2019_cor ca_exp2020_cor ca_2018_cor 
-/*
+
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
 replace `var' = ustrregexra( `var',"dinar","")
@@ -100,6 +97,7 @@ replace `var' = ustrregexra( `var',"sept","7")
 replace `var' = ustrregexra( `var',"huit","8")
 replace `var' = ustrregexra( `var',"neuf","9")
 replace `var' = ustrregexra( `var',"dix","10")
+replace `var' = ustrregexra( `var',"cent","00")
 replace `var' = ustrregexra( `var',"O","0")
 replace `var' = ustrregexra( `var',"o","0")
 replace `var' = ustrregexra( `var',"دينار تونسي","")
@@ -118,10 +116,17 @@ replace `var' = "`not_know'" if `var' =="je ne sais pas"
 replace `var' = "`not_know'" if `var' =="لا أعرف"
 
 }
-*/
+*put zero digital revenues for firms that do not have any digital revenues
+replace dig_revenues_ecom = "0" if dig_vente == 0
+***********************************************************************
+* 	PART 3:  Manual corrections
+***********************************************************************
+*correct matricule fiscale if given in wrong format, check on registre-entreprise.tn
 
-
-
+***********************************************************************
+* 	PART 4:  destring variables that should be numeric
+***********************************************************************
+destring dig_revenues_ecom, replace
 ***********************************************************************
 * 	Part 9: Save the changes made to the data		  			
 ***********************************************************************
