@@ -58,7 +58,7 @@ format Date %td
 * 	PART 3: 	Make all variables names lower case		  			
 ***********************************************************************
 rename *, lower
-
+rename empl fte 
 ***********************************************************************
 * 	PART 4: 	Label the variables		  			
 ***********************************************************************
@@ -67,7 +67,7 @@ rename *, lower
 * copier-coller pour les variables qui sont identiques à la baseline
 * definer des nouvelles labels pour des nouvelles variables
 
-lab var Id_plateforme "L'indentité unique de la platforme"
+lab var id_plateforme "L'indentité unique de la platforme"
 lab var Id_ident "l'identité du répondant"	
 lab var firmname_change "le nouveau nom de l'entreprise"
 lab var id_ident2 "identifcation de la nouvelle personne"
@@ -129,7 +129,7 @@ lab var dig_techniques_SEO "technique d'amélioration du reféréncement naturel
 lab var dig_google_analytics "informations disponible sur google analytics"
 lab var dig_taux_eng "éléments utilisés dans le calcul du taux d'engagement"
 lab var matricule_miss "matricule fiscale corrigé"
-lab var empl "nombre d'employés dans l'entreprise"
+lab var fte "nombre d'employés dans l'entreprise"
 lab var car_carempl_div1 "nombre de femmes dans l'entreprise"
 lab var car_carempl_div2 "nombre de jeunes dans l'entreprise"
 lab var car_carempl_div3 "nombre d'employés à temps partiels dans l'entreprise"

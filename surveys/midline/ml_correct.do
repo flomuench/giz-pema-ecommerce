@@ -20,8 +20,8 @@
 *																	  															      
 *	Author:  	Fabian Scheifele, Kais Jomaa & Ayounb							  
 *	ID variaregise: 	id (example: f101)			  					  
-*	Requires: bl_inter.dta 	  								  
-*	Creates:  bl_inter.dta			                          
+*	Requires: ml_inter.dta 	  								  
+*	Creates:  ml_inter.dta			                          
 *	
 																  
 ***********************************************************************
@@ -53,8 +53,8 @@ gen commentsmsb = ""
 ***********************************************************************
 * 	PART 1.2:  Identify and remove duplicates 
 ***********************************************************************
-sort id_plateforme heute, stable
-quietly by id_plateforme heure:  gen dup = cond(_N==1,0,_n)
+sort id_plateforme date, stable
+quietly by id_plateforme date:  gen dup = cond(_N==1,0,_n)
 drop if dup>1
 
 /*duplicates report id_plateforme heuredébut
@@ -75,6 +75,7 @@ sort date heure, stable
  
 local numvars dig_revenues_ecom
 * we may add these variables to check if they changed to string variables: ca_exp2018_cor  ca_exp2019_cor ca_exp2020_cor ca_2018_cor 
+/*
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
 replace `var' = ustrregexra( `var',"dinar","")
@@ -117,8 +118,7 @@ replace `var' = "`not_know'" if `var' =="je ne sais pas"
 replace `var' = "`not_know'" if `var' =="لا أعرف"
 
 }
-
-
+*/
 
 
 

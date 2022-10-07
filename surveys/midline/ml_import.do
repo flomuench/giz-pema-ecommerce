@@ -21,7 +21,7 @@
 ***********************************************************************
 
 import excel "${ml_raw}/ml_raw.xlsx", firstrow clear
-
+rename Id id_plateforme
 ***********************************************************************
 * 	PART 4: save the answers as dta file in intermediate folder 			  						
 ***********************************************************************
