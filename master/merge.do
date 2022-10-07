@@ -65,14 +65,6 @@ import excel "${master_gdrive}/Update_file.xlsx", sheet("update_entreprises") fi
 duplicates report
 duplicates drop
 drop W-AU treatment firmname region sector subsector entr_bien_service entr_produit1 siteweb media Update
-/*
-remove old infor
-reshape
-rename J firmname
-rename M emailrep
-rename O telrep
-Note: those 3 variables are repeated in the Update_file, what is that mean?
-*/
 
 rename M firmname2
 rename P emailrep2
@@ -325,6 +317,8 @@ replace emailrep = "commercial@paf.com.tn" if id_plateforme==820
 
 replace emailrep = "meriam.tarmiz@africhrome.com" if id_plateforme==873
 
+replace rg_email2 = "commercial@graphika.tn" if id_plateforme==136
+
 
 export excel id_plateforme firmname nom_rep treatment status ///
 emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
@@ -382,20 +376,6 @@ save "${master_raw}/ecommerce_database_raw", replace
 
 
 
-***********************************************************************
-* 	PART 6: append to create analysis data set
-***********************************************************************
-
-	* append registration +  baseline data with midline
-cd "$ml_final"
-append using ml_final
-sort id_plateforme, stable
-drop survey_type survey
-
-	* append with endline
-/*cd "$endline_final"
-append using el_final
-*/
 
 ***********************************************************************
 * 	PART 7: merge with participation data
@@ -419,8 +399,30 @@ lab var take_up "1 if company was present in 3/5 trainings"
 gen take_up2 = 0
 replace take_up2 = 1 if present>0 & present<.
 lab var take_up2 "alternative take-up indicator, 1 if present in at least one training"
-    * save as ecommerce_database
+save "${master_raw}/ecommerce_database_raw", replace
 
+***********************************************************************
+* 	PART 6: append to create analysis data set
+***********************************************************************
+
+	* append registration +  baseline data with midline
+cd "$ml_final"
+append using ml_final
+sort id_plateforme, stable
+drop survey_type survey
+save "${master_raw}/ecommerce_database_raw", replace
+
+	* append with endline
+/*cd "$endline_final"
+append using el_final
+*/
+    * save as ecommerce_database
+*deidentify
+drop Ufirmname dup_firmname firmname_change tel_sup1 tel_sup2 tel_supl1 tel_supl2 email ///
+id_email email Uemail treatment_email dup_id_email dup_emailpdg ident_email_1 ident_email_2 info_compt2
+
+sort id_plateforme, stable
+order id_plateforme 
 save "${master_raw}/ecommerce_database_raw", replace
 
 
