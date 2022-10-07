@@ -45,8 +45,8 @@ replace dig_marketing_num19_prtn =1 if ustrregexm(dig_marketing_num110, "dig_mar
 gen dig_marketing_num19_socm=0
 replace dig_marketing_num19_socm=1 if ustrregexm(dig_marketing_num110, "dig_marketing_num19_socm") 
  
-gen dig_marketing_num8=0
-replace dig_marketing_num8=1 if ustrregexm(dig_marketing_num110, "dig_marketing_num8") 
+gen dig_marketing_num19_socm_pay=0
+replace dig_marketing_num19_socm_pay=1 if ustrregexm(dig_marketing_num110, "dig_marketing_num8") 
  
 gen dig_marketing_num19_autre=0
 replace dig_marketing_num19_autre=1 if ustrregexm(dig_marketing_num110, "dig_marketing_num19_autre") 
@@ -147,7 +147,21 @@ drop dig_techniques_seo
 ***********************************************************************
 * 	PART 2:  Drop useless variables		
 ***********************************************************************
-drop id_ident  id_ident2 verification validation attest bi bj bk bl bm bn bo bp bq br bs bt bu bv bw bx by bz ca cb cc cd ce cf cg ch ci cj ck cl cm cn co cp cq cr cs ct cu cv cw cx cy cz da db dc dd de df dg dh di dj dk dl dm dn do
+drop id_ident  id_ident2 verification validation attest bi bj bk bl bm bn ///
+bo bp bq br bs bt bu bv bw bx by bz ca cb cc cd ce cf cg ch ci cj ck cl cm ///
+cn co cp cq cr cs ct cu cv cw cx cy cz da db dc dd de df dg dh di dj dk dl dm dn do
+
+***********************************************************************
+* 	PART 3:  Create variable required for coherence test	
+***********************************************************************
+gen questions_needing_checks = ""
+gen commentsmsb = ""
+gen commentselamouri =""
+gen needs_check=0
+lab var needs_check "if larger than, this row needs to be checked by institute"
+
+lab var questions_needing_checks "questions that need to be checked"
+gen dig_presence_score= dig_presence1+dig_presence2+dig_presence3
 ***********************************************************************
 * 	PART 6:  save			
 ***********************************************************************

@@ -85,6 +85,7 @@ global ml_raw = "${ml_gdrive}/raw"
 global ml_intermediate "${ml_gdrive}/intermediate"
 global ml_final = "${ml_gdrive}/final"
 global ml_output = "${ml_gdrive}/output"
+global ml_checks = "${ml_gdrive}/checks"
 
 
 
@@ -121,9 +122,9 @@ if (1) do "${ml_github}/ml_generate.do"
 /* --------------------------------------------------------------------
 	PART 3.5: Perform logical checks
 ----------------------------------------------------------------------*/	
-if (0) do "${ml_github}/ml_test.do"
+if (1) do "${ml_github}/ml_test.do"
 /* --------------------------------------------------------------------
 	PART 3.6: Create statistics	for the survey
 ----------------------------------------------------------------------*/	
-if (0) do "${ml_github}/ml_descriptives.do"
+if (1) do "${ml_github}/ml_descriptives.do"
 /* --------------------------------------------------------------------

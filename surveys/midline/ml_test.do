@@ -11,7 +11,7 @@
 *	2.1) 	Tests for accounting
 *	2.1) 	Tests for indices	
 *   3) Check missing values								  															      
-*	Author:  	Teo Firpo							  
+*	Author:  	Fabian Scheifele & Ayoub 
 *	ID variable: 	id_plateforme (example: f101)			  					  
 *	Requires: ml_inter.dta 	  								  
 *	Creates:  fiche_correction.xls			                          
@@ -20,7 +20,7 @@
 * 	PART 1:  Load data	  		
 ***********************************************************************
 	 
-use "${bl_intermediate}/bl_inter", clear
+use "${ml_final}/ml_final", clear
 
 ***********************************************************************
 * 	PART 2:  Define logical tests
@@ -31,34 +31,24 @@ use "${bl_intermediate}/bl_inter", clear
 ----------------------------------------------------------------------*/		
 
 * If any of the accounting vars corresponds to the scalars (not_know: -999 ; refused: -888; or check_again = -777) change needs_check to 2
+local accountvars fte dig_revenues_ecom car_carempl_div1 car_carempl_div2 ///
+car_carempl_div3 car_carempl_div4 car_carempl_div5
 
-local accountvars empl dig_revenues_ecom car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 car_carempl_div5
+replace needs_check = 2 if dig_revenues_ecom == -999 
+replace questions_needing_checks = " | dig_revenues_ecom ne sais pas & " + questions_needing_checks if dig_revenues_ecom == -999 
 
-// generate a variable that highlights this (to be used later)
-gen scalar_issue = 0
-
-foreach var of local accountvars {
-	replace needs_check = 2 if `var' == -999 
-	replace scalar_issue = 1 if `var' ==  -999
-	replace questions_needing_checks = " | `var' pas connue & " + questions_needing_checks if `var' == -999 
-
-	replace needs_check = 2 if `var' == -888 
-	replace scalar_issue = 1 if `var' == -888
-	replace questions_needing_checks = " | `var' refusée & " + questions_needing_checks if `var' == -888 
-	
-	replace needs_check = 2 if `var' == -777 
-	replace scalar_issue = 1 if `var' == -777
-	replace questions_needing_checks = " | `var' doit être verifiée & " + questions_needing_checks if `var' == -777 
-
-}
+replace needs_check = 2 if dig_revenues_ecom == -888 
+replace questions_needing_checks = " | dig_revenues_ecom refusée & " + questions_needing_checks if dig_revenues_ecom == -888 
 
 ***********************************************************************
 * 	PART 3:  Check for missing values
 ***********************************************************************
-
 	* Variables with internal logic:
 replace needs_check = 3 if dig_revenues_ecom==. & dig_presence_score>0
-replace questions_needing_checks = questions_needing_checks +  " | dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
+replace questions_needing_checks = questions_needing_checks +  " | present en ligne mais dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
+
+* Companies that fill in dig_presence1-3 should have no "I dont know" answer 
+*for dig_description1-3, dig_miseajour1-3 dig_payment1-3 etc
 
 
 //replace needs_check = 1 if ==. &
@@ -74,20 +64,21 @@ foreach var of local closed_vars {
 }
 
 
-foreach var of varlist comp_ca2020 comp_benefice2020   {
-	capture replace needs_check = 3 if `var' ==.
-	capture replace questions_needing_checks = questions_needing_checks + " | `var' manque" if `var' == . 
-}
-
-
-drop scalar_issue
 
 ***********************************************************************
-* 	PART 4: Manually overwrite 
+* 	PART 4:  Check for outliers
+***********************************************************************
+*automatic check if dig_revenues more than 10% larger than the largest value in the baseline
+replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. 
+ 
+***********************************************************************
+* 	PART 4: Manual outlier detection 
 ***********************************************************************
 
 *Manually remove those plateforme IDs where unusual values where justified and confirmed or were respondent refused after verification call*
-*replace needs_check = 0 if id_plateforme==59
+
+*replace needs_check = 1 if id_plateforme==XXX
+*
 
 
 
@@ -120,14 +111,14 @@ gen commentaires_ElAmouri = 0
 
 cd "$ml_checks"
 
-order commentaires_ElAmouri id_plateforme commentsmsb 
 
-export excel commentaires_ElAmouri id_plateforme commentsmsb needs_check questions_needing_check heure date-dig_logistique_retour_score using "fiche_correction" if needs_check>0, firstrow(variables) replace
+*export excel id_plateforme heure date commentselamouri commentsmsb needs_check questions_needing_check ///
+ *using "fiche_correction" if needs_check>0, firstrow(variables) replace
 
 
 	* Save as final
 
-drop attest attest2 acceptezvousdevalidervosré  ident_nom ident_nom_correct_entreprise qsinonident as aq complete needs_check questions_needing_checks commentsmsb
+drop needs_check questions_needing_checks commentsmsb
 
 cd "$ml_final"
 

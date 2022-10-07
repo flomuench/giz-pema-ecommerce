@@ -50,7 +50,7 @@ putpdf pagebreak
 	* timeline of responses
 format %-td date 
 graph twoway histogram date, frequency width(1) ///
-		tlabel(05octobre2022(1)01novembre2022, angle(60) labsize(vsmall)) ///
+		tlabel(05oct2022(1)01nov2022, angle(60) labsize(vsmall)) ///
 		ytitle("responses") ///
 		title("{bf:Midline survey: number of responses}") 
 gr export survey_response_byday.png, replace
