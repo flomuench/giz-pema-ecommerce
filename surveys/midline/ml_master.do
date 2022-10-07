@@ -62,7 +62,6 @@ if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(use
 else{
 
 		global gdrive = "C:/Users/`c(username)'/Google Drive"
-		
 }
 
 
@@ -70,12 +69,14 @@ if c(os) == "Windows" {
 	global ml_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/3-midline"
 	global ml_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/midline"
 	global ml_backup = "C:/Users/`c(username)'/Documents/midline-back-up"
+	global master_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master"
 }
 
 else if c(os) == "MacOSX" {
 	global ml_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/3-midline"
 	global ml_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/midline"
 	global ml_backup = "/Users/`c(username)'/Documents/midline-back-up"
+	global master_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master"
 }		
 		
 
@@ -86,6 +87,8 @@ global ml_intermediate "${ml_gdrive}/intermediate"
 global ml_final = "${ml_gdrive}/final"
 global ml_output = "${ml_gdrive}/output"
 global ml_checks = "${ml_gdrive}/checks"
+
+global master_raw = "{master_gdrive}/raw"
 
 
 
@@ -126,5 +129,5 @@ if (1) do "${ml_github}/ml_test.do"
 /* --------------------------------------------------------------------
 	PART 3.6: Create statistics	for the survey
 ----------------------------------------------------------------------*/	
-if (1) do "${ml_github}/ml_descriptives.do"
+if (0) do "${ml_github}/ml_descriptives.do"
 /* --------------------------------------------------------------------
