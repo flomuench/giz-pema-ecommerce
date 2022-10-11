@@ -30,37 +30,28 @@ use "${master_intermediate}/ecommerce_master_final", clear
 	PART 2.1: Comptabilité / accounting questions
 ----------------------------------------------------------------------*/		
 
-* If any of the accounting vars corresponds to the scalars (not_know: -999 ; refused: -888; or check_again = -777) change needs_check to 2
-local accountvars fte dig_revenues_ecom car_carempl_div1 car_carempl_div2 ///
-car_carempl_div3 car_carempl_div4 car_carempl_div5
-
-replace needs_check = 2 if dig_revenues_ecom == -999 
+replace needs_check = 2 if dig_revenues_ecom == -999 & surveyround==2
 replace questions_a_verifier = " | dig_revenues_ecom ne sais pas & " + questions_a_verifier if dig_revenues_ecom == -999 
 
-replace needs_check = 2 if dig_revenues_ecom == -888 
+replace needs_check = 2 if dig_revenues_ecom == -888 & surveyround==2
 replace questions_a_verifier = " | dig_revenues_ecom refusée & " + questions_a_verifier if dig_revenues_ecom == -888 
 
 ***********************************************************************
 * 	PART 3:  Check for missing values
 ***********************************************************************
 	* Variables with internal logic:
-replace needs_check = 3 if dig_revenues_ecom==. & dig_presence_score>0
-replace questions_a_verifier = questions_a_verifier +  " | present en ligne mais dig_revenues_ecom manque" if dig_revenues_ecom==. & dig_presence_score>0
-
-* Companies that fill in dig_presence1-3 should have no "I dont know" answer 
-*for dig_description1-3, dig_miseajour1-3 dig_payment1-3 etc
+replace needs_check = 3 if dig_revenues_ecom==0 & dig_vente==1 & surveyround==2
+replace questions_a_verifier = questions_a_verifier +  " | present en ligne mais dig_revenues_ecom manque" ///
+ if dig_revenues_ecom==0 & dig_vente==1 & surveyround==2
 
 
-//replace needs_check = 1 if ==. &
-//replace questions_a_verifier = questions_a_verifier +  " | " 
+	* employee data
 
-	* Now all closed variables without a logic (ie don't require other answers to be true)
-
-local dig_presence1 dig_presence2 dig_presence3 empl car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 car_carempl_div5
+local fte car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 car_carempl_div5
 
 foreach var of local closed_vars {
-	capture replace needs_check = 1 if `var' == . 
-	capture replace questions_a_verifier = questions_a_verifier + " | `var' manque" if `var' == . 
+	capture replace needs_check = 1 if `var' == 201 & surveyround==2
+	capture replace questions_a_verifier = questions_a_verifier + " | `var' ne sais pas (donnée d'emploi)" if `var' == . & surveyround==2
 }
 
 
@@ -69,7 +60,7 @@ foreach var of local closed_vars {
 * 	PART 4:  Check for outliers
 ***********************************************************************
 *automatic check if dig_revenues more than 10% larger than the largest value in the baseline
-replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. 
+replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. & surveyround==2
  
 ***********************************************************************
 * 	PART 4: Manual outlier detection 
@@ -84,13 +75,27 @@ replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<.
 
 
 ***********************************************************************
-* 	PART 4:  Cross checks again registration data
+* 	PART 4:  Cross checks with baseline data
 ***********************************************************************
+bysort id_plateforme (surveyround): gen dig_presence1_check = dig_presence1 - dig_presence1[_n-1]
+bysort id_plateforme (surveyround): gen dig_presence2_check = dig_presence2 - dig_presence2[_n-1]
+bysort id_plateforme (surveyround): gen dig_presence3_check = dig_presence3 - dig_presence3[_n-1]
+bysort id_plateforme (surveyround): gen dig_revenue_check = dig_revenues_ecom/dig_revenues_ecom[_n-1]
 
-// check using export2017-2021 
-// check 'produit exportable'
-// compare car_carempl_div1 to fte_femmes
+replace needs_check = 3 if dig_presence1_check<0
+replace needs_check = 3 if dig_presence2_check<0
+replace needs_check = 3 if dig_presence3_check<0
+replace needs_check = 3 if dig_revenue_check>1.5
 
+replace questions_a_verifier = " | plus de site web dig_presence3 (incoherene avec baseline) " + ///
+ questions_a_verifier if dig_presence1_check <0
+replace questions_a_verifier = " | plus de media sociaux dig_presence2 (incoherene avec baseline) " + ///
+ questions_a_verifier if dig_presence2_check <0
+ replace questions_a_verifier = " | plus de market place dig_presence3 (incoherene avec baseline) " + ///
+ questions_a_verifier if dig_presence3_check <0
+ 
+ replace questions_a_verifier = " | revenue digital plus que 50% croisée depuis baseline dig_revenues_ecom " + ///
+ questions_a_verifier if dig_revenue_check>1.5
 ***********************************************************************
 * 	PART 5:  Export fiche correction and save as final
 ***********************************************************************
@@ -99,13 +104,7 @@ replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<.
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
 
-capture drop dup
-
 sort id_plateforme, stable
-
-quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
-
-replace needs_check = 1 if dup>0
 
 gen commentaires_ElAmouri = 0
 

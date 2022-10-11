@@ -17,7 +17,7 @@
 ***********************************************************************
 * 	PART 1:    clean ecommerce_master_contact
 ***********************************************************************
-use "${master_gdrive}/ecommerce_master_contact", clear
+use "${master_pii}/ecommerce_master_contact", clear
 replace firmname = "tpad ( technical and practical assistance to development)" if id_plateforme == 572
 replace rg_nom_rep = "rana baabaa" if id_plateforme == 623
 replace firmname = "central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642
@@ -25,8 +25,7 @@ replace firmname = "msb" if id_plateforme == 795
 replace firmname = "urba tech" if id_plateforme == 890
 
 drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise qsinonident
-cd "${master_gdrive}"
-save "ecommerce_master_contact", replace
+save "${master_pii}/ecommerce_master_contact", replace
 
 ***********************************************************************
 * 	PART 2:    clean merged analysis file

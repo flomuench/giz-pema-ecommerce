@@ -118,6 +118,7 @@ global master_checks = "${gdrive}/6-master/checks"
 global master_output = "${gdrive}/6-master/output"
 global master_raw = "${gdrive}/6-master/raw"
 global master_gdrive ="${gdrive}/6-master"
+global master_pii ="${master_gdrive}/pii"
 
 global bl_raw = "${gdrive}/2-baseline/raw"
 global bl_intermediate "${gdrive}/2-baseline/intermediate"
@@ -134,6 +135,7 @@ global regis_checks = "${gdrive}/1-registration/checks"
 global ml_raw = "${gdrive}/3-midline/raw"
 global ml_intermediate = "${gdrive}/3-midline/intermediate"
 global ml_final = "${gdrive}/3-midline/final"
+global ml_checks = "${gdrive}/3-midline/checks"
 
 * paths within github
 			* code
@@ -167,6 +169,10 @@ if (1) do "${master_github}/master_correct.do"
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_generate.do"
 
+/*--------------------------------------------------------------------
+	PART 3.4: Test coherence between survey rounds
+----------------------------------------------------------------------*/
+if (1) do "${master_github}/master_test.do"
 
 ***********************************************************************
 * 	PART 4: 	Run final analysis
