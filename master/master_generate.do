@@ -281,4 +281,13 @@ lab var platform_indexz "Z-score index of platform presence"
 lab var platform_share "Platform presence score in %"
 lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 
+***********************************************************************
+*PART 2 Check coherence between baseline and midline
+***********************************************************************	
+gen needs_check=0
+gen questions_a_verifier=""
+gen commentaires_ElAmouri=""
+gen commentsmsb=""
+
+
 save "${master_intermediate}/ecommerce_master_final", replace

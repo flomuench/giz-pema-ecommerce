@@ -13,7 +13,7 @@
 *	Author:  						    
 *	ID variable: 	id_plateforme			  					  
 *	Requires: ecommerce_bl_pii.dta	ecommerce_regis_pii.dta										  
-*	Creates:  ecommerce_master_contact.dta			                                  
+*	Creates:  ${master_pii}/ecommerce_master_contact.dta			                                  
 ***********************************************************************
 * 	PART 1: merge to create master data set (pii)
 ***********************************************************************
@@ -33,8 +33,7 @@ gen survey_round=1
 ***********************************************************************
 * 	PART 2: save as ecommerce_contact_database
 ***********************************************************************
-cd "$master_gdrive"
-save "ecommerce_master_contact", replace
+save "${master_pii}/ecommerce_master_contact", replace
 
 ***********************************************************************
 * 	PART 3: append to create master data set (pii)
@@ -61,7 +60,7 @@ drop _merge
 * Note: here should the Update_file.xlsx be downloaded from teams, renamed and uploaded again in 6-master
 
 clear
-import excel "${master_gdrive}/Update_file.xlsx", sheet("update_entreprises") firstrow clear
+import excel "${master_pii}/Update_file.xlsx", sheet("update_entreprises") firstrow clear
 duplicates report
 duplicates drop
 drop W-AU treatment firmname region sector subsector entr_bien_service entr_produit1 siteweb media Update
@@ -72,7 +71,7 @@ rename R telrep2
 
 reshape wide emailrep telrep firmname2 nom_rep position_rep emailrep2 emailpdg telrep2 telpdg adresse, i(id_plateforme) j(surveyround, string)
 
-merge 1:1 id_plateforme using ecommerce_master_contact 
+merge 1:1 id_plateforme using  "${master_pii}/ecommerce_master_contact" 
 drop _merge
 *drop session1 session2 session3 session4
 
@@ -127,7 +126,7 @@ replace matricule_fiscale = "1230487A" if id_plateforme == 511
 replace matricule_fiscale = "0496192B/ 0749702G" if id_plateforme == 765
 	
 *missing matricule
-gen matricule_missing =0  
+gen matricule_missing = 0  
 replace matricule_missing = 1 if id_plateforme == 77 
 replace matricule_missing = 1 if id_plateforme == 381  
 replace matricule_missing = 1 if id_plateforme == 827 
@@ -164,18 +163,18 @@ replace matricule_fiscale = "1299421C" if id_plateforme == 927
 replace matricule_fiscale = "1473584Y" if id_plateforme == 931
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
 replace matricule_fiscale = "1172183K" if id_plateforme == 505
-save "ecommerce_master_contact", replace
+save "${master_pii}/ecommerce_master_contact", replace
 
 *merge participation data to contact master
 clear 
-import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+import excel "${master_pii}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
 keep id_plateforme groupe firmname region nom_rep emailrep telrep module1 module2 module3 module4 module5 present absent
 drop if id_plateforme== ""
 drop if id_plateforme== "id_plateforme"
 destring id_plateforme,replace
 rename firmname firmname2
 
-merge 1:1 id_plateforme using "${master_gdrive}/ecommerce_master_contact"
+merge 1:1 id_plateforme using "${master_pii}/ecommerce_master_contact"
 drop _merge
 
 
@@ -216,7 +215,7 @@ replace nom_rep= "sondes sridi" if id_plateforme==715
 
 *telephone numbers
 replace telrep=rg_telrep if treatment==0 
-replace telrep=telrep+"/"+telrepsession1+"/"+ telrep2session1 +"/" ///
+/*replace telrep=telrep+"/"+telrepsession1+"/"+ telrep2session1 +"/" ///
  + telrepsession2 +"/"+ telrep2session2 +"/" + telrepsession3 +"/" ///
  + telrep2session3 +"/"+ telrepsession4 +"/"+telrep2session4
 
@@ -224,7 +223,7 @@ drop telrepsession1 telrep2session1 telrepsession2 ///
  telrep2session2 telrepsession3 telrep2session3 telrepsession4 telrep2session4
  
 drop telpdgsession1 telpdgsession2 telpdgsession3 telpdgsession4 rg_telrep
-
+*/
 replace emailrep = rg_emailrep if treatment==0
 drop emailrepsession1 emailrep2session1 emailrepsession2 emailrep2session2 emailrepsession3 emailrep2session3 emailrepsession4 emailrep2session4
 drop emailpdgsession1 emailpdgsession2 emailpdgsession3 emailpdgsession4
@@ -320,17 +319,13 @@ replace emailrep = "meriam.tarmiz@africhrome.com" if id_plateforme==873
 replace rg_email2 = "commercial@graphika.tn" if id_plateforme==136
 
 
-export excel id_plateforme firmname nom_rep treatment status ///
-emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
-matricule_physique matricule_missing matricule_fiscale using "midline_contactlist", ///
-firstrow(var) sheetreplace
 
 
 *excel for CEPEX
 export excel id_plateforme matricule_physique matricule_missing matricule_fiscale ///
- using "matricule_fiscale_ecommerce", firstrow(var) sheetreplace
+ using "${master_pii}/matricule_fiscale_ecommerce", firstrow(var) sheetreplace
 
-save "ecommerce_master_contact", replace
+save "${master_pii}/ecommerce_master_contact", replace
 
 ***********************************************************************
 * 	PART 5: merge to create analysis data set
@@ -374,7 +369,17 @@ rename car_carempl_dive2 car_carempl_div2
 lab var car_carempl_div2 "nombre de jeunes dans l'entreprise"
 save "${master_raw}/ecommerce_database_raw", replace
 
+*create contact database with dig_presence for survey institut
+preserve
+merge 1:1 id_plateforme using "${master_pii}/ecommerce_master_contact"
 
+export excel id_plateforme firmname nom_rep treatment status ///
+emailrep rg_email2 rg_emailpdg telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 ///
+dig_presence1 dig_presence2 dig_presence3 matricule_physique matricule_missing ///
+matricule_fiscale using "${master_pii}/midline_contactlist", ///
+firstrow(var) sheetreplace
+
+restore
 
 
 ***********************************************************************
@@ -383,7 +388,7 @@ save "${master_raw}/ecommerce_database_raw", replace
 
 *merge participation file to have take up data also in analysis file
 clear 
-import excel "${master_gdrive}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+import excel "${master_pii}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
 keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
 drop if id_plateforme== ""
 drop if id_plateforme== "id_plateforme"
