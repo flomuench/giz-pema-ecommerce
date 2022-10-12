@@ -147,10 +147,9 @@ drop dig_techniques_seo
 ***********************************************************************
 * 	PART 2:  Drop useless variables		
 ***********************************************************************
-drop id_ident  id_ident2 verification validation attest bi bj bk bl bm bn ///
-bo bp bq br bs bt bu bv bw bx by bz ca cb cc cd ce cf cg ch ci cj ck cl cm ///
-cn co cp cq cr cs ct cu cv cw cx cy cz da db dc dd de df dg dh di dj dk dl dm dn do
-
+drop id_ident  id_ident2 verification validation attest bj bk bl bm bn bo bp bq br bs bt 
+drop bu bv bw bx by bz ca cb cc cd ce cf cg ch ci cj ck cl cm cn co cp cq cr cs ct cu cv cw cx
+drop cy  cz da db dc dd de df dg dh di dj dk dl dm dn do
 ***********************************************************************
 * 	PART 3:  Create variable required for coherence test	
 ***********************************************************************

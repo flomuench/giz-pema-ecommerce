@@ -146,9 +146,9 @@ lab var tel_supl1 "numéro de téléphone supplémentaire"
 * 	PART 5: 	Label the variables values	  			
 ***********************************************************************
 
-local yesnovariables id_ident firmname_change id_ident2 dig_vente dig_marketing_lien dig_marketing_ind1 dig_service_satisfaction 	
+local yesnovariables  id_ident id_ident2 formation  dig_vente dig_marketing_lien dig_marketing_ind1 dig_service_satisfaction ssa_action1  ssa_action2 ssa_action3 ssa_action4 ssa_action5	
 
-label define yesno 1 "Oui" 0 "Non" -999 "Ne sais pas" 
+label define yesno 1 "Oui" 0 "Non" -999 "Ne sais pas" 2 "Non" 3 "Nom changé"
 foreach var of local yesnovariables {
 	label values `var' yesno
 }

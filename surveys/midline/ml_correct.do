@@ -114,10 +114,14 @@ replace `var' = subinstr(`var', ".", "",.)
 replace `var' = subinstr(`var', ",", ".",.)
 replace `var' = "`not_know'" if `var' =="je ne sais pas"
 replace `var' = "`not_know'" if `var' =="لا أعرف"
-
+replace `var' = "`not_know'" if `var' =="jenesaispas"
 }
+replace dig_revenues_ecom = "not_know" if dig_revenues_ecom == "jenesaispas"
+
 *put zero digital revenues for firms that do not have any digital revenues
 replace dig_revenues_ecom = "0" if dig_vente == 0
+
+
 ***********************************************************************
 * 	PART 3:  Manual corrections
 ***********************************************************************
