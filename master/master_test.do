@@ -95,7 +95,7 @@ replace questions_a_verifier = " | plus de media sociaux dig_presence2 (incohere
  questions_a_verifier if dig_presence3_check <0
  
  replace questions_a_verifier = " | revenue digital plus que 50% croisée depuis baseline dig_revenues_ecom " + ///
- questions_a_verifier if dig_revenue_check>1.5
+ questions_a_verifier if dig_revenue_check>1.5 & dig_revenue_check<.
 ***********************************************************************
 * 	PART 5:  Export fiche correction and save as final
 ***********************************************************************
@@ -106,18 +106,17 @@ replace questions_a_verifier = " | plus de media sociaux dig_presence2 (incohere
 
 sort id_plateforme, stable
 
-gen commentaires_ElAmouri = 0
 
 cd "$ml_checks"
 
 
-*export excel id_plateforme heure date commentselamouri commentsmsb needs_check questions_needing_check ///
- *using "fiche_correction" if needs_check>0, firstrow(variables) replace
+export excel id_plateforme heure date commentaires_ElAmouri commentsmsb needs_check questions_a_verifier ///
+ using "${ml_checks}/fiche_correction" if needs_check>0, firstrow(variables) replace
 
 
 	* Save as final
 
-drop needs_check questions_a_verifier commentsmsb
+drop needs_check questions_a_verifier commentsmsb commentaires_ElAmouri
 
 cd "$ml_final"
 

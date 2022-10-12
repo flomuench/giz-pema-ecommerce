@@ -286,8 +286,7 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 ***********************************************************************	
 gen needs_check=0
 gen questions_a_verifier=""
-gen commentaires_ElAmouri=""
 gen commentsmsb=""
-
+lab var needs_check" if larger than 0, this rows needs to be checked"
 
 save "${master_intermediate}/ecommerce_master_final", replace
