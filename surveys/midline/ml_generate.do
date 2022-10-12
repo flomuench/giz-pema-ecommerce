@@ -16,7 +16,7 @@
 *	Requires: ml_inter.dta 	  								  
 *	Creates:  ml_final.dta			                          
 *	
-																  
+use "${ml_intermediate}/ml_intermediate", clear																  
 ***********************************************************************
 * 	PART 1:  Generate summary variables of multiple answer questions 			
 ***********************************************************************
