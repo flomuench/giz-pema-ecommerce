@@ -36,15 +36,9 @@ replace groupe = "Sfax 1" if id_plateforme==956
 
 encode groupe, gen (groupe_factor)
 
-*Export
-/*local ihs_vars ihs_ca ihs_profits ihs_exports ihs_digrevenue
-foreach var of local  ihs_vars {
-	replace `var' = . if `var' <0 
-}
-*/
 
 *firms that have not exported in the past and did not report an export value for 2020 will be assumed zero
-replace compexp_2020 = 0 if compexp_2020 ==. & exp_avant21 ==0
+replace compexp_2020 = 0 if compexp_2020 ==. & exp_avant21 == 0
 replace exp_pays_21=0 if compexp_2020==0
 replace exp_pays_21=. if exp_pays_21==-999
 

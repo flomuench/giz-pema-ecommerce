@@ -360,7 +360,6 @@ drop _merge
 
 *drop index and other variables can
 drop ihs_exports w_compexp
-drop export2* export_status rg_expstatus expstatus* exp_avant21
 drop ihs_ca w_compca
 drop ihs_digrevenue w_compdrev
 drop knowledge digtalvars expprep expoutcomes 
@@ -423,9 +422,9 @@ append using el_final
 */
     * save as ecommerce_database
 *deidentify
-drop Ufirmname dup_firmname firmname_change tel_sup1 tel_sup2 tel_supl1 tel_supl2 email ///
+/*drop Ufirmname dup_firmname firmname_change tel_sup1 tel_sup2 tel_supl1 tel_supl2 email ///
 id_email email Uemail treatment_email dup_id_email dup_emailpdg ident_email_1 ident_email_2 info_compt2
-
+*/
 sort id_plateforme, stable
 order id_plateforme 
 save "${master_raw}/ecommerce_database_raw", replace
