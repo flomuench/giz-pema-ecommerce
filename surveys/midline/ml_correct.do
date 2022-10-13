@@ -72,6 +72,12 @@ sort date heure, stable
  
 local numvars dig_revenues_ecom
 * we may add these variables to check if they changed to string variables: ca_exp2018_cor  ca_exp2019_cor ca_exp2020_cor ca_2018_cor 
+replace dig_revenues_ecom = "700000" if dig_revenues_ecom == "SEPT CENT MILLE DINARS"
+replace dig_revenues_ecom = "40000 " if dig_revenues_ecom == "40 000"
+replace dig_revenues_ecom = "12000 " if dig_revenues_ecom == "12 malyoun" /*id=767 to be checked again*/
+replace dig_revenues_ecom = "50000 " if dig_revenues_ecom == "50 million millimes" 
+
+
 
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
@@ -115,11 +121,13 @@ replace `var' = subinstr(`var', ",", ".",.)
 replace `var' = "`not_know'" if `var' =="je ne sais pas"
 replace `var' = "`not_know'" if `var' =="لا أعرف"
 replace `var' = "`not_know'" if `var' =="jenesaispas"
+replace `var' = "`not_know'" if `var' =="auc1eiee"
 }
 replace dig_revenues_ecom = "not_know" if dig_revenues_ecom == "jenesaispas"
 
 *put zero digital revenues for firms that do not have any digital revenues
 replace dig_revenues_ecom = "0" if dig_vente == 0
+
 
 
 ***********************************************************************
@@ -131,6 +139,7 @@ replace dig_revenues_ecom = "0" if dig_vente == 0
 * 	PART 4:  destring variables that should be numeric
 ***********************************************************************
 destring dig_revenues_ecom, replace
+recast int dig_revenues_ecom
 ***********************************************************************
 * 	Part 9: Save the changes made to the data		  			
 ***********************************************************************

@@ -48,8 +48,10 @@ foreach x of local strvars {
 replace `x'= lower(`x')
 }
 
-	*fix date
 
+
+
+	*fix date
 format Date %td
 
 *drop empty rows
@@ -146,7 +148,7 @@ lab var tel_supl1 "numéro de téléphone supplémentaire"
 * 	PART 5: 	Label the variables values	  			
 ***********************************************************************
 
-local yesnovariables  id_ident id_ident2 formation  dig_vente dig_marketing_lien dig_marketing_ind1 dig_service_satisfaction ssa_action1  ssa_action2 ssa_action3 ssa_action4 ssa_action5	
+local yesnovariables id_ident id_ident2 formation  dig_vente dig_marketing_lien dig_marketing_ind1 dig_service_satisfaction ssa_action1  ssa_action2 ssa_action3 ssa_action4 ssa_action5	
 
 label define yesno 1 "Oui" 0 "Non" -999 "Ne sais pas" 2 "Non" 3 "Nom changé"
 foreach var of local yesnovariables {
@@ -155,6 +157,20 @@ foreach var of local yesnovariables {
 
 *make value labels for scale questions (see questionnaire)
 
+***********************************************************************
+* 	PART 6: 	Change format of variable  			
+***********************************************************************
+* Change format of variable
+
+recast int formation
+replace formation = 0 if formation ==.
+
+
+recast int dig_marketing_lien
+replace dig_marketing_lien = 0 if dig_marketing_lien ==.
+
+recast int fte car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 car_carempl_div5
+recast int dig_marketing_respons dig_service_responsable investecom_benefit1 investecom_benefit2 dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5 matricule_miss
 
 
 ***********************************************************************
