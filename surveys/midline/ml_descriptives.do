@@ -37,15 +37,39 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 putpdf paragraph, halign(center) 
 putpdf text ("E-commerce training: survey progress")
 
-	* total number of firms registered
-graph bar (count) id_plateforme, blabel(total) ///
-	title("Number of firms that responded") note("Date: `c(current_date)'") ///
+* total number of firms starting the survey
+count if id_plateforme !=.
+gen share_started= (`r(N)'/236)*100
+graph bar share_started, blabel(total, format(%9.2fc)) ///
+	title("La part des entreprises qui au moins ont commence à remplir") note("Date: `c(current_date)'") ///
 	ytitle("Number of complete survey response")
-graph export responserate.png, replace
+graph export responserate1.png, replace
 putpdf paragraph, halign(center)
-putpdf image responserate.png
+putpdf image responserate1.png
 putpdf pagebreak
+drop share_started
 
+	* total number of firms starting the survey
+count if validation==1
+gen share= (`r(N)'/236)*100
+graph bar share, blabel(total, format(%9.2fc)) ///
+	title("La part des entreprises qui ont validé leurs réponses") note("Date: `c(current_date)'") ///
+	ytitle("Number of entries")
+graph export responserate2.png, replace
+putpdf paragraph, halign(center)
+putpdf image responserate2.png
+putpdf pagebreak
+drop share
+
+	* Nombre d'entreprise ayant répondu du groupe de formation
+graph bar (count), over(formation) blabel(total) ///
+	name(formation, replace) ///
+	ytitle("nombre d'entreprises") ///
+	title("Participation dans les journées de formation")
+graph export grouperate.png, replace
+putpdf paragraph, halign(center)
+putpdf image grouperate.png
+putpdf pagebreak
 
 	* timeline of responses
 format %-td date 
@@ -62,13 +86,13 @@ putpdf pagebreak
 * 	PART 3:  Variables checking		  			
 ***********************************************************************	
      * variable dig_revenues_ecom:
-stripplot dig_revenues_ecom, jitter(4) vertical yline(2, lcolor(red)) ///
+ stripplot dig_revenues_ecom, jitter(4) vertical yline(2, lcolor(red)) ///
 		ytitle("Revenus digitaux des entreprises") ///
 		name(dig_revenues_ecom, replace)
     gr export dig_revenues_ecom.png, replace
 	putpdf paragraph, halign(center) 
 	putpdf image dig_revenues_ecom.png
-	putpdf pagebreak
+	putpdf pagebreak 
 
     * variable employees
 stripplot fte, jitter(4) vertical yline(2, lcolor(red)) ///
@@ -106,7 +130,92 @@ graph export description_digital.png, replace
 putpdf paragraph, halign(center) 
 putpdf image description_digital.png
 putpdf pagebreak
-		
+
+	*Knowledge questions
+tw ///
+	(kdensity dig_con1_ml if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_con1_ml if formation == 1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_con1_ml if formation == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_con1_ml if formation == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Full sample}") ///
+	subtitle("{it:Absolute points (between -1 & 1)}", size(vsmall)) ///
+	xtitle("Knowledge question 1: Means of payment", size(vsmall)) ///
+	ytitle("Number of observations", axis(1) size(vsmall)) ///
+	ytitle("Densitiy", axis(2) size(vsmall)) ///	
+	legend(symxsize(small) order(1 "Treatment group" 2 "Control group")) 
+	graph export knowledge_question1.png, replace 
+	putpdf paragraph, halign(center) 
+	putpdf image knowledge_question1.png
+	putpdf pagebreak
+
+				
+tw ///
+	(kdensity dig_con2_ml if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_con2_ml if formation == 1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_con2_ml if formation == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_con2_ml if formation == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Full sample}") ///
+	subtitle("{it:Absolute points (between -1 & 1)}", size(vsmall)) ///
+	xtitle("Knowledge question 2: Content Marketing", size(vsmall)) ///
+	ytitle("Number of observations", axis(1) size(vsmall)) ///
+	ytitle("Densitiy", axis(2) size(vsmall)) ///	
+	legend(symxsize(small) order(1 "Treatment group" 2 "Control group")) 
+	graph export knowledge_question2.png, replace 
+	putpdf paragraph, halign(center) 
+	putpdf image knowledge_question2.png
+	putpdf pagebreak
+	
+tw ///
+	(kdensity dig_con3_ml if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_con3_ml if formation == 1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_con3_ml if formation == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_con3_ml if formation == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Full sample}") ///
+	subtitle("{it:Absolute points (between -1 & 1)}", size(vsmall)) ///
+	xtitle("Knowledge question 3: Google Analytics", size(vsmall)) ///
+	ytitle("Number of observations", axis(1) size(vsmall)) ///
+	ytitle("Densitiy", axis(2) size(vsmall)) ///	
+	legend(symxsize(small) order(1 "Treatment group" 2 "Control group")) 
+	graph export knowledge_question3.png, replace 
+	putpdf paragraph, halign(center) 
+	putpdf image knowledge_question3.png
+	putpdf pagebreak
+
+tw ///
+	(kdensity dig_con4_ml if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_con4_ml if formation == 1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_con4_ml if formation == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_con4_ml if formation == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Full sample}") ///
+	subtitle("{it:Absolute points (between -1 & 1)}", size(vsmall)) ///
+	xtitle("Knowledge question 4: Engagement rate", size(vsmall)) ///
+	ytitle("Number of observations", axis(1) size(vsmall)) ///
+	ytitle("Densitiy", axis(2) size(vsmall)) ///	
+	legend(symxsize(small) order(1 "Treatment group" 2 "Control group")) 
+	graph export knowledge_question4.png, replace 
+	putpdf paragraph, halign(center) 
+	putpdf image knowledge_question4.png
+	putpdf pagebreak	
+tw ///
+	(kdensity dig_con5_ml if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_con5_ml if formation == 1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_con5_ml if formation == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_con5_ml if formation == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Full sample}") ///
+	subtitle("{it:Absolute points (between -1 & 1)}", size(vsmall)) ///
+	xtitle("Knowledge question 5: SEO", size(vsmall)) ///
+	ytitle("Number of observations", axis(1) size(vsmall)) ///
+	ytitle("Densitiy", axis(2) size(vsmall)) ///	
+	legend(symxsize(small) order(1 "Treatment group" 2 "Control group")) 
+	graph export knowledge_question5.png, replace 
+	putpdf paragraph, halign(center) 
+	putpdf image knowledge_question5.png
+	putpdf pagebreak	
 	
 ***********************************************************************
 * 	PART 4:  save pdf
