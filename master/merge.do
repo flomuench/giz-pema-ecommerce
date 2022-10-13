@@ -318,7 +318,8 @@ replace emailrep = "meriam.tarmiz@africhrome.com" if id_plateforme==873
 
 replace rg_email2 = "commercial@graphika.tn" if id_plateforme==136
 
-
+*@AYOUB: merge your file with websites and social media links of the companies BELOW,call it site_web facebook instagram linkedin etc, 
+*then drop rg_siteweb rg_media because no longer needed
 
 
 *excel for CEPEX

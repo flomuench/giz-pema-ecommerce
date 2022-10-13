@@ -9,7 +9,7 @@
 *				PART 2: Prepare dynamic folder paths & globals		  
 *				PART 3: Run all do-files                          											  
 *																	  
-*	Author:  	Fabian Scheifele & Siwar Hakim							    
+*	Author:  	Fabian Scheifele					    
 *	ID variable: id_email		  					  
 *	Requires:  	  										  
 *	Creates:  master-data-ecommerce; 
