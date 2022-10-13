@@ -20,7 +20,7 @@
 * 	PART 1:  Load data	  		
 ***********************************************************************
 	 
-use "${master_intermediate}/ecommerce_master_final", clear
+use "${master_final}/ecommerce_master_final", clear
 
 ***********************************************************************
 * 	PART 2:  Define logical tests
@@ -31,10 +31,10 @@ use "${master_intermediate}/ecommerce_master_final", clear
 ----------------------------------------------------------------------*/		
 
 replace needs_check = 2 if dig_revenues_ecom == -999 & surveyround==2
-replace questions_a_verifier = " | dig_revenues_ecom ne sais pas & " + questions_a_verifier if dig_revenues_ecom == -999 
+replace questions_a_verifier = " | dig_revenues_ecom ne sais pas & " + questions_a_verifier if dig_revenues_ecom == -999 & surveyround==2
 
 replace needs_check = 2 if dig_revenues_ecom == -888 & surveyround==2
-replace questions_a_verifier = " | dig_revenues_ecom refusée & " + questions_a_verifier if dig_revenues_ecom == -888 
+replace questions_a_verifier = " | dig_revenues_ecom refusée & " + questions_a_verifier if dig_revenues_ecom == -888 & surveyround==2
 
 ***********************************************************************
 * 	PART 3:  Check for missing values
@@ -61,7 +61,8 @@ foreach var of local closed_vars {
 ***********************************************************************
 *automatic check if dig_revenues more than 10% larger than the largest value in the baseline
 replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. & surveyround==2
- 
+replace questions_a_verifier = " | dig_revenues_ecom extremement large & " + questions_a_verifier if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. & surveyround==2
+
 ***********************************************************************
 * 	PART 4: Manual outlier detection 
 ***********************************************************************
@@ -77,25 +78,58 @@ replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. & su
 ***********************************************************************
 * 	PART 4:  Cross checks with baseline data
 ***********************************************************************
+*Digital presence
 bysort id_plateforme (surveyround): gen dig_presence1_check = dig_presence1 - dig_presence1[_n-1]
 bysort id_plateforme (surveyround): gen dig_presence2_check = dig_presence2 - dig_presence2[_n-1]
 bysort id_plateforme (surveyround): gen dig_presence3_check = dig_presence3 - dig_presence3[_n-1]
-bysort id_plateforme (surveyround): gen dig_revenue_check = dig_revenues_ecom/dig_revenues_ecom[_n-1]
 
 replace needs_check = 3 if dig_presence1_check<0
 replace needs_check = 3 if dig_presence2_check<0
 replace needs_check = 3 if dig_presence3_check<0
-replace needs_check = 3 if dig_revenue_check>1.5
 
-replace questions_a_verifier = " | plus de site web dig_presence3 (incoherene avec baseline) " + ///
+replace questions_a_verifier = " | plus de site web dig_presence1 (incoherence avec baseline) " + ///
  questions_a_verifier if dig_presence1_check <0
-replace questions_a_verifier = " | plus de media sociaux dig_presence2 (incoherene avec baseline) " + ///
+replace questions_a_verifier = " | plus de media sociaux dig_presence2 (incoherence avec baseline) " + ///
  questions_a_verifier if dig_presence2_check <0
- replace questions_a_verifier = " | plus de market place dig_presence3 (incoherene avec baseline) " + ///
+replace questions_a_verifier = " | plus de market place dig_presence3 (incoherence avec baseline) " + ///
  questions_a_verifier if dig_presence3_check <0
+
+ *revenues
+bysort id_plateforme (surveyround): gen dig_revenue_check = dig_revenues_ecom/dig_revenues_ecom[_n-1]
+replace questions_a_verifier = " | revenue digital plus que doublé depuis baseline dig_revenues_ecom " + ///
+ questions_a_verifier if dig_revenue_check>2 & dig_revenue_check<.
  
- replace questions_a_verifier = " | revenue digital plus que 50% croisée depuis baseline dig_revenues_ecom " + ///
- questions_a_verifier if dig_revenue_check>1.5 & dig_revenue_check<.
+ *digital marketing and service personell (PROBLEM: How to filter only those that went from positive to zero but not 
+bysort id_plateforme (surveyround): gen dig_marketing_respons_check = dig_marketing_respons_bin - dig_marketing_respons_bin[_n-1]
+replace needs_check = 3 if dig_marketing_respons_check<0 
+
+replace questions_a_verifier = " | plus de responsable de marketing digital (incoherence baseline) " + ///
+ questions_a_verifier if dig_marketing_respons_check<0
+ 
+bysort id_plateforme (surveyround): gen dig_service_respons_check = dig_service_responsable_bin - dig_service_responsable_bin[_n-1]
+replace needs_check = 3 if dig_service_respons_check<0 
+
+replace questions_a_verifier = " | plus de responsable de client en ligne (incoherence baseline) " + ///
+ questions_a_verifier if dig_service_respons_check<0
+ 
+*digital marketing objective
+bysort id_plateforme (surveyround): gen dig_marketing_ind1_check = dig_marketing_ind1 - dig_marketing_ind1[_n-1]
+replace needs_check = 3 if dig_marketing_ind1_check<0  
+
+replace questions_a_verifier = " | plus d'objective marketing digital (incoherence baseline) " + ///
+ questions_a_verifier if dig_marketing_ind1_check<0  
+ 
+bysort id_plateforme (surveyround): gen dig_service_satisfaction_check = dig_service_satisfaction - dig_service_satisfaction[_n-1]
+replace needs_check = 3 if dig_service_satisfaction_check<0 
+
+replace questions_a_verifier = " | mesurent plus la satisfaction des client en ligne (incoherence baseline) " + ///
+ questions_a_verifier if dig_service_satisfaction_check<0  
+
+bysort id_plateforme (surveyround): gen dig_marketing_lien_check = dig_marketing_lien - dig_marketing_lien[_n-1]
+replace needs_check = 3 if dig_marketing_lien_check<0 
+
+replace questions_a_verifier = " | reseaux plus liés au site web (incoherence baseline) " + ///
+ questions_a_verifier if dig_marketing_lien_check<0  
 ***********************************************************************
 * 	PART 5:  Export fiche correction and save as final
 ***********************************************************************
@@ -109,14 +143,17 @@ sort id_plateforme, stable
 
 cd "$ml_checks"
 
-
+preserve
+keep if needs_check>0
+*once updated with Ayoub's data all websites and social media links can be merged to help el amouri in argumentation
+merge 1:1 id_plateforme using  "${master_pii}/ecommerce_master_contact" 
+keep if _merge==3
 export excel id_plateforme heure date commentaires_ElAmouri commentsmsb needs_check questions_a_verifier ///
- using "${ml_checks}/fiche_correction" if needs_check>0, firstrow(variables) replace
+rg_siteweb rg_media using "${ml_checks}/fiche_correction", sheetreplace firstrow(var)
 
+restore
 
 	* Save as final
-
-drop needs_check questions_a_verifier commentsmsb commentaires_ElAmouri
 
 cd "$ml_final"
 
