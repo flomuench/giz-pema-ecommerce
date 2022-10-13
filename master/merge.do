@@ -162,7 +162,11 @@ replace matricule_fiscale = "1575123L" if id_plateforme == 763
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
 replace matricule_fiscale = "1473584Y" if id_plateforme == 931
 replace matricule_fiscale = "1299421C" if id_plateforme == 927
+
+*additional changes with help of midline
 replace matricule_fiscale = "1172183K" if id_plateforme == 505
+
+
 save "${master_pii}/ecommerce_master_contact", replace
 
 *merge participation data to contact master
