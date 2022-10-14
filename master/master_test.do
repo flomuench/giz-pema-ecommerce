@@ -105,6 +105,9 @@ replace needs_check = 3 if dig_marketing_respons_check<0
 
 replace questions_a_verifier = " | plus de responsable de marketing digital (incoherence baseline) " + ///
  questions_a_verifier if dig_marketing_respons_check<0
+
+bysort id_plateforme (surveyround): gen dig_marketing_respons_check2 = dig_marketing_respons - dig_marketing_respons[_n-1]
+replace needs_check = 3 if dig_marketing_respons_check<0 
  
 bysort id_plateforme (surveyround): gen dig_service_respons_check = dig_service_responsable_bin - dig_service_responsable_bin[_n-1]
 replace needs_check = 3 if dig_service_respons_check<0 
