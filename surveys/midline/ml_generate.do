@@ -215,6 +215,18 @@ format %9.0g dig_con4_ml
 gen dig_presence_score= dig_presence1+dig_presence2+dig_presence3 
 lab var dig_presence_score "Digital presence score" 
 
+gen dig_descritpion= dig_description1 + dig_description2 + dig_description3
+lab var dig_descritpion "Digital description score" 
+
+gen dig_miseajour= dig_miseajour1 + dig_miseajour2 + dig_miseajour3
+lab var dig_miseajour "Digital mise à jour score" 
+
+gen dig_payment = dig_payment1 + dig_payment2 + dig_payment3
+lab var dig_payment "Digital payment score" 
+
+gen dig_perception = dig_perception1 + dig_perception2 + dig_perception3 + dig_perception4 + dig_perception5
+lab var dig_perception "Digital perception score" 
+
 **********************************************************************
 * 	PART 7:  save			
 ***********************************************************************

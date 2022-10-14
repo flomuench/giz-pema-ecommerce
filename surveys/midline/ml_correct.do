@@ -79,8 +79,12 @@ replace dig_revenues_ecom = "50000 " if dig_revenues_ecom == "50 million millime
 replace dig_revenues_ecom= "-999" if dig_revenues_ecom =="aucune idee"
 replace dig_revenues_ecom= "36000" if dig_revenues_ecom =="4 mlayen par mois"
 replace dig_revenues_ecom= "700000" if dig_revenues_ecom =="sept cent mille dinars"
+replace dig_revenues_ecom= "8000" if dig_revenues_ecom =="8 mlayen"
+replace dig_revenues_ecom= "250000" if dig_revenues_ecom =="250 mille dinars"
+replace dig_revenues_ecom= "10000" if dig_revenues_ecom =="10000 (dix mille dinars)"
+replace dig_revenues_ecom= "-888" if dig_revenues_ecom =="refus"
 
-
+  
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
 replace `var' = ustrregexra( `var',"dinar","")

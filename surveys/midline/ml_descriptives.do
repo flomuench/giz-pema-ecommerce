@@ -115,32 +115,70 @@ stripplot fte, jitter(4) vertical yline(2, lcolor(red)) ///
 	
 	
 	*Variable présence digitale
-betterbar dig_presence1 dig_presence2 dig_presence3, ci barlab ///
+betterbar dig_presence1 dig_presence2 dig_presence3, over(formation) ci barlab ///
 	title("Présence sur les canaux de communication") ///
-	ylabel(,labsize(vsmall) angle(vertical))
+	ylabel(,labsize(vsmall) angle(horizontal))
 graph export presence_digital.png, replace 
 putpdf paragraph, halign(center) 
 putpdf image presence_digital.png
 putpdf pagebreak
 	
-	*Variable descriptions digitale
-betterbar dig_description1 dig_description2 dig_description3, ci barlab ///
-	title("Description de l'entreprise et des produits") ///
-	ylabel(,labsize(vsmall) angle(vertical))
-graph export description_digital.png, replace 
-putpdf paragraph, halign(center) 
-putpdf image description_digital.png
-putpdf pagebreak
 	
-	*Variable mise à jour
-betterbar dig_miseajour1 dig_miseajour2 dig_miseajour3, ci barlab ///
-	title("Fréquence de mise à jour") ///
-	ylabel(,labsize(vsmall) angle(vertical))
+	*Variable descriptions digitale
+betterbar dig_description1 dig_description2 dig_description3, over(formation) ci barlab ///
+	title("Description de l'entreprise et des produits") ///
+	ylabel(,labsize(vsmall) angle(horizontal))
 graph export description_digital.png, replace 
 putpdf paragraph, halign(center) 
 putpdf image description_digital.png
 putpdf pagebreak
 
+
+	*Variable mise à jour
+betterbar dig_miseajour1 dig_miseajour2 dig_miseajour3,over(formation) ci barlab ///
+	title("Fréquence de mise à jour") ///
+	ylabel(,labsize(vsmall) angle(horizontal))
+graph export description_digital.png, replace 
+putpdf paragraph, halign(center) 
+putpdf image description_digital.png
+putpdf pagebreak
+
+	*Variable paiement digital
+betterbar dig_payment1 dig_payment2 dig_payment3, over(formation) ci barlab ///
+	title("Paiment digital") ///
+	ylabel(,labsize(vsmall) angle(horizontal))
+graph export paiement_digital.png, replace 
+putpdf paragraph, halign(center) 
+putpdf image paiement_digital.png
+putpdf pagebreak
+
+	*Variable perception digital
+betterbar dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5, over(formation) ci barlab ///
+	title("Peception digital") ///
+	ylabel(,labsize(vsmall) angle(horizontal))
+graph export perception_digital.png, replace 
+putpdf paragraph, halign(center) 
+putpdf image perception_digital.png
+putpdf pagebreak
+
+tw ///
+	(kdensity dig_perception if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_perception if formation == 1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_perception if formation == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_perception if formation == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Full sample}") ///
+	subtitle("{it:Absolute points (between 0 & 5)}", size(vsmall)) ///
+	xtitle("Perception digitale", size(vsmall)) ///
+	ytitle("Number of observations", axis(1) size(vsmall)) ///
+	ytitle("Densitiy", axis(2) size(vsmall)) ///	
+	legend(symxsize(small) order(1 "Treatment group" 2 "Control group")) 
+	graph export perception_digitale.png, replace 
+	putpdf paragraph, halign(center) 
+	putpdf image perception_digitale.png
+	putpdf pagebreak
+	
+	
 	*Knowledge questions
 tw ///
 	(kdensity dig_con1_ml if formation == 1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
