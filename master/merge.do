@@ -327,8 +327,8 @@ replace rg_email2 = "commercial@graphika.tn" if id_plateforme==136
 
 
 *excel for CEPEX
-export excel id_plateforme matricule_physique matricule_missing matricule_fiscale ///
- using "${master_pii}/matricule_fiscale_ecommerce", firstrow(var) sheetreplace
+export excel id_plateforme matricule_fiscale firmname matricule_missing ///
+ using "${master_pii}/matricule_fiscale_ecommerce_cepex", firstrow(var) sheetreplace
 
 save "${master_pii}/ecommerce_master_contact", replace
 
@@ -434,5 +434,5 @@ sort id_plateforme, stable
 order id_plateforme 
 save "${master_raw}/ecommerce_database_raw", replace
 
-
-
+export excel id_plateforme entr_produit1 ///
+ using "${master_pii}/cepex_produits", firstrow(var) sheetreplace
