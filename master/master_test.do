@@ -63,17 +63,6 @@ foreach var of local closed_vars {
 replace needs_check = 3 if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. & surveyround==2
 replace questions_a_verifier = " | dig_revenues_ecom extremement large & " + questions_a_verifier if dig_revenues_ecom> 9000000 & dig_revenues_ecom<. & surveyround==2
 
-***********************************************************************
-* 	PART 4: Manual outlier detection 
-***********************************************************************
-
-*Manually remove those plateforme IDs where unusual values where justified and confirmed or were respondent refused after verification call*
-
-*replace needs_check = 1 if id_plateforme==XXX
-*
-
-
-
 
 ***********************************************************************
 * 	PART 4:  Cross checks with baseline data
@@ -134,16 +123,19 @@ replace needs_check = 3 if dig_marketing_lien_check<0
 replace questions_a_verifier = " | reseaux plus liés au site web (incoherence baseline) " + ///
  questions_a_verifier if dig_marketing_lien_check<0  
 ***********************************************************************
-* 	PART 5:  Export fiche correction and save as final
+* 	PART 4: Manual outlier detection 
 ***********************************************************************
+
+*Manually remove those plateforme IDs where unusual values where justified and confirmed or were respondent refused after verification call*
+
+replace needs_check = 3 if id_plateforme==899 & surveyround==2
+replace questions_a_verifier = " | 9 million de revenue digital et en Fevrier zéro " if id_plateforme==899 & surveyround==2
 
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
 
 sort id_plateforme, stable
-
-
 cd "$ml_checks"
 
 preserve
