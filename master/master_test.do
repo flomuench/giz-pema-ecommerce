@@ -151,7 +151,7 @@ keep if needs_check>0
 *once updated with Ayoub's data all websites and social media links can be merged to help el amouri in argumentation
 merge 1:1 id_plateforme using  "${master_pii}/ecommerce_master_contact" 
 keep if _merge==3
-export excel id_plateforme heure date commentaires_ElAmouri commentsmsb needs_check questions_a_verifier ///
+export excel id_plateforme heure date commentaires_elamouri commentsmsb needs_check questions_a_verifier ///
 rg_siteweb rg_media using "${ml_checks}/fiche_correction", sheetreplace firstrow(var)
 
 restore
