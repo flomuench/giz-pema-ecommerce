@@ -164,26 +164,58 @@ lab var dig_con5_ml "Correct answers to knowledge question on SEO"
 drop dig_techniques_seo
 
 ***********************************************************************
-* 	PART 2:  Drop useless variables		
+* 	PART 3:  Generate variables for companies who answered on phone	
+***********************************************************************
+gen survey_phone = 0
+lab var survey_phone "Comapnies who answered the survey on phone (with enumerators)" 
+replace survey_phone = 1 if id_plateforme == 95
+replace survey_phone = 1 if id_plateforme == 126
+replace survey_phone = 1 if id_plateforme == 136
+replace survey_phone = 1 if id_plateforme == 172
+replace survey_phone = 1 if id_plateforme == 231
+replace survey_phone = 1 if id_plateforme == 270
+replace survey_phone = 1 if id_plateforme == 337
+replace survey_phone = 1 if id_plateforme == 424
+replace survey_phone = 1 if id_plateforme == 438
+replace survey_phone = 1 if id_plateforme == 519
+replace survey_phone = 1 if id_plateforme == 527
+replace survey_phone = 1 if id_plateforme == 541
+replace survey_phone = 1 if id_plateforme == 644
+replace survey_phone = 1 if id_plateforme == 670
+replace survey_phone = 1 if id_plateforme == 729
+replace survey_phone = 1 if id_plateforme == 732
+replace survey_phone = 1 if id_plateforme == 962
+replace survey_phone = 1 if id_plateforme == 360
+replace survey_phone = 1 if id_plateforme == 365
+replace survey_phone = 1 if id_plateforme == 427
+replace survey_phone = 1 if id_plateforme == 635
+replace survey_phone = 1 if id_plateforme == 767
+replace survey_phone = 1 if id_plateforme == 773
+replace survey_phone = 1 if id_plateforme == 791
+replace survey_phone = 1 if id_plateforme == 810
+replace survey_phone = 1 if id_plateforme == 831
+replace survey_phone = 1 if id_plateforme == 82
+
+label define Surveytype 1 "Phone" 0 "En ligne"
+***********************************************************************
+* 	PART 4:  Drop useless variables		
 ***********************************************************************
 drop id_ident id_ident2 verification attest bj bk bl bm bn bo bp bq br bs bt 
-drop bu bv bw bx by bz ca cb cc cd ce cf cg ch ci cj ck cl cm cn co cp cq cr cs ct cu cv cw cx
-drop cy  cz da db dc dd de df dg dh di dj dk dl dm dn do
-
+drop bu bv bw bx by bz ca cb cc
 
 ***********************************************************************
-* 	PART 3:  Change format type	
+* 	PART 5:  Change format type	
 ***********************************************************************
 recast float dig_con4_ml
 format %9.0g dig_con4_ml
 
 ***********************************************************************
-* 	PART 4:  Create variable required for coherence test	
+* 	PART 6:  Create variable required for coherence test	
 ***********************************************************************
 gen dig_presence_score= dig_presence1+dig_presence2+dig_presence3 
 lab var dig_presence_score "Digital presence score" 
 
 **********************************************************************
-* 	PART 5:  save			
+* 	PART 7:  save			
 ***********************************************************************
 save "${ml_final}/ml_final", replace
