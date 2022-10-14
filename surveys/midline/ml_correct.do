@@ -76,7 +76,9 @@ replace dig_revenues_ecom = "700000" if dig_revenues_ecom == "SEPT CENT MILLE DI
 replace dig_revenues_ecom = "40000 " if dig_revenues_ecom == "40 000"
 replace dig_revenues_ecom = "12000 " if dig_revenues_ecom == "12 malyoun" /*id=767 to be checked again*/
 replace dig_revenues_ecom = "50000 " if dig_revenues_ecom == "50 million millimes" 
-
+replace dig_revenues_ecom= "-999" if dig_revenues_ecom =="aucune idee"
+replace dig_revenues_ecom= "36000" if dig_revenues_ecom =="4 mlayen par mois"
+replace dig_revenues_ecom= "700000" if dig_revenues_ecom =="sept cent mille dinars"
 
 
 foreach var of local numvars {
@@ -104,8 +106,8 @@ replace `var' = ustrregexra( `var'," ","")
 *replace `var' = ustrregexra( `var',"neuf","9")
 *replace `var' = ustrregexra( `var',"dix","10")
 *replace `var' = ustrregexra( `var',"cent","00")
-replace `var' = ustrregexra( `var',"O","0")
-replace `var' = ustrregexra( `var',"o","0")
+*replace `var' = ustrregexra( `var',"O","0")
+*replace `var' = ustrregexra( `var',"o","0")
 replace `var' = ustrregexra( `var',"دينار تونسي","")
 replace `var' = ustrregexra( `var',"دينار","")
 replace `var' = ustrregexra( `var',"تونسي","")
@@ -121,7 +123,6 @@ replace `var' = subinstr(`var', ",", ".",.)
 replace `var' = "`not_know'" if `var' =="je ne sais pas"
 replace `var' = "`not_know'" if `var' =="لا أعرف"
 replace `var' = "`not_know'" if `var' =="jenesaispas"
-replace `var' = "`not_know'" if `var' =="auc1eiee"
 }
 replace dig_revenues_ecom = "not_know" if dig_revenues_ecom == "jenesaispas"
 

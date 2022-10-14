@@ -71,6 +71,16 @@ putpdf paragraph, halign(center)
 putpdf image grouperate.png
 putpdf pagebreak
 
+	* Manière avec laquelle l'entreprise a répondu au questionnaire
+graph bar (count), over(survey_phone) blabel(total) ///
+	name(formation, replace) ///
+	ytitle("nombre d'entreprises") ///
+	title("Manière avec laquelle l'entreprise a répondu au questionnaire")
+graph export type_of_surveyanswer.png, replace
+putpdf paragraph, halign(center)
+putpdf image type_of_surveyanswer.png
+putpdf pagebreak
+
 	* timeline of responses
 format %-td date 
 graph twoway histogram date, frequency width(1) ///
