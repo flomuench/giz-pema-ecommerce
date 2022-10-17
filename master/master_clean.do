@@ -55,3 +55,4 @@ format %-25.2fc `numvars'
 format %-25.0fc id_plateforme
 
 save "${master_intermediate}/ecommerce_master_inter", replace
+erase "${master_raw}/ecommerce_database_raw.dta"

@@ -347,7 +347,7 @@ use "${regis_final}/regis_final", clear
 rename treatment treatment_email
 
 merge 1:1 id_plateforme using "${bl_final}/bl_final"
-
+drop commentaires_ElAmouri
 keep if _merge==3 /* companies that were eligible and answered on the registration + baseline surveys */
 drop _merge
 
@@ -392,34 +392,30 @@ restore
 
 *merge participation file to have take up data also in analysis file
 clear 
-import excel "${master_pii}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
-keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
-drop if id_plateforme== ""
-drop if id_plateforme== "id_plateforme"
-destring id_plateforme,replace
+use "${master_raw}/ecommerce_database_raw", clear
+preserve
+	import excel "${master_pii}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
+	keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
+	drop if id_plateforme== ""
+	drop if id_plateforme== "id_plateforme"
+	destring id_plateforme,replace
+	sort id_plateforme, stable
+	save "${master_pii}/suivi_ecommerce.dta",replace
+restore
 
-merge 1:1 id_plateforme using "${master_raw}/ecommerce_database_raw"
+merge 1:1 id_plateforme using "${master_pii}/suivi_ecommerce"
 drop _merge
 
-*generate take up variable
-gen take_up = 0
-replace take_up = 1 if present>2 & present<.
-lab var take_up "1 if company was present in 3/5 trainings"
-gen take_up2 = 0
-replace take_up2 = 1 if present>0 & present<.
-lab var take_up2 "alternative take-up indicator, 1 if present in at least one training"
-save "${master_raw}/ecommerce_database_raw", replace
 
 ***********************************************************************
 * 	PART 6: append to create analysis data set
 ***********************************************************************
 
 	* append registration +  baseline data with midline
-cd "$ml_final"
-append using ml_final
+
+append using "${ml_final}/ml_final"
 sort id_plateforme, stable
 drop survey_type survey
-save "${master_raw}/ecommerce_database_raw", replace
 
 	* append with endline
 /*cd "$endline_final"
@@ -434,5 +430,5 @@ sort id_plateforme, stable
 order id_plateforme 
 save "${master_raw}/ecommerce_database_raw", replace
 
-export excel id_plateforme entr_produit1 ///
+/*export excel id_plateforme entr_produit1 ///
  using "${master_pii}/cepex_produits", firstrow(var) sheetreplace

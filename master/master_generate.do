@@ -22,6 +22,16 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 ***********************************************************************
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
+*generate take up variable
+gen take_up = 0
+replace take_up = 1 if present>2 & present<.
+lab var take_up "1 if company was present in 3/5 trainings"
+gen take_up2 = 0
+replace take_up2 = 1 if present>0 & present<.
+lab var take_up2 "alternative take-up indicator, 1 if present in at least one training"
+
+
+bysort id_plateforme (surveyround): replace treatment = treatment[_n+1]
 
 ***********************************************************************
 *PART 1.1. Generate new variables or change variables create from bl_generate
@@ -292,3 +302,4 @@ gen commentsmsb=""
 lab var needs_check" if larger than 0, this rows needs to be checked"
 
 save "${master_final}/ecommerce_master_final", replace
+erase "${master_intermediate}/ecommerce_master_inter.dta"
