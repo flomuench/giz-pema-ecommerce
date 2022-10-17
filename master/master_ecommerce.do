@@ -52,6 +52,7 @@ if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(use
 
 		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
+
 else{
 
 		global gdrive = "C:/Users/`c(username)'/Google Drive"
@@ -112,7 +113,7 @@ else if c(os) == "MacOSX" {
 		
 * paths within gdrive
 			* data
-global master_intermediate "${gdrive}/6-master/intermediate"
+global master_intermediate = "${gdrive}/6-master/intermediate"
 global master_final = "${gdrive}/6-master/final"
 global master_checks = "${gdrive}/6-master/checks"
 global master_output = "${gdrive}/6-master/output"
