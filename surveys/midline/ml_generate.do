@@ -230,4 +230,5 @@ lab var dig_perception "Digital perception score"
 **********************************************************************
 * 	PART 7:  save			
 ***********************************************************************
+rename *, lower
 save "${ml_final}/ml_final", replace

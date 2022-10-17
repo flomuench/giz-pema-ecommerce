@@ -294,7 +294,6 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 ***********************************************************************
 *PART 2 Check coherence between baseline and midline
 ***********************************************************************	
-drop commentaires_ElAmouri
 gen commentaires_elamouri=""
 gen needs_check=0
 gen questions_a_verifier=""
@@ -302,4 +301,3 @@ gen commentsmsb=""
 lab var needs_check" if larger than 0, this rows needs to be checked"
 
 save "${master_final}/ecommerce_master_final", replace
-erase "${master_intermediate}/ecommerce_master_inter.dta"

@@ -357,7 +357,7 @@ lab var surveyround "1-baseline 2-midline 3-endline"
 
     * save as ecommerce_database
 
-save "${master_raw}/ecommerce_database_raw", replace
+*save "${master_raw}/ecommerce_database_raw", replace
 
 merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
 keep if _merge==3
@@ -371,7 +371,7 @@ drop knowledge digtalvars expprep expoutcomes
 
 rename car_carempl_dive2 car_carempl_div2
 lab var car_carempl_div2 "nombre de jeunes dans l'entreprise"
-save "${master_raw}/ecommerce_database_raw", replace
+*save "${master_raw}/ecommerce_database_raw", replace
 
 *create contact database with dig_presence for survey institut
 preserve
@@ -391,8 +391,8 @@ restore
 ***********************************************************************
 
 *merge participation file to have take up data also in analysis file
-clear 
-use "${master_raw}/ecommerce_database_raw", clear
+*clear 
+*use "${master_raw}/ecommerce_database_raw", clear
 preserve
 	import excel "${master_pii}/suivi_ecommerce.xlsx", sheet("Suivi_formation") firstrow clear
 	keep id_plateforme groupe module1 module2 module3 module4 module5 present absent
@@ -412,7 +412,8 @@ drop _merge
 ***********************************************************************
 
 	* append registration +  baseline data with midline
-
+*assure variables are lower case
+rename *, lower
 append using "${ml_final}/ml_final"
 sort id_plateforme, stable
 drop survey_type survey
@@ -428,7 +429,9 @@ id_email email Uemail treatment_email dup_id_email dup_emailpdg ident_email_1 id
 */
 sort id_plateforme, stable
 order id_plateforme 
-save "${master_raw}/ecommerce_database_raw", replace
+save "${master_intermediate}/ecommerce_master_inter", replace
+*erase "${master_raw}/ecommerce_database_raw.dta"
+
 
 /*export excel id_plateforme entr_produit1 ///
  using "${master_pii}/cepex_produits", firstrow(var) sheetreplace
