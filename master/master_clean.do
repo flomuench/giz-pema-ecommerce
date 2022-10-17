@@ -30,7 +30,7 @@ save "${master_pii}/ecommerce_master_contact", replace
 ***********************************************************************
 * 	PART 2:    clean merged analysis file
 ***********************************************************************
-use "${master_raw}/ecommerce_database_raw", clear
+use "${master_intermediate}/ecommerce_master_inter", clear
 
 *remove leading and trailing white space
 {
@@ -55,4 +55,3 @@ format %-25.2fc `numvars'
 format %-25.0fc id_plateforme
 
 save "${master_intermediate}/ecommerce_master_inter", replace
-erase "${master_raw}/ecommerce_database_raw.dta"
