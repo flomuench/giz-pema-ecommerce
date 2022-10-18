@@ -195,6 +195,21 @@ replace survey_phone = 1 if id_plateforme == 791
 replace survey_phone = 1 if id_plateforme == 810
 replace survey_phone = 1 if id_plateforme == 831
 replace survey_phone = 1 if id_plateforme == 82
+replace survey_phone = 1 if id_plateforme == 244
+replace survey_phone = 1 if id_plateforme == 565
+replace survey_phone = 1 if id_plateforme == 602
+replace survey_phone = 1 if id_plateforme == 941
+replace survey_phone = 1 if id_plateforme == 959
+replace survey_phone = 1 if id_plateforme == 961
+replace survey_phone = 1 if id_plateforme == 587
+replace survey_phone = 1 if id_plateforme == 70
+replace survey_phone = 1 if id_plateforme == 470
+replace survey_phone = 1 if id_plateforme == 478
+replace survey_phone = 1 if id_plateforme == 508
+replace survey_phone = 1 if id_plateforme == 735
+
+
+
 
 label define Surveytype 1 "Phone" 0 "En ligne"
 ***********************************************************************

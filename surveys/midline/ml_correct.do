@@ -83,6 +83,7 @@ replace dig_revenues_ecom= "8000" if dig_revenues_ecom =="8 mlayen"
 replace dig_revenues_ecom= "250000" if dig_revenues_ecom =="250 mille dinars"
 replace dig_revenues_ecom= "10000" if dig_revenues_ecom =="10000 (dix mille dinars)"
 replace dig_revenues_ecom= "-888" if dig_revenues_ecom =="refus"
+replace dig_revenues_ecom= "10000" if dig_revenues_ecom =="10 million millime"
 
   
 foreach var of local numvars {
