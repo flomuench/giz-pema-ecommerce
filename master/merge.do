@@ -324,8 +324,14 @@ replace rg_email2 = "commercial@graphika.tn" if id_plateforme==136
 
 *@AYOUB: merge your file with websites and social media links of the companies BELOW,call it site_web facebook instagram linkedin etc, 
 *then drop rg_siteweb rg_media because no longer needed
-
-
+preserve
+import excel "${master_pii}/web_information.xlsx", sheet("all") firstrow clear 
+drop if id_plateforme==.
+save "${master_pii}/web_information", replace
+restore
+merge 1:1 id_plateforme using "${master_pii}/web_information"
+*drop old website and social media information from registration as it is replaced by self-collected data
+drop _merge rg_media rg_siteweb
 *excel for CEPEX
 export excel id_plateforme matricule_fiscale firmname matricule_missing ///
  using "${master_pii}/matricule_fiscale_ecommerce_cepex", firstrow(var) sheetreplace

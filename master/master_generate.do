@@ -30,8 +30,8 @@ gen take_up2 = 0
 replace take_up2 = 1 if present>0 & present<.
 lab var take_up2 "alternative take-up indicator, 1 if present in at least one training"
 
-
-bysort id_plateforme (surveyround): replace treatment = treatment[_n+1]
+*extent treatment status to additional surveyrounds
+*bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] 
 
 ***********************************************************************
 *PART 1.1. Generate new variables or change variables create from bl_generate
@@ -138,22 +138,7 @@ program define zscorecond /* opens a program called zscore */
 	gen `1'z = (`1' - r(mean))/r(sd) if `2'>0 & `2'<.
 end
 
-*Definition of all variables that are being used in index calculation*
-local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
 
-*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros*
-* Create temp variables where missing values etc are replaced by 0s
-foreach var of local  allvars {
-	replace `var' = 0 if `var' == .
-	replace `var' = 0 if `var' == -999
-	replace `var' = 0 if `var' == -888
-	replace `var' = 0 if `var' == -777
-	replace `var' = 0 if `var' == -1998
-	replace `var' = 0 if `var' == -1776 
-	replace `var' = 0 if `var' == -1554
-}
-
-replace dig_revenues_ecom=. if dig_revenues_ecom== -999 | dig_revenues_ecom== -888
 winsor dig_revenues_ecom, gen(w95_dig_rev20) p(0.05) highonly
 ihstrans w95_dig_rev20
 winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly

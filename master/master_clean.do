@@ -28,7 +28,7 @@ drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident
 save "${master_pii}/ecommerce_master_contact", replace
 
 ***********************************************************************
-* 	PART 2:    clean merged analysis file
+* 	PART 2:    clean merged analysis file (midline)
 ***********************************************************************
 use "${master_intermediate}/ecommerce_master_inter", clear
 
@@ -53,5 +53,9 @@ local numvars "`r(varlist)'"
 format %-25.2fc `numvars'
 
 format %-25.0fc id_plateforme
+
+* format date
+format %td date
+
 
 save "${master_intermediate}/ecommerce_master_inter", replace
