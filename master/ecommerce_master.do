@@ -50,14 +50,12 @@ ssc install coefplot, replace
 		
 if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" {
 
-		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
 }
+if "`c(username)'" == "ASUS" { 
 
-else{
-
-		global gdrive = "C:/Users/`c(username)'/Google Drive"
-		
-}
+		global gdrive = "G:/Meine Ablage"
+	}
 
 		if c(os) == "Windows" {
 	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
@@ -154,14 +152,12 @@ set sortseed 8413195
 /*--------------------------------------------------------------------
 	PART 3.1: Merge monitoring & pii data
 ----------------------------------------------------------------------*/		
-if (1) do "${master_github}/merge.do"
-
+if (1) do "${master_github}/master_merge.do"
 /* --------------------------------------------------------------------
 	PART 3.2: clean final 
 ----------------------------------------------------------------------*/		
 if (1) do "${master_github}/master_clean.do"
-/*
---------------------------------------------------------------------
+/*--------------------------------------------------------------------
 	PART 3.3: Correct observations, if necessary
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_correct.do"
@@ -169,7 +165,6 @@ if (1) do "${master_github}/master_correct.do"
 	PART 3.4: Generate variables
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_generate.do"
-
 /*--------------------------------------------------------------------
 	PART 3.4: Test coherence between survey rounds
 ----------------------------------------------------------------------*/
