@@ -80,12 +80,12 @@ foreach var of local  allvars {
 	replace `var' = 0 if `var' == -1776 
 	replace `var' = 0 if `var' == -1554
 }
-*Replace missing financial values with zeros but dummy out first
-gen dig_revenues_ecom_miss = 0 
+*FOR LATER: Replace missing financial values with zeros but dummy out first
+/*gen dig_revenues_ecom_miss = 0 
 replace dig_revenues_ecom_miss = 1 if dig_revenues_ecom == -999 |dig_revenues_ecom == -888 | ///
 dig_revenues_ecom== .
 
 recode dig_revenues_ecom (-999 -888 =.)
 replace dig_revenues_ecom = 0 if dig_revenues_ecom==.
-
+*/
 save "${master_intermediate}/ecommerce_master_inter", replace
