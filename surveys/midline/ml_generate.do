@@ -207,6 +207,22 @@ replace survey_phone = 1 if id_plateforme == 470
 replace survey_phone = 1 if id_plateforme == 478
 replace survey_phone = 1 if id_plateforme == 508
 replace survey_phone = 1 if id_plateforme == 735
+replace survey_phone = 1 if id_plateforme == 91
+replace survey_phone = 1 if id_plateforme == 78
+replace survey_phone = 1 if id_plateforme == 85
+replace survey_phone = 1 if id_plateforme == 938
+replace survey_phone = 1 if id_plateforme == 859
+replace survey_phone = 1 if id_plateforme == 521
+replace survey_phone = 1 if id_plateforme == 466
+replace survey_phone = 1 if id_plateforme == 743
+replace survey_phone = 1 if id_plateforme == 668
+replace survey_phone = 1 if id_plateforme == 679
+replace survey_phone = 1 if id_plateforme == 313
+replace survey_phone = 1 if id_plateforme == 373
+replace survey_phone = 1 if id_plateforme == 956
+
+
+
 
 
 
