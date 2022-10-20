@@ -12,26 +12,9 @@
 *	ID variable: id_email		  					  
 *	Requires:  	 ecommerce_master_contact.dta & 									  
 *	Creates:     regis_final.dta bl_final.dta
-***********************************************************************
-* 	PART 1:    clean ecommerce_master_contact
-***********************************************************************
-use "${master_pii}/ecommerce_master_contact", clear
-
-replace firmname = "tpad ( technical and practical assistance to development)" if id_plateforme == 572
-replace rg_nom_rep = "rana baabaa" if id_plateforme == 623
-replace firmname = "central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642
-replace firmname = "msb" if id_plateforme == 795
-replace firmname = "urba tech" if id_plateforme == 890
-
-drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise qsinonident
 
 ***********************************************************************
-* 	PART 2:    save e-commerce contact
-***********************************************************************
-save "${master_pii}/ecommerce_master_contact", replace
-
-***********************************************************************
-* 	PART 3:    clean merged analysis file (midline)
+* 	PART 1:    clean merged analysis file (midline)
 ***********************************************************************
 use "${master_intermediate}/ecommerce_master_inter", clear
 
@@ -72,6 +55,6 @@ format %-25.0fc id_plateforme
 format %td date
 
 ***********************************************************************
-* 	PART 4:    save e-commerce anaylsis
+* 	PART 2:    save e-commerce anaylsis
 ***********************************************************************
 save "${master_intermediate}/ecommerce_master_inter", replace
