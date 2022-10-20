@@ -150,23 +150,28 @@ set sortseed 8413195
 * 	PART 3: 	Run ecommerce do-files			  	 				  *
 ***********************************************************************
 /*--------------------------------------------------------------------
-	PART 3.1: Merge monitoring & pii data
+	PART 3.1: Merge and update pii data
+----------------------------------------------------------------------*/
+if (1) do "${master_github}/master_contact_data.do"
+
+/*--------------------------------------------------------------------
+	PART 3.2: Merge survey data
 ----------------------------------------------------------------------*/		
 if (1) do "${master_github}/master_merge.do"
 /* --------------------------------------------------------------------
-	PART 3.2: clean final 
+	PART 3.3: clean final 
 ----------------------------------------------------------------------*/		
 if (1) do "${master_github}/master_clean.do"
 /*--------------------------------------------------------------------
-	PART 3.3: Correct observations, if necessary
+	PART 3.4: Correct observations, if necessary
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_correct.do"
 /*--------------------------------------------------------------------
-	PART 3.4: Generate variables
+	PART 3.5: Generate variables
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_generate.do"
 /*--------------------------------------------------------------------
-	PART 3.4: Test coherence between survey rounds
+	PART 3.6: Test coherence between survey rounds
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_test.do"
 
@@ -187,3 +192,4 @@ if (0) do "${master_github}/master_power.do"
 	PART 4.2: Regressions
 ----------------------------------------------------------------------*/
 *if (0) do "${master_github}/master_regressions.do"
+

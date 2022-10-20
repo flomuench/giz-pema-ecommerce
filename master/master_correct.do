@@ -64,13 +64,27 @@ replace `var' = 0 if social_facebook == 0
 }
 
 ***********************************************************************
-* 	PART 2: Replacing missing values with zeros where applicable
+* 	PART 2: Correction mid-line
+***********************************************************************
+
+
+***********************************************************************
+* 	PART 3: Correction end-line
+***********************************************************************
+
+***********************************************************************
+* 	PART 4: Replacing missing values with zeros where applicable
 ***********************************************************************
 *Definition of all variables that are being used in index calculation*
 local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
 
-*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros*
-* Create temp variables where missing values etc are replaced by 0s
+*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros 
+*because missing values or "I don't know" in practice-related variable 
+*are mostly due to the fact that the company did not get to fill out this part 
+*of the survey because they were screened out for this section 
+*or if they don't know whether they are having a particular business practice it is quite probable that they dont perform it
+
+
 foreach var of local  allvars {
 	replace `var' = 0 if `var' == .
 	replace `var' = 0 if `var' == -999
@@ -80,12 +94,6 @@ foreach var of local  allvars {
 	replace `var' = 0 if `var' == -1776 
 	replace `var' = 0 if `var' == -1554
 }
-*FOR LATER: Replace missing financial values with zeros but dummy out first
-/*gen dig_revenues_ecom_miss = 0 
-replace dig_revenues_ecom_miss = 1 if dig_revenues_ecom == -999 |dig_revenues_ecom == -888 | ///
-dig_revenues_ecom== .
 
-recode dig_revenues_ecom (-999 -888 =.)
-replace dig_revenues_ecom = 0 if dig_revenues_ecom==.
-*/
+
 save "${master_intermediate}/ecommerce_master_inter", replace

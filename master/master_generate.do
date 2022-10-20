@@ -35,8 +35,13 @@ lab var take_up2 "1 if present in at least one training"
 *extent treatment status to additional surveyrounds
 bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
 
+*create simplified training group variable (tunis vs. non-tunis)
+gen groupe2 = 0
+replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
+lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
+
 ***********************************************************************
-*PART 1.1. Generate new variables or change variables create from bl_generate
+*PART 2. Intermediate variables or change variables created in baseline
 ***********************************************************************	
 *Since most firms have at most zero, one or two FTE and online orders 
 *we use a binary indicator instead of continous or share of FTE, which sometimes
@@ -75,17 +80,6 @@ lab var industrie "dummy for sector=4"
 lab var service "dummy for sector=5"
 lab var tic "dummy for sector=6"
 
-*regenerate IHS exports after slight modification of underlying variable
-winsor compexp_2020, gen(w99_compexp) p(0.01) highonly
-winsor compexp_2020, gen(w97_compexp) p(0.03) highonly
-winsor compexp_2020, gen(w95_compexp) p(0.05) highonly
-
-gen ihs_exports99 = log(w99_compexp + sqrt((w99_compexp*w99_compexp)+1))
-lab var ihs_exports99 "IHS of exports in 2020, wins.99th"
-gen ihs_exports97 = log(w97_compexp + sqrt((w97_compexp*w97_compexp)+1))
-lab var ihs_exports97 "IHS of exports in 2020, wins.97th"
-gen ihs_exports95 = log(w95_compexp + sqrt((w95_compexp*w95_compexp)+1))
-lab var ihs_exports95 "IHS of exports in 2020, wins.95th"
 
 *create final export status variable and delete other to avoid confusion
 gen exporter2020=.
@@ -100,6 +94,25 @@ replace ever_exported=1 if export2021=="oui" | export2020=="oui" | export2019 ==
 replace ever_exported=0 if exp_avant21==0
 lab var ever_exported "dummy if company has exported some time in the past 5 years"
 
+
+*Additional preparatory variables required for index generation (check bl_generate)	
+
+
+***********************************************************************
+*PART 3. Financial indicators
+***********************************************************************	
+*regenerate winsorized IHS exports after slight modification of underlying variable
+*(assuming zero exports for firms that had missing value and declared to have not exported prior to 2021)
+winsor compexp_2020, gen(w99_compexp) p(0.01) highonly
+winsor compexp_2020, gen(w97_compexp) p(0.03) highonly
+winsor compexp_2020, gen(w95_compexp) p(0.05) highonly
+
+gen ihs_exports99 = log(w99_compexp + sqrt((w99_compexp*w99_compexp)+1))
+lab var ihs_exports99 "IHS of exports in 2020, wins.99th"
+gen ihs_exports97 = log(w97_compexp + sqrt((w97_compexp*w97_compexp)+1))
+lab var ihs_exports97 "IHS of exports in 2020, wins.97th"
+gen ihs_exports95 = log(w95_compexp + sqrt((w95_compexp*w95_compexp)+1))
+lab var ihs_exports95 "IHS of exports in 2020, wins.95th"
 
 *generate domestic revenue from total revenue and exports
 gen dom_rev2020= comp_ca2020-compexp_2020
@@ -121,12 +134,19 @@ gen ihs_revenue95 = log(w95_comp_ca2020 + sqrt((w95_comp_ca2020*w95_comp_ca2020)
 lab var ihs_revenue95 "IHS of revenue in 2020, wins.95th"
 
 
-
+* digital revenues
+winsor dig_revenues_ecom, gen(w95_dig_rev20) p(0.05) highonly
+ihstrans w95_dig_rev20
+winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly
+ihstrans w97_dig_rev20
+winsor dig_revenues_ecom, gen(w99_dig_rev20) p(0.01) highonly
+ihstrans w99_dig_rev20
 
 ***********************************************************************
-*PART 1.2. Recreate z-scores with control mean and control SD 
-*(in BL was done with overall mean/SD)
+*PART 4. Index Creation
 ***********************************************************************	
+*Recreate z-scores with control mean and control SD 
+*(in BL was done with overall mean/SD)
 capture program drop zscore
 program define zscore /* opens a program called zscore */
 	sum `1' if treatment == 0 
@@ -140,20 +160,16 @@ program define zscorecond /* opens a program called zscore */
 	gen `1'z = (`1' - r(mean))/r(sd) if `2'>0 & `2'<.
 end
 
-
-winsor dig_revenues_ecom, gen(w95_dig_rev20) p(0.05) highonly
-ihstrans w95_dig_rev20
-winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly
-ihstrans w97_dig_rev20
-winsor dig_revenues_ecom, gen(w99_dig_rev20) p(0.01) highonly
-ihstrans w99_dig_rev20
-
-	* Creation of the weighted e-commerce presence index without penalizing non-existant channels 
-*web index
+***********************************************************************
+*PART 4.1 E-commerce and digital marketing indices
+***********************************************************************	
+* Creation of the weighted e-commerce presence index without penalizing non-existant channels 
+	*web index
 zscorecond dig_miseajour1 dig_presence1
 zscorecond dig_description1 dig_presence1
 zscorecond dig_payment1 dig_presence1
 egen webindexz = rowmean (dig_miseajour1z dig_description1z dig_payment1z)
+lab var webindexz "Z-score index of web presence"
 
 *alternative method: first summing up raw poitns and then taking zscore
 /*egen webindex1 = rowtotal (dig_miseajour1 dig_description1 dig_payment1) ///
@@ -167,6 +183,7 @@ zscorecond dig_description2 dig_presence2
 zscorecond dig_payment2 dig_presence2
 
 egen social_media_indexz = rowmean (dig_miseajour2z dig_description2z dig_payment2z)
+lab var social_media_indexz "Z-score index of social media presence"
 
 *platform index
 zscorecond dig_miseajour3 dig_presence3
@@ -175,6 +192,7 @@ zscorecond dig_payment3 dig_presence3
 zscorecond dig_presence3_exscore dig_presence3
 egen platform_indexz = rowmean (dig_miseajour3z dig_description3z ///
 dig_payment3z dig_presence3_exscorez)
+lab var platform_indexz "Z-score index of platform presence"
 
 *CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
 egen max_presencez = rowmax(webindexz social_media_indexz platform_indexz)
@@ -189,7 +207,7 @@ replace dig_presence_weightedz=max_presence if dig_presence_score>0.32 & dig_pre
 
 *add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
 replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
-
+label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
 
 *other indices
 local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
@@ -207,38 +225,55 @@ foreach z in knowledge dig_marketing_index expprep exportcomes {
 
 *Calculate the index value: average of zscores 
 egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_scorez)
+lab var knowledge "Z-score index for e-commerce knowledge"
+
 egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
 		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///
 		dig_marketing_respons_binz)
-egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz)
+lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
+
 
 
 *drop temporary variables*
 *drop web_index	social_media_index	platform_index max_presence min_presence mid_presence
 
-
-
 ***********************************************************************
-*PART 1.3. Create alternative % -index (%of maximum points possible)
+*PART 4.2. Export preparation index (z-score based)
+***********************************************************************
+egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz)
+label var expprep "Z-score index export preparation"
+***********************************************************************
+*PART 4.3. Create alternative % -index (in %of maximum points possible)
 ***********************************************************************	
 *knowledge
 egen knowledge_share=rowtotal(dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score)
 replace knowledge_share=knowledge_share/6
+lab var knowledge_share "% of knowledge questions answered correctly"
+
 egen web_share=rowtotal(dig_miseajour1 dig_description1 dig_payment1)
 replace web_share=web_share/3
+lab var web_share "Web presence score in %"
+
 egen social_m_share=rowtotal(dig_miseajour2 dig_description2 dig_payment2)
 replace social_m_share=social_m_share/3
+lab var social_m_share "Social media presence score in %"
+
 egen platform_share=rowtotal(dig_presence3_exscore dig_miseajour3 dig_description3 dig_payment3)
 replace platform_share=platform_share/4
+lab var platform_share "Platform presence score in %"
+
 egen dig_marketing_share=rowtotal(dig_marketing_lien dig_marketing_ind1 ///
 		dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin ///
 		dig_marketing_respons_bin)
 replace dig_marketing_share	= dig_marketing_share/7
+lab var dig_marketing_share "Share of digital marketing practices"
+
 egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_score)
 replace dig_logistic_share = dig_logistic_share/ 2
+lab var dig_logistic_share "Logistics score in %"
 
 ***********************************************************************
-*PART 1.4. Additional indicators from social media baseline stocktaking
+*PART 4.4. Additional indicators from social media baseline stocktaking
 ***********************************************************************	
 *Winsorizing and IHS transformation of likes and followers data
 local sm_data facebook_likes facebook_subs facebook_reviews
@@ -254,32 +289,10 @@ lab var ihs_w_facebook_sub "no. of FB followers, winsorized 99th and IHS transfo
 lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
 lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
 
-***********************************************************************
-*PART 1.4. Take-up data
-***********************************************************************	
-*create simplified group variable (tunis vs. non-tunis)
-gen groupe2 = 0
-replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
+
 
 ***********************************************************************
-*PART 1.5. Label new variables
-***********************************************************************
-lab var knowledge "Z-score index for e-commerce knowledge"
-lab var knowledge_share "% of knowledge questions answered correctly"
-lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
-lab var dig_marketing_share "Share of digital marketing practices"
-label var expprep "Z-score index export preparation"
-label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
-lab var webindexz "Z-score index of web presence"
-lab var web_share "Web presence score in %"
-lab var social_media_indexz "Z-score index of social media presence"
-lab var social_m_share "Social media presence score in %"
-lab var platform_indexz "Z-score index of platform presence"
-lab var platform_share "Platform presence score in %"
-lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
-
-***********************************************************************
-*PART 2 Check coherence between baseline and midline
+*PART 5 Variables required for survey checks
 ***********************************************************************	
 gen commentaires_elamouri=""
 gen needs_check=0
