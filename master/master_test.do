@@ -61,10 +61,7 @@ replace questions_a_verifier = " | dig_revenues_ecom extremement large & " + que
 ***********************************************************************
 * 	PART 4:  Cross checks with baseline data
 ***********************************************************************
-*Digital presence
-bysort id_plateforme (surveyround): gen dig_presence1_check =  dig_presence1 - dig_presence1[_n-1]
-bysort id_plateforme (surveyround): gen dig_presence2_check =  dig_presence2 - dig_presence2[_n-1]
-bysort id_plateforme (surveyround): gen dig_presence3_check =  dig_presence3 - dig_presence3[_n-1]
+
 
 /*VERIFICATION of websites and social media will be done internally
 replace needs_check = 1 if dig_presence1_check<0

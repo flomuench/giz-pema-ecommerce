@@ -63,9 +63,47 @@ foreach var of local fb_vars {
 replace `var' = 0 if social_facebook == 0
 }
 
+*Correct baseline value for dig_presence1,2 and 3 dependent on whether firm 
+*has website, social media or market place. For the last one, if claimed yes and we dont have a link
+*check major marketplaces for firmname (jumia etc) 
+
+*Digital presence change--> Manually check those firms where dig_presenceX_check is not zero (hence there
+*a change between baseline and mid-line, via browswing:
+* br id_plateforme dig_presenceX if dig_presenceX_check>0 | dig_presenceX_check<0 
+
+bysort id_plateforme (surveyround): gen dig_presence1_check =  dig_presence1 - dig_presence1[_n-1]
+bysort id_plateforme (surveyround): gen dig_presence2_check =  dig_presence2 - dig_presence2[_n-1]
+bysort id_plateforme (surveyround): gen dig_presence3_check =  dig_presence3 - dig_presence3[_n-1]
+
+
+*replace dig_presence1=0 if id_plateforme==XXX & surveyround==1
+
+
+
+*Correct dig_marketing_lien for baseline if no website link is found on website but it is claimed in the 
+*survey
+bysort id_plateforme (surveyround): gen dig_marketing_lien_check = dig_marketing_lien - dig_marketing_lien[_n-1]
+*Manually check those where dig_marketing_lien_check is non-zero 
+ 
+*replace dig_marketing_lien=0 if id_plateforme==XXX & surveyround==2
+
+
 ***********************************************************************
 * 	PART 2: Correction mid-line
 ***********************************************************************
+*Correct mid-line for dig_presence1,2 and 3 dependent on whether firm 
+*has website, social media or market place. For the last one, if claimed yes and we dont have a link
+*check major marketplaces for firmname (jumia etc) 
+
+*replace dig_presence1=0 if id_plateforme==XXX & surveyround==2
+
+
+
+*Correct dig_marketing_lien for mid-line if no website link is found on website but it is claimed in the 
+*survey
+
+*replace dig_marketing_lien=0 if id_plateforme==XXX & surveyround==2
+
 
 
 ***********************************************************************
