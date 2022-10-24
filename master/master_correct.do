@@ -18,7 +18,7 @@
 use "${master_intermediate}/ecommerce_master_inter", clear
 
 ***********************************************************************
-* 	PART 1: Baseline and registration data
+* 	PART 1: Baseline and registration data (surveyround=1)
 ***********************************************************************
 *Take-up data
 replace groupe = "Sfax 1" if id_plateforme==78
@@ -69,12 +69,12 @@ replace `var' = 0 if social_facebook == 0
 
 *Digital presence change--> Manually check those firms where dig_presenceX_check is not zero (hence there
 *a change between baseline and mid-line, via browswing:
-* br id_plateforme dig_presenceX if dig_presenceX_check>0 | dig_presenceX_check<0 
 
 bysort id_plateforme (surveyround): gen dig_presence1_check =  dig_presence1 - dig_presence1[_n-1]
 bysort id_plateforme (surveyround): gen dig_presence2_check =  dig_presence2 - dig_presence2[_n-1]
 bysort id_plateforme (surveyround): gen dig_presence3_check =  dig_presence3 - dig_presence3[_n-1]
 
+* br id_plateforme dig_presenceX if dig_presenceX_check>0 | dig_presenceX_check<0 
 
 *replace dig_presence1=0 if id_plateforme==XXX & surveyround==1
 

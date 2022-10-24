@@ -41,7 +41,7 @@ merge 1:1 id_plateforme using "${master_pii}/web_information"
 *drop old website and social media information from registration as it is replaced by self-collected data
 drop _merge rg_media rg_siteweb
 
-
+save "${master_pii}/ecommerce_master_contact", replace
 ***********************************************************************
 * 	PART 2: merge additional mid-line and endline contact info
 ***********************************************************************
