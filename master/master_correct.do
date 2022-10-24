@@ -63,20 +63,28 @@ foreach var of local fb_vars {
 replace `var' = 0 if social_facebook == 0
 }
 
-*Correct baseline value for dig_presence1,2 and 3 dependent on whether firm 
-*has website, social media or market place. For the last one, if claimed yes and we dont have a link
-*check major marketplaces for firmname (jumia etc) 
 
-*Digital presence change--> Manually check those firms where dig_presenceX_check is not zero (hence there
-*a change between baseline and mid-line, via browswing:
-
-bysort id_plateforme (surveyround): gen dig_presence1_check =  dig_presence1 - dig_presence1[_n-1]
-bysort id_plateforme (surveyround): gen dig_presence2_check =  dig_presence2 - dig_presence2[_n-1]
-bysort id_plateforme (surveyround): gen dig_presence3_check =  dig_presence3 - dig_presence3[_n-1]
 
 * br id_plateforme dig_presenceX if dig_presenceX_check>0 | dig_presenceX_check<0 
-
 *replace dig_presence1=0 if id_plateforme==XXX & surveyround==1
+
+*Id_plateforme 82 website was always faulty according to webarchive
+replace dig_presence1=0 if id_plateforme==82 & surveyround==1
+
+*Id_plateforme 303 no website link even on our database	
+replace dig_presence1=0 if id_plateforme==303 & surveyround==1
+
+*Id_plateforme 424 no website link even on our website
+replace dig_presence1=0 if id_plateforme==424 & surveyround==1
+
+*Id_plateforme 527 was always faulty and no archive
+replace dig_presence1=0 if id_plateforme==527 & surveyround==1
+
+*Id_plateforme 595 works fine in baseline according to archive
+replace dig_presence1=1 if id_plateforme==595 & surveyround==1
+
+*Id_plateforme 657 outdated site dosent work
+replace dig_presence1=0 if id_plateforme==657 & surveyround==1
 
 
 
@@ -91,19 +99,55 @@ bysort id_plateforme (surveyround): gen dig_marketing_lien_check = dig_marketing
 ***********************************************************************
 * 	PART 2: Correction mid-line
 ***********************************************************************
-*Correct mid-line for dig_presence1,2 and 3 dependent on whether firm 
-*has website, social media or market place. For the last one, if claimed yes and we dont have a link
-*check major marketplaces for firmname (jumia etc) 
-
 *replace dig_presence1=0 if id_plateforme==XXX & surveyround==2
 
+*Id_plateforme 85 is not working now
+replace dig_presence1=0 if id_plateforme==85 & surveyround==2
+
+*Id_plateforme 213 is not working now
+replace dig_presence1=0 if id_plateforme==213 & surveyround==2
+
+*Id_plateforme 375 works
+replace dig_presence1=1 if id_plateforme==375 & surveyround==2
+
+*Id_plateforme 427 is now a working website under https://shekaz.com
+
+*Id_plateforme 549 works
+replace dig_presence1=1 if id_plateforme==549 & surveyround==2
+
+*Id_plateforme 644 not working website jinen.tn
+replace dig_presence1=0 if id_plateforme==644 & surveyround==2
+
+*Id_plateforme 763 undermaintenance since baseline
+replace dig_presence1=0 if id_plateforme==763 & surveyround==2
+
+*Id_plateforme 833 has fixed its website and is now running but slow
+
+*Id_plateforme 896 does not exist (searched dully)
+replace dig_presence1=0 if id_plateforme==896 & surveyround==2
+
+*Id_plateforme 959 dosent have any links dully searched (https://www.linkedin.com/feed/update/urn:li:activity:6963407083215933441/)
+replace dig_presence1=0 if id_plateforme==959 & surveyround==2
+
+*Id_plateforme 961 never had a website
+replace dig_presence1=0 if id_plateforme==961 & surveyround==2
+
+*I have moved the code further down so we can see the changes
+*Correct baseline value for dig_presence1,2 and 3 dependent on whether firm 
+*has website, social media or market place. For the last one, if claimed yes and we dont have a link
+*check major marketplaces for firmname (jumia etc) 
+*Digital presence change--> Manually check those firms where dig_presenceX_check is not zero (hence there
+*a change between baseline and mid-line, via browswing:	
+
+bysort id_plateforme (surveyround): gen dig_presence1_check =  dig_presence1 - dig_presence1[_n-1]
+bysort id_plateforme (surveyround): gen dig_presence2_check =  dig_presence2 - dig_presence2[_n-1]
+bysort id_plateforme (surveyround): gen dig_presence3_check =  dig_presence3 - dig_presence3[_n-1]
 
 
 *Correct dig_marketing_lien for mid-line if no website link is found on website but it is claimed in the 
 *survey
 
 *replace dig_marketing_lien=0 if id_plateforme==XXX & surveyround==2
-
 
 
 ***********************************************************************
