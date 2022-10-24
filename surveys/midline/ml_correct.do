@@ -146,7 +146,12 @@ replace dig_revenues_ecom = "0" if dig_vente == 0
 ***********************************************************************
 * 	PART 3:  Manual corrections
 ***********************************************************************
-*correct matricule fiscale if given in wrong format, check on registre-entreprise.tn
+
+
+
+
+
+
 
 ***********************************************************************
 * 	PART 4:  destring variables that should be numeric
