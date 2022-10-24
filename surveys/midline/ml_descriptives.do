@@ -21,6 +21,10 @@ use "$ml_final/ml_final", clear
 	* set directory to checks folder
 cd "$ml_output"
 
+*merge treatment info for stats
+merge 1:1 id_plateforme using "${master_gdrive}/pii/ecommerce_master_contact"
+keep if _merge==3
+
 	* create pdf document
 putpdf clear
 putpdf begin 
@@ -38,6 +42,25 @@ putpdf paragraph, halign(center)
 putpdf text ("E-commerce training: survey progress")
 
 * total number of firms starting the survey
+graph bar (count), over(treatment) blabel(total, format(%9.0fc)) ///
+	title("Nombre des entreprises qui au moins ont commence à remplir") note("Date: `c(current_date)'") ///
+	ytitle("Number of at least initiated survey response")
+graph export total.png, replace
+putpdf paragraph, halign(center)
+putpdf image total.png
+putpdf pagebreak
+
+*Number of validated
+graph bar (count) if validation ==1, over(treatment) blabel(total, format(%9.0fc)) ///
+	title("La part des entreprises qui ont validé leurs réponses") note("Date: `c(current_date)'") ///
+	ytitle("Number of entries")
+graph export valide.png, replace
+putpdf paragraph, halign(center)
+putpdf image valide.png
+putpdf pagebreak
+
+
+*share
 count if id_plateforme !=.
 gen share_started= (`r(N)'/236)*100
 graph bar share_started, blabel(total, format(%9.2fc)) ///
