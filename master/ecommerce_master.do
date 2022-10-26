@@ -163,9 +163,13 @@ if (1) do "${master_github}/master_merge.do"
 ----------------------------------------------------------------------*/		
 if (1) do "${master_github}/master_clean.do"
 /*--------------------------------------------------------------------
-	PART 3.4: Correct observations, if necessary
+	PART 3.4a: Correct baseline observation, if necessary
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_correct.do"
+if (1) do "${master_github}/master_correct_bl.do"
+/*--------------------------------------------------------------------
+	PART 3.4b: Correct baseline observation, if necessary
+----------------------------------------------------------------------*/
+if (1) do "${master_github}/master_correct_ml.do"
 /*--------------------------------------------------------------------
 	PART 3.5: Generate variables
 ----------------------------------------------------------------------*/
