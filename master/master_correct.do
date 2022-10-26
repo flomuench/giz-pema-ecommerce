@@ -64,7 +64,7 @@ replace `var' = 0 if social_facebook == 0
 }
 
 
-
+*dig_presence1
 * br id_plateforme dig_presenceX if dig_presenceX_check>0 | dig_presenceX_check<0 
 *replace dig_presence1=0 if id_plateforme==XXX & surveyround==1
 
@@ -88,6 +88,40 @@ replace dig_presence1=0 if id_plateforme==657 & surveyround==1
 
 
 
+*dig_presence2
+*Id_plateforme 244 facebook exsists since 2016 and in database
+replace dig_presence2=1 if id_plateforme==244 & surveyround==1
+
+*Id_plateforme 259 never had social media
+replace dig_presence2=0 if id_plateforme==259 & surveyround==1
+
+*Id_plateforme 365 never had social media
+replace dig_presence2=0 if id_plateforme==365 & surveyround==1
+
+*Id_plateforme 581 never had social media
+replace dig_presence2=0 if id_plateforme==581 & surveyround==1
+
+*Id_plateforme 599 never had social media
+replace dig_presence2=0 if id_plateforme==599 & surveyround==1
+
+*Id_plateforme 628 never had social media
+replace dig_presence2=0 if id_plateforme==628 & surveyround==1
+
+*Id_plateforme 642 facebook exsists since 2020 and in database
+replace dig_presence2=1 if id_plateforme==642 & surveyround==1
+
+*Id_plateforme 715 facebook exsists since 2014 and in database
+replace dig_presence2=1 if id_plateforme==715 & surveyround==1
+
+*Id_plateforme 769 facebook exsists since 2013 and in database
+replace dig_presence2=1 if id_plateforme==769 & surveyround==1
+
+*Id_plateforme 909 facebook exsists and active
+replace dig_presence2=1 if id_plateforme==909 & surveyround==1
+
+*Id_plateforme 927 never had social media
+replace dig_presence2=0 if id_plateforme==927 & surveyround==1
+
 *Correct dig_marketing_lien for baseline if no website link is found on website but it is claimed in the 
 *survey
 bysort id_plateforme (surveyround): gen dig_marketing_lien_check = dig_marketing_lien - dig_marketing_lien[_n-1]
@@ -101,6 +135,7 @@ bysort id_plateforme (surveyround): gen dig_marketing_lien_check = dig_marketing
 ***********************************************************************
 *replace dig_presence1=0 if id_plateforme==XXX & surveyround==2
 
+*dig_presence1
 *Id_plateforme 85 is not working now
 replace dig_presence1=0 if id_plateforme==85 & surveyround==2
 
@@ -131,6 +166,27 @@ replace dig_presence1=0 if id_plateforme==959 & surveyround==2
 
 *Id_plateforme 961 never had a website
 replace dig_presence1=0 if id_plateforme==961 & surveyround==2
+
+
+
+*dig_presence2
+*Id_plateforme 148 facebook last post october 8th
+replace dig_presence2=1 if id_plateforme==148 & surveyround==2
+
+*Id_plateforme 151 facebook exists but inactive
+replace dig_presence2=1 if id_plateforme==151 & surveyround==2
+
+*Id_plateforme 231 facebook exists but inactive
+replace dig_presence2=1 if id_plateforme==231 & surveyround==2
+
+*Id_plateforme 825 facebook exists but inactive
+replace dig_presence2=1 if id_plateforme==825 & surveyround==2
+
+*Id_plateforme 841 social media not found 
+replace dig_presence2=0 if id_plateforme==841 & surveyround==2
+
+*Id_plateforme 890 facebook exists but inactive
+replace dig_presence2=1 if id_plateforme==890 & surveyround==2
 
 *I have moved the code further down so we can see the changes
 *Correct baseline value for dig_presence1,2 and 3 dependent on whether firm 
