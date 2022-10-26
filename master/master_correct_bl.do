@@ -135,13 +135,13 @@ replace dig_presence3=0 if id_plateforme==356 & surveyround==1
 replace dig_presence3=0 if id_plateforme==470 & surveyround==1
 
 *Id_plateforme 478 no marketplace (ElAmouri)
-replace dig_presence3=0 if_idplateforme==478 & surveyround==1
+replace dig_presence3=0 if id_plateforme==478 & surveyround==1
 
 *Id_plateforme 549 not found on marketplaces (ElAmouri said bl was online form)
-replace dig_presence3=0 if_idplateforme==549 & surveyround==1
+replace dig_presence3=0 if id_plateforme==549 & surveyround==1
 
 *Id_plateforme 581 not found on marketplaces (ElAmouri said bl was online form)
-replace dig_presence3=0 if_idplateforme==549 & surveyround==1
+replace dig_presence3=0 if id_plateforme==549 & surveyround==1
 
 	*Correct dig_marketing_lien for baseline if no website link is found on website but it is claimed in the 
 	*survey

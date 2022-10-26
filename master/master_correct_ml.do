@@ -78,7 +78,7 @@ replace dig_presence3=0 if id_plateforme==85 & surveyround==2
 replace dig_presence3=1 if id_plateforme==166 & surveyround==2
 
 *Id_plateforme 195 is still on jumia https://www.jumia.com.tn/phytovertus/
-replace dig_presence3=1 if id_plalteforme==195 & surveyround==2
+replace dig_presence3=1 if id_plateforme==195 & surveyround==2
 
 *Id_plateforme 237 has a marketplace on facebook https://www.facebook.com/WIKIOfficiel/shop/
 
