@@ -117,9 +117,31 @@ replace dig_presence2=1 if id_plateforme==909 & surveyround==1
 *Id_plateforme 927 never had social media
 replace dig_presence2=0 if id_plateforme==927 & surveyround==1
 
+
+
 	*dig_presence3 (Marketplace presence)
-	
-	
+*Id_plateforme 78 used to have marketplace and they dropped it
+
+*Id_plateforme 122 is not on jumia nor on corrections of alamouri
+replace dig_presence3=0 if id_plateforme==122 & surveyround==1
+
+*Id_plateforme 303 autres marketplace cant be tracked
+replace dig_presence3=0 if id_plateforme==303 & surveyround==1
+
+*Id_plateforme 356 has no information on database and noway it was on marketplace
+replace dig_presence3=0 if id_plateforme==356 & surveyround==1
+
+*Id_plateforme 470 no marketplace (ElAmouri)
+replace dig_presence3=0 if id_plateforme==470 & surveyround==1
+
+*Id_plateforme 478 no marketplace (ElAmouri)
+replace dig_presence3=0 if_idplateforme==478 & surveyround==1
+
+*Id_plateforme 549 not found on marketplaces (ElAmouri said bl was online form)
+replace dig_presence3=0 if_idplateforme==549 & surveyround==1
+
+*Id_plateforme 581 not found on marketplaces (ElAmouri said bl was online form)
+replace dig_presence3=0 if_idplateforme==549 & surveyround==1
 
 	*Correct dig_marketing_lien for baseline if no website link is found on website but it is claimed in the 
 	*survey

@@ -69,8 +69,61 @@ replace dig_presence2=0 if id_plateforme==841 & surveyround==2
 replace dig_presence2=1 if id_plateforme==890 & surveyround==2
 
 
-	*dig_presence3 (Presence of marketplaces)
 
+	*dig_presence3 (Presence of marketplaces)
+*Id_plateforme 85 not found on any marketplace
+replace dig_presence3=0 if id_plateforme==85 & surveyround==2
+
+*Id_plateforme 166 present on facebook marketplace
+replace dig_presence3=1 if id_plateforme==166 & surveyround==2
+
+*Id_plateforme 195 is still on jumia https://www.jumia.com.tn/phytovertus/
+replace dig_presence3=1 if id_plalteforme==195 & surveyround==2
+
+*Id_plateforme 237 has a marketplace on facebook https://www.facebook.com/WIKIOfficiel/shop/
+
+*Id_plateforme 253 has a marketplace on facebook https://www.facebook.com/NauTikTunisia/shop/
+replace dig_presence3=1 if id_plateforme==253 & surveyround==2
+
+*Id_plateforme 270 dosent use marketplace anymore according to ElAmouri
+
+*Id_plateforme 275 is service & dosent have marketplace
+replace dig_presence3=0 if id_plateforme==275 & surveyround==2
+
+*Id_plateforme 324 present on baity.tn & soon on jumia according to ELAmouri
+replace dig_presence3=1 if id_plateforme==324 & surveyround==2
+
+*Id_plateforme 332 not present anymore on marketplace according to ElAmouri
+
+*Id_plateforme 360 to be called by el Amouri tomorrow
+
+*Id_plateforme 406 no sign of marketplace
+replace dig_presence3=0 if id_plateforme==406 & surveyround==2
+
+*Id_plateforme 424 confirmed no presence on marketplace ElAmouri
+
+*Id_plateforme 427 was present on ElFabrica a banned website, confirmed no presence on marketplace ElAmouri
+
+*Id_plateforme 438 not present on marketplace according to ElAmouri
+
+*Id_plateforme 592 present on marketplace jumia although ElAmouri saying the opposite https://www.jumia.com.tn/candy-led/
+replace dig_presence3=1 if id_plateforme==592 & surveyround==2
+
+*Id_plateforme 646 now present on jumia https://www.jumia.com.tn/coala/
+
+*Id_plateforme 695 present on https://pharma-shop.tn/149_farmavans
+replace dig_presence3=1 if id_plateforme==695 & surveyround==2
+
+*Id_plateforme 752 not in any marketplace
+replace dig_presence3=0 if id_plateforme==752 & surveyround==2
+
+*Id_plateforme 765 will be recalled by ElAmouri
+
+*Id_plateforme 791 on jumia https://www.jumia.com.tn/medina/
+replace dig_presence3=1 if id_plateforme==791 & surveyround==2
+
+*Id_plateforme 956 on facebook marketplace https://www.facebook.com/GmarStore.tn/shop/
+replace dig_presence3=1 if id_plateforme==956 & surveyround==2
 
 *I have moved the code further down so we can see the changes
 *Correct baseline value for dig_presence1,2 and 3 dependent on whether firm 
