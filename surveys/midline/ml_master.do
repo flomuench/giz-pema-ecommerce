@@ -16,6 +16,7 @@
 ***********************************************************************
 * 	PART 1: 	Set standard settings & install packages			  
 ***********************************************************************
+
 	* set standard settings
 version 15
 clear all
@@ -87,7 +88,7 @@ global ml_final = "${ml_gdrive}/final"
 global ml_output = "${ml_gdrive}/output"
 global ml_checks = "${ml_gdrive}/checks"
 
-global master_raw = "{master_gdrive}/raw"
+global master_raw = "${master_gdrive}/raw"
 
 
 
