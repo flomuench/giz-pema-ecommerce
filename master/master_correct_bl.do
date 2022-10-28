@@ -146,31 +146,63 @@ replace dig_presence3=0 if id_plateforme==549 & surveyround==1
 	*Correct dig_marketing_lien for baseline if no website link is found on website but it is claimed in the 
 	*survey
 bysort id_plateforme (surveyround): gen dig_marketing_lien_check = dig_marketing_lien - dig_marketing_lien[_n-1]
-	*Manually check those where dig_marketing_lien_check is non-zero 
+	
+	*Correct digital presence
+	
+replace dig_presence3=0 if id_plateforme== 78 & surveyround==1
+replace dig_description3=0 if id_plateforme== 78 & surveyround==1
+replace dig_miseajour3=0 if id_plateforme== 78 & surveyround==1	
+
+replace dig_presence3=0 if id_plateforme== 478 & surveyround==1
+replace dig_description3=0 if id_plateforme== 478 & surveyround==1
+replace dig_miseajour3=0 if id_plateforme== 478 & surveyround==1	
+
+*Manually check those where dig_marketing_lien_check is non-zero 
  
 *replace dig_marketing_lien=0 if id_plateforme==XXX & surveyround==1
 
 
 	
 	*dig_marketing_respons (Does the company have someone in charge of digital marketing)
+replace dig_marketing_respons=1 if id_plateforme== 735 & surveyround==1
 
 
 	
 	
 	*dig_service_responsable (Does the company have someone in charge of online orders?)
+replace dig_service_responsable= 1 if id_plateforme== 565 & surveyround==1
+replace dig_service_responsable=1 if id_plateforme== 623 & surveyround==1
+replace dig_service_responsable=1 if id_plateforme== 735 & surveyround==1
 	
 	
 	
 	*dig_marketing_ind1 (Does the company have digital marketing objectives)
-	
+replace dig_marketing_ind1=0 if id_plateforme== 313 & surveyround==1
+replace dig_marketing_ind1=0 if id_plateforme== 478 & surveyround==1
+replace dig_marketing_ind1=1 if id_plateforme== 545 & surveyround==1
+replace dig_marketing_ind1=1 if id_plateforme== 587 & surveyround==1
+replace dig_marketing_ind1=1 if id_plateforme== 602 & surveyround==1
+replace dig_marketing_ind1=1 if id_plateforme== 623 & surveyround==1
+
 	
 	
 	*dig_service_satisfaction (Does the company measure the satisfaction of its online clients)
-	
+replace dig_service_satisfaction=0 if id_plateforme== 313 & surveyround==1
+replace dig_service_satisfaction=0 if id_plateforme== 541 & surveyround==1
+replace dig_service_satisfaction=1 if id_plateforme== 545 & surveyround==1
+replace dig_service_satisfaction=1 if id_plateforme== 623 & surveyround==1
+
 	
 	
 	*dig_revenues_ecom (Online sales)
-	
+replace dig_revenues_ecom= 99381 if id_plateforme== 78 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 478 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 508 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 565 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 909 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 899 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 767 & surveyround==1
+
 ***********************************************************************
 * 	PART 2: Save
 ***********************************************************************	

@@ -136,31 +136,110 @@ bysort id_plateforme (surveyround): gen dig_presence1_check =  dig_presence1 - d
 bysort id_plateforme (surveyround): gen dig_presence2_check =  dig_presence2 - dig_presence2[_n-1]
 bysort id_plateforme (surveyround): gen dig_presence3_check =  dig_presence3 - dig_presence3[_n-1]
 
+* Correct digital presence
+replace dig_presence3=0 if id_plateforme== 78 & surveyround==2
+replace dig_description3=0 if id_plateforme== 78 & surveyround==2
+replace dig_miseajour3=0 if id_plateforme== 78 & surveyround==2
+replace dig_presence3=1 if id_plateforme== 324 & surveyround==2
+replace dig_presence3=0 if id_plateforme== 424 & surveyround==2
+replace dig_presence3=0 if id_plateforme== 427 & surveyround==2
+replace dig_presence3=0 if id_plateforme== 438 & surveyround==2
+replace dig_presence3=0 if id_plateforme== 470 & surveyround==2
+
+replace dig_presence3=0 if id_plateforme== 478 & surveyround==2
+replace dig_description3=0 if id_plateforme== 478 & surveyround==2
+replace dig_miseajour3=0 if id_plateforme== 478 & surveyround==2	
+
+replace dig_presence3=0 if id_plateforme== 581 & surveyround==2
+
+replace dig_presence3=0 if id_plateforme== 592 & surveyround==2
+
+replace dig_presence3=0 if id_plateforme== 791 & surveyround==2
 
 	*Correct dig_marketing_lien for mid-line if no website link is found on website but it is claimed in the 
 	*survey
+
 
 *replace dig_marketing_lien=0 if id_plateforme==XXX & surveyround==2
 
 
 	*dig_marketing_respons (Does the company have someone in charge of digital marketing)
+replace dig_marketing_respons=0 if id_plateforme== 78 & surveyround==2
+replace dig_marketing_respons=0 if id_plateforme== 231 & surveyround==2
+replace dig_marketing_respons=0 if id_plateforme== 253 & surveyround==2
+replace dig_marketing_respons=0 if id_plateforme== 270 & surveyround==2
+replace dig_marketing_respons=1 if id_plateforme== 313 & surveyround==2
+replace dig_marketing_respons=0 if id_plateforme== 735 & surveyround==2
 
 
 	
 	
 	*dig_service_responsable (Does the company have someone in charge of online orders?)
-	
+replace dig_service_responsable=0 if id_plateforme== 78 & surveyround==2
+replace dig_service_responsable=0 if id_plateforme== 216 & surveyround==2
+replace dig_service_responsable= 0 if id_plateforme== 565 & surveyround==2
+replace dig_service_responsable=0 if id_plateforme== 623 & surveyround==2
+replace dig_service_responsable=0 if id_plateforme== 773 & surveyround==2
+replace dig_service_responsable=0 if id_plateforme== 735 & surveyround==2
+replace dig_service_responsable=0 if id_plateforme== 670 & surveyround==2
+
 	
 	
 	*dig_marketing_ind1 (Does the company have digital marketing objectives)
-	
+replace dig_marketing_ind1=0 if id_plateforme== 95 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 313 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 466 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 470 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 478 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 545 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 581 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 587 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 602 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 623 & surveyround==2
+replace dig_marketing_ind1=1 if id_plateforme== 650 & surveyround==2
+replace dig_marketing_ind1=1 if id_plateforme== 867 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 757 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 752 & surveyround==2
+replace dig_marketing_ind1=0 if id_plateforme== 670 & surveyround==2
+
 	
 	
 	*dig_service_satisfaction (Does the company measure the satisfaction of its online clients)
-	
+replace dig_service_satisfaction=0 if id_plateforme== 70 & surveyround==2
+replace dig_service_satisfaction=0 if id_plateforme== 176 & surveyround==2
+replace dig_service_satisfaction=1 if id_plateforme== 216 & surveyround==2
+replace dig_service_satisfaction=0 if id_plateforme== 253 & surveyround==2
+replace dig_service_satisfaction=0 if id_plateforme== 313 & surveyround==2
+replace dig_service_satisfaction=0 if id_plateforme== 470 & surveyround==2
+replace dig_service_satisfaction=0 if id_plateforme== 541 & surveyround==2
+replace dig_service_satisfaction=1 if id_plateforme== 545 & surveyround==2
+replace dig_service_satisfaction=0 if id_plateforme== 623 & surveyround==2
+replace dig_service_satisfaction= 0 if id_plateforme== 629 & surveyround==2
+replace dig_service_satisfaction= -999 if id_plateforme== 724 & surveyround==2
+replace dig_service_satisfaction= 0 if id_plateforme== 831 & surveyround==2
+
 	
 	
 	*dig_revenues_ecom (Online sales)
+replace dig_revenues_ecom= 50000 if id_plateforme== 136 & surveyround==2
+replace dig_revenues_ecom= 543 if id_plateforme== 253 & surveyround==2
+replace dig_revenues_ecom= 1000 if id_plateforme== 438 & surveyround==2
+replace dig_revenues_ecom= 1000 if id_plateforme== 427 & surveyround==2
+replace dig_revenues_ecom= 1000 if id_plateforme== 478 & surveyround==2
+replace dig_revenues_ecom= 150 if id_plateforme== 508 & surveyround==2
+replace dig_revenues_ecom= 7000 if id_plateforme== 547 & surveyround==2
+replace dig_revenues_ecom= 0 if id_plateforme== 565 & surveyround==2
+replace dig_revenues_ecom= -888 if id_plateforme== 592 & surveyround==2
+replace dig_revenues_ecom= -888 if id_plateforme== 629 & surveyround==2
+replace dig_revenues_ecom= 10000 if id_plateforme== 959 & surveyround==2
+replace dig_revenues_ecom= 250000 if id_plateforme== 909 & surveyround==2
+replace dig_revenues_ecom= 9000000 if id_plateforme== 899 & surveyround==2
+replace dig_revenues_ecom= -888 if id_plateforme== 841 & surveyround==2
+replace dig_revenues_ecom= 13500 if id_plateforme== 767 & surveyround==2
+
+* Other corrections
+replace fte= 15 if id_plateforme== 767 & surveyround==2
+
 ***********************************************************************
 * 	PART 4: Replacing missing values with zeros where applicable
 ***********************************************************************

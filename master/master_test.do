@@ -217,6 +217,52 @@ replace questions_a_verifier = " | revenue en ligne: zéro pour 2021 , pour 2022
 
 *for calculation purposes missing to zero
 replace needs_check=0 if needs_check==.
+
+*Remove corrected observations
+replace needs_check = 0 if id_plateforme == 70 & surveyround==2
+replace needs_check = 0 if id_plateforme == 78 & surveyround==2
+replace needs_check = 0 if id_plateforme == 95 & surveyround==2
+replace needs_check = 0 if id_plateforme == 136 & surveyround==2
+replace needs_check = 0 if id_plateforme == 176 & surveyround==2
+replace needs_check = 0 if id_plateforme == 209 & surveyround==2
+replace needs_check = 0 if id_plateforme == 216 & surveyround==2
+replace needs_check = 0 if id_plateforme == 231 & surveyround==2
+replace needs_check = 0 if id_plateforme == 253 & surveyround==2
+replace needs_check = 0 if id_plateforme == 270 & surveyround==2
+replace needs_check = 0 if id_plateforme == 313 & surveyround==2
+replace needs_check = 0 if id_plateforme == 324 & surveyround==2
+replace needs_check = 0 if id_plateforme == 424 & surveyround==2
+replace needs_check = 0 if id_plateforme == 427 & surveyround==2
+replace needs_check = 0 if id_plateforme == 438 & surveyround==2
+replace needs_check = 0 if id_plateforme == 466 & surveyround==2
+replace needs_check = 0 if id_plateforme == 470 & surveyround==2
+replace needs_check = 0 if id_plateforme == 478 & surveyround==2
+replace needs_check = 0 if id_plateforme == 508 & surveyround==2
+replace needs_check = 0 if id_plateforme == 541 & surveyround==2
+replace needs_check = 0 if id_plateforme == 545 & surveyround==2
+replace needs_check = 0 if id_plateforme == 547 & surveyround==2
+replace needs_check = 0 if id_plateforme == 565 & surveyround==2
+replace needs_check = 0 if id_plateforme == 581 & surveyround==2
+replace needs_check = 0 if id_plateforme == 587 & surveyround==2
+replace needs_check = 0 if id_plateforme == 592 & surveyround==2
+replace needs_check = 0 if id_plateforme == 602 & surveyround==2
+replace needs_check = 0 if id_plateforme == 623 & surveyround==2
+replace needs_check = 0 if id_plateforme == 629 & surveyround==2
+replace needs_check = 0 if id_plateforme == 650 & surveyround==2
+replace needs_check = 0 if id_plateforme == 670 & surveyround==2
+replace needs_check = 0 if id_plateforme == 729 & surveyround==2
+replace needs_check = 0 if id_plateforme == 735 & surveyround==2
+replace needs_check = 0 if id_plateforme == 752 & surveyround==2
+replace needs_check = 0 if id_plateforme == 757 & surveyround==2
+replace needs_check = 0 if id_plateforme == 767 & surveyround==2
+replace needs_check = 0 if id_plateforme == 773 & surveyround==2
+replace needs_check = 0 if id_plateforme == 791 & surveyround==2
+replace needs_check = 0 if id_plateforme == 831 & surveyround==2
+replace needs_check = 0 if id_plateforme == 841 & surveyround==2
+replace needs_check = 0 if id_plateforme == 867 & surveyround==2
+replace needs_check = 0 if id_plateforme == 899 & surveyround==2
+replace needs_check = 0 if id_plateforme == 909 & surveyround==2
+replace needs_check = 0 if id_plateforme == 959 & surveyround==2
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
