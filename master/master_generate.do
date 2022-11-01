@@ -94,6 +94,19 @@ replace ever_exported=1 if export2021=="oui" | export2020=="oui" | export2019 ==
 replace ever_exported=0 if exp_avant21==0
 lab var ever_exported "dummy if company has exported some time in the past 5 years"
 
+*Adjust score for knowledge questions in the baseline
+replace dig_con6_referencement_payant = 0.33 if dig_con6_referencement_payant == 1 
+replace dig_con6_cout_par_clic = 0.33 if dig_con6_cout_par_clic == 1 
+replace dig_con6_cout_par_mille = -0.99 if dig_con6_cout_par_mille == 1
+replace dig_con6_liens_sponsorisés = 0.33 if dig_con6_liens_sponsorisés == 1
+replace dig_con5 = -1 if dig_con5 == 0 
+replace dig_con5 = 0 if dig_con5 == 1 
+
+
+gen dig_con6_bl = dig_con6_referencement_payant + dig_con6_cout_par_clic + dig_con6_cout_par_mille + dig_con6_liens_sponsorisés + dig_con5
+replace dig_con6_bl = 1 if dig_con6_bl == .99000001
+replace dig_con6_bl = 0 if dig_con6_bl == 2.980e-08
+lab var dig_con6_bl "Correct answers to knowledge question on Google Analaytics" 
 
 *Additional preparatory variables required for index generation (check bl_generate)	
 
