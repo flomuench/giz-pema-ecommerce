@@ -34,6 +34,11 @@ lab var take_up2 "1 if present in at least one training"
 
 *extent treatment status to additional surveyrounds
 bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
+bysort id_plateforme (surveyround): replace take_up = take_up[_n-1] if take_up == 0
+replace take_up=0 if take_up==. 
+
+bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up2 == 0
+replace take_up2=0 if take_up2==. 
 
 *create simplified training group variable (tunis vs. non-tunis)
 gen groupe2 = 0
@@ -190,7 +195,7 @@ lab var webindexz "Z-score index of web presence"
 zscore webindex1
 */
 
-*social media index
+	*social media index
 zscorecond dig_miseajour2 dig_presence2
 zscorecond dig_description2 dig_presence2
 zscorecond dig_payment2 dig_presence2
@@ -198,7 +203,7 @@ zscorecond dig_payment2 dig_presence2
 egen social_media_indexz = rowmean (dig_miseajour2z dig_description2z dig_payment2z)
 lab var social_media_indexz "Z-score index of social media presence"
 
-*platform index
+	*platform index
 zscorecond dig_miseajour3 dig_presence3
 zscorecond dig_description3 dig_presence3
 zscorecond dig_payment3 dig_presence3
@@ -207,7 +212,7 @@ egen platform_indexz = rowmean (dig_miseajour3z dig_description3z ///
 dig_payment3z dig_presence3_exscorez)
 lab var platform_indexz "Z-score index of platform presence"
 
-*CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
+	*CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
 egen max_presencez = rowmax(webindexz social_media_indexz platform_indexz)
 egen min_presencez = rowmin(webindexz social_media_indexz platform_indexz)
 gen mid_presencez = webindexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
@@ -218,18 +223,19 @@ replace dig_presence_weightedz=0.7*max_presence +0.3*min_presencez ///
 if dig_presence_score>0.65 & dig_presence_score<0.67 
 replace dig_presence_weightedz=max_presence if dig_presence_score>0.32 & dig_presence_score<0.34
 
-*add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
+	*add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
 replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
 label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
 
 *other indices
-local knowledge dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score
+local knowledge_bl dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl 
+local knowledge_ml dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml 
 local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
 		dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin 
 local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
 local dig_presence dig_presence1 dig_presence2 dig_presence3
 
-foreach z in knowledge dig_marketing_index expprep exportcomes {
+foreach z in knowledge_bl knowledge_ml dig_marketing_index expprep exportcomes {
 	foreach x of local `z'  {
 			zscore `x' 
 		}
@@ -237,8 +243,13 @@ foreach z in knowledge dig_marketing_index expprep exportcomes {
 
 
 *Calculate the index value: average of zscores 
-egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_scorez)
-lab var knowledge "Z-score index for e-commerce knowledge"
+egen knowledge_index_bl = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz) ///
+					if surveyround==1
+lab var knowledge_index_bl "Z-score index for e-commerce knowledge (baseline)"
+
+egen knowledge_index_ml = rowmean(dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml) ///
+					if surveyround==2
+lab var knowledge_index_ml "Z-score index for e-commerce knowledge (midline)"
 
 egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
 		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///
@@ -246,9 +257,6 @@ egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
 lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
 
 
-
-*drop temporary variables*
-*drop web_index	social_media_index	platform_index max_presence min_presence mid_presence
 
 ***********************************************************************
 *PART 4.2. Export preparation index (z-score based)
