@@ -234,8 +234,9 @@ local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_in
 		dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin 
 local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
 local dig_presence dig_presence1 dig_presence2 dig_presence3
+local dig_perception_ml dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5
 
-foreach z in knowledge_bl knowledge_ml dig_marketing_index expprep exportcomes {
+foreach z in dig_presence knowledge_bl knowledge_ml dig_marketing_index dig_perception_ml expprep exportcomes {
 	foreach x of local `z'  {
 			zscore `x' 
 		}
@@ -250,6 +251,15 @@ lab var knowledge_index_bl "Z-score index for e-commerce knowledge (baseline)"
 egen knowledge_index_ml = rowmean(dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml) ///
 					if surveyround==2
 lab var knowledge_index_ml "Z-score index for e-commerce knowledge (midline)"
+
+egen perception_index_ml = rowmean(dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5) ///
+					if surveyround==2
+lab var knowledge_index_ml "Z-score index for digital marketing practices perception (midline)"
+
+egen dig_presence_index_ml = rowmean(dig_presence1 dig_presence2 dig_presence3) ///
+					if surveyround==2
+lab var dig_presence_index_ml "Z-score index for digital presence(midline)"
+
 
 egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
 		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///

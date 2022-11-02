@@ -42,7 +42,7 @@ lab values treatment treatment_status
 lab def surveys 1 "baseline" 2 "midline"
 lab values surveyround surveys
 
-
+label define yesno 0 "no" 1 "yes" -999 "Don't know", replace
 
 	* numeric 
 ds, has(type numeric) 
