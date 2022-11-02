@@ -482,9 +482,383 @@ graph export expprep.png, replace
 putpdf paragraph, halign(center) 
 putpdf image expprep.png
 putpdf pagebreak
-***********************************************************************
-* 	PART 4:  save pdf
-***********************************************************************
 
 putpdf save "baseline_statistics", replace
+
+***********************************************************************
+* 	PART 4:  Mdiline statistics vs. Baseline
+***********************************************************************
+
+	* create word document
+putpdf clear
+putpdf begin 
+putpdf paragraph
+putpdf text ("E-commerce: Midline Statistics"), bold linebreak
+putpdf text ("Date: `c(current_date)'"), bold linebreak
+putpdf paragraph, halign(center) 
+	
+	* Digital Presence
+graph bar (count) dig_presence1 if dig_presence1== 0.33 , over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) ///
+	title("Number of firms with a website") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Nombre d'entreprise") 
+gr export dig_presence1_ml.png, replace
+
+graph bar (count) if dig_presence2== 0.33, over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) ///
+	title("Number of firms with a social media account") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Nombre d'entreprise")
+gr export dig_presence2_ml.png, replace
+
+graph bar (count) if dig_presence3== 0.33, over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) ///
+	title("Number of firms present on an online marketplace") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Nombre d'entreprise")
+gr export dig_presence3_ml.png, replace
+
+graph hbar web_share, over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
+	title("Web presence score in %") 
+graph export web_share_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_share_ml.png
+putpdf pagebreak
+
+graph hbar social_m_share, over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
+	title("Social media score in %") 
+graph export web_share_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image web_share_ml.png
+putpdf pagebreak
+
+graph hbar platform_share, over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
+	title("Platform presence score in %") 
+graph export platform_share_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_share_ml.png
+putpdf pagebreak
+
+*Digital Description
+graph bar (mean) dig_description1 dig_description2 dig_description3 ///
+	, over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) blabel (bar) ///
+legend(pos(9) cols(1) label(1 "Website desc.") label(2 "Social media desc.") label(3 "Platform desc.")) ///
+title("Description of channel") subtitle ("1 =more than once a week, 0.75 =weekly update, 0.5 =monthly, 0.25 =annually", size(vsmall))
+graph export description_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image description_ml.png
+putpdf pagebreak
+
+
+graph bar (mean) dig_miseajour1 dig_miseajour2 dig_miseajour3 ///
+	, over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) blabel (bar) ///
+legend(pos(9) cols(1) label(1 "Website updating") label(2 "Social media updating") label(3 "Platform updating")) ///
+title("Updating of channel") subtitle ("1 =more than once a week, 0.75 =weekly update, 0.5 =monthly, 0.25 =annually", size(vsmall))
+graph export updating_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image updating_ml.png
+putpdf pagebreak
+
+*Digital Payment
+graph hbar (count), over(dig_payment1) over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) blabel (bar) ///
+	title("Website: paying and ordering online") ///
+	subtitle("1=paying and ordering, 0.5=ordering only, 0 =None", size(vsmall))
+graph export dig_payment1_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_payment1_ml.png
+putpdf pagebreak
+
+graph hbar (count), over(dig_payment2) over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) blabel (bar) ///
+	title("Social media: paying and ordering online") ///
+	subtitle("1=paying and ordering, 0.5=ordering only, 0 =None", size(vsmall))
+graph export dig_payment2_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_payment2_ml.png
+putpdf pagebreak
+
+graph hbar (count), over(dig_payment3) over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) blabel (bar) ///
+	title("Marketplace: paying and ordering online") ///
+	subtitle("1=paying and ordering, 0.5=ordering only, 0 =None", size(vsmall))
+graph export dig_payment3_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_payment3_ml.png
+putpdf pagebreak
+
+
+graph hbar (count), over(dig_vente) over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) blabel (bar) ///
+	title("Number of companies that have sold their product/ service online") ///
+	subtitle("0 =Sold nothing online, 1 =Sold product/ service online", size(vsmall))
+graph export dig_vente_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_vente_ml.png
+putpdf pagebreak
+
+*Digital Marketing
+graph bar (count) , over(dig_marketing_respons_bin)  over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
+legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
+title("Does the company have a digital marketing employee?") 
+graph export dig_marketing_respons_bin_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_marketing_respons_bin_ml.png
+putpdf pagebreak
+
+graph hbar (count) , over(dig_service_responsable_bin) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
+legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
+title("Does the company have someone that manages online orders?")
+graph export dig_service_responsable_bin_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_service_responsable_bin_ml.png
+putpdf pagebreak
+
+
+*ssa_action practices
+
+graph bar (count) , over(ssa_action1) over(treatment, label(labs(small))) blabel (bar) ///
+title("Expression d'intérêt par un acheteur potentiel en Afrique Sub-Saharienne")
+graph export ssa_action1.png, replace
+putpdf paragraph, halign(center) 
+putpdf image ssa_action1.png
+putpdf pagebreak
+
+graph bar (count) , over(ssa_action2) over(treatment, label(labs(small))) blabel (bar) ///
+title(" Identification d'un partenaire commercial en Afrique Sub-Saharienne")
+graph export ssa_action2.png, replace
+putpdf paragraph, halign(center) 
+putpdf image ssa_action2.png
+putpdf pagebreak
+
+graph bar (count) , over(ssa_action3) over(treatment, label(labs(small))) blabel (bar) ///
+title("Engagement d'un financement externe pour les coûts préliminaires d’exportation")
+graph export ssa_action3.png, replace
+putpdf paragraph, halign(center) 
+putpdf image ssa_action3.png
+putpdf pagebreak
+
+graph bar (count) , over(ssa_action4) over(treatment, label(labs(small))) blabel (bar) ///
+title("Investissement dans la structure de vente sur un marché cible en Afrique Sub-Saharienne")
+graph export ssa_action4.png, replace
+putpdf paragraph, halign(center) 
+putpdf image ssa_action4.png
+putpdf pagebreak
+
+graph bar (count) , over(ssa_action5) over(treatment, label(labs(small))) blabel (bar) ///
+title("Introduction d'un système de facilitation des échanges, innovation numérique ")
+graph export ssa_action5.png, replace
+putpdf paragraph, halign(center) 
+putpdf image ssa_action5.png
+putpdf pagebreak
+
+putpdf save "midline_statistics", replace
+***********************************************************************
+* 	PART 4:  Mdiline Indexes
+***********************************************************************
+
+putpdf clear
+putpdf begin 
+putpdf paragraph
+
+putpdf text ("E-commerce: Midline Indexes"), bold linebreak
+
+putpdf text ("Date: `c(current_date)'"), bold linebreak
+
+
+putpdf paragraph, halign(center) 
+
+gr tw ///
+	(kdensity knowledge_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity knowledge_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity knowledge_index_ml if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index_ml if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of QI Knowledge Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=80 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(knowledge_index_ml, replace)
+graph export knowledge_index_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image knowledge_index_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_marketing_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram dig_marketing_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity dig_marketing_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_marketing_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of Digital Marketing Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(dig_marketing_index_ml, replace)
+graph export dig_marketing_index_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_marketing_index_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity perception_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram perception_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity perception_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram perception_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity perception_index_ml if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram perception_index_ml if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of Digital Marketing Perception Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(perception_index_ml, replace)
+graph export perception_index_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image perception_index_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity dig_presence_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_presence_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity dig_presence_index_ml if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index_ml if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of Digital Presence Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(dig_presence_index_ml, replace)
+graph export dig_presence_index_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_presence_index_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity webindexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram webindexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity webindexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram webindexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity webindexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram webindexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Web Presence index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(webindexz_ml, replace)
+graph export webindexz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image webindexz_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity social_media_indexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram social_media_indexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity social_media_indexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram social_media_indexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity social_media_indexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram social_media_indexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Social Media index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(social_media_indexz_ml, replace)
+graph export social_media_indexz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image social_media_indexz_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity platform_indexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram platform_indexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity platform_indexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram platform_indexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity platform_indexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram platform_indexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Plateform index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(platform_indexz_ml, replace)
+graph export platform_indexz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_indexz_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity dig_presence_weightedz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_weightedz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_presence_weightedz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_weightedz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity dig_presence_weightedz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_weightedz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Weighted e-commerce presence}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("QI index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(dig_presence_weightedz_ml, replace)
+gr export dig_presence_weightedz_ml.png, replace
+graph export dig_presence_weightedz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_presence_weightedz_ml.png
+putpdf pagebreak
+
+putpdf save "midline_index_statistics", replace
+
+
+***********************************************************************
+* 	PART 3:  Who are the digitally advanced firms? 
+***********************************************************************
 
