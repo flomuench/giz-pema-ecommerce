@@ -196,6 +196,8 @@ replace dig_service_satisfaction=0 if id_plateforme== 313 & surveyround==1
 replace dig_service_satisfaction=0 if id_plateforme== 541 & surveyround==1
 replace dig_service_satisfaction=1 if id_plateforme== 545 & surveyround==1
 replace dig_service_satisfaction=1 if id_plateforme== 623 & surveyround==1
+replace dig_service_satisfaction=0 if id_plateforme== 910 & surveyround==1
+
 
 	
 	
@@ -208,9 +210,12 @@ replace dig_revenues_ecom=60000 if id_plateforme== 505 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 508 & surveyround==1
 replace dig_revenues_ecom=16000 if id_plateforme== 542 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 565 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 767 & surveyround==1
+replace dig_revenues_ecom= 0 if id_plateforme== 795 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 909 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 899 & surveyround==1
-replace dig_revenues_ecom= 0 if id_plateforme== 767 & surveyround==1
+
+
 
 ***********************************************************************
 * 	PART 2: Save
