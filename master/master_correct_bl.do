@@ -128,7 +128,7 @@ replace dig_presence3=0 if id_plateforme==122 & surveyround==1
 *Id_plateforme 303 autres marketplace cant be tracked
 replace dig_presence3=0 if id_plateforme==303 & surveyround==1
 
-*Id_plateforme 356 has no information on database and noway it was on marketplace
+*Id_plateforme 356 has no information on database and noway it was on marketplace (PARAFRIK: Claims to have Jumia, cannot find it)
 replace dig_presence3=0 if id_plateforme==356 & surveyround==1
 
 *Id_plateforme 470 no marketplace (ElAmouri)
@@ -164,12 +164,16 @@ replace dig_miseajour3=0 if id_plateforme== 478 & surveyround==1
 
 	
 	*dig_marketing_respons (Does the company have someone in charge of digital marketing)
+	
+replace dig_marketing_respons=0 if id_plateforme== 259 & surveyround==1
+replace dig_marketing_respons=0 if id_plateforme== 265 & surveyround==1
 replace dig_marketing_respons=1 if id_plateforme== 735 & surveyround==1
 
 
 	
 	
 	*dig_service_responsable (Does the company have someone in charge of online orders?)
+replace dig_service_responsable= 0 if id_plateforme== 259 & surveyround==1
 replace dig_service_responsable= 1 if id_plateforme== 565 & surveyround==1
 replace dig_service_responsable=1 if id_plateforme== 623 & surveyround==1
 replace dig_service_responsable=1 if id_plateforme== 735 & surveyround==1
@@ -177,6 +181,7 @@ replace dig_service_responsable=1 if id_plateforme== 735 & surveyround==1
 	
 	
 	*dig_marketing_ind1 (Does the company have digital marketing objectives)
+replace dig_marketing_ind1=0 if id_plateforme== 259 & surveyround==1
 replace dig_marketing_ind1=0 if id_plateforme== 313 & surveyround==1
 replace dig_marketing_ind1=0 if id_plateforme== 478 & surveyround==1
 replace dig_marketing_ind1=1 if id_plateforme== 545 & surveyround==1
@@ -196,8 +201,12 @@ replace dig_service_satisfaction=1 if id_plateforme== 623 & surveyround==1
 	
 	*dig_revenues_ecom (Online sales)
 replace dig_revenues_ecom= 99381 if id_plateforme== 78 & surveyround==1
+replace dig_revenues_ecom=0 if id_plateforme== 172 & surveyround==1
+replace dig_revenues_ecom=60000 if id_plateforme== 360 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 478 & surveyround==1
+replace dig_revenues_ecom=60000 if id_plateforme== 505 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 508 & surveyround==1
+replace dig_revenues_ecom=16000 if id_plateforme== 542 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 565 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 909 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 899 & surveyround==1

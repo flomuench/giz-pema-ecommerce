@@ -165,10 +165,12 @@ replace dig_presence3=0 if id_plateforme== 791 & surveyround==2
 
 	*dig_marketing_respons (Does the company have someone in charge of digital marketing)
 replace dig_marketing_respons=0 if id_plateforme== 78 & surveyround==2
+*replace dig_marketing_respons=0 if id_plateforme== 195 & surveyround==2 (not clear if they have one or not)
 replace dig_marketing_respons=0 if id_plateforme== 231 & surveyround==2
 replace dig_marketing_respons=0 if id_plateforme== 253 & surveyround==2
 replace dig_marketing_respons=0 if id_plateforme== 270 & surveyround==2
 replace dig_marketing_respons=1 if id_plateforme== 313 & surveyround==2
+replace dig_marketing_respons=1 if id_plateforme== 572 & surveyround==2
 replace dig_marketing_respons=0 if id_plateforme== 735 & surveyround==2
 
 
@@ -176,8 +178,12 @@ replace dig_marketing_respons=0 if id_plateforme== 735 & surveyround==2
 	
 	*dig_service_responsable (Does the company have someone in charge of online orders?)
 replace dig_service_responsable=0 if id_plateforme== 78 & surveyround==2
+replace dig_service_responsable=1 if id_plateforme== 195 & surveyround==2
 replace dig_service_responsable=0 if id_plateforme== 216 & surveyround==2
+replace dig_service_responsable=1 if id_plateforme== 323 & surveyround==2
+replace dig_service_responsable=1 if id_plateforme== 451 & surveyround==2
 replace dig_service_responsable= 0 if id_plateforme== 565 & surveyround==2
+replace dig_service_responsable= 1 if id_plateforme== 572 & surveyround==2
 replace dig_service_responsable=0 if id_plateforme== 623 & surveyround==2
 replace dig_service_responsable=0 if id_plateforme== 773 & surveyround==2
 replace dig_service_responsable=0 if id_plateforme== 735 & surveyround==2
@@ -207,14 +213,17 @@ replace dig_marketing_ind1=0 if id_plateforme== 670 & surveyround==2
 	*dig_service_satisfaction (Does the company measure the satisfaction of its online clients)
 replace dig_service_satisfaction=0 if id_plateforme== 70 & surveyround==2
 replace dig_service_satisfaction=0 if id_plateforme== 176 & surveyround==2
+replace dig_service_satisfaction=1 if id_plateforme== 195 & surveyround==2
 replace dig_service_satisfaction=1 if id_plateforme== 216 & surveyround==2
 replace dig_service_satisfaction=0 if id_plateforme== 253 & surveyround==2
+replace dig_service_satisfaction=1 if id_plateforme== 303 & surveyround==2
 replace dig_service_satisfaction=0 if id_plateforme== 313 & surveyround==2
 replace dig_service_satisfaction=0 if id_plateforme== 470 & surveyround==2
 replace dig_service_satisfaction=0 if id_plateforme== 541 & surveyround==2
 replace dig_service_satisfaction=1 if id_plateforme== 545 & surveyround==2
 replace dig_service_satisfaction=0 if id_plateforme== 623 & surveyround==2
 replace dig_service_satisfaction= 0 if id_plateforme== 629 & surveyround==2
+replace dig_service_satisfaction=1 if id_plateforme== 630 & surveyround==2
 replace dig_service_satisfaction= -999 if id_plateforme== 724 & surveyround==2
 replace dig_service_satisfaction= 0 if id_plateforme== 831 & surveyround==2
 
@@ -222,11 +231,14 @@ replace dig_service_satisfaction= 0 if id_plateforme== 831 & surveyround==2
 	
 	*dig_revenues_ecom (Online sales)
 replace dig_revenues_ecom= 50000 if id_plateforme== 136 & surveyround==2
+replace dig_revenues_ecom= 62000 if id_plateforme== 195 & surveyround==2
 replace dig_revenues_ecom= 543 if id_plateforme== 253 & surveyround==2
+replace dig_revenues_ecom= 16000 if id_plateforme== 360 & surveyround==2
 replace dig_revenues_ecom= 1000 if id_plateforme== 438 & surveyround==2
 replace dig_revenues_ecom= 1000 if id_plateforme== 427 & surveyround==2
 replace dig_revenues_ecom= 1000 if id_plateforme== 478 & surveyround==2
 replace dig_revenues_ecom= 150 if id_plateforme== 508 & surveyround==2
+replace dig_revenues_ecom= 13000 if id_plateforme== 542 & surveyround==2
 replace dig_revenues_ecom= 7000 if id_plateforme== 547 & surveyround==2
 replace dig_revenues_ecom= 0 if id_plateforme== 565 & surveyround==2
 replace dig_revenues_ecom= -888 if id_plateforme== 592 & surveyround==2
