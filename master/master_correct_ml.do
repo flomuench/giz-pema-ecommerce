@@ -108,7 +108,8 @@ replace dig_presence3=0.33 if id_plateforme==324 & surveyround==2
 
 *Id_plateforme 332 not present anymore on marketplace according to ElAmouri
 
-*Id_plateforme 356 El Amouri says is present on jumia but no sign
+*Id_plateforme 356 present on jumia (ElAmouri)
+replace dig_presence3=0.33 if id_plateforme==356 & surveyround==2
 
 *Id_plateforme 360 not a single information on web
 replace dig_presence3=0 if id_plateforme==360 & surveyround==2
@@ -185,7 +186,7 @@ replace dig_presence3=0 if id_plateforme== 791 & surveyround==2
 
 	*dig_marketing_respons (Does the company have someone in charge of digital marketing)
 replace dig_marketing_respons=0 if id_plateforme== 78 & surveyround==2
-*replace dig_marketing_respons=0 if id_plateforme== 195 & surveyround==2 (not clear if they have one or not)
+replace dig_marketing_respons=0 if id_plateforme== 195 & surveyround==2
 replace dig_marketing_respons=0 if id_plateforme== 231 & surveyround==2
 replace dig_marketing_respons=0 if id_plateforme== 253 & surveyround==2
 replace dig_marketing_respons=0 if id_plateforme== 270 & surveyround==2
