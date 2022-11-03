@@ -272,19 +272,37 @@ replace needs_check = 0 if id_plateforme == 629 & surveyround==2
 replace needs_check = 0 if id_plateforme == 630 & surveyround==2
 replace needs_check = 0 if id_plateforme == 650 & surveyround==2
 replace needs_check = 0 if id_plateforme == 670 & surveyround==2
+replace needs_check = 0 if id_plateforme == 668 & surveyround==2
+replace needs_check = 0 if id_plateforme == 698 & surveyround==2
+replace needs_check = 0 if id_plateforme == 715 & surveyround==2
+replace needs_check = 0 if id_plateforme == 716 & surveyround==2
+replace needs_check = 0 if id_plateforme == 724 & surveyround==2
 replace needs_check = 0 if id_plateforme == 729 & surveyround==2
+replace needs_check = 0 if id_plateforme == 730 & surveyround==2
 replace needs_check = 0 if id_plateforme == 735 & surveyround==2
+replace needs_check = 0 if id_plateforme == 739 & surveyround==2
+replace needs_check = 0 if id_plateforme == 742 & surveyround==2
+replace needs_check = 0 if id_plateforme == 743 & surveyround==2
 replace needs_check = 0 if id_plateforme == 752 & surveyround==2
 replace needs_check = 0 if id_plateforme == 757 & surveyround==2
 replace needs_check = 0 if id_plateforme == 767 & surveyround==2
 replace needs_check = 0 if id_plateforme == 773 & surveyround==2
 replace needs_check = 0 if id_plateforme == 791 & surveyround==2
+replace needs_check = 0 if id_plateforme == 795 & surveyround==2
 replace needs_check = 0 if id_plateforme == 831 & surveyround==2
+replace needs_check = 0 if id_plateforme == 833 & surveyround==2
 replace needs_check = 0 if id_plateforme == 841 & surveyround==2
+replace needs_check = 0 if id_plateforme == 861 & surveyround==2 /*they don't measure satisfaction, but listens to feedback comments & no response on responsable marketing*/
 replace needs_check = 0 if id_plateforme == 867 & surveyround==2
+replace needs_check = 0 if id_plateforme == 875 & surveyround==2
 replace needs_check = 0 if id_plateforme == 899 & surveyround==2
 replace needs_check = 0 if id_plateforme == 909 & surveyround==2
+replace needs_check = 0 if id_plateforme == 910 & surveyround==2
+replace needs_check = 0 if id_plateforme == 925 & surveyround==2
+replace needs_check = 0 if id_plateforme == 927 & surveyround==2
+replace needs_check = 0 if id_plateforme == 931 & surveyround==2
 replace needs_check = 0 if id_plateforme == 959 & surveyround==2
+
 ***********************************************************************
 * 	Export an excel sheet with needs_check variables  			
 ***********************************************************************
