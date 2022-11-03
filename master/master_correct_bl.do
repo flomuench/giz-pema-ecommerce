@@ -69,6 +69,9 @@ replace dig_presence1=0 if id_plateforme==82 & surveyround==1
 *Id_plateforme 303 no website link even on our database	
 replace dig_presence1=0 if id_plateforme==303 & surveyround==1
 
+*Id_plateforme 398 no website link even on our database	
+replace dig_presence1=0.33	 if id_plateforme==398 & surveyround==1
+
 *Id_plateforme 424 no website link even on our website
 replace dig_presence1=0 if id_plateforme==424 & surveyround==1
 
@@ -76,16 +79,19 @@ replace dig_presence1=0 if id_plateforme==424 & surveyround==1
 replace dig_presence1=0 if id_plateforme==527 & surveyround==1
 
 *Id_plateforme 595 works fine in baseline according to archive
-replace dig_presence1=1 if id_plateforme==595 & surveyround==1
+replace dig_presence1=0.33 if id_plateforme==595 & surveyround==1
 
 *Id_plateforme 657 outdated site dosent work
 replace dig_presence1=0 if id_plateforme==657 & surveyround==1
+
+*Id_plateforme 961 never had a website
+replace dig_presence1=0 if id_plateforme==961 & surveyround==1
 
 
 
 *dig_presence2
 *Id_plateforme 244 facebook exsists since 2016 and in database
-replace dig_presence2=1 if id_plateforme==244 & surveyround==1
+replace dig_presence2=0.33 if id_plateforme==244 & surveyround==1
 
 *Id_plateforme 259 never had social media
 replace dig_presence2=0 if id_plateforme==259 & surveyround==1
@@ -96,6 +102,9 @@ replace dig_presence2=0 if id_plateforme==365 & surveyround==1
 *Id_plateforme 581 never had social media
 replace dig_presence2=0 if id_plateforme==581 & surveyround==1
 
+**Id_plateforme 597 has social media since baseline
+replace dig_presence2=0.33 if id_plateforme==597 & surveyround==1
+
 *Id_plateforme 599 never had social media
 replace dig_presence2=0 if id_plateforme==599 & surveyround==1
 
@@ -103,19 +112,23 @@ replace dig_presence2=0 if id_plateforme==599 & surveyround==1
 replace dig_presence2=0 if id_plateforme==628 & surveyround==1
 
 *Id_plateforme 642 facebook exsists since 2020 and in database
-replace dig_presence2=1 if id_plateforme==642 & surveyround==1
+replace dig_presence2=0.33 if id_plateforme==642 & surveyround==1
 
 *Id_plateforme 715 facebook exsists since 2014 and in database
-replace dig_presence2=1 if id_plateforme==715 & surveyround==1
+replace dig_presence2=0.33 if id_plateforme==715 & surveyround==1
 
 *Id_plateforme 769 facebook exsists since 2013 and in database
-replace dig_presence2=1 if id_plateforme==769 & surveyround==1
+replace dig_presence2=0.33 if id_plateforme==769 & surveyround==1
 
 *Id_plateforme 909 facebook exsists and active
-replace dig_presence2=1 if id_plateforme==909 & surveyround==1
+replace dig_presence2=0.33 if id_plateforme==909 & surveyround==1
+
+*Id_plateforme 925 has facebook
+replace dig_presence2=0.33 if id_plateforme==925 & surveyround==1
 
 *Id_plateforme 927 never had social media
 replace dig_presence2=0 if id_plateforme==927 & surveyround==1
+
 
 
 
@@ -141,7 +154,7 @@ replace dig_presence3=0 if id_plateforme==478 & surveyround==1
 replace dig_presence3=0 if id_plateforme==549 & surveyround==1
 
 *Id_plateforme 581 not found on marketplaces (ElAmouri said bl was online form)
-replace dig_presence3=0 if id_plateforme==549 & surveyround==1
+replace dig_presence3=0 if id_plateforme==581 & surveyround==1
 
 	*Correct dig_marketing_lien for baseline if no website link is found on website but it is claimed in the 
 	*survey
