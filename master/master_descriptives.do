@@ -496,7 +496,8 @@ putpdf paragraph
 putpdf text ("E-commerce: Midline Statistics"), bold linebreak
 putpdf text ("Date: `c(current_date)'"), bold linebreak
 putpdf paragraph, halign(center) 
-	
+
+
 	* Digital Presence
 graph bar (count) dig_presence1 if dig_presence1== 0.33 , over(treatment, label(labs(small))) over(surveyround, label(labs(vsmall))) ///
 	title("Number of firms with a website") ///
@@ -591,6 +592,17 @@ putpdf paragraph, halign(center)
 putpdf image dig_vente_ml.png
 putpdf pagebreak
 
+
+     * variable dig_revenues_ecom:
+stripplot dig_revenues_ecom, by(treatment) jitter(4) vertical yline(1000, lcolor(red)) ///
+ytitle("Midline: Digital revenues") ///
+name(dig_revenues_ecom_ml, replace)
+gr export dig_revenues_ecom_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_revenues_ecom_ml.png
+putpdf pagebreak 
+	
+	
 *Digital Marketing
 graph bar (count) , over(dig_marketing_respons_bin)  over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
 legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
@@ -612,40 +624,91 @@ putpdf pagebreak
 *ssa_action practices
 
 graph bar (count) , over(ssa_action1) over(treatment, label(labs(small))) blabel (bar) ///
-title("Expression d'intérêt par un acheteur potentiel en Afrique Sub-Saharienne")
+title("Midline: Expression of interest by a potential buyer in Sub-Saharan Africa country")
 graph export ssa_action1.png, replace
 putpdf paragraph, halign(center) 
 putpdf image ssa_action1.png
 putpdf pagebreak
 
 graph bar (count) , over(ssa_action2) over(treatment, label(labs(small))) blabel (bar) ///
-title(" Identification d'un partenaire commercial en Afrique Sub-Saharienne")
+title("Midline: Identification of a business partner in Sub-Saharan Africa country")
 graph export ssa_action2.png, replace
 putpdf paragraph, halign(center) 
 putpdf image ssa_action2.png
 putpdf pagebreak
 
 graph bar (count) , over(ssa_action3) over(treatment, label(labs(small))) blabel (bar) ///
-title("Engagement d'un financement externe pour les coûts préliminaires d’exportation")
+title("Midline: Commitment of external financing for preliminary export costs")
 graph export ssa_action3.png, replace
 putpdf paragraph, halign(center) 
 putpdf image ssa_action3.png
 putpdf pagebreak
 
 graph bar (count) , over(ssa_action4) over(treatment, label(labs(small))) blabel (bar) ///
-title("Investissement dans la structure de vente sur un marché cible en Afrique Sub-Saharienne")
+title("Midline: Investment in sales structure in a target market in Sub-Saharan Africa")
 graph export ssa_action4.png, replace
 putpdf paragraph, halign(center) 
 putpdf image ssa_action4.png
 putpdf pagebreak
 
 graph bar (count) , over(ssa_action5) over(treatment, label(labs(small))) blabel (bar) ///
-title("Introduction d'un système de facilitation des échanges, innovation numérique ")
+title("Midline: Introduction of a trade facilitation system, digital innovation")
 graph export ssa_action5.png, replace
 putpdf paragraph, halign(center) 
 putpdf image ssa_action5.png
 putpdf pagebreak
 
+* Number of employees in the midline
+    * variable employees
+stripplot fte if surveyround == 2, by(treatment) jitter(4) vertical yline(22, lcolor(red)) ///
+		ytitle("Midline: Number of employees") ///
+		name(fte, replace)
+    gr export empl_ml.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image empl_ml.png
+	putpdf pagebreak
+	
+stripplot car_carempl_div1  if surveyround == 2, by(treatment) jitter(4) vertical yline(9, lcolor(red)) ///
+		ytitle("Midline: Number of female employees") ///
+		name(fte, replace)
+    gr export fem_empl_ml.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image fem_empl_ml.png
+	putpdf pagebreak
+
+stripplot car_carempl_div2  if surveyround == 2, by(treatment) jitter(4) vertical yline(5, lcolor(red)) ///
+		ytitle("Midline: Number of young employees") ///
+		name(fte, replace)
+    gr export you_empl_ml.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image you_empl_ml.png
+	putpdf pagebreak
+	
+stripplot car_carempl_div3  if surveyround == 2, by(treatment) jitter(4) vertical yline(2, lcolor(red)) ///
+		ytitle("Midline: Number of part time employees") ///
+		name(fte, replace)
+    gr export pt_empl_ml.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image pt_empl_ml.png
+	putpdf pagebreak	
+	
+stripplot car_carempl_div4  if surveyround == 2, by(treatment) jitter(4) vertical yline(3, lcolor(red)) ///
+		ytitle("Midline: Number of part foreign employees") ///
+		name(fte, replace)
+    gr export fg_empl_ml.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image fg_empl_ml.png
+	putpdf pagebreak	
+	
+stripplot car_carempl_div5  if surveyround == 2, by(treatment) jitter(4) vertical yline(2, lcolor(red)) ///
+		ytitle("Midline: Number of part expatriate employees") ///
+		name(fte, replace)
+    gr export expt_empl_ml.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image expt_empl_ml.png
+	putpdf pagebreak	
+		
+	
 putpdf save "midline_statistics", replace
 ***********************************************************************
 * 	PART 4:  Mdiline Indexes
@@ -849,7 +912,6 @@ gr tw ///
 					 3 "Control group (N=95 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(dig_presence_weightedz_ml, replace)
-gr export dig_presence_weightedz_ml.png, replace
 graph export dig_presence_weightedz_ml.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_presence_weightedz_ml.png
