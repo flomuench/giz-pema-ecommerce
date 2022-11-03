@@ -222,13 +222,14 @@ replace needs_check=0 if needs_check==.
 replace needs_check = 0 if id_plateforme == 70 & surveyround==2
 replace needs_check = 0 if id_plateforme == 78 & surveyround==2
 replace needs_check = 0 if id_plateforme == 91 & surveyround==2
-*replace needs_check = 0 if id_plateforme == 108 & surveyround==2 (L'amouri only responded for satsifaction not objective)
+replace needs_check = 0 if id_plateforme == 108 & surveyround==2
 replace needs_check = 0 if id_plateforme == 95 & surveyround==2
 replace needs_check = 0 if id_plateforme == 136 & surveyround==2
 replace needs_check = 0 if id_plateforme == 144 & surveyround==2
 replace needs_check = 0 if id_plateforme == 148 & surveyround==2
 replace needs_check = 0 if id_plateforme == 172 & surveyround==2
 replace needs_check = 0 if id_plateforme == 176 & surveyround==2
+replace needs_check = 0 if id_plateforme == 195 & surveyround==2
 replace needs_check = 0 if id_plateforme == 209 & surveyround==2
 replace needs_check = 0 if id_plateforme == 212 & surveyround==2
 replace needs_check = 0 if id_plateforme == 216 & surveyround==2
@@ -245,6 +246,7 @@ replace needs_check = 0 if id_plateforme == 323 & surveyround==2
 replace needs_check = 0 if id_plateforme == 324 & surveyround==2
 replace needs_check = 0 if id_plateforme == 332 & surveyround==2
 replace needs_check = 0 if id_plateforme == 352 & surveyround==2
+replace needs_check = 0 if id_plateforme == 356 & surveyround==2
 replace needs_check = 0 if id_plateforme == 360 & surveyround==2
 replace needs_check = 0 if id_plateforme == 381 & surveyround==2
 replace needs_check = 0 if id_plateforme == 424 & surveyround==2
