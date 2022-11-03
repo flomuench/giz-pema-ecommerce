@@ -19,24 +19,33 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 *Id_plateforme 85 is not working now
 replace dig_presence1=0 if id_plateforme==85 & surveyround==2
 
+*Id_plateforme 107 has website (www.entrust-trade.com)
+replace dig_presence1=0.33 if id_plateforme==107 & surveyround==2
+
 *Id_plateforme 213 is not working now
 replace dig_presence1=0 if id_plateforme==213 & surveyround==2
 
 *Id_plateforme 375 works
-replace dig_presence1=1 if id_plateforme==375 & surveyround==2
+replace dig_presence1=0.33 if id_plateforme==375 & surveyround==2
 
 *Id_plateforme 427 is now a working website under https://shekaz.com
 
 *Id_plateforme 549 works
-replace dig_presence1=1 if id_plateforme==549 & surveyround==2
+replace dig_presence1=0.33 if id_plateforme==549 & surveyround==2
 
 *Id_plateforme 644 not working website jinen.tn
 replace dig_presence1=0 if id_plateforme==644 & surveyround==2
+
+*Id_plateforme 681 has a bad website (https://www.groupebismuth.com/tet/presentation.html)
+replace dig_presence1=0.33 if id_plateforme==681 & surveyround==2
 
 *Id_plateforme 763 undermaintenance since baseline
 replace dig_presence1=0 if id_plateforme==763 & surveyround==2
 
 *Id_plateforme 833 has fixed its website and is now running but slow
+
+*Id_plateforme 873 has a working website
+replace dig_presence1=0.33 if id_plateforme==873 & surveyround==2
 
 *Id_plateforme 896 does not exist (searched dully)
 replace dig_presence1=0 if id_plateforme==896 & surveyround==2
@@ -44,29 +53,30 @@ replace dig_presence1=0 if id_plateforme==896 & surveyround==2
 *Id_plateforme 959 dosent have any links dully searched (https://www.linkedin.com/feed/update/urn:li:activity:6963407083215933441/)
 replace dig_presence1=0 if id_plateforme==959 & surveyround==2
 
-*Id_plateforme 961 never had a website
-replace dig_presence1=0 if id_plateforme==961 & surveyround==2
 
 
 
 	*dig_presence2 (Presence of social media account)
 *Id_plateforme 148 facebook last post october 8th
-replace dig_presence2=1 if id_plateforme==148 & surveyround==2
+replace dig_presence2=0.33 if id_plateforme==148 & surveyround==2
 
 *Id_plateforme 151 facebook exists but inactive
-replace dig_presence2=1 if id_plateforme==151 & surveyround==2
+replace dig_presence2=0.33 if id_plateforme==151 & surveyround==2
 
 *Id_plateforme 231 facebook exists but inactive
-replace dig_presence2=1 if id_plateforme==231 & surveyround==2
+replace dig_presence2=0.33 if id_plateforme==231 & surveyround==2
 
 *Id_plateforme 825 facebook exists but inactive
-replace dig_presence2=1 if id_plateforme==825 & surveyround==2
+replace dig_presence2=0.33 if id_plateforme==825 & surveyround==2
 
 *Id_plateforme 841 social media not found 
 replace dig_presence2=0 if id_plateforme==841 & surveyround==2
 
+*Id_plateforme 873 has social media  
+replace dig_presence2=0.33 if id_plateforme==873 & surveyround==2
+
 *Id_plateforme 890 facebook exists but inactive
-replace dig_presence2=1 if id_plateforme==890 & surveyround==2
+replace dig_presence2=0.33 if id_plateforme==890 & surveyround==2
 
 
 
@@ -74,16 +84,19 @@ replace dig_presence2=1 if id_plateforme==890 & surveyround==2
 *Id_plateforme 85 not found on any marketplace
 replace dig_presence3=0 if id_plateforme==85 & surveyround==2
 
+*Id_plateforme 80 no marketplace
+replace dig_presence3=0 if id_plateforme==80 & surveyround==2
+
 *Id_plateforme 166 present on facebook marketplace
-replace dig_presence3=1 if id_plateforme==166 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==166 & surveyround==2
 
 *Id_plateforme 195 is still on jumia https://www.jumia.com.tn/phytovertus/
-replace dig_presence3=1 if id_plateforme==195 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==195 & surveyround==2
 
 *Id_plateforme 237 has a marketplace on facebook https://www.facebook.com/WIKIOfficiel/shop/
 
 *Id_plateforme 253 has a marketplace on facebook https://www.facebook.com/NauTikTunisia/shop/
-replace dig_presence3=1 if id_plateforme==253 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==253 & surveyround==2
 
 *Id_plateforme 270 dosent use marketplace anymore according to ElAmouri
 
@@ -91,11 +104,14 @@ replace dig_presence3=1 if id_plateforme==253 & surveyround==2
 replace dig_presence3=0 if id_plateforme==275 & surveyround==2
 
 *Id_plateforme 324 present on baity.tn & soon on jumia according to ELAmouri
-replace dig_presence3=1 if id_plateforme==324 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==324 & surveyround==2
 
 *Id_plateforme 332 not present anymore on marketplace according to ElAmouri
 
-*Id_plateforme 360 to be called by el Amouri tomorrow
+*Id_plateforme 356 El Amouri says is present on jumia but no sign
+
+*Id_plateforme 360 not a single information on web
+replace dig_presence3=0 if id_plateforme==360 & surveyround==2
 
 *Id_plateforme 406 no sign of marketplace
 replace dig_presence3=0 if id_plateforme==406 & surveyround==2
@@ -107,23 +123,27 @@ replace dig_presence3=0 if id_plateforme==406 & surveyround==2
 *Id_plateforme 438 not present on marketplace according to ElAmouri
 
 *Id_plateforme 592 present on marketplace jumia although ElAmouri saying the opposite https://www.jumia.com.tn/candy-led/
-replace dig_presence3=1 if id_plateforme==592 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==592 & surveyround==2
+
+*Id_plateforme 637 not found on marketplaces
+replace dig_presence3=0 if id_plateforme==637 & surveyround==2
 
 *Id_plateforme 646 now present on jumia https://www.jumia.com.tn/coala/
 
 *Id_plateforme 695 present on https://pharma-shop.tn/149_farmavans
-replace dig_presence3=1 if id_plateforme==695 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==695 & surveyround==2
 
 *Id_plateforme 752 not in any marketplace
 replace dig_presence3=0 if id_plateforme==752 & surveyround==2
 
-*Id_plateforme 765 will be recalled by ElAmouri
+*Id_plateforme 765 nielsen is a b2b, not found on marketplaces
+replace dig_presence3=0 if id_plateforme==765 & surveyround==2
 
 *Id_plateforme 791 on jumia https://www.jumia.com.tn/medina/
-replace dig_presence3=1 if id_plateforme==791 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==791 & surveyround==2
 
 *Id_plateforme 956 on facebook marketplace https://www.facebook.com/GmarStore.tn/shop/
-replace dig_presence3=1 if id_plateforme==956 & surveyround==2
+replace dig_presence3=0.33 if id_plateforme==956 & surveyround==2
 
 *I have moved the code further down so we can see the changes
 *Correct baseline value for dig_presence1,2 and 3 dependent on whether firm 
