@@ -75,6 +75,7 @@ else if c(os) == "MacOSX" {
 global cp_raw = "${gdrive}/raw"
 global cp_intermediate = "${gdrive}/intermediate"
 global cp_final = "${gdrive}/final"
+global cp_output = "${gdrive}/output"
 
 
 		
