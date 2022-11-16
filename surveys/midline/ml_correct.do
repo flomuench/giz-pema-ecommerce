@@ -90,9 +90,11 @@ replace dig_revenues_ecom= "5000" if dig_revenues_ecom =="5 milles dinar"
 replace dig_revenues_ecom= "1000" if dig_revenues_ecom =="1000 dinars"
 replace dig_revenues_ecom= "1000" if dig_revenues_ecom =="malyoun"
 replace dig_revenues_ecom= "10000" if dig_revenues_ecom =="10 million millimes"
+replace dig_revenues_ecom= "-999" if dig_revenues_ecom =="je ne sais pas"
+replace dig_revenues_ecom= "-999" if dig_revenues_ecom =="elle ne sais pas"
 
 
-  
+
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
 replace `var' = ustrregexra( `var',"dinar","")
