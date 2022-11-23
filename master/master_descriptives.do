@@ -733,12 +733,12 @@ gr tw ///
 	(kdensity knowledge_index_ml if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
 	(histogram knowledge_index_ml if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
 	, ///
-	title("{bf:Midline Distribution of QI Knowledge Index}") ///
+	title("{bf:Midline Distribution of Knowledge Index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Knowledge index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=80 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -759,10 +759,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Distribution of Digital Marketing Index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Digital Marketing Index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -783,10 +783,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Distribution of Digital Marketing Perception Index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Digital Marketing Perception Index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -807,10 +807,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Distribution of Digital Presence Index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Digital Presence Index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -831,10 +831,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Web Presence index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Web Presence index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -855,10 +855,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Social Media index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Social Media index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -879,10 +879,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Plateform index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Plateform index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(small) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
@@ -903,10 +903,10 @@ gr tw ///
 	, ///
 	title("{bf:Midline Weighted e-commerce presence}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("QI index") ///
+	xtitle("Weighted e-commerce presence index") ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
-	legend(symxsize(small) ///
+	legend(rows(3) symxsize(vsmall) ///
                order(1 "Treatment group, participated (N=75 firms)" ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
