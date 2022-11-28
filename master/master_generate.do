@@ -246,16 +246,22 @@ foreach z in dig_presence knowledge_bl knowledge_ml dig_marketing_index dig_perc
 *Calculate the index value: average of zscores 
 egen knowledge_index_bl = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz) ///
 					if surveyround==1
-lab var knowledge_index_bl "Z-score index for e-commerce knowledge (baseline)"
 
 egen knowledge_index_ml = rowmean(dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml) ///
 					if surveyround==2
-lab var knowledge_index_ml "Z-score index for e-commerce knowledge (midline)"
+
+*join both indices under one variables
+gen knowledge_index= . 
+replace knowledge_index=knowledge_index_bl if surveyround==1
+replace knowledge_index=knowledge_index_ml if surveyround==2					
+drop knowledge_index_bl knowledge_index_ml
+					
 
 egen perception_index_ml = rowmean(dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5) ///
 					if surveyround==2
 lab var knowledge_index_ml "Z-score index for digital marketing practices perception (midline)"
 
+/*
 egen dig_presence_index_ml = rowmean(dig_presence1 dig_presence2 dig_presence3) ///
 					if surveyround==2
 lab var dig_presence_index_ml "Z-score index for digital presence(midline)"
@@ -265,7 +271,7 @@ egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
 		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///
 		dig_marketing_respons_binz)
 lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
-
+*/
 
 
 ***********************************************************************
