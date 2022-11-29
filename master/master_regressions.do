@@ -21,10 +21,6 @@ use "${master_final}/ecommerce_master_final", clear
 		* change directory
 cd "${master_gdrive}/output"
 
-* xtset data to enable use of lag operator for inclusion of baseline value of Y
-encode id_platforme, gen(ID)
-order ID, b(id_platforme)
-xtset ID surveyround
 
 ***********************************************************************
 * 	Part 1: 	Midline analysis			  
@@ -33,7 +29,9 @@ xtset ID surveyround
 ***********************************************************************
 * 	PART 1.1: survey attrition 		
 ***********************************************************************
-
+reg ml_attrit i.treatment if surveyround==2, vce(hc3)
+areg  ml_attrit treatment if surveyround==2, absorb(strata) cluster(strata)
+logit ml_attrit i.treatment if surveyround==2
 ***********************************************************************
 * 	PART 1.2: knowledge index		
 ***********************************************************************
@@ -74,13 +72,14 @@ estimates store iv_ki4
 * 	PART 1.2: Digital presence index		
 ***********************************************************************
 
-
+eststo presenece1, r: reg dig_presence_weightedz i.treatment l.dig_presence_weightedz i.strata, vce(hc3)
 
 
 
 ***********************************************************************
 * 	PART 1.3: Digital marketing index		
 ***********************************************************************
+
 
 
 

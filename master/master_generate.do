@@ -255,11 +255,11 @@ gen knowledge_index= .
 replace knowledge_index=knowledge_index_bl if surveyround==1
 replace knowledge_index=knowledge_index_ml if surveyround==2					
 drop knowledge_index_bl knowledge_index_ml
-					
+lab var knowledge_index "Z-score index for e-commerce/dig.marketing knowledge"				
 
 egen perception_index_ml = rowmean(dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5) ///
 					if surveyround==2
-lab var knowledge_index_ml "Z-score index for digital marketing practices perception (midline)"
+
 
 /*
 egen dig_presence_index_ml = rowmean(dig_presence1 dig_presence2 dig_presence3) ///
@@ -277,7 +277,8 @@ lab var dig_marketing_index "Z-score index onquantity and quality of digital mar
 ***********************************************************************
 *PART 4.2. Export preparation index (z-score based)
 ***********************************************************************
-egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz)
+egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz) ///
+ if surveyround==1
 label var expprep "Z-score index export preparation"
 ***********************************************************************
 *PART 4.3. Create alternative % -index (in %of maximum points possible)
@@ -336,5 +337,25 @@ gen needs_check=0
 gen questions_a_verifier=""
 gen commentsmsb=""
 lab var needs_check" if larger than 0, this rows needs to be checked"
+
+***********************************************************************
+*PART 6 Create empty rows of attrited firms
+***********************************************************************	
+xtset id_plateforme surveyround
+tsfill, full
+
+gen ml_attrit = 0 
+replace ml_attrit=1 if treatment ==. 
+
+*extent treatment status and strata to empty rows
+bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
+bysort id_plateforme (surveyround): replace take_up = take_up[_n-1] if take_up == 0
+replace take_up=0 if take_up==. 
+
+bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up2 == 0
+replace take_up2=0 if take_up2==. 
+
+bysort id_plateforme (surveyround): replace strata = strata[_n-1] if strata == .
+
 
 save "${master_final}/ecommerce_master_final", replace
