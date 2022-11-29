@@ -179,7 +179,7 @@ if (1) do "${master_github}/master_generate.do"
 /*--------------------------------------------------------------------
 	PART 3.6: Test coherence between survey rounds
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_test.do"
+if (0) do "${master_github}/master_test.do"
 
 ***********************************************************************
 * 	PART 4: 	Run final analysis

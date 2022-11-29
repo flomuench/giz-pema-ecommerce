@@ -310,5 +310,17 @@ foreach var of local  allvars {
 	replace `var' = 0 if `var' == -1554
 }
 
+*For financial data: replace "Don't know (-999) and refusal with missing value"
+
+local finvars dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020
+
+foreach var of local  finvars {
+	replace `var' = . if `var' == -999
+	replace `var' = . if `var' == -888
+	replace `var' = . if `var' == -777
+	replace `var' = . if `var' == -1998
+	replace `var' = . if `var' == -1776 
+	replace `var' = . if `var' == -1554
+}
 
 save "${master_intermediate}/ecommerce_master_inter", replace
