@@ -167,41 +167,41 @@ esttab `regressions' using "ml_knowledge.tex", replace ///
 reg raw_knowledge i.treatment if surveyround == 1, vce(hc3)
 
 			* pure mean comparison at midline
-eststo ki1, r: reg raw_knowledge i.treatment if surveyround == 2, vce(hc3)
+eststo ki1_raw, r: reg raw_knowledge i.treatment if surveyround == 2, vce(hc3)
 estadd local bl_control "No"
 estadd local strata "No"
 
 			
 
 			* ancova without stratification dummies
-eststo ki2, r: reg raw_knowledge i.treatment l.raw_knowledge, cluster(id_plateforme)
+eststo ki2_raw, r: reg raw_knowledge i.treatment l.raw_knowledge, cluster(id_plateforme)
 estadd local bl_control "Yes"
 estadd local strata "No"
 
 			* ancova with stratification dummies
-eststo ki3, r: reg raw_knowledge i.treatment l.raw_knowledge i.strata, cluster(id_plateforme)
+eststo ki3_raw, r: reg raw_knowledge i.treatment l.raw_knowledge i.strata, cluster(id_plateforme)
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
 			* DiD
-eststo ki4, r: xtreg raw_knowledge i.treatment##i.surveyround i.strata, cluster(id_plateforme)
+eststo ki4_raw, r: xtreg raw_knowledge i.treatment##i.surveyround i.strata, cluster(id_plateforme)
 estadd local bl_control "Yes"
 estadd local strata "Yes"			
 
 
 			* ATT, IV (with 1 session counting as taken up)
-eststo ki5, r:ivreg2 raw_knowledge l.raw_knowledge i.strata (take_up2 = i.treatment), cluster(id_plateforme) first
+eststo ki5_raw, r:ivreg2 raw_knowledge l.raw_knowledge i.strata (take_up2 = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 estimates store iv_ki4
 
 
 			* ATT, IV (with 1 session counting as taken up)
-eststo ki6, r:ivreg2 raw_knowledge l.raw_knowledge i.strata (take_up = i.treatment), cluster(id_plateforme) first
+eststo ki6_raw, r:ivreg2 raw_knowledge l.raw_knowledge i.strata (take_up = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
-local regressions ki1 ki2 ki3 ki4 ki5 ki6
+local regressions ki1_raw ki2_raw ki3_raw ki4_raw ki5_raw ki6_raw
 esttab `regressions' using "ml_knowledge_raw.tex", replace ///
 	mtitles("Mean comparison" "Ancova" "Ancova" "DiD" "ATT" "ATT") ///
 	label ///
@@ -383,19 +383,34 @@ esttab `regressions' using "ml_dig_revenues.tex", replace ///
 
 
 
-
-
-
 ***********************************************************************
 * 	PART 1.4: Digital revenues (missing values to zero and dummy out)		
 ***********************************************************************
 *First replace missing values by zeros and create dummy for these values
-/*
+
 gen dig_revenues_ecom_miss = 0 
-replace dig_revenues_ecom_miss = 1 if dig_revenues_ecom == -999 |dig_revenues_ecom == -888 | ///
-dig_revenues_ecom== .
+replace dig_revenues_ecom_miss = 1 if ihs_w95_dig_rev20 == .
+gen ihs_w95_dig_rev20_imputed= ihs_w95_dig_rev20 
+replace ihs_w95_dig_rev20_imputed=0 if dig_revenues_ecom_miss==1
 
-replace dig_revenues_ecom = 0 if dig_revenues_ecom==.
+eststo dig_rev7, r:reg ihs_w95_dig_rev20_imputed i.treatment l.ihs_w95_dig_rev20_imputed dig_revenues_ecom_miss i.strata, cluster(id_plateforme)
+estadd local bl_control "Yes"
+estadd local strata "Yes"
 
 
-*/
+***********************************************************************
+* 	PART 2: Digital revenues (missing values to zero and dummy out)		
+***********************************************************************
+local ml_results ki3 ki6 pres3 pres6 dig_mark3 dig_mark6 dig_rev3 dig_rev6
+esttab `ml_results' using "reg_table_ml.tex", replace ///
+	mgroups("E-commerce & Dig.Marketing Knowledge" "Online presence" "Digital marketing" "E-commerce revenues", ///
+		pattern(1 0 1 0 1 0 1 0)) ///
+	mtitles("ATE" "LATE" "ATE" "LATE" "ATE" "LATE" "ATE" "LATE" ) ///
+	label ///
+	b(3) ///
+	se(3) ///
+	drop(*.strata) ///
+	star(* 0.1 ** 0.05 *** 0.01) ///
+	nobaselevels ///
+	scalars("strata Strata controls" "bl_control Baseline control") ///
+	addnotes("All estimates are ANCOVA estimations, controlling for baseline values of the outcomes and strata." "Standard errors are clustered at the firm level to account for multiple observations per firm.")
