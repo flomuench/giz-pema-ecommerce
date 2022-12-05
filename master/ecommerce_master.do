@@ -200,4 +200,7 @@ if (0) do "${master_github}/master_power.do"
 	PART 4.2: Regressions
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_regressions.do"
-
+/* --------------------------------------------------------------------
+	PART 4.2: Regressions
+----------------------------------------------------------------------*/
+if (1) do "${master_github}/master_heterogeneity.do"

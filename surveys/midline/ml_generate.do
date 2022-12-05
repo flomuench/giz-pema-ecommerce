@@ -132,15 +132,15 @@ gen dig_con4_taux_eng3 = 0
 replace dig_con4_taux_eng3=0.33 if ustrregexm(dig_taux_eng, "3")
 
 gen dig_con4_taux_eng4 = 0
-replace dig_con4_taux_eng4=-0.99 if ustrregexm(dig_taux_eng, "4")
+replace dig_con4_taux_eng4=-1 if ustrregexm(dig_taux_eng, "4")
 
 gen dig_con4_taux_eng5 = 0
 replace dig_con4_taux_eng5=-1 if ustrregexm(dig_taux_eng, "-999")
 
 gen dig_con4_ml = dig_con4_taux_eng1 + dig_con4_taux_eng2 + dig_con4_taux_eng3+ dig_con4_taux_eng4 + dig_con4_taux_eng5
-lab var dig_con4_ml "Correct answers to knowledge question on commitment rate" 
+lab var dig_con4_ml "Correct answers to knowledge question on engagement rate" 
 
-replace dig_con4_ml=0.01 if dig_con4_ml> 0 & dig_con4_ml< 0.1
+replace dig_con4_ml=0 if dig_con4_ml> 0 & dig_con4_ml< 0.1
 drop dig_taux_eng
 
 gen dig_con5_techniques_seo1 = 0

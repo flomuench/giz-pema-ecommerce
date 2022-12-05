@@ -25,9 +25,12 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 *generate take up variable
 gen take_up = (present>2 & present<.), a(present)
 lab var take_up "1 if company was present in 3/5 trainings"
+label define treated 0 "not present" 1 "present"
+label value take_up treated
 
 gen take_up2 = (present>0 & present<.), a(take_up)
 lab var take_up2 "1 if present in at least one training"
+label value take_up2 treated
 
 * to check
 *br id_plateforme surveyround treatment present take_up take_up2
@@ -374,9 +377,18 @@ bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up
 replace take_up2=0 if take_up2==. 
 
 *Completing other relevant static controls
-local complet strata sector subsector rg_age
+local complet strata sector subsector rg_age present
 foreach var of local complet{
 bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
 }
+
+*status variable for graphs
+gen status=0
+replace status=1 if treatment==1 & take_up==0
+replace status=2 if treatment==1 & take_up==1
+lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
+label define status1 0 "Control" 1 "T-not present" 2"T-present"
+label value status status1
+
 
 save "${master_final}/ecommerce_master_final", replace

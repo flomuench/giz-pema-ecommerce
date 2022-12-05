@@ -17,7 +17,7 @@
 ***********************************************************************
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
-use "${master_intermediate}/ecommerce_master_final", clear
+use "${master_final}/ecommerce_master_final", clear
 		
 		* change directory to regis folder for merge with regis_final
 cd "${master_gdrive}/output"
@@ -25,13 +25,13 @@ cd "${master_gdrive}/output"
 *Check whether balance table changed with new z-score calculation
 iebaltab fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
 comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
-  expprep, grpvar(treatment) ftest save(baltab_baseline) replace ///
+  expprep if surveyround==1, grpvar(treatment) ftest save(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
-			 
+	*latex file		 
 iebaltab fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
 comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz platform_indexz dig_marketing_index facebook_likes ///
-  expprep, grpvar(treatment) ftest savetex(baltab_baseline) replace ///
+  expprep  if surveyround==1, grpvar(treatment) ftest savetex(baltab_baseline) replace ///
 			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev notecombine ///
 			 format(%12.2fc)
 			 
@@ -49,12 +49,32 @@ tab take_up subsector if treatment==1
 *OBSERVATION: 11 out of the 38 companies that did not show up for at least 3 trainings are from agriculture. 
 
 ***********************************************************************
-* 	PART 2: Some regressions
+* 	PART 2: Midline Attrition- balance checks
 ***********************************************************************
-reg ihs_exports95 ihs_revenue95 agri artisanat commerce_int industrie service tic ///
-  dig_marketing_index fte car_pdg_age rg_age , robust
+	*re-do baseline balance table for midline responders		 
+reg treatment fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits exp_pays_avg exporter2020  ///
+ knowledge_index dig_presence_weightedz dig_marketing_index facebook_likes ///
+  expprep if surveyround==1 & ml_attrit==0 
   
+iebaltab fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits exp_pays_avg exporter2020  ///
+ knowledge_index dig_presence_weightedz dig_marketing_index facebook_likes ///
+  expprep  if surveyround==1 & ml_attrit==0 , grpvar(treatment) savetex(baltab_midline_compliers) replace ///
+			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev ///
+			 format(%12.2fc) tblnote("Robust standard errors in parentheses." "P-value of joint orthogonality: 0.97") 
+			 
   
+  *re-do baseline balance table for midline attriters
+  reg treatment fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits exp_pays_avg exporter2020  ///
+ knowledge_index dig_presence_weightedz dig_marketing_index facebook_likes ///
+  expprep if surveyround==1 & ml_attrit==1
+  
+iebaltab fte ihs_exports95 ihs_revenue95 ihs_w95_dig_rev20 ihs_profits exp_pays_avg exporter2020  ///
+ knowledge_index dig_presence_weightedz dig_marketing_index facebook_likes ///
+  expprep  if surveyround==1 & ml_attrit==1 , grpvar(treatment) savetex(baltab_midline_compliers) replace ///
+			 vce(robust) pttest rowvarlabels balmiss(mean) onerow stdev ///
+			 format(%12.2fc) tblnote("Robust standard errors in parentheses." "P-value of joint orthogonality: 0.95") 
+			 
+
  ***********************************************************************
 * 	PART 3: Outlier checks
 *********************************************************************** 
@@ -141,12 +161,12 @@ putpdf pagebreak
 
 	* For comparison, the 'share' index: 
 	
-hist knowledge_share, ///
-	title("Share of knowledge questions answered correct") ///
-	xtitle("%")
-graph export knowledge_share.png, replace
+hist raw_knowledge, ///
+	title("Total points on knowledge questions ") ///
+	xtitle("Points")
+graph export raw_knowledge.png, replace
 putpdf paragraph, halign(center) 
-putpdf image knowledge_share.png
+putpdf image raw_knowledge.png
 putpdf pagebreak
 
 
@@ -726,12 +746,12 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 putpdf paragraph, halign(center) 
 
 gr tw ///
-	(kdensity knowledge_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram knowledge_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity knowledge_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram knowledge_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity knowledge_index_ml if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram knowledge_index_ml if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	(kdensity knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity knowledge_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity knowledge_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
 	, ///
 	title("{bf:Midline Distribution of Knowledge Index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
@@ -743,10 +763,10 @@ gr tw ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
                c(1) pos(6) ring(6)) ///
-	name(knowledge_index_ml, replace)
-graph export knowledge_index_ml.png, replace
+	name(knowledge_index, replace)
+graph export knowledge_index.png, replace
 putpdf paragraph, halign(center) 
-putpdf image knowledge_index_ml.png
+putpdf image knowledge_index.png
 putpdf pagebreak
 
 gr tw ///
@@ -798,12 +818,12 @@ putpdf image perception_index_ml.png
 putpdf pagebreak
 
 gr tw ///
-	(kdensity dig_presence_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram dig_presence_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity dig_presence_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram dig_presence_index_ml if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity dig_presence_index_ml if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram dig_presence_index_ml if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	(kdensity dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_presence_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity dig_presence_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
 	, ///
 	title("{bf:Midline Distribution of Digital Presence Index}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
@@ -815,10 +835,10 @@ gr tw ///
                      2 "Treatment group, absent (N=29 firms)" ///
 					 3 "Control group (N=95 firms)") ///
                c(1) pos(6) ring(6)) ///
-	name(dig_presence_index_ml, replace)
-graph export dig_presence_index_ml.png, replace
+	name(dig_presence_index, replace)
+graph export dig_presence_index.png, replace
 putpdf paragraph, halign(center) 
-putpdf image dig_presence_index_ml.png
+putpdf image dig_presence_index.png
 putpdf pagebreak
 
 gr tw ///
@@ -921,6 +941,95 @@ putpdf save "midline_index_statistics", replace
 
 
 ***********************************************************************
-* 	PART 3:  Who are the digitally advanced firms? 
+* 	PART 3:  Additional explorations based on regressions
 ***********************************************************************
+set scheme burd
+cd "${master_gdrive}/output/key_graphs"
+corr ihs_w95_dig_rev20 knowledge_index if surveyround==2  
+local corr : di %4.3f r(rho)
+twoway scatter ihs_w95_dig_rev20 knowledge_index if surveyround==2  || lfit ihs_w95_dig_rev20 knowledge_index if surveyround==2 , ytitle("IHS of E-commerce revenues 2022") xtitle("Knowledge index (z-score)") subtitle(correlation `corr')
+
+graph bar (mean) knowledge_index if surveyround==2, over(treatment, label(labs(vsmall))) over(sector, label(labs(vsmall))) ///
+	title("Knowledge Index by sector") ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Average z-score") 
+graph export k_index_sector.png, replace
+
+corr rg_age knowledge_index if surveyround==2  
+local corr : di %4.3f r(rho)
+twoway scatter rg_age knowledge_index if surveyround==2  || lfit rg_age knowledge_index if surveyround==2 , ytitle("Firm age in years") xtitle("Knowledge index (z-score)") subtitle(correlation `corr')
+
+preserve
+collapse (mean) knowledge_index, by(surveyround treatment)
+twoway (connected knowledge_index surveyround if treatment==1) (connected knowledge_index surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control) )
+graph export did_plot1.png, replace
+restore 
+
+preserve
+collapse (mean) dig_revenues_ecom, by(surveyround treatment)
+twoway (connected dig_revenues_ecom surveyround if treatment==1) (connected dig_revenues_ecom surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control))
+graph export did_plot2.png, replace
+restore 
+
+
+graph bar (mean) dig_con1_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
+	title("Knowledge of means of online payment") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Sum of points") 
+graph export dig_con1.png, replace
+
+graph bar (mean) dig_con2_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
+	title("What chararizes good digital content") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Sum of points") 
+graph export dig_con2.png, replace
+
+graph bar (mean) dig_con3_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
+	title("What information can be found on google analytics") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Sum of points") 
+graph export dig_con3.png, replace
+	
+graph bar (mean) dig_con4_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
+	title("What are the components of the engagement rate indicator?") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle(Sum of points") 
+graph export dig_con4.png, replace
+	
+	
+graph bar (mean) dig_con5_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
+	title("Which of the following are techniques used in SEO?") ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Sum of points") 
+graph export dig_con5.png, replace
+
+graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if surveyround==2, over(status, label(labs(vsmall))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Sum of points") ///
+	legend(pos (6) label(1 "Q1") label(2 "Q2") label(3 "Q3") label(4 "Q4") label(5 "Q5"))
+graph export knowledge_decomp.png, replace
+
+corr present knowledge_index if surveyround==2  & treatment==1
+local corr : di %4.3f r(rho)
+twoway scatter present knowledge_index if treatment==1 &  surveyround==2  || lfit present knowledge_index if treatment==1 & surveyround==2 , ytitle("No. of times visited workshop") xtitle("Knowledge index (z-score)") title("Correlation between presence and knowledge absorption") subtitle(correlation `corr')
+graph export corr_presence1.png, replace
+
+corr present knowledge_index if surveyround==2  & present>2
+local corr : di %4.3f r(rho)
+twoway scatter present knowledge_index if present>2 &  surveyround==2  || lfit present knowledge_index if present>2 & surveyround==2 , ytitle("No. of times visited workshop") xtitle("Knowledge index (z-score)") title("Correlation between presence and knowledge absorption") subtitle(correlation `corr')
+graph export corr_presence2.png, replace
+
+corr present knowledge_index if surveyround==2 
+local corr : di %4.3f r(rho)
+twoway scatter present knowledge_index if present>2 &  surveyround==2  || lfit present knowledge_index if present>2 & surveyround==2 , ytitle("No. of times visited workshop") xtitle("Knowledge index (z-score)") title("Correlation between presence and knowledge absorption") subtitle(correlation `corr')
+graph export corr_presence2.png, replace
+
+
+bysort id_plateforme (surveyround): replace ihs_revenue95 = ihs_revenue95[_n-1] /// 
+	if ihs_revenue95 == .
+corr present ihs_revenue95 knowledge_index if surveyround==2 
+local corr : di %4.3f r(rho)
+twoway scatter ihs_revenue95 knowledge_index if surveyround==2  || lfit ihs_revenue95 knowledge_index if surveyround==2 , ytitle("IHS Total Revenue") xtitle("Knowledge index (z-score)") title("Correlation between sales and knowledge absorption") subtitle(correlation `corr')
+graph export corr_sales_knowledge.png, replace
+replace ihs_revenue95=. if surveyround==2
 
