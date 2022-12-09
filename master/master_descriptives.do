@@ -977,18 +977,16 @@ twoway scatter ihs_w95_dig_rev20 knowledge_index if surveyround==2  || lfit ihs_
 
 
 * Distribution of knowledge index
-preserve
 collapse (mean) knowledge_index, by(surveyround treatment)
 twoway (connected knowledge_index surveyround if treatment==1) (connected knowledge_index surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control) )
 graph export did_plot1.png, replace
-restore 
+ 
 
 * Distribution of digital revenues
-preserve
 collapse (mean) dig_revenues_ecom, by(surveyround treatment)
 twoway (connected dig_revenues_ecom surveyround if treatment==1) (connected dig_revenues_ecom surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control))
 graph export did_plot2.png, replace
-restore 
+ 
 
 graph bar (mean) knowledge_index if surveyround==2, over(treatment, label(labs(vsmall))) over(sector, label(labs(vsmall))) ///
 	title("Knowledge Index by sector") ///
@@ -1056,3 +1054,38 @@ twoway scatter ihs_revenue95 knowledge_index if surveyround==2  || lfit ihs_reve
 graph export corr_sales_knowledge.png, replace
 replace ihs_revenue95=. if surveyround==2
 
+
+***********************************************************************
+* 	PART 4:  Graphs for the GIZ presentations
+***********************************************************************
+set scheme burd
+
+cd "${master_gdrive}/output/GIZ_presentation_graphs"
+
+* Generate graphs for the knowmedge questions
+graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if surveyround==2, over(status, label(labs(vsmall))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Sum of points") ///
+	legend(pos (6) label(1 "Means of payment") label(2 "Digital Content") label(3 "Google Analytics") label(4 "Commitment Rate ") label(5 "SEO"))
+graph export knowledge_decomp.png, replace
+
+
+* Generate graphs to see difference of digital revenues between baseline & midline
+
+collapse (mean) dig_revenues_ecom, by(surveyround treatment)
+twoway (connected dig_revenues_ecom surveyround if treatment==0) (connected dig_revenues_ecom surveyround if treatment==1), xline(1.5) xlabel (1(1)2) ytitle("Mean of digital revenues") xtitle("1- Baseline 2- Midline ") legend(label(1 Treatment) label(2 Control) label(3 Take up) label(4 Absent)) 
+graph export did_plot2.png, replace
+drop real_treament absent_treament
+ 
+
+gen real_treament = 0
+replace real_treament=1 if treatment==1 & take_up == 1
+label var real_treament "Companies that are part of the treatment group and are part of the treatement"
+gen absent_treament = 0
+replace absent_treament=1 if treatment==1 & take_up == 0
+label var absent_treament "Companies that are part of the treatment group and are absent of the treatment "
+collapse (mean) dig_revenues_ecom, by(surveyround treatment absent_treament real_treament)
+twoway (connected dig_revenues_ecom surveyround if treatment==0) (connected dig_revenues_ecom surveyround if real_treament==1) (connected dig_revenues_ecom surveyround if absent_treament ==1 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of digital revenues") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Take up) label(3 Absent)) 
+graph export did_plot2_details.png, replace
+drop real_treament absent_treament
+ 
