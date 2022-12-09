@@ -9,7 +9,7 @@
 *				PART 3: Endline 
 *				PART 4: Intertemporal descriptive statistics															
 *																	  
-*	Author:  	Fabian Scheifele & Kaïs Jomaa							    
+*	Author:  	Fabian Scheifele							    
 *	ID variable: id_platforme		  					  
 *	Requires:  	 ecommerce_data_final.dta
 
@@ -83,54 +83,45 @@ winsor dom_rev2020, gen(w97_dom_rev2020) p(0.03) highonly
 stripplot w_dom_rev2020 dom_rev2020 w95_dom_rev2020 w97_dom_rev2020
 graph export dom_rev2020_outlier.png, replace
 
-* Histogram for Domestic Revenues winsorized 95
 twoway (hist w_dom_rev2020, frac lcolor(gs12) fcolor(gs12)) ///
 (hist w95_dom_rev2020, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("Domestic Revenues 99th (red: Domestic Revenues winsorized 95)") 
 
-*Stripplot for export accounting values
 stripplot compexp_2020  w99_compexp w97_compexp w95_compexp
 graph export compexp_2020_outlier.png, replace
 
-* Histogram for Export Revenues winsorized 95
 twoway (hist w99_compexp, frac lcolor(gs12) fcolor(gs12)) ///
 (hist w95_compexp, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("Export Revenues 99 (red: Export Revenues winsorized 95)")  
 graph export compexp_2020_hist.png, replace
 
-* Histogram for IHS export 95
 twoway (hist ihs_exports99, frac lcolor(gs12) fcolor(gs12)) ///
 (hist ihs_exports95, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("IHS export 99 (red: IHS export 95)")  
 graph export ihs_exports95_hist.png, replace
 
-*Stripplot for accounting values
 stripplot comp_ca2020  w99_comp_ca2020 w97_comp_ca2020 w95_comp_ca2020
 graph export comp_ca2020_outlier.png, replace
 
-* Histogram for Total Revenues winsorized 95
 twoway (hist w99_comp_ca2020, frac lcolor(gs12) fcolor(gs12)) ///
 (hist w95_comp_ca2020, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("Total Revenues 99 (red: Total Revenues winsorized 95)")  
 graph export comp_ca2020_hist.png, replace
 
-* Histogram for IHS revenue 95
 twoway (hist ihs_revenue99, frac lcolor(gs12) fcolor(gs12)) ///
 (hist ihs_revenue95, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("IHS revenue 99 (red: IHS revenue 95)")  
 graph export ihs_revenue_hist.png, replace
  
-*Stripplot for digital revenues
+ 
 stripplot dig_revenues_ecom w99_dig_rev20 w97_dig_rev20 w95_dig_rev20
 graph export dig_revenue_strip.png, replace
 
-* Histogram for Dig Revenues winsorized 95
 twoway (hist w99_dig_rev20, frac lcolor(gs12) fcolor(gs12)) ///
 (hist w95_dig_rev20, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("Dig Revenues 99 (red: Dig Revenues winsorized 95)")  
 graph export digrev2020_hist.png, replace
 
-* Histogram for IHS dig revenue 95
 twoway (hist ihs_w99_dig_rev20, frac lcolor(gs12) fcolor(gs12)) ///
 (hist ihs_w95_dig_rev20, frac fcolor(none) lcolor(red)), ///
 legend(off) xtitle("IHS dig revenue 99 (red: IHS dig revenue 95)")  
@@ -169,6 +160,7 @@ putpdf image knowledge_zscores.png
 putpdf pagebreak
 
 	* For comparison, the 'share' index: 
+	
 hist raw_knowledge, ///
 	title("Total points on knowledge questions ") ///
 	xtitle("Points")
@@ -186,7 +178,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence1.png
 putpdf pagebreak
 
-*Number of firms with a social media account
 graph hbar (count),  over(dig_presence2) blabel (bar) ///
 	title("No. of firms with a social media account")
 graph export dig_presence2.png, replace
@@ -194,7 +185,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence2.png
 putpdf pagebreak
 
-*Number of firms present on an online marketplace
 graph hbar (count),  over(dig_presence3) blabel (bar) ///
 	title("Number of firms present on an online marketplace")
 graph export dig_presence3.png, replace
@@ -202,7 +192,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence3.png
 putpdf pagebreak
 
-*Platforms used at baseline
 graph hbar (sum)dig_presence3_ex1 dig_presence3_ex2 dig_presence3_ex3 dig_presence3_ex4 dig_presence3_ex5 dig_presence3_ex6 dig_presence3_ex7 dig_presence3_ex8 ,blabel (bar) ///
 legend(label(1 "Little Jneina") label(2 "El Fabrica") label(3 "Savana") label(4 "Jumia") label(5 "Amazon") label(6 "Alibaba") label(7 "Etsy") label(8 "Other")) title("Platforms used at baseline")
 graph export platforms_used.png, replace
@@ -210,7 +199,6 @@ putpdf paragraph, halign(center)
 putpdf image platforms_used.png
 putpdf pagebreak
 
-*Description and updating of channel
 graph hbar (mean) dig_description1 dig_description2 dig_description3 ///
 	dig_miseajour1 dig_miseajour2 dig_miseajour3, blabel (bar) ///
 legend(pos(9) cols(1) label(1 "1:Website desc.") label(2 "Social media desc.") label(3 "Platform desc.") label(4 "Website updating") label(5 "Social media updating") label(6 "Platform updating")) ///
@@ -220,7 +208,7 @@ putpdf paragraph, halign(center)
 putpdf image description_updates.png
 putpdf pagebreak
 
-*Website: paying and ordering online
+
 graph hbar (count), over(dig_payment1) blabel (bar) ///
 	title("Website: paying and ordering online") ///
 	subtitle("1=paying and ordering, 0.5=ordering only")
@@ -229,7 +217,7 @@ putpdf paragraph, halign(center)
 putpdf image dig_payment1.png
 putpdf pagebreak
 
-*Social Media: paying and ordering online
+
 graph hbar (count), over(dig_payment2) blabel (bar) ///
  title("Social Media: paying and ordering online") ///
  subtitle("1=paying and ordering, 0.5=ordering only")
@@ -238,7 +226,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_payment2.png
 putpdf pagebreak
 
-*Platform: paying and ordering online
 graph hbar (count), over(dig_payment3) blabel (bar) ///
 title("Platform: paying and ordering online") subtitle("1=paying and ordering, 0.5=ordering only")
 graph export dig_payment3.png, replace
@@ -246,7 +233,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_payment3.png
 putpdf pagebreak
 
-*Histogram of the weighted z-score: Online presence
 hist dig_presence_weightedz, ///
 title("Weighted z-score: Online presence") 
 graph export dig_presence_weightedz.png, replace
@@ -254,7 +240,7 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence_weightedz.png
 putpdf pagebreak
 
-*Histogram of the z-score: Web presence
+
 hist webindexz, ///
 title("z-score: Web presence") 
 graph export webindexz.png, replace
@@ -262,7 +248,6 @@ putpdf paragraph, halign(center)
 putpdf image webindexz.png
 putpdf pagebreak
 
-*Histogram of the share of web presence
 hist web_share, ///
 title("Share of Web presence") 
 graph export web_share.png, replace
@@ -270,7 +255,7 @@ putpdf paragraph, halign(center)
 putpdf image web_share.png
 putpdf pagebreak
 
-*Histogram of the z-score: Social media presence
+
 hist social_media_indexz, ///
 title("z-score: Social media presence") 
 graph export social_media_indexz.png, replace
@@ -278,7 +263,6 @@ putpdf paragraph, halign(center)
 putpdf image social_media_indexz.png
 putpdf pagebreak
 
-*Histogram of the share of social media presence
 hist social_m_share, ///
 title("Share of Social media presence") 
 graph export social_m_share.png, replace
@@ -286,7 +270,7 @@ putpdf paragraph, halign(center)
 putpdf image social_m_share.png
 putpdf pagebreak
 
-*Histogram of the z-score: Platform presence
+
 hist platform_indexz, ///
 title("z-score: Platform presence") 
 graph export platform_indexz.png, replace
@@ -301,7 +285,6 @@ putpdf paragraph, halign(center)
 putpdf image platform_share.png
 putpdf pagebreak
 
-*Number of companies that have sold online in 2021
 graph hbar (count), over(dig_vente) blabel(total) ///
 title("Number of companies that have sold online in 2021")
 graph export dig_vente.png, replace
@@ -326,6 +309,7 @@ graph hbar (count) , over(dig_service_responsable_bin) blabel (bar) ///
 legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have someone that manages online orders?")
 
+
 hist dig_marketing_index, ///
 	title("Average of Z-scores: Digital marketing practices") ///
 	xtitle("Zscores")
@@ -335,6 +319,7 @@ putpdf image dig_marketing_index.png
 putpdf pagebreak
 
 	* For comparison, the shares: 
+	
 hist dig_marketing_share, ///
 	title("Share of digital marketing practices") ///
 	xtitle("Sum")
@@ -344,6 +329,7 @@ putpdf image dig_marketing_share.png
 putpdf pagebreak
 
 	* Export preparation Z-scores
+	
 hist expprep, ///
 	title("Zscores of export preparation questions") ///
 	xtitle("Zscores")
@@ -353,6 +339,7 @@ putpdf image expprep_zscores.png
 putpdf pagebreak
 	
 	* For comparison, the 'raw' index:
+	
 hist raw_expprep, ///
 	title("Raw sum of all export preparation questions") ///
 	xtitle("Sum")
@@ -360,6 +347,7 @@ graph export raw_expprep.png, replace
 putpdf paragraph, halign(center) 
 putpdf image raw_expprep.png
 putpdf pagebreak
+
 
 
 *Scatter plot comparing exports and Chiffre d'affaire (0,44 correlation there are 5 firms with high CA and little or no exports)
@@ -402,7 +390,6 @@ putpdf pagebreak
 ***********************************************************************
 * 	PART 3:  Who are the digitally advanced firms? 
 ***********************************************************************
-* Number of firms by sectors & subsectors
 graph hbar (count), over(subsector, sort(1) descending label(labs(vsmall))) blabel(bar) ///
  title("Number of firms by subsector")
 graph export count_subsector.png, replace
@@ -415,7 +402,6 @@ putpdf paragraph, halign(center)
 putpdf image count_sector.png
 putpdf pagebreak
 
-*Z-score & share of online presence (web, social media, plateform)
 graph hbar dig_presence_weightedz, over(sector) blabel (bar) ///
 	title("Weighted Z-score index of online presence") 
 graph export dig_presence_weightedz_sector.png, replace
@@ -431,6 +417,7 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence_weightedz_sector.png
 putpdf pagebreak
 
+
 graph hbar webindexz, over(sector) blabel (bar) ///
 	title("Z-score index of web presence") 
 graph export webindexz_sector.png, replace
@@ -444,6 +431,7 @@ graph export web_share_sector.png, replace
 putpdf paragraph, halign(center) 
 putpdf image web_share_sector.png
 putpdf pagebreak
+
 
 graph hbar social_media_indexz, over(sector) blabel (bar) ///
 	title("Z-score index of social media presence") 
@@ -459,6 +447,7 @@ putpdf paragraph, halign(center)
 putpdf image web_share_sector.png
 putpdf pagebreak
 
+
 graph hbar platform_indexz, over(sector) blabel (bar) ///
 	title("Z-score index of platform presence") 
 graph export platform_indexz_sector.png, replace
@@ -473,7 +462,6 @@ putpdf paragraph, halign(center)
 putpdf image platform_share_sector.png
 putpdf pagebreak
 
-* Descriptive statistics on export preparation
 graph hbar (count), over(expprep_cible) blabel(bar) ///
 	title("Number of firms that have done (1) or plan(0.5) an export market analysis", size(small))
 graph export expprep_cible.png, replace
@@ -757,7 +745,6 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 
 putpdf paragraph, halign(center) 
 
-* Midline Knowledge Index
 gr tw ///
 	(kdensity knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
 	(histogram knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
@@ -782,7 +769,6 @@ putpdf paragraph, halign(center)
 putpdf image knowledge_index.png
 putpdf pagebreak
 
-* Midline Digital Marketing index
 gr tw ///
 	(kdensity dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
 	(histogram dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
@@ -807,7 +793,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_marketing_index_ml.png
 putpdf pagebreak
 
-* Midline Perception index
 gr tw ///
 	(kdensity perception_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
 	(histogram perception_index_ml if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
@@ -832,7 +817,6 @@ putpdf paragraph, halign(center)
 putpdf image perception_index_ml.png
 putpdf pagebreak
 
-* Midline Digital Presence index
 gr tw ///
 	(kdensity dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
 	(histogram dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
@@ -857,6 +841,77 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence_index.png
 putpdf pagebreak
 
+gr tw ///
+	(kdensity webindexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram webindexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity webindexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram webindexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity webindexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram webindexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Web Presence index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Web Presence index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(webindexz_ml, replace)
+graph export webindexz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image webindexz_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity social_media_indexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram social_media_indexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity social_media_indexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram social_media_indexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity social_media_indexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram social_media_indexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Social Media index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Social Media index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(social_media_indexz_ml, replace)
+graph export social_media_indexz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image social_media_indexz_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity platform_indexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram platform_indexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity platform_indexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram platform_indexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity platform_indexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram platform_indexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Plateform index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Plateform index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated (N=75 firms)" ///
+                     2 "Treatment group, absent (N=29 firms)" ///
+					 3 "Control group (N=95 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(platform_indexz_ml, replace)
+graph export platform_indexz_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image platform_indexz_ml.png
+putpdf pagebreak
 
 gr tw ///
 	(kdensity dig_presence_weightedz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
@@ -882,81 +937,6 @@ putpdf paragraph, halign(center)
 putpdf image dig_presence_weightedz_ml.png
 putpdf pagebreak
 
-* Midline Web index
-gr tw ///
-	(kdensity webindexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram webindexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity webindexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram webindexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity webindexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram webindexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
-	, ///
-	title("{bf:Midline Web Presence index}") ///
-	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("Web Presence index") ///
-	ytitle("Number of observations", axis(1)) ///
-	ytitle("Densitiy", axis(2)) ///
-	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
-               c(1) pos(6) ring(6)) ///
-	name(webindexz_ml, replace)
-graph export webindexz_ml.png, replace
-putpdf paragraph, halign(center) 
-putpdf image webindexz_ml.png
-putpdf pagebreak
-
-* Midline Social media index
-gr tw ///
-	(kdensity social_media_indexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram social_media_indexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity social_media_indexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram social_media_indexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity social_media_indexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram social_media_indexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
-	, ///
-	title("{bf:Midline Social Media index}") ///
-	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("Social Media index") ///
-	ytitle("Number of observations", axis(1)) ///
-	ytitle("Densitiy", axis(2)) ///
-	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
-               c(1) pos(6) ring(6)) ///
-	name(social_media_indexz_ml, replace)
-graph export social_media_indexz_ml.png, replace
-putpdf paragraph, halign(center) 
-putpdf image social_media_indexz_ml.png
-putpdf pagebreak
-
-* Midline Platform index
-gr tw ///
-	(kdensity platform_indexz if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram platform_indexz if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity platform_indexz if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram platform_indexz if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity platform_indexz if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram platform_indexz if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
-	, ///
-	title("{bf:Midline Plateform index}") ///
-	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("Plateform index") ///
-	ytitle("Number of observations", axis(1)) ///
-	ytitle("Densitiy", axis(2)) ///
-	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
-               c(1) pos(6) ring(6)) ///
-	name(platform_indexz_ml, replace)
-graph export platform_indexz_ml.png, replace
-putpdf paragraph, halign(center) 
-putpdf image platform_indexz_ml.png
-putpdf pagebreak
-
 putpdf save "midline_index_statistics", replace
 
 
@@ -965,30 +945,9 @@ putpdf save "midline_index_statistics", replace
 ***********************************************************************
 set scheme burd
 cd "${master_gdrive}/output/key_graphs"
-
-* Correlation between knowledge index & age
-corr rg_age knowledge_index if surveyround==2  
-local corr : di %4.3f r(rho)
-twoway scatter rg_age knowledge_index if surveyround==2  || lfit rg_age knowledge_index if surveyround==2 , ytitle("Firm age in years") xtitle("Knowledge index (z-score)") subtitle(correlation `corr')
-
 corr ihs_w95_dig_rev20 knowledge_index if surveyround==2  
 local corr : di %4.3f r(rho)
 twoway scatter ihs_w95_dig_rev20 knowledge_index if surveyround==2  || lfit ihs_w95_dig_rev20 knowledge_index if surveyround==2 , ytitle("IHS of E-commerce revenues 2022") xtitle("Knowledge index (z-score)") subtitle(correlation `corr')
-
-
-* Distribution of knowledge index
-preserve
-collapse (mean) knowledge_index, by(surveyround treatment)
-twoway (connected knowledge_index surveyround if treatment==1) (connected knowledge_index surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control) )
-graph export did_plot1.png, replace
-restore 
-
-* Distribution of digital revenues
-preserve
-collapse (mean) dig_revenues_ecom, by(surveyround treatment)
-twoway (connected dig_revenues_ecom surveyround if treatment==1) (connected dig_revenues_ecom surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control))
-graph export did_plot2.png, replace
-restore 
 
 graph bar (mean) knowledge_index if surveyround==2, over(treatment, label(labs(vsmall))) over(sector, label(labs(vsmall))) ///
 	title("Knowledge Index by sector") ///
@@ -996,7 +955,23 @@ graph bar (mean) knowledge_index if surveyround==2, over(treatment, label(labs(v
 	ytitle("Average z-score") 
 graph export k_index_sector.png, replace
 
-* Knowledge questions distributions: distributuion, correlation
+corr rg_age knowledge_index if surveyround==2  
+local corr : di %4.3f r(rho)
+twoway scatter rg_age knowledge_index if surveyround==2  || lfit rg_age knowledge_index if surveyround==2 , ytitle("Firm age in years") xtitle("Knowledge index (z-score)") subtitle(correlation `corr')
+
+preserve
+collapse (mean) knowledge_index, by(surveyround treatment)
+twoway (connected knowledge_index surveyround if treatment==1) (connected knowledge_index surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control) )
+graph export did_plot1.png, replace
+restore 
+
+preserve
+collapse (mean) dig_revenues_ecom, by(surveyround treatment)
+twoway (connected dig_revenues_ecom surveyround if treatment==1) (connected dig_revenues_ecom surveyround if treatment==0), xline(1.5) xlabel (1(1)2) legend(label(1 Treated) label(2 Control))
+graph export did_plot2.png, replace
+restore 
+
+
 graph bar (mean) dig_con1_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
 	title("Knowledge of means of online payment") ///
 	blabel(total, format(%9.2fc)) ///
@@ -1014,12 +989,13 @@ graph bar (mean) dig_con3_ml if surveyround==2, over(take_up, label(labs(small))
 	blabel(total, format(%9.2fc)) ///
 	ytitle("Sum of points") 
 graph export dig_con3.png, replace
-
+	
 graph bar (mean) dig_con4_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
 	title("What are the components of the engagement rate indicator?") ///
 	blabel(total, format(%9.2fc)) ///
 	ytitle(Sum of points") 
 graph export dig_con4.png, replace
+	
 	
 graph bar (mean) dig_con5_ml if surveyround==2, over(take_up, label(labs(small))) over(treatment, label(labs(vsmall))) ///
 	title("Which of the following are techniques used in SEO?") ///
@@ -1047,6 +1023,7 @@ corr present knowledge_index if surveyround==2
 local corr : di %4.3f r(rho)
 twoway scatter present knowledge_index if present>2 &  surveyround==2  || lfit present knowledge_index if present>2 & surveyround==2 , ytitle("No. of times visited workshop") xtitle("Knowledge index (z-score)") title("Correlation between presence and knowledge absorption") subtitle(correlation `corr')
 graph export corr_presence2.png, replace
+
 
 bysort id_plateforme (surveyround): replace ihs_revenue95 = ihs_revenue95[_n-1] /// 
 	if ihs_revenue95 == .
