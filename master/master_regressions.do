@@ -263,6 +263,8 @@ esttab `regressions' using "presence_reg.tex", replace ///
 	scalars("strata Strata controls" "bl_control Y0 control") ///
 	addnotes("Column (1) presents estimates for a simple mean comparison between treatment and control group at midline."  "Column (2) presents an ANCOVA specification without strata controls." "Column (3) presents an ANCOVA specification with strata controls." "Column (4) provides estimates from a difference-in-difference specification." "Columns (5) & (6) estimates are based on 2SLS instrumental variable estimation where treatment assignment is the instrument for treatment participation." "(1) uses robust standard errors. In (2)-(6) standard errors are clustered at the firm level to account for multiple observations per firm")
 
+	
+
 ***********************************************************************
 * 	PART 1.3: Digital marketing index		
 ***********************************************************************
@@ -346,6 +348,8 @@ eststo dig_rev2, r: reg ihs_w95_dig_rev20 i.treatment l.ihs_w95_dig_rev20, clust
 estadd local bl_control "Yes"
 estadd local strata "No"
 
+
+
 			* ancova with stratification dummies
 eststo dig_rev3, r: reg ihs_w95_dig_rev20 i.treatment l.ihs_w95_dig_rev20 i.strata, cluster(id_plateforme)
 estadd local bl_control "Yes"
@@ -414,3 +418,35 @@ esttab `ml_results' using "reg_table_ml.tex", replace ///
 	nobaselevels ///
 	scalars("strata Strata controls" "bl_control Baseline control") ///
 	addnotes("All estimates are ANCOVA estimations, controlling for baseline values of the outcomes and strata." "Standard errors are clustered at the firm level to account for multiple observations per firm.")
+
+	
+***********************************************************************
+* 	PART 3: Plot the regression estimates		
+***********************************************************************
+set scheme burd
+
+*Plotting the regression estimates of the midline
+cd "${master_gdrive}/output/GIZ_presentation_graphs"
+coefplot ki3 pres3 dig_mark3 dig_rev3, bylabel("Average Treatment Effect (Treatment vs. Control)") keep (*treatment) drop(take_up _cons)  xline(0) ///
+	coeflabels(*treatment = "Treatment", labsize(vsmall)) ///
+	xlabel(-1(0.5)2,labsize(vsmall)) xscale(range(-1(0.5)2)) /// 
+	xtitle("Standardized Coefficients", size (vsmall)) ///
+	leg(off) ///
+	title("Average Treatment Effect (Treatment vs. Control)", size (small) pos(12) span) ///
+	saving(midline_treatment_coefplot, replace)  fysize(40)
+
+coefplot ki6 pres6 dig_mark6 dig_rev6, bylabel("Effect only on participating firms") keep (take_up) drop(*treatment _cons) xline(0)||, ///
+	coeflabels(take_up = "Take-up    ", labsize(vsmall)) /// 
+	xlabel(-1(0.5)2,labsize(vsmall)) xscale(range(-1(0.5)2)) /// 
+	xtitle("Standardized Coefficients", size (vsmall)) ///
+	legend(position(6) size (vsmall) ///
+	col(2) order(2 "Dig.Marketing Knowledge"  4 "Online presence" 6 "Digital marketing" 8 "E-commerce revenues")) ///
+	title("Effect only on participating firms", size (small) pos(12) span)  ///
+	saving(midline_takeup_coefplot, replace) fysize(50)
+
+graph combine midline_treatment_coefplot.gph midline_takeup_coefplot.gph, colfirst ycommon col(1) iscale(*1.4)
+gr export midline_coefplot.png, replace
+	
+		 
+
+	
