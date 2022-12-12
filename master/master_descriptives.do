@@ -772,9 +772,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=80 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(knowledge_index, replace)
 graph export knowledge_index.png, replace
@@ -797,9 +797,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(dig_marketing_index_ml, replace)
 graph export dig_marketing_index_ml.png, replace
@@ -822,9 +822,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(perception_index_ml, replace)
 graph export perception_index_ml.png, replace
@@ -847,9 +847,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(dig_presence_index, replace)
 graph export dig_presence_index.png, replace
@@ -872,9 +872,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(vsmall) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(dig_presence_weightedz_ml, replace)
 graph export dig_presence_weightedz_ml.png, replace
@@ -897,9 +897,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(webindexz_ml, replace)
 graph export webindexz_ml.png, replace
@@ -922,9 +922,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(social_media_indexz_ml, replace)
 graph export social_media_indexz_ml.png, replace
@@ -947,9 +947,9 @@ gr tw ///
 	ytitle("Number of observations", axis(1)) ///
 	ytitle("Densitiy", axis(2)) ///
 	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=75 firms)" ///
-                     2 "Treatment group, absent (N=29 firms)" ///
-					 3 "Control group (N=95 firms)") ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
                c(1) pos(6) ring(6)) ///
 	name(platform_indexz_ml, replace)
 graph export platform_indexz_ml.png, replace
@@ -1089,3 +1089,86 @@ twoway (connected dig_revenues_ecom surveyround if treatment==0) (connected dig_
 graph export did_plot2_details.png, replace
 drop real_treament absent_treament
  
+* Midline Knowledge Index
+gr tw ///
+	(kdensity knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity knowledge_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity knowledge_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram knowledge_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of Knowledge Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Knowledge index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(knowledge_index, replace)
+graph export knowledge_index.png, replace
+
+
+* Midline Digital Marketing index
+gr tw ///
+	(kdensity dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_marketing_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram dig_marketing_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity dig_marketing_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_marketing_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of Digital Marketing Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Digital Marketing Index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(dig_marketing_index_ml, replace)
+graph export dig_marketing_index_ml.png, replace
+
+* Midline Online Presence index
+gr tw ///
+	(kdensity dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dig_presence_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity dig_presence_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dig_presence_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Midline Distribution of Digital Presence Index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Digital Presence Index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated (N=77 firms)" ///
+                     2 "Treatment group, absent (N=40 firms)" ///
+					 3 "Control group (N=119 firms)") ///
+               c(1) pos(6) ring(6)) ///
+	name(dig_presence_index, replace)
+graph export dig_presence_index.png, replace
+
+	* Midline Digital Revenue distribution
+
+
+sum dig_revenues_ecom, d
+stripplot dig_revenues_ecom if dig_revenues_ecom <5000 , by(treatment surveyround) jitter(4) vertical ///
+	ytitle("Midline: Digital revenues") ///
+	yline(`r(p50)', lpattern(dash)) ///
+	text(`r(p50)'  0.1 "Median", size(vsmall) place(n))
+name(dig_revenues_ecom_ml, replace)
+gr export dig_revenues_ecom_ml.png, replace
+
+
+
+
+
+
