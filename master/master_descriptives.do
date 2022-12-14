@@ -1063,63 +1063,114 @@ set scheme burd
 cd "${master_gdrive}/output/GIZ_presentation_graphs"
 
 	*Reponse Rate
-graph bar (count) if validation ==1, over(treatment) blabel(total, format(%9.0fc)) ///
-	title("La part des entreprises qui ont validé leurs réponses") ///
-	ytitle("Number of entries")
-graph export valide.png, replace
+catplot ml_attrit surveyround treatment if surveyround==2, percent(treatment) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) /// 
+	title("Response Rate Midline", size(small)) ///
+	ytitle("%") ///
+	legend(pos (6) label(1 "Responded") label(2 "Did not respond") ) 
+graph export repondu_ml.png, replace
 
+catplot bl_attrit surveyround treatment if surveyround==1, percent(treatment) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) ///
+	title("Response Rate Baseline", size(small)) ///
+	ytitle("%") ///
+	legend(pos (6) label(1 "Responded") label(2 "Did not respond") ) 
+graph export repondu_bl.png, replace
+
+*****ONLINE PRESENCE*****************
 	* Digital Presence
-graph bar (mean) dig_presence1 dig_presence2 dig_presence3 , over(surveyround, label(labs(small))) over(treatment, label(labs(medium))) ///
-	title("Number of firms on a digital channel", span) ///
-	legend(pos (6) label(1 "Website") label(2 "Social Media") label(3 "Marketplace")) ///
-	blabel(total, format(%9.2fc)) ///
-	ytitle("Moyenne") 
-gr export dig_presence_ml.png, replace
+catplot dig_presence1 surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) /// 
+	title("% of firms with a website") ///
+	legend(pos (6) label(1 "No website") label(2 "Has Website") ) ///
+	blabel(bar, format(%9.0fc)) 
+gr export dig_presence1.png, replace
+	 
+catplot dig_presence2 surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.0f)) ylabel(, angle(h)) recast(bar) /// 
+	title("% of firms with a social media account") ///
+	legend(pos (6) label(1 "No social media") label(2 "Has social media") ) ///
+	blabel(bar, format(%9.0fc)) 
+gr export dig_presence2.png, replace
 
+*please change in ml_correct later
+replace dig_presence3=0.33 if id_plateforme==324 & surveyround==2
+catplot dig_presence3 surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) /// 
+	title("% of firms with a marketplace") ///
+	legend(pos (6) label(1 "No marketplace") label(2 "Has marketplace account") ) ///
+	blabel(bar, format(%9.0fc)) 
+gr export dig_presence3.png, replace
 
+*website updating
+catplot dig_miseajour1 surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(center) size(3) format(%3.1f)) ylabel(, angle(h)) recast(bar) /// 
+	title("Website updating") ///
+	legend(pos (6) label(1 "Never") label(2 "Annually")  label(3 "Monthly")  label(4 "Weekly")  label(5 "More than weekly")) ///
+	blabel(bar, format(%9.0fc)) 
+gr export dig_miseajour1.png, replace
+	
 *Sold Product online or not
-graph bar (count), over(dig_vente) over(treatment, label(labs(small))) over(surveyround, label(labs(medium))) blabel(bar, format(%4.1f) size(vsmall)) ///
-	title("Number of companies that have sold their product/ service online",size(medium)) ///
-	legend(pos (6) label(1 "Sold nothing online") label(2 "Sold product/ service online")) ///
-    stack
+catplot dig_vente  surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) ///
+	legend(pos (6) label(1 "Neither ordering nor paying")  label(2 "Only ordering")  label(3 "Paying and ordering")) ///
+	title("% of companies that have sold their product/ service online",size(medium)) ///
+	legend(pos (6) label(1 "Sold nothing online") label(2 "Sold product/ service online")) 
+	
 graph export dig_vente_ml.png, replace
 
-*Paying & Ordering online 
-gen dig_payment1_n=.
-replace dig_payment1_n = 0.5 if dig_payment1 == 0.5
-replace dig_payment1_n = 1 if dig_payment1 == 1
+*Paying & Ordering online
+catplot dig_payment1 surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) ///
+	legend(pos (6) label(1 "Neither ordering nor paying")  label(2 "Only ordering")  label(3 "Paying and ordering")) /// 
+	title("Ordering and paying on website")
+graph export dig_payment1.png, replace
 
-graph bar (count), over(dig_payment1_n) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel(bar, format(%4.1f) size(small) position(inside)) ///
-	title("Website: paying and ordering online (in % of total)",size(medium)) ///
-	legend(pos (6) label(1 "Ordering only") label(2 "Paying and ordering")) ///
-    ytitle("Percentage")  ///
-	stack
-graph export dig_payment1_ml.png, replace
-drop dig_payment1_n
+catplot dig_payment2  surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.1f)) ylabel(, angle(h)) recast(bar) ///
+	legend(pos (6) label(1 "Neither ordering nor paying")  label(2 "Only ordering")  label(3 "Paying and ordering")) /// 
+	title("Ordering and paying on social media")
+graph export dig_payment2.png, replace
 
-gen dig_payment2_n=.
-replace dig_payment2_n = 0.5 if dig_payment2 == 0.5
-replace dig_payment2_n = 1 if dig_payment2 == 1
 
-graph bar (count), over(dig_payment2_n) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel(bar, format(%4.1f) size(small)) ///
-	title("Social media: paying and ordering online (in % of total)",size(medium)) ///
-	legend(pos (6) label(1 "Ordering only") label(2 "Paying and ordering")) ///
-    ytitle("Percentage")  ///
-	stack
-graph export dig_payment2_ml.png, replace
-drop dig_payment2_n
+*****DIGITAL MARKETING PRACTICES**************************
+catplot dig_marketing_ind1  surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.0f)) ylabel(, angle(h)) recast(bar) ///
+	legend(pos (6) label(1 "No")  label(2 "Yes") ) ///
+	title("Presence of digital marketing indicators")
+graph export dig_marketing_ind1.png, replace 
 
-gen dig_payment3_n=.
-replace dig_payment3_n = 0.5 if dig_payment3 == 0.5
-replace dig_payment3_n = 1 if dig_payment3 == 1
+catplot dig_service_satisfaction  surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.0f)) ylabel(, angle(h)) recast(bar) ///
+	legend(pos (6) label(1 "No")  label(2 "Yes") ) ///
+	title("Do you measure the satisfaction of your online clients?")
+graph export dig_service_satisfaction.png, replace
 
-graph bar (count), over(dig_payment3_n) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel(bar, format(%4.1f) size(small) position(inside)) ///
-	title("Marketplace: paying and ordering online (in % of total)",size(medium)) ///
-	legend(pos (6) label(1 "Ordering only") label(2 "Paying and ordering")) ///
-    ytitle("Percentage")  ///
-	stack
-graph export dig_payment3_ml.png, replace
-drop dig_payment3_n
+catplot dig_marketing_respons_bin surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(base) size(4) format(%3.0f)) ylabel(, angle(h)) recast(bar) ///
+	legend(pos (6) label(1 "No")  label(2 "Yes") ) ///
+	title("Do you have an employee responsible?")
+graph export dig_marketing_respons_bin.png, replace
+
+* Generate graphs for perception
+graph bar (mean) dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5 if surveyround==2, over(status, label(labs(vsmall))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("1-very easy		 	5-very difficult") ///
+	legend(pos (6) label(1 "Analyse SEO data") label(2 "Analyse social media data") label(3 "Use paid ads") label(4 "Sell on marketplace") label(5 "Export more thanks to online")) ///
+	title("Perceived Difficulty of e-commerce tasks")
+graph export dig_perception.png, replace
 
 
 * Generate graphs for the knowledge questions
@@ -1132,24 +1183,11 @@ graph export knowledge_decomp.png, replace
 
 * Generate graphs to see difference of digital revenues between baseline & midline
 
-collapse (mean) dig_revenues_ecom, by(surveyround treatment)
-twoway (connected dig_revenues_ecom surveyround if treatment==0) (connected dig_revenues_ecom surveyround if treatment==1), xline(1.5) xlabel (1(1)2) ytitle("Mean of digital revenues") xtitle("1- Baseline 2- Midline ") legend(label(1 Treatment) label(2 Control) label(3 Take up) label(4 Absent)) 
-graph export did_plot2.png, replace
-drop real_treament absent_treament
- 
-
-gen real_treament = 0
-replace real_treament=1 if treatment==1 & take_up == 1
-label var real_treament "Companies that are part of the treatment group and are part of the treatement"
-gen absent_treament = 0
-replace absent_treament=1 if treatment==1 & take_up == 0
-label var absent_treament "Companies that are part of the treatment group and are absent of the treatment "
-collapse (mean) dig_revenues_ecom, by(surveyround treatment absent_treament real_treament)
-twoway (connected dig_revenues_ecom surveyround if treatment==0) (connected dig_revenues_ecom surveyround if real_treament==1) (connected dig_revenues_ecom surveyround if absent_treament ==1 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of digital revenues") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Take up) label(3 Absent)) 
+collapse (mean) dig_revenues_ecom, by(surveyround status)
+twoway (connected dig_revenues_ecom surveyround if status==0) (connected dig_revenues_ecom surveyround if status==1) (connected dig_revenues_ecom surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of digital revenues") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export did_plot2_details.png, replace
-drop real_treament absent_treament
- 
 
+ 
 	* Midline Digital Revenue distribution
 sum dig_revenues_ecom, d
 stripplot dig_revenues_ecom if dig_revenues_ecom <5000 , by(treatment surveyround) jitter(4) vertical ///
@@ -1159,7 +1197,7 @@ stripplot dig_revenues_ecom if dig_revenues_ecom <5000 , by(treatment surveyroun
 name(dig_revenues_ecom_ml, replace)
 gr export dig_revenues_ecom_ml.png, replace
 
-
+restore
 
 
 
