@@ -1062,7 +1062,67 @@ set scheme burd
 
 cd "${master_gdrive}/output/GIZ_presentation_graphs"
 
-* Generate graphs for the knowmedge questions
+	*Reponse Rate
+graph bar (count) if validation ==1, over(treatment) blabel(total, format(%9.0fc)) ///
+	title("La part des entreprises qui ont validé leurs réponses") ///
+	ytitle("Number of entries")
+graph export valide.png, replace
+
+	* Digital Presence
+graph bar (mean) dig_presence1 dig_presence2 dig_presence3 , over(surveyround, label(labs(small))) over(treatment, label(labs(medium))) ///
+	title("Number of firms on a digital channel", span) ///
+	legend(pos (6) label(1 "Website") label(2 "Social Media") label(3 "Marketplace")) ///
+	blabel(total, format(%9.2fc)) ///
+	ytitle("Moyenne") 
+gr export dig_presence_ml.png, replace
+
+
+*Sold Product online or not
+graph bar (count), over(dig_vente) over(treatment, label(labs(small))) over(surveyround, label(labs(medium))) blabel(bar, format(%4.1f) size(vsmall)) ///
+	title("Number of companies that have sold their product/ service online",size(medium)) ///
+	legend(pos (6) label(1 "Sold nothing online") label(2 "Sold product/ service online")) ///
+    stack
+graph export dig_vente_ml.png, replace
+
+*Paying & Ordering online 
+gen dig_payment1_n=.
+replace dig_payment1_n = 0.5 if dig_payment1 == 0.5
+replace dig_payment1_n = 1 if dig_payment1 == 1
+
+graph bar (count), over(dig_payment1_n) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel(bar, format(%4.1f) size(small) position(inside)) ///
+	title("Website: paying and ordering online (in % of total)",size(medium)) ///
+	legend(pos (6) label(1 "Ordering only") label(2 "Paying and ordering")) ///
+    ytitle("Percentage")  ///
+	stack
+graph export dig_payment1_ml.png, replace
+drop dig_payment1_n
+
+gen dig_payment2_n=.
+replace dig_payment2_n = 0.5 if dig_payment2 == 0.5
+replace dig_payment2_n = 1 if dig_payment2 == 1
+
+graph bar (count), over(dig_payment2_n) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel(bar, format(%4.1f) size(small)) ///
+	title("Social media: paying and ordering online (in % of total)",size(medium)) ///
+	legend(pos (6) label(1 "Ordering only") label(2 "Paying and ordering")) ///
+    ytitle("Percentage")  ///
+	stack
+graph export dig_payment2_ml.png, replace
+drop dig_payment2_n
+
+gen dig_payment3_n=.
+replace dig_payment3_n = 0.5 if dig_payment3 == 0.5
+replace dig_payment3_n = 1 if dig_payment3 == 1
+
+graph bar (count), over(dig_payment3_n) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel(bar, format(%4.1f) size(small) position(inside)) ///
+	title("Marketplace: paying and ordering online (in % of total)",size(medium)) ///
+	legend(pos (6) label(1 "Ordering only") label(2 "Paying and ordering")) ///
+    ytitle("Percentage")  ///
+	stack
+graph export dig_payment3_ml.png, replace
+drop dig_payment3_n
+
+
+* Generate graphs for the knowledge questions
 graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if surveyround==2, over(status, label(labs(vsmall))) ///
 	blabel(total, format(%9.2fc) size(vsmall)) ///
 	ytitle("Sum of points") ///
@@ -1089,76 +1149,8 @@ twoway (connected dig_revenues_ecom surveyround if treatment==0) (connected dig_
 graph export did_plot2_details.png, replace
 drop real_treament absent_treament
  
-* Midline Knowledge Index
-gr tw ///
-	(kdensity knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram knowledge_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity knowledge_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram knowledge_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity knowledge_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram knowledge_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
-	, ///
-	title("{bf:Midline Distribution of Knowledge Index}") ///
-	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("Knowledge index") ///
-	ytitle("Number of observations", axis(1)) ///
-	ytitle("Densitiy", axis(2)) ///
-	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=77 firms)" ///
-                     2 "Treatment group, absent (N=40 firms)" ///
-					 3 "Control group (N=119 firms)") ///
-               c(1) pos(6) ring(6)) ///
-	name(knowledge_index, replace)
-graph export knowledge_index.png, replace
-
-
-* Midline Digital Marketing index
-gr tw ///
-	(kdensity dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram dig_marketing_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity dig_marketing_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram dig_marketing_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity dig_marketing_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram dig_marketing_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
-	, ///
-	title("{bf:Midline Distribution of Digital Marketing Index}") ///
-	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("Digital Marketing Index") ///
-	ytitle("Number of observations", axis(1)) ///
-	ytitle("Densitiy", axis(2)) ///
-	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=77 firms)" ///
-                     2 "Treatment group, absent (N=40 firms)" ///
-					 3 "Control group (N=119 firms)") ///
-               c(1) pos(6) ring(6)) ///
-	name(dig_marketing_index_ml, replace)
-graph export dig_marketing_index_ml.png, replace
-
-* Midline Online Presence index
-gr tw ///
-	(kdensity dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram dig_presence_index if treatment == 1 & take_up == 1 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity dig_presence_index if treatment == 1 & take_up == 0 & surveyround == 2, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram dig_presence_index if treatment == 1 & take_up == 0 & surveyround == 2, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity dig_presence_index if treatment == 0, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram dig_presence_index if treatment == 0, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
-	, ///
-	title("{bf:Midline Distribution of Digital Presence Index}") ///
-	subtitle("{it:Index calculated based on z-score method}") ///
-	xtitle("Digital Presence Index") ///
-	ytitle("Number of observations", axis(1)) ///
-	ytitle("Densitiy", axis(2)) ///
-	legend(rows(3) symxsize(small) ///
-               order(1 "Treatment group, participated (N=77 firms)" ///
-                     2 "Treatment group, absent (N=40 firms)" ///
-					 3 "Control group (N=119 firms)") ///
-               c(1) pos(6) ring(6)) ///
-	name(dig_presence_index, replace)
-graph export dig_presence_index.png, replace
 
 	* Midline Digital Revenue distribution
-
-
 sum dig_revenues_ecom, d
 stripplot dig_revenues_ecom if dig_revenues_ecom <5000 , by(treatment surveyround) jitter(4) vertical ///
 	ytitle("Midline: Digital revenues") ///
