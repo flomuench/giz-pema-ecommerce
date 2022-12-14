@@ -31,8 +31,8 @@ set scheme cleanplots
 set scheme plotplain
 
 	* install packages
-/* 
-ssc install blindschemes, replace
+
+/*ssc install blindschemes, replace
 ssc install groups, replace
 ssc install ihstrans, replace
 ssc install winsor2, replace
@@ -44,8 +44,8 @@ ssc install estout, replace
 ssc install coefplot, replace
 ssc install mipolate, replace
 ssc install wyoung, replace
+ssc install catplot, replace
 */
-
 ***********************************************************************
 * 	PART 2: 	Prepare dynamic folder paths & globals
 ***********************************************************************

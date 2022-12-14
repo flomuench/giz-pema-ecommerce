@@ -1116,6 +1116,14 @@ catplot dig_miseajour1 surveyround treatment, percent(treatment surveyround) asy
 	blabel(bar, format(%9.0fc)) 
 gr export dig_miseajour1.png, replace
 	
+catplot dig_miseajour2 surveyround treatment, percent(treatment surveyround) asyvars stack ///
+	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
+	 blabel(bar, pos(center) size(3) format(%3.1f)) ylabel(, angle(h)) recast(bar) /// 
+	title("Social media updating") ///
+	legend(pos (6) label(1 "Never") label(2 "Annually")  label(3 "Monthly")  label(4 "Weekly")  label(5 "More than weekly")) ///
+	blabel(bar, format(%9.0fc)) 
+gr export dig_miseajour2.png, replace
+
 *Sold Product online or not
 catplot dig_vente  surveyround treatment, percent(treatment surveyround) asyvars stack ///
 	bar(1, bcolor(black)) bar(2, bcolor(green)) bar(3,bcolor(blue)) ytitle(%) ///
