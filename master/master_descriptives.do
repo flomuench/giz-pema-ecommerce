@@ -1196,6 +1196,26 @@ twoway (connected dig_revenues_ecom surveyround if status==0) (connected dig_rev
 graph export did_plot2_details.png, replace
 
  
+ * Generate graphs to see difference of employment between baseline & midline
+
+collapse (sum) fte, by(surveyround status)
+twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export fte_details.png, replace
+
+collapse (sum) car_carempl_div1, by(surveyround status)
+twoway (connected car_carempl_div1 surveyround if status==0) (connected car_carempl_div1 surveyround if status==1) (connected car_carempl_div1 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of female employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export fte_femmes_details.png, replace
+ 
+collapse (sum) car_carempl_div3, by(surveyround status)
+twoway (connected car_carempl_div3 surveyround if status==0) (connected car_carempl_div3 surveyround if status==1) (connected car_carempl_div3 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of part-time employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export pte_details.png, replace
+
+collapse (sum) car_carempl_div2, by(surveyround status)
+twoway (connected car_carempl_div2 surveyround if status==0) (connected car_carempl_div2 surveyround if status==1) (connected car_carempl_div2 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of young employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export young_employees_details.png, replace
+
+
+ 
 	* Midline Digital Revenue distribution
 sum dig_revenues_ecom, d
 stripplot dig_revenues_ecom if dig_revenues_ecom <5000 , by(treatment surveyround) jitter(4) vertical ///
