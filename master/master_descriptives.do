@@ -1219,7 +1219,7 @@ graph export young_employees_details.png, replace
 *Mean
 collapse (mean) fte if fte >= 0, by(surveyround status)
 twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
-graph export fte_details.png_mean, replace
+graph export fte_details_mean.png, replace
 
 collapse (mean) car_carempl_div1 if car_carempl_div1 >= 0, by(surveyround status)
 twoway (connected car_carempl_div1 surveyround if status==0) (connected car_carempl_div1 surveyround if status==1) (connected car_carempl_div1 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of female employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
