@@ -1059,7 +1059,6 @@ replace ihs_revenue95=. if surveyround==2
 * 	PART 4:  Graphs for the GIZ presentations
 ***********************************************************************
 set scheme burd
-
 cd "${master_gdrive}/output/GIZ_presentation_graphs"
 
 	*Reponse Rate
@@ -1197,9 +1196,51 @@ graph export did_plot2_details.png, replace
 
  
  * Generate graphs to see difference of employment between baseline & midline
+*Bart chart: sum
+graph bar (sum) fte if fte >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Sum of full time employees") 
+graph export fte_details_sum_bar.png, replace
 
-*Sum
-collapse (sum) fte if fte >= 0, by(surveyround status)
+graph bar (sum) car_carempl_div1 if car_carempl_div1 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Sum of female employees") 
+graph export fte_femmes_details_sum_bar.png, replace
+
+graph bar (sum) car_carempl_div3 if car_carempl_div3 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Sum of part time employees") 
+graph export pte_details_sum_bar.png, replace
+
+graph bar (sum) car_carempl_div2 if car_carempl_div2 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Sum of young employees") 
+graph export young_employees_details_sum_bar.png, replace
+
+*Bart chart: mean
+graph bar (mean) fte if fte >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Mean of full time employees") 
+graph export fte_details_mean_bar.png, replace
+
+graph bar (mean) car_carempl_div1 if car_carempl_div1 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Mean of female employees") 
+graph export fte_femmes_details_mean_bar.png, replace
+
+graph bar (mean) car_carempl_div3 if car_carempl_div3 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Mean of part time employees") 
+graph export pte_details_mean_bar.png, replace
+
+graph bar (mean) car_carempl_div2 if car_carempl_div2 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
+	blabel(total, format(%9.0fc) size(vsmall)) ///
+	ytitle("Mean of young employees") 
+graph export young_employees_details_mean_bar.png, replace
+
+
+*Line chart: Sum
+collapse (sum) fte if fte >= 0, by(surveyround status) 
 twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export fte_details.png, replace
 
@@ -1216,7 +1257,7 @@ twoway (connected car_carempl_div2 surveyround if status==0) (connected car_care
 graph export young_employees_details.png, replace
 
 
-*Mean
+*Line chart : Mean
 collapse (mean) fte if fte >= 0, by(surveyround status)
 twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export fte_details_mean.png, replace
