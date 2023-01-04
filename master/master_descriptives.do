@@ -1198,6 +1198,7 @@ graph export did_plot2_details.png, replace
  
  * Generate graphs to see difference of employment between baseline & midline
 
+*Sum
 collapse (sum) fte if fte >= 0, by(surveyround status)
 twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export fte_details.png, replace
@@ -1214,6 +1215,23 @@ collapse (sum) car_carempl_div2 if car_carempl_div2 >= 0, by(surveyround status)
 twoway (connected car_carempl_div2 surveyround if status==0) (connected car_carempl_div2 surveyround if status==1) (connected car_carempl_div2 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of young employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export young_employees_details.png, replace
 
+
+*Mean
+collapse (mean) fte if fte >= 0, by(surveyround status)
+twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export fte_details.png_mean, replace
+
+collapse (mean) car_carempl_div1 if car_carempl_div1 >= 0, by(surveyround status)
+twoway (connected car_carempl_div1 surveyround if status==0) (connected car_carempl_div1 surveyround if status==1) (connected car_carempl_div1 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of female employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export fte_femmes_details_mean.png, replace
+ 
+collapse (mean) car_carempl_div3 if car_carempl_div3 >= 0, by(surveyround status)
+twoway (connected car_carempl_div3 surveyround if status==0) (connected car_carempl_div3 surveyround if status==1) (connected car_carempl_div3 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of part-time employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export pte_details_mean.png, replace
+
+collapse (mean) car_carempl_div2 if car_carempl_div2 >= 0, by(surveyround status)
+twoway (connected car_carempl_div2 surveyround if status==0) (connected car_carempl_div2 surveyround if status==1) (connected car_carempl_div2 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of young employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
+graph export young_employees_details_mean.png, replace
 
  
 	* Midline Digital Revenue distribution
