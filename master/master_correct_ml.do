@@ -291,7 +291,7 @@ replace fte= 15 if id_plateforme== 767 & surveyround==2
 * 	PART 4: Replacing missing values with zeros where applicable
 ***********************************************************************
 *Definition of all variables that are being used in index calculation*
-local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per
+local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per 
 
 *IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros 
 *because missing values or "I don't know" in practice-related variable 
@@ -312,7 +312,7 @@ foreach var of local  allvars {
 
 *For financial data: replace "Don't know (-999) and refusal with missing value"
 
-local finvars dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020
+local finvars dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5
 
 foreach var of local  finvars {
 	replace `var' = . if `var' == -999

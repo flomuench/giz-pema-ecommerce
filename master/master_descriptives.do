@@ -1179,6 +1179,7 @@ graph bar (mean) dig_perception1 dig_perception2 dig_perception3 dig_perception4
 	title("Perceived Difficulty of e-commerce tasks")
 graph export dig_perception.png, replace
 
+*****KNOWLEDGE**************************
 
 * Generate graphs for the knowledge questions
 graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if surveyround==2, over(status, label(labs(vsmall))) ///
@@ -1188,12 +1189,31 @@ graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if 
 graph export knowledge_decomp.png, replace
 
 
-* Generate graphs to see difference of digital revenues between baseline & midline
+* Graph with raw knowledge score 
+graph bar (mean) raw_knowledge if surveyround==2, over(status, label(labs(vsmall))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Average score on knowledge questions") /// 
+	text(1.55 80 "+127 % compared to control group", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
+graph export knowledge_raw.png, replace
 
+*****ONLINE REVENUES**************************
+* Generate graphs to see difference of digital revenues between baseline & midline
+preserve
 collapse (mean) dig_revenues_ecom, by(surveyround status)
 twoway (connected dig_revenues_ecom surveyround if status==0) (connected dig_revenues_ecom surveyround if status==1) (connected dig_revenues_ecom surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Mean of digital revenues") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export did_plot2_details.png, replace
+restore
 
+
+**** Africa-related actions********************
+graph bar (mean) ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 if surveyround==2, over(treatment, label(labs(vsmall))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Share of affirmative firms") ///
+	legend(pos (6) label(1 "Interest from a potential client in SSA") label(2 "Identification of a commercial partner in SSA") label(3 "Obtained external finance to cover preliminary export costs") label(4 "Investment in sales structure in an SSA target market") label(5 "Introduction of a digital innovation or communication system") size(vsmall))
+graph export ssa_action.png, replace
+	
+
+*****EMPLOYMENT**************************
  
  * Generate graphs to see difference of employment between baseline & midline
 *Bart chart: sum
@@ -1243,9 +1263,11 @@ graph export young_employees_details_mean_bar.png, replace
 
 
 *Line chart: Sum
+preserve
 collapse (sum) fte if fte >= 0, by(surveyround status) 
 twoway (connected fte surveyround if status==0) (connected fte surveyround if status==1) (connected fte surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
 graph export fte_details.png, replace
+restore 
 
 collapse (sum) car_carempl_div1 if car_carempl_div1 >= 0, by(surveyround status)
 twoway (connected car_carempl_div1 surveyround if status==0) (connected car_carempl_div1 surveyround if status==1) (connected car_carempl_div1 surveyround if status ==2 ), xline(1.5) xlabel (1(1)2) ytitle("Sum of female employees") xtitle("1- Baseline 2- Midline ") legend(label(1 Control) label(2 Absent) label(3 Present)) 
