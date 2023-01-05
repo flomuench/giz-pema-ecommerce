@@ -1199,7 +1199,10 @@ graph export did_plot2_details.png, replace
 *Bart chart: sum
 graph bar (sum) fte if fte >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Sum of full time employees") 
+	ytitle("Sum of full time employees") ///
+	text(4200 19 "-22%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(1900 55 "-13.5%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(3800 95 "+/- 0%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export fte_details_sum_bar.png, replace
 
 graph bar (sum) car_carempl_div1 if car_carempl_div1 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
