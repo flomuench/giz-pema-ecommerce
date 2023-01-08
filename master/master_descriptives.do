@@ -1227,38 +1227,56 @@ graph export fte_details_sum_bar.png, replace
 
 graph bar (sum) car_carempl_div1 if car_carempl_div1 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Sum of female employees") 
+		ytitle("Sum of female employees")  ///
+	text(2000 19 "-21%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(1000 56 "-25%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(1800 95 "- 7%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export fte_femmes_details_sum_bar.png, replace
 
 graph bar (sum) car_carempl_div3 if car_carempl_div3 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Sum of part time employees") 
+	ytitle("Sum of part time employees")   ///
+	text(120 19 "-71%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(70 56 "425%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(220 95 "-32%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export pte_details_sum_bar.png, replace
 
 graph bar (sum) car_carempl_div2 if car_carempl_div2 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Sum of young employees") 
+	ytitle("Sum of young employees") ///
+	text(1800 19 "135%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(800 56 "122%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(1600 95 "116%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export young_employees_details_sum_bar.png, replace
 
 *Bart chart: mean
 graph bar (mean) fte if fte >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Mean of full time employees") 
+	ytitle("Mean of full time employees") ///
+	text(47 19 "11%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(60 56 "31%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(47 95 "2%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export fte_details_mean_bar.png, replace
 
 graph bar (mean) car_carempl_div1 if car_carempl_div1 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Mean of female employees") 
+	ytitle("Mean of female employees") ///
+	text(24 19 "0%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(33.3 56 "3%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(24 95 "-5%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export fte_femmes_details_mean_bar.png, replace
 
 graph bar (mean) car_carempl_div3 if car_carempl_div3 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Mean of part time employees") 
+	ytitle("Mean of part time employees")
 graph export pte_details_mean_bar.png, replace
 
 graph bar (mean) car_carempl_div2 if car_carempl_div2 >= 0, over(surveyround, label(labs(small))) over(status, label(labs(small))) ///
 	blabel(total, format(%9.0fc) size(vsmall)) ///
-	ytitle("Mean of young employees") 
+	ytitle("Mean of young employees")  ///
+	text(22 19 "185%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(27.2 56 "225%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5)) ///
+	text(21 95 "111%", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export young_employees_details_mean_bar.png, replace
 
 
