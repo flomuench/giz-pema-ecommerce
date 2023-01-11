@@ -1206,12 +1206,17 @@ restore
 
 
 **** Africa-related actions********************
-graph bar (mean) ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 if surveyround==2, over(treatment, label(labs(vsmall))) ///
+graph bar (sum) ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 if surveyround==2, over(status, label(labs(small))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Sum of affirmative firms") ///
+	legend(pos (6) label(1 "Interest from a potential client in SSA") label(2 "Identification of a commercial partner in SSA") label(3 "Obtained external finance to cover preliminary export costs") label(4 "Investment in sales structure in an SSA target market") label(5 "Introduction of a digital innovation or communication system") size(vsmall))
+graph export ssa_action.png, replace
+
+graph bar (mean) ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 if surveyround==2, over(status, label(labs(small))) ///
 	blabel(total, format(%9.2fc) size(vsmall)) ///
 	ytitle("Share of affirmative firms") ///
 	legend(pos (6) label(1 "Interest from a potential client in SSA") label(2 "Identification of a commercial partner in SSA") label(3 "Obtained external finance to cover preliminary export costs") label(4 "Investment in sales structure in an SSA target market") label(5 "Introduction of a digital innovation or communication system") size(vsmall))
-graph export ssa_action.png, replace
-	
+graph export ssa_action_share.png, replace	
 
 *****EMPLOYMENT**************************
  
