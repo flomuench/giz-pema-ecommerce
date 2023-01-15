@@ -636,6 +636,15 @@ putpdf pagebreak
 	
 	
 *Digital Marketing
+graph bar (mean) dig_marketing_respons_bin if treatment == 1, over(surveyround, label(labs(small))) blabel (bar) ///
+ytitle("Share of companies in the treatment group having a digital marketing employee", size(vsmall)) ///
+title("Does the company have a digital marketing employee?") 
+graph export dig_marketing_respons_bin_share_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_marketing_respons_bin_share_ml.png
+putpdf pagebreak
+
+
 graph bar (count) , over(dig_marketing_respons_bin)  over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
 legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have a digital marketing employee?") 
@@ -644,12 +653,20 @@ putpdf paragraph, halign(center)
 putpdf image dig_marketing_respons_bin_ml.png
 putpdf pagebreak
 
-graph hbar (count) , over(dig_service_responsable_bin) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
+graph bar (count) , over(dig_service_responsable_bin) over(treatment, label(labs(small))) over(surveyround, label(labs(small))) blabel (bar) ///
 legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have someone that manages online orders?")
 graph export dig_service_responsable_bin_ml.png, replace
 putpdf paragraph, halign(center) 
 putpdf image dig_service_responsable_bin_ml.png
+putpdf pagebreak
+
+graph bar (mean) dig_service_responsable_bin if treatment == 1, over(surveyround, label(labs(small))) blabel (bar) ///
+ytitle("Share of companies in the treatment group having a online orders manager", size(small)) ///
+title("Does the company have someone that manages online orders?", size(medium)) 
+graph export dig_service_responsable_bin_share_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_service_responsable_bin_share_ml.png
 putpdf pagebreak
 
 
