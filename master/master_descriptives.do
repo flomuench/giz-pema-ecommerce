@@ -321,10 +321,18 @@ title("Digital Marketing Activities, no. of firms")
 graph hbar (count) , over(dig_marketing_respons_bin) blabel (bar) ///
 legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have a digital marketing employee?")
+graph export dig_marketing_respons_bin_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_marketing_respons_bin_ml.png
+putpdf pagebreak
 
 graph hbar (count) , over(dig_service_responsable_bin) blabel (bar) ///
 legend(pos(6) cols(1) label(1 "1: Yes") label(2 "2:No"))  ///
 title("Does the company have someone that manages online orders?")
+graph export dig_service_responsable_bin_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dig_service_responsable_bin_ml.png
+putpdf pagebreak
 
 hist dig_marketing_index, ///
 	title("Average of Z-scores: Digital marketing practices") ///

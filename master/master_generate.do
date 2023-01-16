@@ -390,5 +390,19 @@ lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
 label define status1 0 "Control" 1 "T-not present" 2"T-present"
 label value status status1
 
+***********************************************************************
+*PART 7: Create an aggregate measure for ssa for treatment firms
+***********************************************************************	
+gen ssa_aggregate = 0
+replace ssa_aggregate =1 if ssa_action1 == 1 & surveyround==2 
+replace ssa_aggregate =1 if ssa_action2 == 1 & surveyround==2
+replace ssa_aggregate =1 if ssa_action3 == 1 & surveyround==2
+replace ssa_aggregate =1 if ssa_action4 == 1 & surveyround==2
+replace ssa_aggregate =1 if ssa_action5 == 1 & surveyround==2
+lab var ssa_aggregate "The company responded yes to at least one of the ssa_actions improvements"
+label define yesno1 0 "no" 1 "yes" 
+label value ssa_aggregate yesno1
+
+
 
 save "${master_final}/ecommerce_master_final", replace
