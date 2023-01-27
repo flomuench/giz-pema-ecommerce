@@ -377,9 +377,15 @@ bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up
 replace take_up2=0 if take_up2==. 
 
 *Completing other relevant static controls
-local complet strata sector subsector rg_age present
+local complet strata rg_age present sector subsector rg_gender_pdg rg_gender_rep urban
 foreach var of local complet{
 bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
+}
+
+*repeat for string variables
+local strings district
+foreach var of local strings{
+bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == ""
 }
 
 *status variable for graphs
