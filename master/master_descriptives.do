@@ -1376,27 +1376,26 @@ graph bar (mean) raw_knowledge_dec if status==0 | status==2, over(treatment, lab
 	ytitle("Moyenne des points")
 gr export ki_mean_ml_mean.png, replace
 
-graph bar (mean) raw_knowledge_dec if surveyround==2, over(status, label(labs(vsmall))) ///
-	blabel(total, format(%9.2fc) size(vsmall)) ///
+graph bar (mean) raw_knowledge_dec if surveyround==2, over(status, label(labs(vbig))) ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
 	ytitle("Moyenne des connaissances des entreprises") /// 
-	ylabel(0(1)8 , nogrid) ///
-	text(7.5 80 "+127 % compared to control group", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
+	ylabel(0(1)10 , nogrid) ///
+	text(7.5 75 "+14 % par rapport au groupe de contrôle", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
 graph export knowledge_raw.png, replace
 
 	* Knowledge index distribution per sector
-graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if surveyround==2 & status == 2, ///
-	blabel(total, format(%9.2fc) size(vsmall)) ///
-		title("Moyenne des points par questions", position(12)) ///
-	ytitle("Moyenne des points") ///
-	legend(pos (6) label(1 "Moyens de paiement") label(2 "Contenu digital") label(3 "Google Analytics") label(4 "Taux d'engagement") label(5 "SEO"))
-graph export knowledge_decomp_ml.png, replace
-
-graph hbar (mean) raw_knowledge_dec if surveyround==2 & status == 2, over(sector, label(labs(vsmall)) sort(1)) ///
+graph hbar (mean) raw_knowledge_dec if surveyround==2 & status == 2, over(sector, label(labs(vbig)) sort(1)) ///
 	title("Indice de connaissance par secteur", position(12)) ///
-	blabel(total, format(%9.2fc) size(vsmall)) ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
+	ylabel(0(1)10 , nogrid) ///
 	ytitle("Moyenne des points") 
 graph export k_index_sector_ml.png, replace
 
+graph hbar (mean) raw_knowledge_dec if surveyround==1 & status == 2, over(sector, label(labs(vbig)) sort(1)) ///
+	title("Indice de connaissance par secteur", position(12)) ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
+	ylabel(0(1)10 , nogrid) ///
+	ytitle("Moyenne des points") 
 **** Africa-related actions********************
 graph pie status if status ==2 & surveyround ==2, over (ssa_aggregate) plabel(_all percent, size(vbig)) ///
 	subtitle(Nombre d'entreprise = 77 entreprises, size(big)) ///
