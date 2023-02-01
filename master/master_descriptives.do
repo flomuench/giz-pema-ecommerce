@@ -1368,17 +1368,20 @@ cd "${master_gdrive}/output/GIZ_presentation_graphs"
 	
 **** Knowledge index********************
 	* Knowledge index distribution: control vs treatment
-graph bar (sum) knowledge_index if status==0 | status==2, over(treatment, label(labs(small))) ///
-	blabel(total, format(%9.2fc) size(vsmall)) ///
-	title("Somme des point des connaissances des entreprises") ///
-	ytitle("Somme des points")
-gr export ki_mean_ml_sum.png, replace
+	gen raw_knowledge_dec =raw_knowledge + 5
 
-graph bar (mean) knowledge_index if status==0 | status==2, over(treatment, label(labs(small))) ///
+graph bar (mean) raw_knowledge_dec if status==0 | status==2, over(treatment, label(labs(small))) ///
 	blabel(total, format(%9.2fc) size(vsmall)) ///
 	title("Moyenne des connaissances des entreprises") ///
 	ytitle("Moyenne des points")
 gr export ki_mean_ml_mean.png, replace
+
+graph bar (mean) raw_knowledge_dec if surveyround==2, over(status, label(labs(vsmall))) ///
+	blabel(total, format(%9.2fc) size(vsmall)) ///
+	ytitle("Moyenne des connaissances des entreprises") /// 
+	ylabel(0(1)8 , nogrid) ///
+	text(7.5 80 "+127 % compared to control group", box lcolor(black) bcolor(white) margin(l+.5 t+.5 b+.5 r+.5))
+graph export knowledge_raw.png, replace
 
 	* Knowledge index distribution per sector
 graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if surveyround==2 & status == 2, ///
@@ -1388,17 +1391,16 @@ graph bar (mean) dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml if 
 	legend(pos (6) label(1 "Moyens de paiement") label(2 "Contenu digital") label(3 "Google Analytics") label(4 "Taux d'engagement") label(5 "SEO"))
 graph export knowledge_decomp_ml.png, replace
 
-graph bar (mean) knowledge_index if surveyround==2 & status == 2, over(sector, label(labs(vsmall))) ///
+graph hbar (mean) raw_knowledge_dec if surveyround==2 & status == 2, over(sector, label(labs(vsmall)) sort(1)) ///
 	title("Indice de connaissance par secteur", position(12)) ///
 	blabel(total, format(%9.2fc) size(vsmall)) ///
-	ytitle("Z-score moyen") 
+	ytitle("Moyenne des points") 
 graph export k_index_sector_ml.png, replace
 
 **** Africa-related actions********************
-graph pie status if status ==2 & surveyround ==2, over (ssa_aggregate) plabel(_all percent) ///
-	title("L'entreprise a répondu oui à au moins une des activités préparatoires d'export vers l'ASS", position(12) size(small)) ///
-	subtitle(n = 77 entreprises, size(vsmall)) ///
-	legend(pos (6) label(1 "Non") label(2 "Oui") size(small))
+graph pie status if status ==2 & surveyround ==2, over (ssa_aggregate) plabel(_all percent, size(vbig)) ///
+	subtitle(Nombre d'entreprise = 77 entreprises, size(big)) ///
+	legend(pos (6) label(1 "Non") label(2 "Oui") size(big))
 gr export ssa_aggreagte_pie_ml.png, replace
 
 graph bar (count) status  if status ==2 & surveyround ==2 , over (ssa_aggregate) ///
@@ -1409,17 +1411,24 @@ graph bar (count) status  if status ==2 & surveyround ==2 , over (ssa_aggregate)
 	legend(pos (6) label(1 "Non") label(2 "Oui") size(small))
 gr export ssa_aggreagte_bar_ml.png, replace
 
-graph bar (sum) ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 if surveyround==2 & status ==2, ///
-	title("Somme des affirmations des entreprises participantes pour activités ASS", position(12) size(small)) ///
-		subtitle(n = 77 entreprises, size(vsmall)) ///
-	blabel(total, format(%9.2fc) size(small)) ///
-	ytitle("Somme des affirmations", size(small)) ///
-	legend(pos (6) label(1 "Intérêt d'un client potentiel pour en ASS") label(2 "Identification d'un partenaire commercial en ASS") label(3 "Financement externe pour couvrir les coûts d'export") label(4 "Investissement dans une structure de vente en ASS") label(5 "Introduction d'une innovation numérique ou d'un système de communication") size(vsmall))
-graph export ssa_action.png, replace
 
-graph bar (mean) ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 if surveyround==2 & status ==2, ///
-	blabel(total, format(%9.2fc) size(vsmall)) ///
-	title("Moyenne des affirmations des entreprises participantes pour activités ASS", position(12) size(small)) ///	
-	ytitle("Moyenne des afirmations") ///
+egen ssa_action1_perc = mean (ssa_action1) if surveyround==2 & status ==2
+replace ssa_action1_perc = ssa_action1_perc*100
+egen ssa_action2_perc = mean (ssa_action2) if surveyround==2 & status ==2
+replace ssa_action2_perc = ssa_action2_perc*100
+egen ssa_action3_perc = mean (ssa_action3) if surveyround==2 & status ==2
+replace ssa_action3_perc = ssa_action3_perc*100
+egen ssa_action4_perc = mean (ssa_action4) if surveyround==2 & status ==2
+replace ssa_action4_perc = ssa_action4_perc*100
+egen ssa_action5_perc = mean (ssa_action5) if surveyround==2 & status ==2
+replace ssa_action5_perc = ssa_action5_perc*100
+
+
+graph bar (mean) ssa_action1_perc ssa_action2_perc ssa_action3_perc ssa_action4_perc ssa_action5_perc if surveyround==2 & status ==2, ///
+	blabel(total, format(%9.2fc) size(vsmall) ) ///
+	¨title("Pourcentage des affirmations des entreprises participantes pour activités ASS", position(12) size(small)) ///	
+	ytitle("% des afirmations") ///
 	legend(pos (6) label(1 "Intérêt d'un client potentiel pour en ASS") label(2 "Identification d'un partenaire commercial en ASS") label(3 "Financement externe pour couvrir les coûts d'export") label(4 "Investissement dans une structure de vente en ASS") label(5 "Introduction d'une innovation numérique ou d'un système de communication") size(vsmall))
 graph export ssa_action_share.png, replace	
+
+drop ssa_action1_perc ssa_action2_perc ssa_action3_perc ssa_action4_perc ssa_action5_perc raw_knowledge_dec
