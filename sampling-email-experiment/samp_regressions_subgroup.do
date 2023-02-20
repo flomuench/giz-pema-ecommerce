@@ -61,5 +61,12 @@ iebaltab `variables1' `variables2' `variables3' if inrange(rg_capital,0,10000000
 
 
 ***********************************************************************
-* 	PART 2: sub-group analysis by firm size
+* 	PART 2: 90% CI level
 ***********************************************************************
+		*(c2) interaction with gender
+_eststo registration_c2, r: logit registered i.treatment##i.gender if not_delivered == 0, vce(robust) level(90)
+*outreg2 using ecommerce_main, excel append ctitle(logit)
+_eststo registration_m2, r: margins i.treatment##i.gender, post level(90)
+
+
+* I checked for restricting to only men or only women, but does not do anything
