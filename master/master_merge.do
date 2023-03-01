@@ -121,3 +121,75 @@ save "${master_intermediate}/ecommerce_master_inter", replace
 
 /*export excel id_plateforme entr_produit1 ///
  using "${master_pii}/cepex_produits", firstrow(var) sheetreplace
+ 
+**********************************************************************
+* 	PART 4: merge with participation data
+***********************************************************************
+*Note: here should the Présence des ateliers.xlsx be downloaded from shared file "Liste entreprises bénéficiaires", renamed and uploaded again in 6-master (presence in workshops)
+		*  import participation data
+preserve
+import excel "${implementation}/presence_ateliers_1.xlsx", firstrow sheet(Feuil1) clear
+
+		* remove blank lines
+drop if id_plateforme==.
+
+		* select take-up variables
+keep id_plateforme Webinaire_de_démarrage module1 module2 module3 module4 module5 present absent
+
+		* save
+save "${implementation}/take_up1", replace
+drop if id_plateforme==.
+restore
+
+		* merge to analysis data
+merge m:1 id_plateforme using "${implementation}/take_up1", force
+/*
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                            91
+        from master                        91  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                                85  (_merge==3)
+    -----------------------------------------
+*/
+drop _merge
+order Webinaire_de_démarrage module1 module2 module3 module4 module5 present absent, last
+
+
+
+*Import a new file for the monitoring of activities
+preserve
+import excel "${implementation}/presence_ateliers_2.xlsx", firstrow sheet(PHASE 2 PEMA) clear
+
+		* remove blank lines
+drop if id_plateforme==.
+
+		* select take-up variables
+keep id_plateforme Nouveau site web (0 - 1)	Refonte Technique (0 - 1)	Refonte graphique (0 - 1)	SEO (0 - 1)	SEO Livré ?	CM (0 - 1)	CM Livré ?	Formation Ads (0 - 1)	Formation Livré ?	Boutique en ligne  (0 - 1)	Devis en ligne  (0 - 1)	Pas d'Export ? (0 - 1)	Si pas d'Export pourquoi ?	Nbr HJ planifiés	HJ site web consommés	HJ MKG consommés	Structure site web validée	maquette valiée	statut DEV	Site web en Ligne	Site web validé
+
+		* save
+save "${implementation}/take_up2", replace
+drop if id_plateforme==.
+restore
+
+		* merge to analysis data
+merge m:1 id_plateforme using "${implementation}/take_up2", force
+/*
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                            91
+        from master                        91  (_merge==1)
+        from using                          0  (_merge==2)
+
+    Matched                                85  (_merge==3)
+    -----------------------------------------
+*/
+drop _merge
+order Nouveau site web (0 - 1)	Refonte Technique (0 - 1)	Refonte graphique (0 - 1)	SEO (0 - 1)	SEO Livré ?	CM (0 - 1)	CM Livré ?	Formation Ads (0 - 1)	Formation Livré ?	Boutique en ligne  (0 - 1)	Devis en ligne  (0 - 1)	Pas d'Export ? (0 - 1)	Si pas d'Export pourquoi ?	Nbr HJ planifiés	HJ site web consommés	HJ MKG consommés	Structure site web validée	maquette valiée	statut DEV	Site web en Ligne	Site web validé, last
+
+***********************************************************************
+* 	PART 5: save finale analysis data set as raw
+***********************************************************************
+    * save as ecommerce_master_inter
+save "${master_intermediate}/ecommerce_master_inter", replace
