@@ -52,8 +52,22 @@ putpdf pagebreak
 
 putpdf pagebreak
 
-putpdf save "${cp_final}/CEPEX_data_descriptives", replace
+putpdf save "${cp_final}/CEPEX_data_descriptives_ecommerce", replace
 
+
+
+**1. Check completeness: For how company do we have admin data and is it equal over the years?
+gen data_available==0
+replace data_available=1 if value!==. 
+
+count id_platforme if data_available==1
+
+***2. Do we have equal data completeness (% of companies) in treatment and control group
+
+
+
+
+***3. do we similar coverage across sectors, firmsize 
 
 
 

@@ -77,6 +77,7 @@ global cp_intermediate = "${gdrive}/intermediate"
 global cp_final = "${gdrive}/final"
 global cp_output = "${gdrive}/output"
 
+global pii= ""
 
 		
 			* set seeds for replication

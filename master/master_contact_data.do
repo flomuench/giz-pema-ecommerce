@@ -355,6 +355,12 @@ drop ident_email*
 drop if treatment==.
 
 ***********************************************************************
+* 	PART 5: drop duplicate firm (there is one firm which signed up twice)
+* and it ended up in control and treatment group. the control group observation
+*be deleted because it actually took part in the workshops
+***********************************************************************
+drop if id_plateforme==216
+***********************************************************************
 * 	PART 5: Save final data
 ***********************************************************************
 *excel for CEPEX

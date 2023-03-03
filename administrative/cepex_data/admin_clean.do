@@ -43,11 +43,11 @@ drop Date_Key
 format %td FullDate1
 
 ***********************************************************************
-* 	PART 2:    drop useless columns 
+* 	PART 2:    drop useless columns and rename columns
 ***********************************************************************
 
 drop Libelle_flux PAYS NSH2_CODE NSH6_CODE
-
+rename CODEDOUANE matricule_fiscale
 ***********************************************************************
 * 	PART 4:    label the data
 ***********************************************************************
@@ -55,7 +55,7 @@ drop Libelle_flux PAYS NSH2_CODE NSH6_CODE
 lab var FullDate1 "Full date of export"
 lab var Month "Month of export"
 lab var Year "Year of export"
-lab var CODEDOUANE "Matricule fiscale"
+lab var matricule_fiscale "Matricule fiscale"
 lab var Libelle_operateur "Name of the company"
 lab var Libelle_Pays_Anglais "Name of the country exported to"
 lab var VALEUR "value of exported goods/service"
@@ -80,4 +80,4 @@ label define Libelle_Section 1 "SECTION I - ANIMAUX VIVANTS ET PRODUITS DU REGNE
 ***********************************************************************
 * 	PART 5:    save admin data
 ***********************************************************************
-save "${cp_intermediate}/cp_final", replace
+save "${cp_intermediate}/cp_intermediate", replace
