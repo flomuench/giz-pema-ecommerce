@@ -49,19 +49,28 @@ ssc install coefplot, replace
 
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 		
-if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" {
+if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" | "`c(username)'" == "amira.bouziri" | "`c(username)'" == "SIWAR"| "`c(username)'" == "my rog" | "`c(username)'" == "Amina"{
 
-		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
+		global person = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
 }
-if "`c(username)'" == "ASUS" { 
 
-		global gdrive = "G:/Meine Ablage"
-	}
+	else {
+	global person = "G:/Meine Ablage"  | person ="G:/Documents"
+}
 
 		if c(os) == "Windows" {
-	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/5-administrative"
-	global github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/administrative/cepex_data"
-	global backup = "C:/Users/`c(username)'/Documents/admin-cepex-data"
+	global cp_gdrive = "${person}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/5-administrative"
+	global cp_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/administrative/cepex_data"
+	global cp_backup = "C:/Users/`c(username)'/Documents/admin-cepex-data"
+	*path for ecommerce-pii
+	global ecomm_pii = "${person}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/6-master/pii"
+	*path for ecommerce baseline data
+	global ecomm_bl = "${person}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline/final"
+	*path for consortia-pii
+	global consortia_pii = "${person}/Research_GIZ_Tunisia_exportpromotion/1. Intervention III – Consortia/data/6-master/final"
+	*path for consortia_administrative
+	global consortia_admin = "${person}/Research_GIZ_Tunisia_exportpromotion/1. Intervention III – Consortia/data/5-administrative"
+
 }
 else if c(os) == "MacOSX" {
 	global gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/5-administrative"
@@ -72,12 +81,15 @@ else if c(os) == "MacOSX" {
 * paths within gdrive
 			* data
 
-global cp_raw = "${gdrive}/raw"
-global cp_intermediate = "${gdrive}/intermediate"
-global cp_final = "${gdrive}/final"
-global cp_output = "${gdrive}/output"
+global cp_raw = "${cp_gdrive}/raw"
+global cp_intermediate = "${cp_gdrive}/intermediate"
+global cp_final = "${cp_gdrive}/final"
+global cp_output = "${cp_gdrive}/output"
 
-global pii= ""
+global consortia_intermediate = "${consortia_admin}/intermediate"
+global consortia_final = "${consortia_admin}/final"
+global consortia_output = "${consortia_admin}/output"
+
 
 		
 			* set seeds for replication
@@ -91,15 +103,23 @@ set sortseed 1532421
 /* --------------------------------------------------------------------
 	PART 3.1: import file
 ----------------------------------------------------------------------*/		
-if (1) do "${github}/admin_import.do"
+if (1) do "${cp_github}/admin_import.do"
 /*--------------------------------------------------------------------
 	PART 3.2: clean file
 ----------------------------------------------------------------------*/		
-if (1) do "${github}/admin_clean.do"
+if (1) do "${cp_github}/admin_clean.do"
 /*--------------------------------------------------------------------
-	PART 3.3: descriptives
+	PART 3.3: merge file
 ----------------------------------------------------------------------*/		
-if (1) do "${github}/admin_descriptives.do"
+if (1) do "${cp_github}/admin_merge.do"
+/*--------------------------------------------------------------------
+	PART 3.4: panel file
+----------------------------------------------------------------------*/		
+if (1) do "${cp_github}/admin_frames.do"
+/*--------------------------------------------------------------------
+	PART 3.5: descriptives
+----------------------------------------------------------------------*/		
+if (1) do "${cp_github}/admin_descriptives.do"
 /*--------------------------------------------------------------------
 
 

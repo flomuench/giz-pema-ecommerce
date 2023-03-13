@@ -35,24 +35,16 @@ ds, has(type numeric)
 local numvars "`r(varlist)'"
 format %-25.2fc `numvars'
 
-*format %-25.0fc id_plateforme
-
-drop Date_Key 
-* format date
-
-format %td FullDate1
-
 ***********************************************************************
 * 	PART 2:    drop useless columns and rename columns
 ***********************************************************************
 
-drop Libelle_flux PAYS NSH2_CODE NSH6_CODE
+drop Libelle_flux PAYS NSH2_CODE NSH6_CODE Date_Key FullDate1
+
 rename CODEDOUANE matricule_fiscale
 ***********************************************************************
 * 	PART 4:    label the data
 ***********************************************************************
-
-lab var FullDate1 "Full date of export"
 lab var Month "Month of export"
 lab var Year "Year of export"
 lab var matricule_fiscale "Matricule fiscale"
@@ -80,4 +72,4 @@ label define Libelle_Section 1 "SECTION I - ANIMAUX VIVANTS ET PRODUITS DU REGNE
 ***********************************************************************
 * 	PART 5:    save admin data
 ***********************************************************************
-save "${cp_intermediate}/cp_intermediate", replace
+save "${cp_final}/cp_final", replace
