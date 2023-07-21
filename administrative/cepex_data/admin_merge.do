@@ -21,6 +21,8 @@ merge m:1 matricule_fiscale using "${ecomm_pii}/ecommerce_master_contact", ///
 	keepusing (id_plateforme treatment treated present status)  
 	
 **Keep the matched information as e-commerce dataset and the id it did not find and drop the merge=1
+*frame1<-collapse (sum) Export_value= Export_tnd, by(year matricule_fiscale)
+*frame2<-frame1: collapse (mean) Export_value= Export_tnd, by(year)
 
 keep if _merge==3
 drop _merge
