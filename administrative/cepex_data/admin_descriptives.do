@@ -76,7 +76,7 @@ drop share1 share2
 frame change evolution_ecom
 twoway line VALEUR Year, ///
     xtitle("Year") ytitle("Value") ///
-    title("Ecommerce Value Evolution") ///
+    title("Ecommerce mean value Evolution") ///
     legend(off)
 graph export cpevolution_ecommerce.png, replace
 putpdf paragraph, halign(center)
@@ -85,23 +85,29 @@ putpdf pagebreak
 
 *value by sector
 frame change sector_ecom
+sum VALEUR, d
 graph bar VALEUR, over(sector, sort(VALEUR))  scale(*.75) ///
     blabel(total, format(%9.2fc)) ///
-	title("Export value per sector - ecommerce") ///
-	ytitle("total value in TND")
+	title("Export mean value per sector - ecommerce") ///
+	yline(`r(p50)', lpattern(dash)) ///
+	text(`r(p50)'  0.1 "Median", size(vsmall) place(n)) ///
+	ytitle("mean value in TND")
 	
 gr export export_by_sector_ecom.png, replace
 putpdf paragraph, halign(center) 
 putpdf image export_by_sector_ecom.png
 putpdf pagebreak
 
-*value by subsector
+
 frame change subsector_ecom
-graph hbar VALEUR, over(subsector, sort(VALEUR))  scale(*.5) ///
+sum VALEUR, d
+graph hbar VALEUR , over(subsector, sort(VALEUR))  scale(*.5) ///
     blabel(total, format(%9.2fc)) ///
+	yline(`r(p50)', lpattern(dash)) ///
+	text(`r(p50)'  -1 "Median", size(vsmall) place(n)) ///
 	title("Export value per subsector - ecommerce") ///
-	ytitle("total value in TND")
-	
+	ytitle("mean value in TND")
+
 gr export export_by_subsector_ecom.png, replace
 putpdf paragraph, halign(center) 
 putpdf image export_by_subsector_ecom.png
@@ -161,7 +167,7 @@ drop share1 share2
 *Evolution over the years
 frame change evolution_consortia
 twoway line VALEUR Year, ///
-    xtitle("Year") ytitle("Value") ///
+    xtitle("Year") ytitle("mean value") ///
     title("Consortia Value Evolution") ///
     legend(off)
 graph export cpevolution_consortia.png, replace
@@ -171,10 +177,13 @@ putpdf pagebreak
 
 *value by pole
 frame change sector_consortia
+sum VALEUR, d
 graph bar VALEUR, over(pole, sort(VALEUR))  scale(*.75) ///
     blabel(total, format(%9.2fc)) ///
+	yline(`r(p50)', lpattern(dash)) ///
+	text(`r(p50)'  0.1 "Median", size(vsmall) place(n)) ///
 	title("Export value per pole - consortia") ///
-	ytitle("total value in TND")
+	ytitle("mean value in TND")
 	
 gr export export_by_sector_consortia.png, replace
 putpdf paragraph, halign(center) 
