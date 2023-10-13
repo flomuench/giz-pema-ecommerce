@@ -1431,3 +1431,188 @@ graph bar (mean) ssa_action1_perc ssa_action2_perc ssa_action3_perc ssa_action4_
 graph export ssa_action_share.png, replace	
 
 drop ssa_action1_perc ssa_action2_perc ssa_action3_perc ssa_action4_perc ssa_action5_perc raw_knowledge_dec
+
+
+***********************************************************************
+* 	PART 5: Additional graphs
+***********************************************************************
+
+*Investment benefits and costs
+*************************** In the baseline  ***************************
+gr tw ///
+	(kdensity investcom_benefit1, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram investcom_benefit1, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	, ///
+	title("{bf: Perceived costs of using e-commerce and digital marketing}") ///
+	subtitle("{it:On a scale of 1 to 10, 1 means very low and 10 means very high}") ///
+	xtitle("Perceived costs") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived costs")) 
+graph export investcom_benefit1_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image investcom_benefit1_ml.png
+putpdf pagebreak
+
+gr tw ///
+	(kdensity investcom_benefit2, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram investcom_benefit2, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	, ///
+	title("{bf: Perceived benefits of using e-commerce and digital marketing}") ///
+	subtitle("{it:On a scale of 1 to 10, 1 means very low and 10 means very high}") ///
+	xtitle("Perceived benefits") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived benefits")) 
+graph export investcom_benefit2_ml.png, replace
+putpdf paragraph, halign(center) 
+putpdf image investcom_benefit2_ml.png
+putpdf pagebreak
+
+
+*Scatter plot perception of costs/ benefits and  and employees
+*************************** In the baseline ***************************
+corr investcom_benefit1 fte
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit1 fte  || lfit investcom_benefit1 fte, ytitle("Perceived costs") xtitle("Number of employes") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived costs")) 
+graph export raw_investcom_benefit1_fte.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit1_fte.png
+putpdf pagebreak
+
+corr investcom_benefit2 fte
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit2 fte  || lfit investcom_benefit2 fte, ytitle("Perceived benefits") xtitle("Number of employes") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived benefits")) 
+graph export raw_investcom_benefit2_fte.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit2_fte.png
+putpdf pagebreak
+
+
+*Scatter plot perception of costs/ benefits and  and digital revenues
+*************************** In the baseline ***************************
+corr investcom_benefit1 dig_revenues_ecom
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit1 dig_revenues_ecom if dig_revenues_ecom <5000 & surveyround == 1  || lfit investcom_benefit1 dig_revenues_ecom if dig_revenues_ecom <5000 & surveyround == 1, ytitle("Perceived costs") xtitle("Digital Revenues") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6)label(1 "Perceived costs"))  
+graph export raw_investcom_benefit1_digrev.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit1_digrev.png
+putpdf pagebreak
+
+corr investcom_benefit2 dig_revenues_ecom
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit2 dig_revenues_ecom if dig_revenues_ecom <5000 & surveyround == 1 || lfit investcom_benefit2 dig_revenues_ecom if dig_revenues_ecom <5000 & surveyround == 1, ytitle("Perceived benefits") xtitle("Digital Revenues") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived benefits")) 
+graph export raw_investcom_benefit2_digrev.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit2_digrevss.png
+putpdf pagebreak
+
+*Mean of perception of costs/ benefits and sector
+*************************** In the baseline ***************************
+graph hbar (mean) investcom_benefit1, over(sector, label(labs(vbig)) sort(1)) ///
+	title("Perceived costs by sector", position(12)) ///
+	subtitle("{it:On a scale of 1 to 10, 1 means very low and 10 means very high}") ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
+	ylabel(0(1)10 , nogrid) ///
+	ytitle("Mean Perception") 
+
+graph hbar (mean) investcom_benefit2, over(sector, label(labs(vbig)) sort(1)) ///
+	title("Perceived benefits by sector", position(12)) ///
+	subtitle("{it:On a scale of 1 to 10, 1 means very low and 10 means very high}") ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
+	ylabel(0(1)10 , nogrid) ///
+	ytitle("Mean Perception") 
+
+*Mean of perception of costs/ benefits and export status
+*************************** In the baseline ***************************
+graph hbar (mean) investcom_benefit1, over(exporter2020, label(labs(vbig)) sort(1)) ///
+	title("Perceived costs by exporter status", position(12)) ///
+	subtitle("{it:On a scale of 1 to 10, 1 means very low and 10 means very high}") ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
+	ylabel(0(1)10 , nogrid) ///
+	ytitle("Mean Perception") 
+
+graph hbar (mean) investcom_benefit2, over(exporter2020, label(labs(vbig)) sort(1)) ///
+	title("Perceived benefits by exporter status", position(12)) ///
+	subtitle("{it:On a scale of 1 to 10, 1 means very low and 10 means very high}") ///
+	blabel(total, format(%9.2fc) size(vbig)) ///
+	ylabel(0(1)10 , nogrid) ///
+	ytitle("Mean Perception") 
+	
+
+*Scatter plot of perception of costs/ benefits and export preparation index
+*************************** In the baseline ***************************
+corr investcom_benefit2 expprep
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit2 expprep || lfit investcom_benefit2 expprep, ytitle("Perceived benefits") xtitle("Export preparation index") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived benefits")) 
+graph export raw_investcom_benefit2_expprep.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit2_expprep.png
+putpdf pagebreak
+	
+corr investcom_benefit1 expprep
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit1 expprep || lfit investcom_benefit1 expprep, ytitle("Perceived costs") xtitle("Export preparation index") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived costs")) 
+graph export raw_investcom_benefit1_expprep.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit1_expprep.png
+putpdf pagebreak
+
+*Scatter plot of perception of costs/ benefits and export outcome index
+*************************** In the baseline ***************************
+corr investcom_benefit2 raw_expoutcomes
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit2 raw_expoutcomes || lfit investcom_benefit2 raw_expoutcomes, ytitle("Perceived benefits") xtitle("Export outcome index") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived benefits")) 
+graph export raw_investcom_benefit2_raw_expoutcomes.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit2_raw_expoutcomes.png
+putpdf pagebreak
+	
+corr investcom_benefit1 expprep
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit1 raw_expoutcomes || lfit investcom_benefit1 raw_expoutcomes, ytitle("Perceived costs") xtitle("Export outcome index") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived costs")) 
+graph export raw_investcom_benefit1_raw_expoutcomes.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit1_raw_expoutcomes.png
+putpdf pagebreak
+
+*Scatter plot of perception of costs/ benefits and digital marketing index
+*************************** In the baseline ***************************
+corr investcom_benefit2 dig_marketing_index
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit2 dig_marketing_index || lfit investcom_benefit2 dig_marketing_index, ytitle("Perceived benefits") xtitle("Digital Marketing index") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived benefits")) 
+graph export raw_investcom_benefit2_dmi.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit2_dmi.png
+putpdf pagebreak
+	
+corr investcom_benefit1 dig_marketing_index
+local corr : di %4.3f r(rho)
+twoway scatter investcom_benefit1 dig_marketing_index || lfit investcom_benefit1 dig_marketing_index, ytitle("Perceived costs") xtitle("Digital Marketing index") subtitle(correlation `corr') ///
+	legend(rows(3) symxsize(small) ///
+               c(1) pos(6) ring(6) label(1 "Perceived costs")) 
+graph export raw_investcom_benefit1_dmi.png, replace
+putpdf paragraph, halign(center) 
+putpdf image raw_investcom_benefit1_dmi.png
+putpdf pagebreak
+
