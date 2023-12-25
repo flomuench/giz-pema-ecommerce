@@ -55,6 +55,22 @@ format %-25.0fc id_plateforme
 format %td date
 
 ***********************************************************************
-* 	PART 2:    save e-commerce anaylsis
+* 	PART 2:    Add Tunis to rg_adresse using PII data 
+***********************************************************************
+use "${master_pii}/ecommerce_master_contact", clear
+
+*gen dummy if tunis in variable
+gen contains_tunis = strpos(rg_adresse, "tunis") > 0 | strpos(rg_adresse, "tunisia") > 0
+
+*gen new rg_adresse just in case
+gen rg_adresse_modified = rg_adresse
+
+*add tunis if it does not contain it or tunisia
+replace rg_adresse_modified = rg_adresse_modified + ", tunis" if !contains_tunis
+
+save "${master_pii}/ecommerce_master_contact", replace
+
+***********************************************************************
+* 	PART 3:    save e-commerce anaylsis
 ***********************************************************************
 save "${master_intermediate}/ecommerce_master_inter", replace
