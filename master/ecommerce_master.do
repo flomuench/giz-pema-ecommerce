@@ -123,6 +123,7 @@ global master_raw = "${gdrive}/6-master/raw"
 global master_gdrive ="${gdrive}/6-master"
 global master_pii ="${master_gdrive}/pii"
 global implementation = "${gdrive}/9-implementation"
+global map = "${gdrive}/11-geolocation"
 
 global bl_raw = "${gdrive}/2-baseline/raw"
 global bl_intermediate "${gdrive}/2-baseline/intermediate"
@@ -205,3 +206,7 @@ if (1) do "${master_github}/master_regressions.do"
 	PART 4.2: Regressions
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_heterogeneity.do"
+***********************************************************************
+* 	PART 5:		Build coordinates map
+***********************************************************************
+if (1) do "${master_github}/master_map.do"
