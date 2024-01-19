@@ -142,6 +142,9 @@ global ml_intermediate = "${gdrive}/3-midline/intermediate"
 global ml_final = "${gdrive}/3-midline/final"
 global ml_checks = "${gdrive}/3-midline/checks"
 
+global map_raw = "${map}/raw"
+global map_output = "${map}/output"
+
 * paths within github
 			* code
 global master_github "${github}/master"
