@@ -97,7 +97,7 @@ putpdf pagebreak
 
 *draw the map whole tunis by pole
 	*Industrie 4
-spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 4) legenda(on) legcount) ///
+spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 4 & treatment == 1) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	title("Industry ecommerce firms by take-up", size(*1))
 graph export map_ecommerceTunisiaIndus_takeup.png, replace
@@ -106,7 +106,7 @@ putpdf image map_ecommerceTunisiaIndus_takeup.png
 putpdf pagebreak
 
 	*Agriculture & Peche 1
-spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 1) legenda(on) legcount) ///
+spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 1 & treatment == 1) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	title("Agri & Peche ecommerce firms by take-up", size(*1))
 graph export map_ecommerceTunisiaAgri_takeup.png, replace
@@ -115,7 +115,7 @@ putpdf image map_ecommerceTunisiaAgri_takeup.png
 putpdf pagebreak
 
 	*Commerce International 3
-spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 3) legenda(on) legcount) ///
+spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 3 & treatment == 1) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	title("Commerce Int ecommerce firms by take-up", size(*1))
 graph export map_ecommerceTunisiaComm_takeup.png, replace
@@ -124,7 +124,7 @@ putpdf image map_ecommerceTunisiaComm_takeup.png
 putpdf pagebreak
 
 	*Services 5
-spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 5) legenda(on) legcount) ///
+spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 5 & treatment == 1) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	title("Service ecommerce firms by take-up", size(*1))
 graph export map_ecommerceTunisiaService_takeup.png, replace
@@ -133,7 +133,7 @@ putpdf image map_ecommerceTunisiaService_takeup.png
 putpdf pagebreak
 
 	*Artisanat 2
-spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 2) legenda(on) legcount) ///
+spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 2 & treatment == 1) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	title("Artisanat ecommerce firms by take-up", size(*1))
 graph export map_ecommerceTunisiaEnergy_takeup.png, replace
@@ -142,7 +142,7 @@ putpdf image map_ecommerceTunisiaEnergy_takeup.png
 putpdf pagebreak
 
 	*TIC 6
-spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 6) legenda(on) legcount) ///
+spmap using tunisia_shp, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) size(1.5) ocolor(white ..) osize(*0.5) by(take_up) select(keep if sector == 6 & treatment == 1) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	title("TIC ecommerce firms by take-up", size(*1))
 graph export map_ecommerceTunisiaInfo_takeup.png, replace
@@ -176,7 +176,7 @@ restore
 spmap using tunisia_regions_shp if _ID == 1 | _ID == 2 | _ID == 3| _ID == 4 | _ID == 5, id(_ID) fcolor(eggshell) point(data("coordinates.dta") xcoord(new_longitude) ycoord(new_latitude) fcolor(red%50 navy%50) ocolor(white ..) select(keep if district == "Tunis" | district == "Ariana" | district == "Ben Arous") by(treatment) size(v.Small ..) legenda(on) legcount) ///
 	legend(size(*1.8) rowgap(1.5)) ///
 	label(data(tunis_labels) x(_CX) y(_CY) label(dis_en)) ///
-	title("Tunis consorita firms by treatment", size(*1))
+	title("Grand Tunis consorita firms by treatment", size(*1))
 graph export map_ecommerceTunis_treatment.png, replace
 putpdf paragraph, halign(center)
 putpdf image map_ecommerceTunis_treatment.png
@@ -207,7 +207,6 @@ spmap using tunisia_regions_shp if _ID == 6 | _ID == 7, id(_ID) fcolor(eggshell)
 graph export map_ecommerceNabeul_treatment.png, replace
 putpdf paragraph, halign(center)
 putpdf image map_ecommerceNabeul_treatment.png
-putpdf pagebreak
 
 putpdf save "ecommerce_firmsmap", replace
 }
