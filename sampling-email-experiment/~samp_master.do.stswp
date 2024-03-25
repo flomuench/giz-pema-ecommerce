@@ -53,7 +53,7 @@ if "`c(username)'" == "my rog"{
 		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
 }
 if "`c(username)'" == "MUNCHFA"{
-		global gdrive = "G:/My Drive"
+		global gdrive = "G:/MyDrive"
 }
 else{
 		global gdrive = "C:/Users/`c(username)'/Google Drive"
