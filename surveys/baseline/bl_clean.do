@@ -356,7 +356,7 @@ rename nomdelapersonne ident_nom
 rename nomdelentreprise ident_entreprise
 rename merciderenseignerlenomcorr ident_nom_correct_entreprise
 rename adresseéléctronique ident_email_1
-rename k ident_email_2
+rename i ident_email_2
 rename commentvousappelezvous id_base_respondent
 *rename as dig_presence3_exemples
 rename quelestlepaysdafrique exp_afrique_principal

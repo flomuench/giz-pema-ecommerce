@@ -1160,11 +1160,11 @@ replace comp_benefice2020 = "`not_know'" if comp_benefice2020 == "-999"
 replace comp_benefice2020 = "`not_know'" if comp_benefice2020 == "je ne sais pas"
 
 
-*Correction de la variable car_carempl_div
+/*Correction de la variable car_carempl_div
 replace car_carempl_div1 = "`not_know'" if car_carempl_div1 == "?"
 replace car_carempl_dive2 = "`not_know'" if car_carempl_dive2 == "?"
 replace car_carempl_div3 = "`not_know'" if car_carempl_div3 == "?"
-
+*/
 * exp_pays_21
 
 replace exp_pays_21 = "-999" if exp_pays_21=="?"
@@ -1256,9 +1256,9 @@ replace comp_benefice2020 = "45000" if id_plateforme==841
 
 replace investcom_2021 = "20000" if id_plateforme==875
 replace investcom_futur = "50000" if id_plateforme==875
-replace car_carempl_dive2 = "5" if id_plateforme==875
-replace car_carempl_div1 = "9" if id_plateforme==875
-replace car_carempl_div3 = "0" if id_plateforme==875
+replace car_carempl_dive2 = 5 if id_plateforme==875
+replace car_carempl_div1 = 9 if id_plateforme==875
+replace car_carempl_div3 = 0 if id_plateforme==875
 
 replace compexp_2020 = "2000000" if id_plateforme==941 
 replace comp_ca2020 = "4000000" if id_plateforme==941 
@@ -1581,7 +1581,7 @@ drop if id_plateforme == 351
 
 replace id_base_repondent= "sana farjallah" if id_plateforme == 108
 replace entr_produit1= "skit solaire connecté réseau,site isolé et pompage solaire" if id_plateforme == 108
-replace i= "africa@growatt.pro" if id_plateforme == 108
+replace ident_email_2= "africa@growatt.pro" if id_plateforme == 108
 
 
 replace dig_revenues_ecom= 20000 if id_plateforme == 140
