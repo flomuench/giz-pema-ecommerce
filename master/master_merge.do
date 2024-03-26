@@ -32,13 +32,9 @@ use "${regis_final}/regis_final", clear
 rename treatment treatment_email
 
 merge 1:1 id_plateforme using "${bl_final}/bl_final"
-drop commentaires_ElAmouri
+*drop commentaires_ElAmouri
 keep if _merge==3 /* companies that were eligible and answered on the registration + baseline surveys */
 drop _merge
-
-*generate surveyround variable
-gen surveyround = 1
-lab var surveyround "1-baseline 2-midline 3-endline"
 
     * save as ecommerce_database
 
