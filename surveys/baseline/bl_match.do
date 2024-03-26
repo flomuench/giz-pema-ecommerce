@@ -19,10 +19,8 @@
 ***********************************************************************
 * 	PART 1:  Add paths
 ***********************************************************************
-
-clear 
-
-use "${regis_final}/regis_final", clear
+ 
+use "${regis_final}/regis_final.dta", clear
 
 keep id_plateforme presence_enligne rg_age fte fte_femmes capital sector subsector rg_gender_rep rg_gender_pdg produit_exportable export2017 export2018 export2019 export2020 export2021
 
