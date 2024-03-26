@@ -75,13 +75,13 @@ if c(os) == "Windows" {
 
 		
 if c(os) == "Windows" {
-	global regis_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
+	global regis_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/1-registration"
 	global regis_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/registration"
 }
 		* paths within gdrive
 			* data
 global bl_raw = "${bl_gdrive}/raw"
-global bl_intermediate "${bl_gdrive}/intermediate"
+global bl_intermediate = "${bl_gdrive}/intermediate"
 global bl_final = "${bl_gdrive}/final"
 global bl_output = "${bl_gdrive}/output"
 global bl_checks = "${bl_gdrive}/checks"
@@ -91,13 +91,16 @@ global master_raw = "${master_gdrive}/raw"
 
 		* paths within gdrive
 			* data
+*bl
 global bl_raw = "${bl_gdrive}/raw"
-global bl_intermediate "${bl_gdrive}/intermediate"
+global bl_intermediate = "${bl_gdrive}/intermediate"
 global bl_final = "${bl_gdrive}/final"
 global bl_checks = "${bl_gdrive}/checks"
 global bl_output = "${bl_gdrive}/output"
+
+*regis
 global regis_raw = "${regis_gdrive}/raw"
-global regis_intermediate "${regis_gdrive}/intermediate"
+global regis_intermediate = "${regis_gdrive}/intermediate"
 global regis_final = "${regis_gdrive}/final"
 global regis_checks = "${regis_gdrive}/checks"
 
