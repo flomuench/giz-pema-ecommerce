@@ -235,7 +235,7 @@ export excel commentaires_ElAmouri id_plateforme commentsmsb needs_check questio
 
 	* Save as final
 
-drop commentaires_ElAmouri export2017 export2018  export2019  export2020 export2021 attest attest2 acceptezvousdevalidervosré  ident_nom ident_nom_correct_entreprise qsinonident as aq complete needs_check questions_needing_checks commentsmsb
+drop commentaires_ElAmouri export2017 export2018  export2019  export2020 export2021 attest attest2 acceptezvousdevalidervosré  ident_nom ident_nom_correct_entreprise qsinonident aq complete needs_check questions_needing_checks commentsmsb // REMOVED "as" variable as it blocked code, maybe it was needed?
 
 cd "$bl_final"
 
