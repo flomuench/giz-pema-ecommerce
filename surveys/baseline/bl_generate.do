@@ -67,7 +67,9 @@ replace dig_logistique_retour_score = 0.5 if dig_logistique_retour_nat == 1 | di
 
 replace expprep_cible = 0.5 if expprep_cible==-1200
 
-
+*generate surveyround variable
+gen surveyround = 1
+lab var surveyround "1-baseline 2-midline 3-endline"
 **********************************************************************
 * 	PART 2:  Additional variables
 ***********************************************************************
