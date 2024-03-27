@@ -89,7 +89,7 @@ global ml_final = "${ml_gdrive}/final"
 
 			* data
 global el_raw = "${el_gdrive}/raw"
-global el_intermediate "${el_gdrive}/intermediate"
+global el_intermediate = "${el_gdrive}/intermediate"
 global el_final = "${el_gdrive}/final"
 global el_output = "${el_gdrive}/output"
 global el_checks = "${el_gdrive}/checks"
