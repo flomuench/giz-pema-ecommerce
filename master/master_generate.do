@@ -349,8 +349,8 @@ lab var needs_check" if larger than 0, this rows needs to be checked"
 ***********************************************************************
 *PART 6 Create empty rows of attrited firms
 ***********************************************************************	
-xtset id_plateforme surveyround
-tsfill, full
+*xtset id_plateforme surveyround
+*tsfill, full
 
 *generate attrition variables for baseline, midline and endline
 gen ml_attrit2 = .
