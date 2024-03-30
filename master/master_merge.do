@@ -183,7 +183,28 @@ merge m:1 id_plateforme using "${implementation}/take_up2", force
 */
 drop _merge
 order Nouveau site web (0 - 1)	Refonte Technique (0 - 1)	Refonte graphique (0 - 1)	SEO (0 - 1)	SEO Livré ?	CM (0 - 1)	CM Livré ?	Formation Ads (0 - 1)	Formation Livré ?	Boutique en ligne  (0 - 1)	Devis en ligne  (0 - 1)	Pas d'Export ? (0 - 1)	Si pas d'Export pourquoi ?	Nbr HJ planifiés	HJ site web consommés	HJ MKG consommés	Structure site web validée	maquette valiée	statut DEV	Site web en Ligne	Site web validé, last
+*/
 
+preserve
+	import excel "${master_pii}/take_up_ecommerce.xlsx", firstrow clear
+	drop firmname
+	destring id_plateforme,replace
+	sort id_plateforme, stable
+	save "${master_pii}/take_up_ecommerce.dta",replace
+restore
+
+merge m:1 id_plateforme using "${master_pii}/take_up_ecommerce",force
+/* 
+  Result                           # of obs.
+    -----------------------------------------
+    not matched                           267
+        from master                       266  (_merge==1)
+        from using                          1  (_merge==2)
+
+    matched                               331  (_merge==3)
+    -----------------------------------------
+*/
+drop _merge
 ***********************************************************************
 * 	PART 5: save finale analysis data set as raw
 ***********************************************************************
