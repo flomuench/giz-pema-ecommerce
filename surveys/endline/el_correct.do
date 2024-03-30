@@ -65,7 +65,7 @@ sort date heure, stable
 ***********************************************************************
 *2.1 Remove commas, dots, dt and dinar Turn zero, zéro into 0 for all numeric vars
  
-local numvars dig_revenues_ecom
+local numvars dig_revenues_ecom comp_ca2023 comp_ca2024 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 dig_invest mark_invest dig_empl
 * we may add these variables to check if they changed to string variables: ca_exp2018_cor  ca_exp2019_cor ca_exp2020_cor ca_2018_cor 
 *replace dig_revenues_ecom = "700000" if dig_revenues_ecom == "SEPT CENT MILLE DINARS"
 
@@ -134,8 +134,11 @@ replace dig_revenues_ecom = "0" if dig_vente == 0
 ***********************************************************************
 * 	PART 5:  destring variables that should be numeric
 ***********************************************************************
-destring dig_revenues_ecom, replace
-recast int dig_revenues_ecom
+local numvars dig_revenues_ecom comp_ca2023 comp_ca2024 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 dig_invest mark_invest dig_empl
+foreach var of local numvars {
+destring `var', replace
+recast int `var'
+}
 ***********************************************************************
 * 	Part 6: Save the changes made to the data		  			
 ***********************************************************************
