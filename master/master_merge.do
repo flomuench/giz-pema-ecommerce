@@ -188,6 +188,7 @@ order Nouveau site web (0 - 1)	Refonte Technique (0 - 1)	Refonte graphique (0 - 
 preserve
 	import excel "${master_pii}/take_up_ecommerce.xlsx", firstrow clear
 	drop firmname
+	drop if id_plateforme==.
 	destring id_plateforme,replace
 	sort id_plateforme, stable
 	save "${master_pii}/take_up_ecommerce.dta",replace
@@ -195,13 +196,14 @@ restore
 
 merge m:1 id_plateforme using "${master_pii}/take_up_ecommerce",force
 /* 
-  Result                           # of obs.
-    -----------------------------------------
-    not matched                           267
-        from master                       266  (_merge==1)
-        from using                          1  (_merge==2)
 
-    matched                               331  (_merge==3)
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                           168
+        from master                       168  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                               224  (_merge==3)
     -----------------------------------------
 */
 drop _merge
