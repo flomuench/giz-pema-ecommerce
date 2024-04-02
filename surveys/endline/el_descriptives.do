@@ -35,6 +35,8 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 ***********************************************************************
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 1: Survey Progress Overview"), bold
+{
+
 
 * total number of firms starting the survey
 graph bar (count), over(treatment) blabel(total, format(%9.0fc)) ///
@@ -109,7 +111,7 @@ gr export survey_response_byday.png, replace
 putpdf paragraph, halign(center) 
 putpdf image survey_response_byday.png
 putpdf pagebreak
-
+}
 ***********************************************************************
 * 	PART 3:  Variables checking		  			
 ***********************************************************************	
@@ -117,6 +119,8 @@ putpdf pagebreak
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 2: The company"), bold
+{
+
 
 *Number of product innovation
  stripplot inno_produit, jitter(4) vertical yline(2, lcolor(red)) ///
@@ -306,10 +310,12 @@ gr export el_car_carempl_div4_his.png, replace
 putpdf paragraph, halign(center) 
 putpdf image el_car_carempl_div4_his.png
 putpdf pagebreak
-
+}
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 3: Digital Technology Adoption"), bold
+{
+
 
 	
 	*Variable présence digitale
@@ -469,10 +475,12 @@ gr export el_mark_invest_box.png, replace
 putpdf paragraph, halign(center) 
 putpdf image el_mark_invest_box.png
 putpdf pagebreak
-
+}
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 4: Digital Technology Perception"), bold
+{
+
 	 
 	 *Perception coût du marketing digital
 	 graph bar (mean) investecom_benefit1, over(treatment) blabel(total, format(%9.1fc) gap(-0.2)) ///
@@ -505,10 +513,12 @@ gr export el_barriers.png, replace
 putpdf paragraph, halign(center) 
 putpdf image el_barriers.png
 putpdf pagebreak
-
+}
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 5: Export"), bold
+{
+
 	 
 	* Export: direct, indirect, no export
 graph bar (mean) export_1 export_2 export_3, over(treatment) percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
@@ -639,10 +649,11 @@ gr export el_export_practices.png, replace
 putpdf paragraph, halign(center) 
 putpdf image el_export_practices.png
 putpdf pagebreak
-
+}
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 6: Accounting"), bold
+{
 
     * Chiffre d'affaires total en dt en 2023 
 stripplot comp_ca2023, jitter(4) vertical yline(9, lcolor(red)) ///
@@ -739,6 +750,7 @@ gr export el_comp_benefice2024_box.png, replace
 putpdf paragraph, halign(center) 
 putpdf image el_comp_benefice2024_box.png
 putpdf pagebreak
+}
 ***********************************************************************
 * 	PART 4:  save pdf
 ***********************************************************************

@@ -22,8 +22,6 @@ use "$ml_final/ml_final", clear
 *preserve
 preserve
 merge 1:1 id_plateforme using "${master_gdrive}/pii/ecommerce_master_contact"
-keep   if _merge==2 
-keep if status== "participant"
 export excel id_plateforme firmname nom_rep status present emailrep telrep rg_telpdg ///
 	tel_supl1 tel_supl2 tel_sup1 tel_sup2 using"${master_gdrive}/pii/entreprise_restant_formé.xlsx", ///
 	firstrow(var) sheetreplace
@@ -34,7 +32,6 @@ cd "$ml_output"
 
 *merge treatment info for stats
 merge 1:1 id_plateforme using "${master_gdrive}/pii/ecommerce_master_contact"
-keep if _merge==3
 
 	* create pdf document
 putpdf clear

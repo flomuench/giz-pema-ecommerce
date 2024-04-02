@@ -1862,5 +1862,6 @@ export excel `pii' using ecommerce_bl_pii, firstrow(var) replace
 cd "$bl_final"
 
 	* drop all pii
-drop `pii'
-*/
+drop heure date attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ident_nom_correct_entreprise ident_email_1 qsinonident ident_email_2 id_ident2 id_base_respondent id_nouveau_personne id_base_repondent id_repondent_position tel_sup1 tel_sup2
+
+
