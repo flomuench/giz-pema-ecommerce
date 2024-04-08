@@ -409,6 +409,107 @@ lab var ssa_aggregate "The company responded yes to at least one of the ssa_acti
 label define yesno1 0 "no" 1 "yes" 
 label value ssa_aggregate yesno1
 
+***********************************************************************
+*PART 8: Creation of index for the endline
+***********************************************************************	
+	* Put all variables used to calculate indices into a local
+			*Digital sales index
+local dsi dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix //
+dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com //
+web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand //
+dig_miseajour1 dig_miseajour2 dig_miseajour3
+			
+			*Digital marketing index
+local dmi mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl dig_invest mark_invest
+			
+			*Digital Technology Perception
+local dtp investecom_benefit1  investecom_benefit2
+	
+			*Digital technology adoption index
+local dtai dsi dmi		
+			
+			*Export practices index
+local eri exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme //
+exp_pra_fin exp_pra_vent exp_pra_ach			
+			
+			*Export performance index
+local epi export_1 export_2 exp_pays cliens_b2c cliens_b2b exp_dig			
+			
+			
+			*Business performance index
+local bpi fte comp_ca2023 comp_benefice2023
 
 
+local allvars `dsi' `dmi' `dtp' `dtai' `eri' `epi' `bpi'
+
+* Check whether all are numeric
+ds `allvars', has(type string)
+
+	*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros*
+foreach var of local allvars {
+	g temp_`var' = `var'
+	replace temp_`var' = 0 if `var' == -999		// dont know transformed to zeros
+	replace temp_`var' = 0 if `var' == -888
+	replace temp_`var' = 0 if `var' == -777
+	
+}
+
+	* calculate z-score for each individual outcome
+		* write a program calculates the z-score
+			* if you re-run the code, execture before: 
+capture program drop zscore
+program define zscore /* opens a program called zscore */
+	sum `1' if treatment == 0
+	gen `1'z = (`1' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+end
+
+		* calcuate the z-score for each variable
+foreach var of local allvars {
+	zscore temp_`var'
+}
+
+	* calculate the index value: average of zscores
+			*Digital sales index
+egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z temp_dig_prixz //
+temp_dig_revenues_ecomz temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz //
+temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz //
+temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+
+			*Digital marketing index
+egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z temp_dig_emplz temp_dig_investz temp_mark_investz)
+			
+			*Digital Technology Perception
+egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
+	
+			*Digital technology adoption index
+egen dtai = rowmean(dsi dmi)		
+			
+			*Export practices index
+egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_rexpz temp_exp_pra_planz temp_exp_pra_normez //
+temp_exp_pra_finz temp_exp_pra_ventz temp_exp_pra_achz)			
+			
+			*Export performance index
+egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_cliens_b2cz temp_cliens_b2bz temp_exp_digz)			
+			
+			*Business performance index
+egen bpi = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
+
+		* labeling
+label var dsi "Digital sales index -Z Score"
+label var dmi "Digital marketing index -Z Score"
+label var dtp "Digital technology Perception -Z Score"
+label var dtai "Digital technology adoption index -Z Score"
+label var eri "Export readiness index -Z Score"
+label var epi "Export performance index -Z Score"
+label var bpi "Business performance index- Z-score"
+
+*drop temporary vars		  
+drop temp_*
+
+
+
+
+***********************************************************************
+* 	Save the changes made to the data		  			
+***********************************************************************
 save "${master_final}/ecommerce_master_final", replace
