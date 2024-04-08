@@ -484,7 +484,7 @@ egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
 			*Digital technology adoption index
 egen dtai = rowmean(dsi dmi)		
 			
-			*Export practices index
+			*Export readiness index
 egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_rexpz temp_exp_pra_planz temp_exp_pra_normez //
 temp_exp_pra_finz temp_exp_pra_ventz temp_exp_pra_achz)			
 			
@@ -503,11 +503,35 @@ label var eri "Export readiness index -Z Score"
 label var epi "Export performance index -Z Score"
 label var bpi "Business performance index- Z-score"
 
+
+	* create total points per index dimension
+			
+			*Digital sales index
+egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix //
+web_use_contacts web_use_catalogue web_use_engagement web_use_com //
+web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand //
+dig_miseajour1 dig_miseajour2 dig_miseajour3) // total 19 points
+			
+			*Digital marketing index
+egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5) // total 5 points
+			
+			*Digital technology adoption index
+egen dtai_points = rowtotal(dsi_points dmi_points) // total 24 points	
+			
+			* export readiness index (eri)
+egen eri_points = rowtotal(exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme //
+exp_pra_fin exp_pra_vent exp_pra_ach), missing // total 8 points
+
+
+		* labeling
+label var dsi_points "Digital sales index points"
+label var dmi_points "Digital marketing index points"
+label var dtai_points "Digital technology adoption index points"
+label var eri_points "Export readiness index points"
+
+
 *drop temporary vars		  
 drop temp_*
-
-
-
 
 ***********************************************************************
 * 	Save the changes made to the data		  			
