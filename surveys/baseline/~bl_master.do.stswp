@@ -58,16 +58,16 @@ set scheme plotplain
 if "`c(username)'" == "amira.bouziri" |"`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" {
 
 		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
-}
-if "`c(username)'" == "MUNCHFA" {
+
+else if  "`c(username)'" == "MUNCHFA" {
 		global gdrive = "G:/My Drive"
-}
+
 else{
 
 		global gdrive = "C:/Users/`c(username)'/Google Drive"
-}
-
-
+			}
+		}
+	}
 if c(os) == "Windows" {
 	global bl_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
 	global bl_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline"
@@ -131,7 +131,7 @@ if (1) do "${bl_github}/bl_import.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_clean.do"
 /* --------------------------------------------------------------------
-	PART 3.3: Correct & save intermediate data (Nrows = 135)
+	PART 3.3: Correct & save intermediate data (Nrows = 159)
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_correct.do"
 /* --------------------------------------------------------------------
@@ -161,12 +161,7 @@ if (1) do "${bl_github}/bl_stratification.do"
 /* --------------------------------------------------------------------
 	PART 3.10: Randomise
 ----------------------------------------------------------------------*/	
-if (1) do "${bl_github}/bl_randomisation.do"
-
-/* --------------------------------------------------------------------
-	PART 4.1 Index calculation revisited
-----------------------------------------------------------------------*/	
-if (0) do "${bl_github}/.do"
+if (0) do "${bl_github}/bl_randomisation.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2 Diagnostic creation
