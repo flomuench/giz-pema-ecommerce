@@ -37,12 +37,18 @@ putdocx text ("Results of randomisation"), bold linebreak
 ***********************************************************************
 
 	* Set a seed for today
-
 set seed 2202
 
 	* Sort 
 sort id_plateforme, stable
 
+	* import final list of firms to be randomised
+preserve
+import excel using "${bl_final}/ecommerce_list.xls", firstrow clear
+save "${bl_final}/ecommerce_list", replace
+restore
+
+merge 1:1 using "${bl_final}/ecommerce_list"
 
 ***********************************************************************
 * 	PART 2: Randomise

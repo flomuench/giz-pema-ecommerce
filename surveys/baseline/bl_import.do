@@ -36,9 +36,11 @@ rename Jattestequetouteslesinform attest
 rename DA attest2
 
 save "temp_bl_raw", replace
-/* 
---------------------------------------------------------------------
-	PART 1.2: Import raw data from CATI survey		
+
+	
+/* --------------------------------------------------------------------
+	PART 1.2: Import raw data of CATI survey
+----------------------------------------------------------------------*/
 
 import excel "${bl_raw}/bl_raw_cati.xlsx", sheet("Feuil1") firstrow clear
 
@@ -57,7 +59,7 @@ rename Jattestequetouteslesinform attest
 rename DC attest2
 
 append using temp_bl_raw, force
-*/		
+	
 
 ***********************************************************************
 * 	PART 4: re-importing raw data 						
