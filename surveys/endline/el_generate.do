@@ -10,7 +10,7 @@
 *   2)		Generate variables for companies who answered on phone	  				  
 * 	3) 		Drop useless variables	
 * 	4) 		Change format type	
-* 	5) 		Change format type	
+* 	5) 		generate normalized financial data (per employee)
 * 	6) 		Create variable required for coherence test	 	
 * 	6) 		Save the changes made to the data
 																  															      
@@ -81,7 +81,20 @@ label define Surveytype 1 "Phone" 0 "En ligne"
 * 	PART 4:  Change format type	
 ***********************************************************************
 
+***********************************************************************
+* 	PART 5:  generate normalized financial data (per employee)
+***********************************************************************
 
+local varn empl dig_empl mark_invest dig_invest comp_ca2023 comp_ca2024 comp_exp2023 comp_exp2024 comp_benefice2023 comp_benefice2024
+
+foreach x of local varn { 
+gen n`x' = .
+replace n`x' = `x' if `x' < not_know
+replace n`x' = not_know if `x' == not_know
+replace n`x' = refused if `x' == refused
+replace n`x' = check_again if `x' == check_again
+replace n`x' = `x'/employes if n`x'!= not_know | n`x'!= refused | n`x'!= check_again
+}
 
 **********************************************************************
 * 	PART 6:  save			
