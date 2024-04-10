@@ -105,6 +105,11 @@ global ml_intermediate = "${gdrive}/3-midline/intermediate"
 global ml_final = "${gdrive}/3-midline/final"
 global ml_checks = "${gdrive}/3-midline/checks"
 
+global el_raw = "${gdrive}/4-endline/raw"
+global el_intermediate = "${gdrive}/4-endline/intermediate"
+global el_final = "${gdrive}/4-endline/final"
+global el_checks = "${gdrive}/4-endline/checks"
+
 global map_raw = "${map}/raw"
 global map_output = "${map}/output"
 
@@ -147,9 +152,13 @@ if (1) do "${master_github}/master_correct_ml.do"
 ----------------------------------------------------------------------*/
 if (1) do "${master_github}/master_generate.do"
 /*--------------------------------------------------------------------
-	PART 3.6: Test coherence between survey rounds
+	PART 3.6: Test coherence between survey rounds / questions midline
 ----------------------------------------------------------------------*/
-if (0) do "${master_github}/master_test.do"
+if (0) do "${master_github}/master_test_ml.do"
+/*--------------------------------------------------------------------
+	PART 3.7: Test coherence between survey rounds / questions endline
+----------------------------------------------------------------------*/
+if (0) do "${master_github}/master_test_el.do"
 
 ***********************************************************************
 * 	PART 4: 	Run final analysis
@@ -158,24 +167,32 @@ if (0) do "${master_github}/master_test.do"
 	PART 4.1: Descriptive statistics
 ----------------------------------------------------------------------*/		
 if (0) do "${master_github}/master_descriptives.do"
-
 /*--------------------------------------------------------------------
 	PART 4.2: Power calculations with baseline data
 ----------------------------------------------------------------------*/		
 if (0) do "${master_github}/master_power.do"
 /* --------------------------------------------------------------------
-	PART 4.2: Regressions
+	PART 4.3: Midline old regression
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_regression2.do"
+if (1) do "${master_github}/master_oldregression_ml.do"
+/* --------------------------------------------------------------------
+	PART 4.4: Midline regression
+----------------------------------------------------------------------*/
+if (1) do "${master_github}/master_regression_ml.do"
+/* --------------------------------------------------------------------
+	PART 4.5: Midline heterogeneity
+----------------------------------------------------------------------*/
+if (1) do "${master_github}/master_heterogeneity_ml.do"
 /* --------------------------------------------------------------------
 /* --------------------------------------------------------------------
-	PART 4.2: Regressions
+	PART 4.6: Endline regression
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_regressions.do"
+if (1) do "${master_github}/master_regression_el.do"
 /* --------------------------------------------------------------------
-	PART 4.2: Regressions
+	PART 4.6: Endline heterogeneity
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_heterogeneity.do"
+if (1) do "${master_github}/master_heterogeneity_el.do"
+----------------------------------------------------------------------*/
 ***********************************************************************
 * 	PART 5:		Build coordinates map
 ***********************************************************************
