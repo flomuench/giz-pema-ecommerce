@@ -393,7 +393,7 @@ putpdf image el_sm_use.png
 putpdf pagebreak
 
 *Variable mise à jour
-betterbar dig_miseajour1 dig_miseajour2 dig_miseajour3, ci barlab ///
+betterbar dig_miseajour1 dig_miseajour2 dig_miseajour3, over(treatment) ci barlab ///
 	title("Frequency of updates") ///
 	ylabel(,labsize(vsmall) angle(horizontal))
 graph export el_maj_digital.png, replace 

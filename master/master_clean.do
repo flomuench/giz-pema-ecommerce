@@ -44,6 +44,9 @@ lab values surveyround surveys
 
 label define yesno 0 "no" 1 "yes" -999 "Don't know", replace
 
+	*Presence of absent take_up
+lab def presence 1 "present" 0 "absent"
+lab values take_up_for take_up_for1 take_up_for2 take_up_for3 take_up_for4 take_up_for5 take_up_std take_up_seo take_up_smo take_up_smads take_up_website presence
 	* numeric 
 ds, has(type numeric) 
 local numvars "`r(varlist)'"

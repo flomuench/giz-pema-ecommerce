@@ -198,6 +198,21 @@ merge m:1 id_plateforme using "${master_pii}/take_up_ecommerce",force
     matched                               224  (_merge==3)
     -----------------------------------------
 */
+
+label var take_up_for_per "Percentage of presence in workshops"
+label var take_up_for "Presence for at least 3 on 5 workshops"
+label var take_up_for1 "Presence in the 1 workshop"
+label var take_up_for2 "Presence in the 2 workshop"
+label var take_up_for3 "Presence in the 3 workshop"
+label var take_up_for4 "Presence in the 4 workshop"
+label var take_up_for5 "Presence in the 5 workshop"
+label var take_up_std "Participation in student consulting"
+label var take_up_seo "Participation in seo activity"
+label var take_up_smo "Participation in social media organic activity"
+label var take_up_smads "Participation in social media advertising workshop"
+label var take_up_website "Participation in website development activity"
+label var take_up_heber "Purchase of website access"
+
 drop _merge
 ***********************************************************************
 * 	PART 5: save finale analysis data set as raw
