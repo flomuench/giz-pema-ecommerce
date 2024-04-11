@@ -497,7 +497,7 @@ egen bpi = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
 		* labeling
 label var dsi "Digital sales index -Z Score"
 label var dmi "Digital marketing index -Z Score"
-label var dtp "Digital technology Perception -Z Score"
+label var dtp "Digital technology Perception index -Z Score"
 label var dtai "Digital technology adoption index -Z Score"
 label var eri "Export readiness index -Z Score"
 label var epi "Export performance index -Z Score"
