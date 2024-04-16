@@ -1250,15 +1250,19 @@ replace comp_benefice2020 = "45000" if id_plateforme==841
 
 replace investcom_2021 = "20000" if id_plateforme==875
 replace investcom_futur = "50000" if id_plateforme==875
-replace car_carempl_dive2 = 5 if id_plateforme==875
-replace car_carempl_div1 = 9 if id_plateforme==875
-replace car_carempl_div3 = 0 if id_plateforme==875
+replace car_carempl_dive2 = "5" if id_plateforme==875
+replace car_carempl_div1 = "9" if id_plateforme==875
+replace car_carempl_div3 = "0" if id_plateforme==875
 
 replace compexp_2020 = "2000000" if id_plateforme==941 
 replace comp_ca2020 = "4000000" if id_plateforme==941 
 replace dig_revenues_ecom = "0" if id_plateforme==941 
 replace comp_benefice2020 = "0" if id_plateforme==941
 
+drop if car_carempl_div1=="?"
+drop if car_carempl_dive2=="?"
+drop if car_carempl_div3=="?"
+drop if car_carempl_div3=="."
 
 }
 
@@ -1405,24 +1409,23 @@ drop if id_plateforme == 105 & heure == "15h50`43``"		// looks correct
 drop if id_plateforme == 108 & heure == "15h29`12``"		// keep one at least for 108. Kais, Ayoub?
 drop if id_plateforme == 108 & heure == "23h09`09``" 		// 
 *drop if id_plateforme == 114 & heure == "18h34`17``"		// non-response. Drop or keep?
-*drop if id_plateforme == 126 & heure == "14h55`09``"		// not a dup, looks good.
-
-*drop if id_plateforme == 129 & heure == "14h15`10``"		// is not a dup.keep.
+drop if id_plateforme == 126 & heure == "14h55`09``"		
+drop if id_plateforme == 129 & heure == "14h15`10``"		
 drop if id_plateforme == 140 & heure == "18h17`02``"		// is dup. kept last response.
 *drop if id_plateforme == 166 & heure == "19h43`11``"		// not dup, but non-response. Drop or keep?
-*drop if id_plateforme == 180 & heure == "14h25`37``"		// not dup
-*drop if id_plateforme == 195 & heure == "10h09`54``"		// not dup
+drop if id_plateforme == 180 & heure == "14h25`37``"		
+drop if id_plateforme == 195 & heure == "10h09`54``"	
 replace exp_pays_21 =6 if  id_plateforme == 129 & heure == "14h27`18``"
 replace investcom_2021 =15000 if  id_plateforme == 129 & heure == "14h27`18``"
 drop if id_plateforme == 206 & heure == "11h08`43``"		// dup
 drop if id_plateforme == 206 & heure == "08h55`51``"		// dup
-*drop if id_plateforme == 213 & heure == "08h43`15``"		// not a dup
+drop if id_plateforme == 213 & heure == "08h43`15``"		
 *drop if id_plateforme == 271 & heure == "14h34`28``"		// not a dup
 *drop if id_plateforme == 313 & heure == "15h24`44``"		// not a dup
 drop if id_plateforme == 324 & heure == "08h46`17``"		// dup, but we have to keep 1 out of 4. Kais, Ayoub?
 drop if id_plateforme == 324 & heure == "14h38`49``"
 drop if id_plateforme == 324 & heure == "12h54`53``"
-*drop if id_plateforme == 324 & heure == "15h32`04``"
+drop if id_plateforme == 324 & heure == "15h32`04``"
 
 replace comp_benefice2020 = -720000 if id_plateforme == 324
 replace dig_revenues_ecom = 1200000 if id_plateforme == 324
@@ -1438,6 +1441,10 @@ drop if id_plateforme == 366 & heure == "11h49`45``"		// is dup
 *drop if id_plateforme == 360 & heure == "20h07`59``"		// is not a dup
 *drop if id_plateforme == 410 & heure == "10h16`57``"		// is not a dup
 drop if id_plateforme == 436 & heure == "16h56`32``"		// is dup. A checker si nous pouvons trouver des infos de reponse
+drop if id_plateforme == 436 & heure == "10h37`34``"		// is dup. A checker si nous pouvons trouver des infos de reponse
+
+drop if id_plateforme == 447 & heure == "10h11`23``"
+drop if id_plateforme == 457 & heure == "13h06`26``"
 drop if id_plateforme == 457 & heure == "13h06`26``"		// is dup. A checker si nous pouvons trouver des infos de reponse
 drop if id_plateforme == 457 & heure == "11h08`09``"
 drop if id_plateforme == 457 & heure == "08h22`05``"
@@ -1466,8 +1473,10 @@ drop if id_plateforme == 526 & heure == "17h20`30``"		// is dup. check for infor
 drop if id_plateforme == 526 & heure == "19h54`08``"		// is dup. check for information in dup responses.
 drop if id_plateforme == 526 & heure == "19h24`33``"		// is dup. check for information in dup responses.
 drop if id_plateforme == 526 & heure == "19h45`13``"		// is dup. check for information in dup responses.
-*drop if id_plateforme == 527 & heure == "11h30`18``"		// is not a dup. item non response.
-*drop if id_plateforme == 541 & heure == "16h40`39``"		// is not a dup
+drop if id_plateforme == 527 & heure == "11h30`18``"		
+drop if id_plateforme == 541 & heure == "16h40`39``"		
+drop if id_plateforme == 541 & heure == "14h31`09``"		
+
 drop if id_plateforme == 542 & heure == "15h37`59``"		// is dup
 drop if id_plateforme == 545 & heure == "10h10`49``"		// is dup. a checker pour des infos
 drop if id_plateforme == 545 & heure == "11h48`00``"
@@ -1476,38 +1485,52 @@ drop if id_plateforme == 576 & heure == "11h49`52``"		// is dup
 drop if id_plateforme == 586 & heure == "05h21`31``"		// is dup
 *drop if id_plateforme == 602 & heure == "14h08`28``"		// is not dup. non response. Drop or keep?
 *drop if id_plateforme == 623 & heure == "16h23`38``"		// is not dup. item non-response.
-*drop if id_plateforme == 629 & heure == "15h28`26``"		// is not dup. item non-response.
+drop if id_plateforme == 629 & heure == "13h32`36``"		// is dup.
+drop if id_plateforme == 629 & heure == "15h28`26``"		// is dup.
+drop if id_plateforme == 635 & heure == "13h55`09``"		// is dup.
 *drop if id_plateforme == 644 & heure == "13h15`19``"		// is not dup. 
 drop if id_plateforme == 646 & heure == "16h08`01``" 		// is dup
 drop if id_plateforme == 646 & heure == "16h28`14``"		// is dup
-*drop if id_plateforme == 655 & heure == "10h20`08``" 		// is not dup
+drop if id_plateforme == 646 & heure == "16h28`14``"		// is dup
+drop if id_plateforme == 646 & heure == "15h33`46``"
+drop if id_plateforme == 655 & heure == "10h20`08``" 		// is not dup
 drop if id_plateforme == 679 & heure == "18h28`53``"		// is dup
 drop if id_plateforme == 679 & heure == "13h32`54``"		// is dup
 drop if id_plateforme == 679 & heure == "19h01`55``"		// is dup
 drop if id_plateforme == 698 & heure == "12h24`30``" 		// is dup
+drop if id_plateforme == 698 & heure == "12h15`13``"
 drop if id_plateforme == 700 & heure == "08h16`22``"		// is dup
 drop if id_plateforme == 700 & heure == "14h49`34``" 		// is dup
 
 *drop if id_plateforme == 706 & heure == "14h23`08``"		// is not dup
 drop if id_plateforme == 710 & heure == "19h10`37``" 		// is dup
 drop if id_plateforme == 710 & heure == "17h50`35``"		// is dup
+drop if id_plateforme == 710 & heure == "15h36`38``"		// is dup
+
+drop if id_plateforme == 715 & heure == "15h31`30``"		// is dup
+drop if id_plateforme == 716 & heure == "15h13`36``"		// is dup
 drop if id_plateforme == 716 & heure == "17h02`40``"		// is dup
+drop if id_plateforme == 716 & heure == "15h36`38``"
 drop if id_plateforme == 732 & heure == "16h55`41``"		 // is dup
 drop if id_plateforme == 739 & heure == "15h36`45``"		 // is dup
 drop if id_plateforme == 739 & heure == "11h27`59``"		 // is dup
 
 *drop if id_plateforme == 752 & heure == "20h33`22``" 		// is not dup
-*drop if id_plateforme == 757 & heure == "16h29`40``"		// is not dup
+drop if id_plateforme == 757 & heure == "16h29`40``"		// is not dup
 drop if id_plateforme == 764 & heure == "11h13`42``"		// is dup
 *drop if id_plateforme == 764 & heure == "11h10`00``"		// is not a dup. item non response.
-*drop if id_plateforme == 765 & heure == "11h01`13``"		// is not dup
+drop if id_plateforme == 765 & heure == "11h01`13``"		// is not dup
+drop if id_plateforme == 765 & heure == "12h13`18``"
 *drop if id_plateforme == 767 & heure == "11h00`11``"		// is not a dup. item non response.
-*drop if id_plateforme == 782 & heure == "14h31`55``"		// is not dup
-*drop if id_plateforme == 782 & heure == "13h59`59``"		// is not dup
+drop if id_plateforme == 782 & heure == "13h59`59``"		// is not dup
 drop if id_plateforme == 791 & heure == "13h40`16``"		// is dup
-*drop if id_plateforme == 800 & heure == "15h38`00``"		// is not dup
+drop if id_plateforme == 791 & heure == "13h40`07``"		// is dup
+drop if id_plateforme == 795 & heure == "15h25`38``"		// is dup
+drop if id_plateforme == 800 & heure == "15h38`00``"		// is not dup
+drop if id_plateforme == 800 & heure == "14h48`52``"		// is not dup
 *drop if id_plateforme == 803 & heure == "08h32`50``"		// is not a dup. item non response.
-*drop if id_plateforme == 831 & heure == "15h45`46``"		// is not dup
+drop if id_plateforme == 831 & heure == "15h45`46``"		// is not dup
+drop if id_plateforme == 831 & heure == "12h18`50``"
 *drop if id_plateforme == 859 & heure == "11h17`13``"		// is not dup
 
 
@@ -1552,12 +1575,12 @@ replace investcom_futur= 10000 if id_plateforme == 875 & heure == "11h08`29``"
 replace investcom_benefit3_2= "une notoriété a l'échelle international" if id_plateforme == 875 & heure == "11h08`29``"
 replace expprep_cible= 1 if id_plateforme == 875 & heure == "11h08`29``"
 replace exp_produit_services21= "faience, carreau céramique" if id_plateforme == 875 & heure == "11h08`29``"
-*drop if id_plateforme == 875 & heure == "16h15`31``"		// is not dup
+drop if id_plateforme == 875 & heure == "16h15`31``"		// is not dup
 
-
+drop if id_plateforme == 890 & heure == "16h08`19``"
 *drop if id_plateforme == 896 & heure == "11h34`10``"		// is not a dup. item non response.
-*drop if id_plateforme == 898 & heure == "10h16`02``"		// is not dup
-*drop if id_plateforme == 911 & heure == "12h15`01``"		// is not dup
+drop if id_plateforme == 898 & heure == "10h16`02``"		// is not dup
+drop if id_plateforme == 911 & heure == "12h15`01``"		// is not dup
 *drop if id_plateforme == 916 & heure == "18h16`52``"		// is not a dup. item non response.
 *drop if id_plateforme == 931 & heure == "21h11`06``"		// is not a dup. item non response.
 *drop if id_plateforme == 953 & heure == "19h03`17``"		// is not a dup. item non response.
