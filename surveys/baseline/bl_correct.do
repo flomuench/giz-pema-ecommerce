@@ -1259,11 +1259,9 @@ replace comp_ca2020 = "4000000" if id_plateforme==941
 replace dig_revenues_ecom = "0" if id_plateforme==941 
 replace comp_benefice2020 = "0" if id_plateforme==941
 
-drop if car_carempl_div1=="?"
-drop if car_carempl_dive2=="?"
-drop if car_carempl_div3=="?"
-drop if car_carempl_div3=="."
-
+replace car_carempl_div1="-999" if car_carempl_div1=="?"
+replace car_carempl_dive2="-999" if car_carempl_dive2=="?"
+replace car_carempl_div3="-999" if car_carempl_div3=="?"
 }
 
 
