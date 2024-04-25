@@ -111,8 +111,78 @@ merge 1:1 id_plateforme using "${master_pii}/midline_contactlist", force
     matched                               236  (_merge==3)
     -----------------------------------------
 */
+drop if _merge==2
 drop dig_presence1 dig_presence2 dig_presence3 
 drop _merge
+drop treatment_email matricule_physique
+order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 emailrep rg_email2 rg_emailpdg take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
+
+
+
+***********************************************************************
+*PART 5: Correct some names and values
+***********************************************************************
+replace status="participant" if status=="no show"
+
+replace entr_produit1= "aliments composés pour toutes espèces (volailles, ruminants, lapin, cheval..)" if id_plateforme == 436
+replace entr_produit2= "prémix" if id_plateforme == 436
+replace entr_produit3= "matières premières tels que soja extrudé (fullfat) et tourteau de soja express" if id_plateforme == 436
+
+replace entr_produit1= "cuisines / pose" if id_plateforme == 521
+replace entr_produit2= "dressings / pose" if id_plateforme == 521
+replace entr_produit3= "meubde salde bain / pose" if id_plateforme == 521
+				
+replace entr_produit1= "conseil en stratégie, organisation et financiers" if id_plateforme == 623
+replace entr_produit2= "assistance it" if id_plateforme == 623
+replace entr_produit3= "outsourcing, audit financier et assistance comptable, fiscaet juridique" if id_plateforme == 623
+
+replace entr_produit2= "legume" if id_plateforme == 644
+replace entr_produit3= "dattes" if id_plateforme == 644
+	
+replace entr_produit2= "audit" if id_plateforme == 803
+replace entr_produit3= "etuet conseils" if id_plateforme == 803
+
+replace entr_produit1= "skit solaire connecté réseau,site isolé et pompage solaire" if id_plateforme == 108
+
+replace entr_produit1= "carreaux céramique" if id_plateforme == 875 
+replace entr_produit2= "grès" if id_plateforme == 875 
+replace entr_produit3= "sanitaires et robinetteries" if id_plateforme == 875 
+
+replace entr_produit1 = "jeans"  if entr_produit1=="djaen"
+replace entr_produit1 = "crevettes"  if entr_produit1=="creveutte"
+replace entr_produit1 = "tapis"  if entr_produit1=="tapies"
+replace entr_produit1 = "huide romarain"  if entr_produit1=="huide romaraine"
+replace entr_produit1 = "outillage aéronautique"  if entr_produit1=="auquillage aeronothaique"
+replace entr_produit1 = "charcuterie"  if entr_produit1=="charcxuterie"
+replace entr_produit1 = "carreaux de marbre"  if entr_produit1=="caro de marbre"
+replace entr_produit1 = "produits en fibre végétale (cofain;chapeux;sac)"  if entr_produit1=="produits en fibre végita(cofain;chapeux;sac)"
+replace entr_produit1 = "céramique"  if entr_produit1=="ciramic"
+replace entr_produit1 = "tuiles"  if entr_produit1=="9armoud"
+replace entr_produit1 = "dattes"  if entr_produit1=="tmar"
+replace entr_produit1 = "maillots de bain"  if entr_produit1=="mayo de bain"
+
+replace entr_produit1 = "Farine à la tomate" if entr_produit1 == "فارينة طماطم"
+replace entr_produit2 = "Farine aux oignons" if entr_produit2 == "فارينة بصل"
+replace entr_produit3 = "farine à l'ail" if entr_produit3 == "فارينة ثوم"
+replace entr_produit1 = "matériel éléctrique" if entr_produit1 == "المواد الكهربائية"
+replace entr_produit2 = "matériaux de construction" if entr_produit2 == "مواد البناء"
+replace entr_produit3 = "produits agro-alimentaires" if entr_produit3 == "الصناعات الغذائية"
+
+
+replace entr_histoire = "International Trading and Consulting Company est une société entièrement exportatrice créée en 2006, caractérisée par une vaste expérience dans le domaine du commerce international et sa mission principale est d'améliorer l'activité des clients en fournissant la meilleure valeur pour leurs investissements dans le monde." if entr_histoire == "الشركة الدولية للتجارة والاستشارة هي شركة مصدرة بالكامل تأسست سنة 2006, تتميز بخبرة واسعة في مجال التجارة الدولية وتتمثل مهمتها الأساسية في تعزيز أعمال العملاء من خلال تقديم أفضل قيمة لاستثماراتهم في العالم، كما تقدم الشركة خدمات استشارية تمحور بالاساس حول طرق تقليل تكاليف الشراء والنقل وتسهيل عمل الحرفاء."
+replace entr_histoire = "L'entreprise a débuté en tant que personne physique en 2002. montage d'entreprise ; c pas évident de status physique ; donc l'entreprise existe sur terrain et exporte vers l'europe depuis 2007 (ca fait 15 ans), danden et medina arbi tounes" if entr_histoire == "bdet en personne physique en 2002; montage d'entreprise ; c pas evident de status physique ; mawjouda men 2007 walet mawjouda sur terain et exporté vers l'europe , ca fait 15 ans ; danden et medina arbi tounes" 
+replace entr_histoire = "l'entreprise continue d'exister car mon père était le PDG et il travaille le marbre. l'entreprise a été fondée en 2011. l'extraction et la transformation du marbre et la production ont débuté en juillet 2014" if entr_histoire == "charika tawasol 5ter weled il gérant ken marbre . t2aseset en 2011  lextraction et la trasformation du marbre imporoduction en juillet 2014 ." 
+replace entr_histoire = "commerce internationnal 2017 (des dattes naturelles , condiciones )en 2019 (nous avons ouvert une fabrication) 2020 (a obtenu un certificat (Halal)" if entr_histoire == "commerce internationnal 2017 (des dattes naturele , condecionnes )en 2019 ( 3malna ma3mel ) 2020(5dhina chhada (7alel)" 
+replace entr_histoire = "l'entreprise était locale et maintenant nous exportons, puis nous avons ouvert l'entreprise de Kantaoui fashion et la première entreprise a été fondée en 2001" if entr_histoire == "kenet local w tawa walet a l'export w ba3d halina socité kantaoui fashion w charika loula bdet 2001" 
+replace entr_histoire = "l'entreprise a été construite sur l'idée de l'art et de l'artisanat en général. la PDG a fait une formation en italie et en grèce et elle a apporté l'idée en tunisie" if entr_histoire == "kenet mabniya 3la fekret l fan w lartisana 3amatan ; elle a fait un formation a l'italie w mchet l grec w jebetha ltounes" 
+replace entr_histoire = "Fondée en 2016, dans le domaine de la couture." if entr_histoire == "men 2016 majel 5iyata finition  tenus de traville"
+
+replace matricule_missing=1 if matricule_fiscale=="CENTRAX"
+replace matricule_missing=1 if matricule_fiscale=="931877D"
+replace matricule_missing=1 if matricule_fiscale=="655112G"
+replace matricule_missing=1 if matricule_fiscale=="615241H"
+replace matricule_missing=1 if matricule_fiscale=="1554011/"
+replace matricule_missing=1 if matricule_fiscale=="1066365"
 
 ***********************************************************************
 *PART 5: Export the final excel
