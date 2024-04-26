@@ -183,6 +183,17 @@ replace matricule_missing=1 if matricule_fiscale=="655112G"
 replace matricule_missing=1 if matricule_fiscale=="615241H"
 replace matricule_missing=1 if matricule_fiscale=="1554011/"
 replace matricule_missing=1 if matricule_fiscale=="1066365"
+replace matricule_missing=1 if matricule_fiscale=="1234568G"
+replace matricule_missing=1 if matricule_fiscale=="1766520B"
+
+replace firmname= "Aviation Training Center of Tunsia SA" if id_plateforme==95
+replace firmname= "STE Ecomevo" if id_plateforme==172
+replace firmname= "Al-Bushra Co‎" if id_plateforme==332
+replace firmname= "Tipad LLC‎" if id_plateforme==572
+replace firmname= "Chambre froide centrale" if id_plateforme==642
+replace firmname= "STE Holya Interios" if id_plateforme==708
+replace firmname= "Mediterranean School Of Business" if id_plateforme==795
+replace firmname= "STE Urba Tech SARL" if id_plateforme==890
 
 ***********************************************************************
 *PART 5: Export the final excel
