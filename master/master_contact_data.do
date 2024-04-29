@@ -215,6 +215,8 @@ save "${master_pii}/ecommerce_master_contact", replace
 gen treatment =0 if status == "groupe control"
 replace treatment =1 if status =="no show"
 replace treatment =1 if status =="participant"
+lab def treatment_status 0 "Control" 1 "Treatment" 
+lab values treatment treatment_status
 
 *change firmname where applicable
 replace firmname2=firmname if id_plateforme==599
