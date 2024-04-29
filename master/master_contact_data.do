@@ -211,6 +211,11 @@ save "${master_pii}/ecommerce_master_contact", replace
 ***********************************************************************
 * PART 3.1 Firmname
 ***********************************************************************
+*Generate treatment variable
+gen treatment =0 if status == "groupe control"
+replace treatment =1 if status =="no show"
+replace treatment =1 if status =="participant"
+
 *change firmname where applicable
 replace firmname2=firmname if id_plateforme==599
 replace firmname=firmname2 if treatment==1
