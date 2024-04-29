@@ -190,11 +190,13 @@ replace firmname= "Aviation Training Center of Tunsia SA" if id_plateforme==95
 replace firmname= "STE Ecomevo" if id_plateforme==172
 replace firmname= "Al-Bushra Co‎" if id_plateforme==332
 replace firmname= "Tipad LLC‎" if id_plateforme==572
-replace firmname= "Chambre froide centrale" if id_plateforme==642
 replace firmname= "STE Holya Interios" if id_plateforme==708
 replace firmname= "Mediterranean School Of Business" if id_plateforme==795
-replace firmname= "STE Urba Tech SARL" if id_plateforme==890
-
+replace firmname = "URBA TECH" if id_plateforme == 890
+replace firmname = "Etamial" if id_plateforme == 642
+replace firmname = "ENTREPOTS FRIGORIFIQUES DU CENTRE" if id_plateforme == 416
+replace firmname = "tpad ( technical and practical assistance to development)" if id_plateforme == 572
+replace firmname = "central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642
 ***********************************************************************
 *PART 5: Export the final excel
 ***********************************************************************

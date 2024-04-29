@@ -1,5 +1,5 @@
 ***********************************************************************
-* 			Master correct				  
+* 			Master Contact data			  
 ***********************************************************************
 *	PURPOSE: Correct and update contact-information of participants
 *																	  
@@ -16,10 +16,13 @@
 ***********************************************************************
 *PART 1: merge baseline data with registration pii
 ***********************************************************************
-	* import baseline contact data
+	* import baseline contact data (N=263 observations)
 use "${bl_intermediate}/ecommerce_bl_pii", clear
-	
-	* merge bl with registration contact data
+duplicates tag id_plateforme, generate(dup_id)
+egen dup = max(dup_id ==1), by(id_plateforme)
+drop if dup_id== 1 /*check manually the duplicates(N=209 observations)*/ 
+
+	* merge bl with registration contact data (N=272 observations)
 merge 1:1 id_plateforme using "${regis_final}/ecommerce_regis_pii" 
 drop _merge
 
@@ -37,6 +40,7 @@ save "${master_pii}/web_information", replace
 restore
 merge 1:1 id_plateforme using "${master_pii}/web_information"
 *drop old website and social media information from registration as it is replaced by self-collected data
+drop if _merge==1
 drop _merge rg_media rg_siteweb
 
 save "${master_pii}/ecommerce_master_contact", replace
