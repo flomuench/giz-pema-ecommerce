@@ -638,6 +638,23 @@ putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 6: Accounting"), bold
 {
 
+	*Bénéfices/Perte 2023
+graph pie, over(profit_2023_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+   bgcolor(white) legend(pos(6)) ///
+   title("Did the company make a loss or a profit in 2023?", pos(12))
+   gr export profit_2023_category.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image profit_2023_category.png
+	putpdf pagebreak
+	
+	graph pie, over(profit_2023_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+   bgcolor(white) legend(pos(6)) ///
+   title("Did the company make a loss or a profit in 2023?", pos(12))
+   gr export profit_2023_category_treat.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image profit_2023_category_treat.png
+	putpdf pagebreak
+	
     * Chiffre d'affaires total en dt en 2023 
 stripplot comp_ca2023, jitter(4) vertical yline(9, lcolor(red)) ///
 		ytitle("Total turnover in 2023 in dt") ///
@@ -686,6 +703,23 @@ putpdf paragraph, halign(center)
 putpdf image el_compexp_2023_box.png
 putpdf pagebreak
 
+	*Bénéfices/Perte 2023
+graph pie, over(profit_2024_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+   bgcolor(white) legend(pos(6)) ///
+   title("Did the company make a loss or a profit in 2024?", pos(12))
+   gr export profit_2024_category.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image profit_2024_category.png
+	putpdf pagebreak
+	
+	graph pie, over(profit_2024_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+   bgcolor(white) legend(pos(6)) ///
+   title("Did the company make a loss or a profit in 2024?", pos(12))
+   gr export profit_2024_category_treat.png, replace
+	putpdf paragraph, halign(center) 
+	putpdf image profit_2024_category_treat.png
+	putpdf pagebreak
+	
    *Chiffre d'affaires à l’export en dt en 2024
 stripplot compexp_2024, jitter(4) vertical yline(9, lcolor(red)) ///
 		ytitle("Export turnover in 2024 in dt") ///
