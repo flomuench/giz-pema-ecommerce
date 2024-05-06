@@ -115,8 +115,8 @@ drop if _merge==2
 drop dig_presence1 dig_presence2 dig_presence3 
 drop _merge
 drop treatment_email matricule_physique
-order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 emailrep rg_email2 rg_emailpdg take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
-
+gen email = rg_emailpdg
+order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email emailrep rg_email2 rg_emailpdg take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
 
 
 ***********************************************************************
