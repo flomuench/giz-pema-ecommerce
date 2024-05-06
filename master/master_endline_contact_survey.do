@@ -50,6 +50,11 @@ merge m:1 id_plateforme using "${master_pii}/take_up_ecommerce",force
     -----------------------------------------
 */
 
+generate take_up=1
+replace take_up=0 if take_up_for == 0
+replace take_up=0 if take_up_std == 0
+replace take_up=0 if take_up_seo == 0 & take_up_smo == 0 & take_up_website ==0
+label var take_up "Take up in the activities"
 label var take_up_for_per "Percentage of presence in workshops"
 label var take_up_for "Presence for at least 3 on 5 workshops"
 label var take_up_for1 "Presence in the 1 workshop"
@@ -116,7 +121,7 @@ drop dig_presence1 dig_presence2 dig_presence3
 drop _merge
 drop treatment_email matricule_physique
 gen email = rg_emailpdg
-order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email emailrep rg_email2 rg_emailpdg take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
+order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email emailrep rg_email2 rg_emailpdg take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
 
 
 ***********************************************************************
@@ -197,6 +202,9 @@ replace firmname = "Etamial" if id_plateforme == 642
 replace firmname = "ENTREPOTS FRIGORIFIQUES DU CENTRE" if id_plateforme == 416
 replace firmname = "tpad ( technical and practical assistance to development)" if id_plateforme == 572
 replace firmname = "central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642
+
+replace take_up=0 if status=="groupe control"
+
 ***********************************************************************
 *PART 5: Export the final excel
 ***********************************************************************
