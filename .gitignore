@@ -1,3 +1,6 @@
 *.stswp
 *.DS_Store
 master/~ecommerce_master.do.stswp
+surveys/baseline/~bl_master.do.stswp
+*.stswp
+surveys/midline/~ml_master.do.stswp

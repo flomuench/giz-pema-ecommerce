@@ -58,15 +58,15 @@ set scheme plotplain
 		
 if "`c(username)'" == "amira.bouziri" |"`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" {
 
-		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
 }
 if "`c(username)'" == "MUNCHFA" {
 		global gdrive = "G:/My Drive"
 }
-else{
+if "`c(username)'" == "ASUS" { 
 
-		global gdrive = "C:/Users/`c(username)'/Google Drive"
-}
+		global gdrive = "G:/Meine Ablage"
+	}
 
 
 if c(os) == "Windows" {
