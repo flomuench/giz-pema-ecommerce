@@ -118,8 +118,8 @@ merge 1:1 id_plateforme using "${master_pii}/midline_contactlist", force
 drop if _merge==2
 drop dig_presence1 dig_presence2 dig_presence3 
 drop _merge
-gen email = rg_emailpdg
-order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email emailrep rg_email2 rg_emailpdg take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
+rename rg_emailpdg email_pdg 
+order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email_pdg emailrep rg_email2 take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
 
 ***********************************************************************
 *PART 4.2: Import updated pii information
@@ -178,7 +178,7 @@ rename tel_supl2 tel2_ml
 rename tel_sup1 tel1_bl
 rename tel_sup2 tel2_bl
 
-order id_plateforme matricule_fiscale matricule_missing firmname status nom nom_rg repondant_midline entr_produit1 entr_produit2 entr_produit3 entr_histoire téléphone telrep tel1_ml tel2_ml tel1_bl tel2_bl rg_telpdg rg_telephone2 email emailrep emailreprésentante rg_email2 rg_emailpdg take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
+order id_plateforme matricule_fiscale matricule_missing firmname status nom nom_rg repondant_midline entr_produit1 entr_produit2 entr_produit3 entr_histoire téléphone telrep tel1_ml tel2_ml tel1_bl tel2_bl rg_telpdg rg_telephone2 email_pdg emailrep emailreprésentante rg_email2 take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
 
 ***********************************************************************
 *PART 5: Correct some names and values
