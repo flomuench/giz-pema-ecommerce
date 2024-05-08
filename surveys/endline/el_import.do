@@ -30,16 +30,13 @@ import excel "${el_raw}/el_raw.xlsx", firstrow clear
 drop ident_base_respondent
 
 	* rename variables to indicate el as origin
-local el_changes ident_nouveau_personne firmname_change ident_repondent_position id_ident2 id_ident
+local el_changes firmname ident_repondent_position q29_nom q29_tel q29_mail 
 foreach var of local el_changes {
 	rename `var' `var'_el
 }
 
 	* put all pii variables into a local
-local pii id_plateforme ident_nouveau_personne_el id_admin id_ident_el firmname_change_el repondant_endline Position_rep_endline comptable_email comptable_numero id_ident2_el
-
-	* change format of accountant email to text for merge with master_pii
-tostring comptable_email, replace
+local pii id_plateforme firmname_el id_ident id_ident_el ident_repondent_position_el q29_nom_el q29_tel_el q29_mail_el q29
 
 
 	* save as stata master data
@@ -57,8 +54,7 @@ restore
 * 	PART 3:  save a de-identified analysis file	
 ***********************************************************************
 	* drop all pii
-drop ident_nouveau_personne_el id_admin id_ident_el firmname_change_el repondant_endline Position_rep_endline comptable_email comptable_numero id_ident2_el
-
+drop firmname_el id_ident id_ident_el ident_repondent_position_el q29_nom_el q29_tel_el q29_mail_el q29
 
 ***********************************************************************
 * 	PART 4:  Add treatment status	

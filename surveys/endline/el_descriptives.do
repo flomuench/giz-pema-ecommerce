@@ -279,35 +279,6 @@ putpdf paragraph, halign(center)
 putpdf image el_car_carempl_div3_his.png
 putpdf pagebreak
 
-
-    * Number of full-time employees 
-stripplot car_carempl_div4, jitter(4) vertical yline(9, lcolor(red)) ///
-		ytitle("Number of full-time employees") ///
-		name(el_car_carempl_div4, replace)
-    gr export el_car_carempl_div4.png, replace
-	putpdf paragraph, halign(center) 
-	putpdf image el_car_carempl_div4.png
-	putpdf pagebreak
-	
- graph box car_carempl_div4 if car_carempl_div4 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Number of full-time employees", pos(12))
-gr export el_car_carempl_div4_box.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_car_carempl_div4_box.png
-putpdf pagebreak
-
-sum car_carempl_div4,d
-histogram car_carempl_div4, width(1) frequency addlabels xlabel(0(25)100, nogrid) discrete ///
-	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
-	ytitle("No. of firms") ///
-	xtitle("Number of full-time employees") ///
-	ylabel(0(5)20 , nogrid) ///
-	text(100 `r(mean)' "Mean", size(vsmall) place(e)) ///
-	text(100 `r(p50)' "Median", size(vsmall) place(e))
-gr export el_car_carempl_div4_his.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_car_carempl_div4_his.png
-putpdf pagebreak
 }
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
@@ -622,7 +593,7 @@ graph pie, over(exp_dig) plabel(_all percent, format(%9.0f) size(medium)) graphr
 	putpdf pagebreak
 	
 	*Export practices
-graph hbar (mean) exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme exp_pra_fin exp_pra_vent exp_pra_ach, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
+graph hbar (mean) exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
 	title("Export practices") ///
 	legend (pos(6) row(8) label (1 "International fair/exhibition") label(2 "Sales partner") ///
 	label(3 "Export manager") label(4 "Export plan") ///
