@@ -39,14 +39,13 @@ restore
 
 merge m:1 id_plateforme using "${master_pii}/take_up_ecommerce",force
 /* 
-
-    Result                           # of obs.
+  Result                           # of obs.
     -----------------------------------------
-    not matched                           168
-        from master                       168  (_merge==1)
+    not matched                           110
+        from master                       110  (_merge==1)
         from using                          0  (_merge==2)
 
-    matched                               224  (_merge==3)
+    matched                               117  (_merge==3)
     -----------------------------------------
 */
 
@@ -97,10 +96,10 @@ merge 1:1 id_plateforme using "${master_pii}/web_information", force
 drop _merge
 
 ***********************************************************************
-*PART 4: Import pii information
+*PART 4.1: Import pii information
 ***********************************************************************
 preserve
-import excel "${master_pii}/midline_contactlist.xlsx", firstrow clear 
+import excel "${master_pii}/midline_contactlist.xls", firstrow clear 
 	drop if id_plateforme==.
 	destring id_plateforme,replace
 save "${master_pii}/midline_contactlist.dta",replace
@@ -119,12 +118,11 @@ merge 1:1 id_plateforme using "${master_pii}/midline_contactlist", force
 drop if _merge==2
 drop dig_presence1 dig_presence2 dig_presence3 
 drop _merge
-drop treatment_email matricule_physique
 gen email = rg_emailpdg
 order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep entr_produit1 entr_produit2 entr_produit3 entr_histoire telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email emailrep rg_email2 rg_emailpdg take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
 
 ***********************************************************************
-*PART 4: Import updated pii information
+*PART 4.2: Import updated pii information
 ***********************************************************************
 preserve
 import excel "${master_pii}/Etat Entreprise PEMA Final.xlsx", firstrow clear 
@@ -145,7 +143,42 @@ merge 1:1 id_plateforme using "${master_pii}/Etat_Entreprise_PEMA_Final", force
 */
 drop Audit Structure Maquette Contenu Développementdusite Finaliséà100 Motifdarrêt SocialMedia FormationSocialADS RéférenementNaturel R IntégrationSEO2empassage _merge
 
-order id_plateforme matricule_fiscale matricule_missing firmname status nom_rep Nom entr_produit1 entr_produit2 entr_produit3 entr_histoire téléphone telrep tel_sup1 tel_sup2 rg_telpdg rg_telephone2 email emailrep emailreprésentante rg_email2 rg_emailpdg take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
+***********************************************************************
+*PART 4.2: Import midline pii information
+***********************************************************************
+preserve
+use "${master_raw}/ml_contacts.dta", clear 
+	drop if id_plateforme==.
+	destring id_plateforme,replace
+save "${master_pii}/ml_contacts.dta",replace
+restore
+merge 1:1 id_plateforme using "${master_pii}/ml_contacts.dta", force
+/* 
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                            31
+        from master                        31  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                               205  (_merge==3)
+    -----------------------------------------
+*/
+replace firmname= firmname_change  if firmname_change!=""
+drop firmname_change
+drop Position_rep_midline
+
+rename nom_rep nom_rg
+gen nom=""
+replace nom = Nom if treatment == "Treatment"
+replace nom = nom_rg if nom ==""
+drop Nom
+
+rename tel_supl1 tel1_ml
+rename tel_supl2 tel2_ml
+rename tel_sup1 tel1_bl
+rename tel_sup2 tel2_bl
+
+order id_plateforme matricule_fiscale matricule_missing firmname status nom nom_rg repondant_midline entr_produit1 entr_produit2 entr_produit3 entr_histoire téléphone telrep tel1_ml tel2_ml tel1_bl tel2_bl rg_telpdg rg_telephone2 email emailrep emailreprésentante rg_email2 rg_emailpdg take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber link_web link_facebook link_instagram link_twitter link_linkedin link_youtube
 
 ***********************************************************************
 *PART 5: Correct some names and values
@@ -227,6 +260,8 @@ replace firmname = "tpad ( technical and practical assistance to development)" i
 replace firmname = "central cold stores / مخازن التبريد بالوسط" if id_plateforme == 642
 
 replace take_up=0 if status=="groupe control"
+drop matricule_physique
+
 
 ***********************************************************************
 *PART 5: Export the final excel

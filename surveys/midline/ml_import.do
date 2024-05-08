@@ -22,13 +22,13 @@
 
 import excel "${ml_raw}/ml_raw.xlsx", firstrow clear
 
-/*separate PII data from midline
+*separate PII data from midline
 preserve
 keep id_plateforme firmname_change Position_rep_midline repondant_midline tel_supl1 tel_supl2 
 save "${master_raw}/ml_contacts.dta", replace
 restore
 drop firmname_change Position_rep_midline repondant_midline tel_supl1 tel_supl2 
-*/
+
 
 ***********************************************************************
 * 	PART 4: save the answers as dta file in intermediate folder 			  						
