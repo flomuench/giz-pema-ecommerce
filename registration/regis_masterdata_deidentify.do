@@ -56,7 +56,7 @@ duplicates tag rg_emailpdg, gen(dup_emailpdg)
 duplicates report id_admin
 	
 	* export ecommerce_regis_pii data set
-local pii1 "id_plateforme firmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 rg_telrep rg_telpdg rg_telephone2 rg_adresse* rg_siteweb rg_media matricule_fiscale codedouane matricule_cnss rg_legalstatus"
+local pii1 "id_plateforme firmname Ufirmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 email Uemail rg_telrep rg_telpdg rg_telephone2 rg_adresse* rg_siteweb rg_media matricule_fiscale codedouane matricule_cnss rg_legalstatus"
 
 	* save as stata master data
 preserve
@@ -82,7 +82,7 @@ lab def surveyround 1 "registration" 2 "baseline" 3 "midline" 4 "endline"
 lab val survey surveyround
 
 	* drop all pii but id_plateforme
-local pii2 "firmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 rg_telrep rg_telpdg rg_telephone2 rg_adresse* rg_siteweb rg_media matricule_fiscale codedouane matricule_cnss"
+local pii2 "firmname Ufirmname rg_nom_rep rg_position_rep rg_emailrep rg_emailpdg rg_email2 email Uemail rg_telrep rg_telpdg rg_telephone2 rg_adresse* rg_siteweb rg_media matricule_fiscale codedouane matricule_cnss"
 drop `pii2'
 	
 

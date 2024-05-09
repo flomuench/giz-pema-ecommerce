@@ -43,7 +43,7 @@ keep if _merge==3 /* companies that were eligible and answered on the registrati
 drop _merge
 
     * save 
-save "${master_raw}/ecommerce_database_raw", replace
+save "${master_raw}/ecommerce_master_raw", replace
 
 	* add the information collected by hand at baseline about firms websites and social media accounts
 merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
@@ -58,7 +58,7 @@ keep if _merge==3
 drop _merge
 
     * save 
-save "${master_raw}/ecommerce_database_raw", replace
+save "${master_raw}/ecommerce_master_raw", replace
 
 }
 ***********************************************************************
@@ -97,7 +97,7 @@ tsfill, full
     * save
 sort id_plateforme surveyround, stable
 order id_plateforme surveyround treatment ml_refus, first
-save "${master_raw}/ecommerce_database_raw.dta", replace
+save "${master_raw}/ecommerce_master_raw.dta", replace
 }
 
 ***********************************************************************
@@ -144,4 +144,4 @@ drop _merge
 ***********************************************************************
 * 	PART 5: save finale analysis data set as raw
 ***********************************************************************
-save "${master_raw}/ecommerce_database_raw.dta", replace
+save "${master_raw}/ecommerce_master_raw.dta", replace
