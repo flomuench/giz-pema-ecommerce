@@ -59,6 +59,9 @@ format %td date
 
 *save e-commerce anaylsis
 save "${master_intermediate}/ecommerce_master_inter", replace
+
+
+
 ***********************************************************************
 * 	PART 2:    Add Tunis to rg_adresse using PII data 
 ***********************************************************************

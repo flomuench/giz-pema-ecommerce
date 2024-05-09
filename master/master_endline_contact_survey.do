@@ -18,7 +18,8 @@
 *PART 1: Import analysis data
 ***********************************************************************
 	* analysis data
-use "${master_final}/ecommerce_master_final", clear
+*use "${bl_intermediate}/bl_inter", clear
+use "${master_final}/master_bl_final", clear
 keep id_plateforme entr_produit1 entr_produit2 entr_produit3 entr_histoire
 sort id_plateforme
 quietly by id_plateforme:  gen dup = cond(_N==1,0,_n)
@@ -262,6 +263,7 @@ replace firmname = "central cold stores / مخازن التبريد بالوسط
 replace take_up=0 if status=="groupe control"
 drop matricule_physique
 
+replace matricule_missing = 1 if id_plateforme == 216
 
 ***********************************************************************
 *PART 5: Export the final excel

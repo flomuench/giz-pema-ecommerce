@@ -57,17 +57,16 @@ set scheme plotplain
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 if "`c(username)'" == "amira.bouziri" |"`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" {
 
-		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"
-
-else if  "`c(username)'" == "MUNCHFA" {
+		global gdrive = "G:/.shortcut-targets-by-id/1bVknNNmRT3qZhosLmEQwPJeB-O24_QKT"	
+}
+if "`c(username)'" == "MUNCHFA" {
 		global gdrive = "G:/My Drive"
+}
+if "`c(username)'" == "ASUS" { 
 
-else{
-
-		global gdrive = "C:/Users/`c(username)'/Google Drive"
-			}
-		}
+		global gdrive = "G:/Meine Ablage"
 	}
+	
 if c(os) == "Windows" {
 	global bl_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2-baseline"
 	global bl_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline"
@@ -147,7 +146,8 @@ if (1) do "${bl_github}/bl_generate.do"
 ----------------------------------------------------------------------*/	
 if (0) do "${bl_github}/bl_open_question_checks.do"
  /* --------------------------------------------------------------------
-	PART 3.7: Perform logical checks (and SAVE bl_final.dta)
+	PART 3.7: Perform logical check
+	Generates: bl_final.dta
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_test.do"
 /* --------------------------------------------------------------------
@@ -159,9 +159,13 @@ if (0) do "${bl_github}/bl_statistics.do"
 ----------------------------------------------------------------------*/	
 if (1) do "${bl_github}/bl_stratification.do"
 /* --------------------------------------------------------------------
-	PART 3.10: Randomise
+	PART 3.10: Single Randomisation (dont put on 1!)
 ----------------------------------------------------------------------*/	
 if (0) do "${bl_github}/bl_randomisation.do"
+/* --------------------------------------------------------------------
+	PART 3.11: Add treatment status after randomisation
+----------------------------------------------------------------------*/	
+if (1) do "${bl_github}/bl_treat.do"
 
 /* --------------------------------------------------------------------
 	PART 4.2 Diagnostic creation

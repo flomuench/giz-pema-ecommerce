@@ -219,8 +219,7 @@ rename temp_dig_logistique_retour_score t_dig_logistique_retour_score
 
 	* calculate z-score for each individual outcome
 	* write a program calculates the z-score
-	* capture program drop zscore
-	
+capture program drop zscore	
 program define zscore /* opens a program called zscore */
 	sum `1'
 	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
