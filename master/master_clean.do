@@ -32,6 +32,10 @@ replace `x' = stritrim(strtrim(`x'))
 
 *Put correct labels 
 	* treatment status
+replace treatment = "1" if treatment == "Treatment"
+replace treatment = "0" if treatment == "Control"
+destring treatment, replace
+format treatment %25.0fc
 lab def treatment_status 0 "Control" 1 "Treatment" 
 lab values treatment treatment_status
 
@@ -57,10 +61,19 @@ format %td date
 *save e-commerce anaylsis
 save "${master_intermediate}/ecommerce_master_inter", replace
 
+***********************************************************************
+* 	PART 2:    Remove useless variables
+***********************************************************************
+drop id_email id_candidates score matched_on correct_match dup_both dup_id_email programme id_admin_correct 
+drop rg_confidentialite rg_partage_donnees rg_enregistrement_coordonnees dateinscription full_dup 
+drop survey heure date ident_entreprise ident_email_1 k
 
+
+*save e-commerce anaylsis
+save "${master_intermediate}/ecommerce_master_inter", replace
 
 ***********************************************************************
-* 	PART 2:    Add Tunis to rg_adresse using PII data 
+* 	PART 3:    Add Tunis to rg_adresse using PII data 
 ***********************************************************************
 use "${master_pii}/ecommerce_master_contact", clear
 
