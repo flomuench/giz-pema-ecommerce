@@ -14,16 +14,13 @@
 *	Creates:     regis_final.dta bl_final.dta
 
 ***********************************************************************
+* 	PART 1:    import merged analysis data
+***********************************************************************
+use "${master_raw}/ecommerce_master_raw", clear
+
+***********************************************************************
 * 	PART 1:    clean merged analysis file (midline)
 ***********************************************************************
-use "${master_intermediate}/ecommerce_master_inter", clear
-
-* put key variables first
-order id_plateforme surveyround treatment, first
-
-* sort
-sort id_plateforme surveyround, stable
-
 *remove leading and trailing white space
 {
 ds, has(type string) 
