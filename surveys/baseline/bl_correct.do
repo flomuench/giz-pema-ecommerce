@@ -1666,6 +1666,38 @@ replace exp_pays_21 = 4 if id_plateforme==369
 replace exp_pays_avant21 = . if id_plateforme==255 	  	
 
 	* Check remaining duplicates (after manual corrections above)
+duplicates tag id_plateforme, gen(dup)
+
+	* drop based on completeness
+drop if id_plateforme == 63 & survey_type == "online"
+drop if id_plateforme == 77 & survey_type == "online"
+drop if id_plateforme == 114 & survey_type == "online"
+drop if id_plateforme == 166 & survey_type == "online"
+drop if id_plateforme == 271 & survey_type == "online"
+drop if id_plateforme == 313 & survey_type == "phone"
+drop if id_plateforme == 405 & survey_type == "online"
+drop if id_plateforme == 508 & survey_type == "online"
+drop if id_plateforme == 521 & survey_type == "online"
+drop if id_plateforme == 545 & survey_type == "phone"
+drop if id_plateforme == 565 & survey_type == "online"
+drop if id_plateforme == 586 & survey_type == "online"
+drop if id_plateforme == 602 & survey_type == "online"
+drop if id_plateforme == 623 & survey_type == "online"
+drop if id_plateforme == 644 & survey_type == "online"
+drop if id_plateforme == 706 & survey_type == "online"
+drop if id_plateforme == 747 & survey_type == "online"
+drop if id_plateforme == 752 & survey_type == "online"
+drop if id_plateforme == 764 & survey_type == "online"
+drop if id_plateforme == 767 & survey_type == "online"
+drop if id_plateforme == 803 & survey_type == "online"
+drop if id_plateforme == 896 & survey_type == "online"
+drop if id_plateforme == 916 & survey_type == "online"
+drop if id_plateforme == 931 & survey_type == "online"
+drop if id_plateforme == 941 & survey_type == "online"
+drop if id_plateforme == 953 & survey_type == "online"
+drop if id_plateforme == 961 & survey_type == "online"
+
+	
 /*	
 bysort id_plateforme:  gen dup = cond(_N==1,0,_n)	
 
@@ -1828,15 +1860,16 @@ drop if id_plateforme == 961 & dup ==4
 
 	
 drop dup sum_allvars max_length
+*/
 
+* Important to keep the following lines - otherwise randomisation wont work as done!
 	* Add entries that were dropped by survey institute
 	* because they couldn't reach them (they will be put into their own
 	* stratum for randomisation)
-	
 local new = _N + 1
 set obs `new'	
 replace id_plateforme = 729 if id_plateforme==. 
-
+ 
 local new = _N + 1
 set obs `new'	
 replace id_plateforme = 818 if id_plateforme==. 
@@ -1844,10 +1877,9 @@ replace id_plateforme = 818 if id_plateforme==.
 local new = _N + 1
 set obs `new'	
 replace id_plateforme = 821 if id_plateforme==. 
-*/
+	* 3 firms that did not figure in bl (internal reasons for removing them? Needs to be done for replication!)
+drop if inlist(id_plateforme,351,813,887)
 
-
-	
 
 ***********************************************************************
 * 	Part 12: Save the changes made to the data		  			

@@ -42,14 +42,6 @@ set seed 2202
 	* Sort 
 sort id_plateforme, stable
 
-	* import final list of firms to be randomised
-preserve
-import excel using "${bl_final}/ecommerce_list.xls", firstrow clear
-save "${bl_final}/ecommerce_list", replace
-restore
-
-merge 1:1 using "${bl_final}/ecommerce_list"
-
 ***********************************************************************
 * 	PART 2: Randomise
 ***********************************************************************
@@ -100,17 +92,15 @@ graph hbar (count), over(treatment, lab(labs(tiny))) over(sector, lab(labs(vsmal
 		
 
 ***********************************************************************
-* 	PART 4: Export excel spreadsheet
-***********************************************************************			 		
-
-
-	* save dta file with treatments and strata
+* 	PART 4: Export
+***********************************************************************			 	
+	* 1: save dta file with treatments and strata
 	
 cd "$bl_final"
 
 save "bl_final", replace
 
-	* Add a bunch of variables about the firms knowledge and digital presence in case the consultant want to group by ability*
+	* 2: Add a bunch of variables about the firms knowledge and digital presence in case the consultant want to group by ability*
 
 order id_plateforme treatment heure date ident_entreprise rg_age subsector
 
