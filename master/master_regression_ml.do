@@ -91,7 +91,7 @@ program rct_regression_table
 		estadd local strata "Yes"		
 
 					* ATT, IV		
-		eststo `var'5, r: ivreg2 `var' `var'_y0 i.missing_bl_`var' i.strata (take_up = i.treatment) if surveyround == 2, cluster(id_plateforme) first
+		eststo `var'5, r: ivreg2 `var' `var'_y0 i.missing_bl_`var' i.strata (take_up_for = i.treatment) if surveyround == 2, cluster(id_plateforme) first
 		estadd local bl_control "Yes"
 		estadd local strata "Yes"
 		estimates store `var'_att
@@ -146,7 +146,7 @@ program rct_regression_outcomes
 			estadd local strata "Yes"
 
 			* ATT, IV		
-			eststo `var'2: ivreg2 `var' c.`var'_y0 i.missing_bl_`var' i.strata (take_up = i.treatment) if surveyround ==2, cluster(id_plateforme) first
+			eststo `var'2: ivreg2 `var' c.`var'_y0 i.missing_bl_`var' i.strata (take_up_for = i.treatment) if surveyround ==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			
@@ -164,14 +164,14 @@ tokenize `varlist'
 		* Correct for MHT - FWER
 rwolf2 ///
 	(reg `1' treatment `1'_y0 i.missing_bl_`1' i.strata if surveyround ==2, cluster(id_plateforme)) ///
-	(ivreg2 `1' `1'_y0 i.missing_bl_`1' i.strata (take_up = treatment) if surveyround ==2, cluster(id_plateforme)) ///
+	(ivreg2 `1' `1'_y0 i.missing_bl_`1' i.strata (take_up_for = treatment) if surveyround ==2, cluster(id_plateforme)) ///
 	(reg `2' treatment `2'_y0 i.missing_bl_`2' i.strata if surveyround ==2, cluster(id_plateforme)) ///
-	(ivreg2 `2' `2'_y0 i.missing_bl_`2' i.strata (take_up = treatment) if surveyround ==2, cluster(id_plateforme)) ///
+	(ivreg2 `2' `2'_y0 i.missing_bl_`2' i.strata (take_up_for = treatment) if surveyround ==2, cluster(id_plateforme)) ///
 	(reg `3' treatment `3'_y0 i.missing_bl_`3' i.strata if surveyround ==2, cluster(id_plateforme)) ///
-	(ivreg2 `3' `3'_y0 i.missing_bl_`3' i.strata (take_up = treatment) if surveyround ==2, cluster(id_plateforme)) ///
+	(ivreg2 `3' `3'_y0 i.missing_bl_`3' i.strata (take_up_for = treatment) if surveyround ==2, cluster(id_plateforme)) ///
 	(reg `4' treatment `4'_y0 i.missing_bl_`4' i.strata if surveyround ==2, cluster(id_plateforme)) ///
-	(ivreg2 `4' `4'_y0 i.missing_bl_`4' i.strata (take_up = treatment) if surveyround ==2, cluster(id_plateforme)), ///
-	indepvars(treatment, take_up, treatment, take_up, treatment, take_up, treatment, take_up) ///
+	(ivreg2 `4' `4'_y0 i.missing_bl_`4' i.strata (take_up_for = treatment) if surveyround ==2, cluster(id_plateforme)), ///
+	indepvars(treatment, take_up_for, treatment, take_up_for, treatment, take_up_for, treatment, take_up_for) ///
 	seed(110723) reps(30) usevalid strata(strata)	
 	
 	* save ci(fmt(2)) rw-p-values in a seperate table for manual insertion in latex document
@@ -216,7 +216,7 @@ coefplot ///
 	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
 	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
 	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
+	keep(*treatment take_up_for) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
@@ -230,7 +230,7 @@ gr export el_`generate'_cfplot.png, replace
 				*coefplot
 coefplot ///
 	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
+	keep(*treatment take_up_for) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) ///

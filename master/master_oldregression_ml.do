@@ -142,7 +142,7 @@ estimates store iv_ki4
 
 
 			* ATT, IV (with 1 session counting as taken up)
-eststo ki6, r:ivreg2 knowledge_index l.knowledge_index i.strata (take_up = i.treatment), cluster(id_plateforme) first
+eststo ki6, r:ivreg2 knowledge_index l.knowledge_index i.strata (take_up_for = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
@@ -197,7 +197,7 @@ estimates store iv_ki4
 
 
 			* ATT, IV (with 1 session counting as taken up)
-eststo ki6_raw, r:ivreg2 raw_knowledge l.raw_knowledge i.strata (take_up = i.treatment), cluster(id_plateforme) first
+eststo ki6_raw, r:ivreg2 raw_knowledge l.raw_knowledge i.strata (take_up_for = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
@@ -247,7 +247,7 @@ estimates store iv_pres4
 
 
 			* ATT, IV (with 1 session counting as taken up)
-eststo pres6, r:ivreg2 dig_presence_weightedz l.dig_presence_weightedz i.strata (take_up = i.treatment), cluster(id_plateforme) first
+eststo pres6, r:ivreg2 dig_presence_weightedz l.dig_presence_weightedz i.strata (take_up_for = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
@@ -304,7 +304,7 @@ estimates store iv_dig_mark4
 
 
 			* ATT, IV (with 1 session counting as taken up)
-eststo dig_mark6, r:ivreg2 dig_marketing_index l.dig_marketing_index i.strata (take_up = i.treatment), cluster(id_plateforme) first
+eststo dig_mark6, r:ivreg2 dig_marketing_index l.dig_marketing_index i.strata (take_up_for = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
@@ -369,7 +369,7 @@ estimates store iv_dig_rev4
 
 
 			* ATT, IV (with 3 session counting as taken up)
-eststo dig_rev6, r:ivreg2 ihs_w95_dig_rev20 l.ihs_w95_dig_rev20 i.strata (take_up = i.treatment), cluster(id_plateforme) first
+eststo dig_rev6, r:ivreg2 ihs_w95_dig_rev20 l.ihs_w95_dig_rev20 i.strata (take_up_for = i.treatment), cluster(id_plateforme) first
 estadd local bl_control "Yes"
 estadd local strata "Yes"
 
@@ -427,7 +427,7 @@ set scheme burd
 
 *Plotting the regression estimates of the midline
 cd "${master_gdrive}/output/GIZ_presentation_graphs"
-coefplot ki3 pres3 dig_mark3 dig_rev3, bylabel("Average Treatment Effect (Treatment vs. Control)") keep (*treatment) drop(take_up _cons)  xline(0) ///
+coefplot ki3 pres3 dig_mark3 dig_rev3, bylabel("Average Treatment Effect (Treatment vs. Control)") keep (*treatment) drop(take_up_for _cons)  xline(0) ///
 	coeflabels(*treatment = "Treatment", labsize(vsmall)) ///
 	xlabel(-1(0.5)2,labsize(vsmall)) xscale(range(-1(0.5)2)) /// 
 	xtitle("Standardized Coefficients", size (vsmall)) ///
@@ -435,8 +435,8 @@ coefplot ki3 pres3 dig_mark3 dig_rev3, bylabel("Average Treatment Effect (Treatm
 	title("Average Treatment Effect (Treatment vs. Control)", size (small) pos(12) span) ///
 	saving(midline_treatment_coefplot, replace)  fysize(40)
 
-coefplot ki6 pres6 dig_mark6 dig_rev6, bylabel("Effect only on participating firms") keep (take_up) drop(*treatment _cons) xline(0)||, ///
-	coeflabels(take_up = "Take-up    ", labsize(vsmall)) /// 
+coefplot ki6 pres6 dig_mark6 dig_rev6, bylabel("Effect only on participating firms") keep (take_up_for) drop(*treatment _cons) xline(0)||, ///
+	coeflabels(take_up_for = "Take-up    ", labsize(vsmall)) /// 
 	xlabel(-1(0.5)2,labsize(vsmall)) xscale(range(-1(0.5)2)) /// 
 	xtitle("Standardized Coefficients", size (vsmall)) ///
 	legend(position(6) size (vsmall) ///

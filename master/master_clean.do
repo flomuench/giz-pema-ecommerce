@@ -32,10 +32,6 @@ replace `x' = stritrim(strtrim(`x'))
 
 *Put correct labels 
 	* treatment status
-replace treatment = "1" if treatment == "Treatment"
-replace treatment = "0" if treatment == "Control"
-destring treatment, replace
-format treatment %25.0fc
 lab def treatment_status 0 "Control" 1 "Treatment" 
 lab values treatment treatment_status
 

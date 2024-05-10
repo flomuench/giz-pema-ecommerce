@@ -500,10 +500,5 @@ foreach var of local  finvars {
 	replace `var' = . if `var' == -1554
 }
 
-***********************************************************************
-* 	PART 4: Expand already known information to other rows
-***********************************************************************
-bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment ==.
-
 
 save "${master_intermediate}/ecommerce_master_inter", replace

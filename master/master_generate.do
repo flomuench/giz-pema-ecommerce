@@ -22,13 +22,14 @@ use "${master_intermediate}/ecommerce_master_inter", clear
 ***********************************************************************
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
-*generate take up variable
+/*generate take up variable
 gen take_up = (present>2 & present<.), a(present)
 lab var take_up "1 if company was present in 3/5 trainings"
 label define treated 0 "not present" 1 "present"
 label value take_up treated
-
-gen take_up2 = (present>0 & present<.), a(take_up)
+*/
+gen take_up2= 0
+replace take_up2 = 1 if take_up_for1== 1| take_up_for2== 1| take_up_for3== 1| take_up_for4== 1| take_up_for5== 1
 lab var take_up2 "1 if present in at least one training"
 label value take_up2 treated
 
@@ -37,17 +38,21 @@ label value take_up2 treated
 
 *extent treatment status to additional surveyrounds
 bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
-bysort id_plateforme (surveyround): replace take_up = take_up[_n-1] if take_up == 0
-replace take_up=0 if take_up==. 
+bysort id_plateforme (surveyround): replace take_up_for_per = take_up_for_per[_n-1] if take_up_for_per == 0
 
-bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up2 == 0
-replace take_up2=0 if take_up2==. 
+*replace take_up=0 if take_up==. 
+local take_up take_up2 take_up_for_per take_up_for take_up_for1 take_up_for2 take_up_for3 take_up_for4 take_up_for5 take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber
+foreach var of local take_up{
+bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
+}
 
-*create simplified training group variable (tunis vs. non-tunis)
+*replace take_up2=0 if take_up2==. 
+
+/*create simplified training group variable (tunis vs. non-tunis)
 gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
 lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
-
+*/
 ***********************************************************************
 *PART 2. Intermediate variables or change variables created in baseline
 ***********************************************************************	
@@ -280,9 +285,9 @@ lab var dig_marketing_index "Z-score index onquantity and quality of digital mar
 ***********************************************************************
 *PART 4.2. Export preparation index (z-score based, only BL and EL)
 ***********************************************************************
-egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz) ///
- if surveyround==1
-label var expprep "Z-score index export preparation"
+*egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz) ///
+ *if surveyround==1
+*label var expprep "Z-score index export preparation"
 ***********************************************************************
 *PART 4.3. Create alternative non-normalized -index (in %of maximum points possible)
 ***********************************************************************	
@@ -368,16 +373,16 @@ drop bl_attrit2
 lab var bl_attrit "Not present in baseline"
 
 
-*copy treatment, attrition status and strata to empty rows
+/*copy treatment, attrition status and strata to empty rows
 bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
 bysort id_plateforme (surveyround): replace take_up = take_up[_n-1] if take_up == 0
 replace take_up=0 if take_up==. 
 
 bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up2 == 0
 replace take_up2=0 if take_up2==. 
-
+*/
 *Completing other relevant static controls
-local complet strata rg_age present sector subsector rg_gender_pdg rg_gender_rep urban
+local complet strata rg_age sector subsector rg_gender_pdg rg_gender_rep urban
 foreach var of local complet{
 bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
 }
@@ -390,8 +395,8 @@ bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == ""
 
 *status variable for graphs
 gen status=0
-replace status=1 if treatment==1 & take_up==0
-replace status=2 if treatment==1 & take_up==1
+replace status=1 if treatment==1 & take_up_for==0
+replace status=2 if treatment==1 & take_up_for==1
 lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
 label define status1 0 "Control" 1 "T-not present" 2"T-present"
 label value status status1
@@ -409,15 +414,12 @@ lab var ssa_aggregate "The company responded yes to at least one of the ssa_acti
 label define yesno1 0 "no" 1 "yes" 
 label value ssa_aggregate yesno1
 
-***********************************************************************
+/***********************************************************************
 *PART 8: Creation of index for the endline
 ***********************************************************************	
 	* Put all variables used to calculate indices into a local
 			*Digital sales index
-local dsi dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix //
-dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com //
-web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand //
-dig_miseajour1 dig_miseajour2 dig_miseajour3
+local dsi dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3
 			
 			*Digital marketing index
 local dmi mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl dig_invest mark_invest
@@ -429,8 +431,7 @@ local dtp investecom_benefit1  investecom_benefit2
 local dtai dsi dmi		
 			
 			*Export practices index
-local eri exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme //
-exp_pra_fin exp_pra_vent exp_pra_ach			
+local eri exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme exp_pra_fin exp_pra_vent exp_pra_ach			
 			
 			*Export performance index
 local epi export_1 export_2 exp_pays cliens_b2c cliens_b2b exp_dig			
@@ -532,7 +533,7 @@ label var eri_points "Export readiness index points"
 
 *drop temporary vars		  
 drop temp_*
-
+*/
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************

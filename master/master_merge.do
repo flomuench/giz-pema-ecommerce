@@ -27,7 +27,6 @@ use "${regis_final}/regis_final", clear
 	*rename for consistency: email experiment treatment
 rename treatment treatment_email
 
-
 merge 1:1 id_plateforme using "${bl_final}/bl_final"
 /*
     Result                      Number of obs

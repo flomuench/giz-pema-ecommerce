@@ -356,8 +356,7 @@ replace rg_email2 = "commercial@graphika.tn" if id_plateforme==136
 ***********************************************************************
 * 	PART 4: drop unused variables
 ***********************************************************************
-drop attest attest2 acceptezvousdevalidervosré ident_nom ident_entreprise ///
- ident_nom_correct_entreprise qsinonident
+drop ident_nom ident_entreprise ident_nom_correct_entreprise qsinonident
 
 drop rg_emailrep 
 drop ident_email*

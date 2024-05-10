@@ -174,15 +174,15 @@ if (0) do "${master_github}/master_power.do"
 /* --------------------------------------------------------------------
 	PART 4.3: Midline old regression
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_oldregression_ml.do"
+if (0) do "${master_github}/master_oldregression_ml.do"
 /* --------------------------------------------------------------------
 	PART 4.4: Midline regression
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_regression_ml.do"
+if (0) do "${master_github}/master_regression_ml.do"
 /* --------------------------------------------------------------------
 	PART 4.5: Midline heterogeneity
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_heterogeneity_ml.do"
+if (0) do "${master_github}/master_heterogeneity_ml.do"
 /* --------------------------------------------------------------------
 /* --------------------------------------------------------------------
 	PART 4.6: Endline regression
@@ -196,4 +196,4 @@ if (1) do "${master_github}/master_heterogeneity_el.do"
 ***********************************************************************
 * 	PART 5:		Build coordinates map
 ***********************************************************************
-if (1) do "${master_github}/master_map.do"
+if (0) do "${master_github}/master_map.do"
