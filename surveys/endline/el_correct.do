@@ -45,10 +45,10 @@ local refused     = -888
 ***********************************************************************
 * 	PART 2:  Identify and remove duplicates 
 ***********************************************************************
-/*sort id_plateforme date, stable
+sort id_plateforme date, stable
 quietly by id_plateforme date:  gen dup = cond(_N==1,0,_n)
 drop if dup>1
-*/
+
 /*duplicates report id_plateforme heuredébut
 duplicates tag id_plateforme heuredébut, gen(dup)
 drop if dup>1
@@ -59,7 +59,7 @@ drop if dup>1
 *please check them individually and drop (actually el-amouri is supposed to that)
 
 *restore original order
-*sort date heure, stable
+sort date heure, stable
 ***********************************************************************
 * 	PART 3:  Automatic corrections
 ***********************************************************************
@@ -69,7 +69,8 @@ local numvars dig_revenues_ecom comp_ca2023 comp_ca2024 compexp_2023 compexp_202
 * we may add these variables to check if they changed to string variables: ca_exp2018_cor  ca_exp2019_cor ca_exp2020_cor ca_2018_cor 
 *replace dig_revenues_ecom = "700000" if dig_revenues_ecom == "SEPT CENT MILLE DINARS"
 
-/*
+
+
 foreach var of local numvars {
 replace `var' = ustrregexra( `var',"dinars","")
 replace `var' = ustrregexra( `var',"dinar","")
@@ -117,7 +118,7 @@ replace dig_revenues_ecom = "not_know" if dig_revenues_ecom == "jenesaispas"
 
 *put zero digital revenues for firms that do not have any digital revenues
 replace dig_revenues_ecom = "0" if dig_vente == 0
-*/
+
 
 
 ***********************************************************************

@@ -46,7 +46,7 @@ replace `x'= lower(`x')
 }
 
 	*fix date
-*format Date %td
+format Date %td
 
 *drop empty rows
 drop if id_plateforme ==.
@@ -63,10 +63,10 @@ rename empl fte
 * definer des nouvelles labels pour des nouvelles variables
 
 lab var id_plateforme "Unique identifier of the company"
-*lab var firmname "Firm name"
-*lab var id_ident "Name of the representant"
-*lab var id_ident_el "Identification of the new person"
-*lab var ident_repondent_position "Respondent's position in the company"
+lab var firmname "Firm name"
+lab var id_ident "Name of the representant"
+lab var id_ident_el "Identification of the new person"
+lab var ident_repondent_position "Respondent's position in the company"
 
 **********L'entreprise*********** 
 lab var product "Main product"
@@ -90,6 +90,22 @@ lab var dig_presence2 "Social media presence"
 lab var dig_presence3 "Marketplace presence"
 lab var dig_presence4 "Face-to-face or by phone/email presence"
 
+lab var dig_presence2_sm1 "Instagram"
+lab var dig_presence2_sm2 "Facebook"
+lab var dig_presence2_sm3 "Twitter"
+lab var dig_presence2_sm4 "Youtube"
+lab var dig_presence2_sm5 "LinkedIn"
+lab var dig_presence2_sm6 "Others"
+
+lab var dig_presence3_plateform1 "Little Jneina "
+lab var dig_presence3_plateform2 "Founa"
+lab var dig_presence3_plateform3 "Made in Tunisia"
+lab var dig_presence3_plateform4 "Jumia"
+lab var dig_presence3_plateform5 "Amazon"
+lab var dig_presence3_plateform6 "Ali baba"
+lab var dig_presence3_plateform7 "Upwork"
+lab var dig_presence3_plateform8 "Autres"
+
 lab var dig_miseajour1 "Website update frequency"
 lab var dig_miseajour2 "Social medias update frequency"
 lab var dig_miseajour3 "Marketplace update frequency"
@@ -98,7 +114,7 @@ lab var dig_payment1 "Offline payment option"
 lab var dig_payment2 "Possibility to pay/order on website"  
 lab var dig_payment3 "Possibility to pay/order through a platform"
 
-lab var dig_payment_refus "Reasons for not adopting online payment"
+lab var dig_ payment_refus "Reasons for not adopting online payment"
 
 lab var web_use_contacts "Company contact details on website"
 lab var web_use_catalogue "Cataloging goods and services on the website" 
@@ -145,10 +161,21 @@ lab var dig_barr7  "Other"
 ***************************
 **********Export***********
 ***************************
+				* Export performance
+label var export_1 "Direct export"
+label var export_2 "Indirect export"
+label var export_3 "No export"
+				
+				* reasons for not exporting
+label var export_41 "Not profitable"
+label var export_42 "Did not find clients abroad"
+label var export_43 "Too complicated"
+label var export_44 "Requires too much investment"
+label var export_45 "Other"
 
 label var exp_pays "Number of export countries"
-label var clients_b2c "Number of international orders"
-label var clients_b2b "Number of international companies"
+label var cliens_b2c "Number of international orders"
+label var cliens_b2b "Number of international companies"
 label var exp_dig "Exporting through digital presence"
 	
 	* Export practices
@@ -161,11 +188,11 @@ label var exp_pra_vent "Investment in sales structure"
 ***************************
 **********Accounting*******
 ***************************
-*label var q29 "Tax identification number"
+label var q29 "Tax identification number"
 
-*label var q29_nom "Accountant's name"
-*label var q29_tel "Accountant's phone number"
-*label var q29_mail "Accountant's email"
+label var q29_nom "Accountant's name"
+label var q29_tel "Accountant's phone number"
+label var q29_mail "Accountant's email"
 
 label var comp_ca2023 "Total turnover in 2023 in dt"
 label var comp_ca2024 "Total turnover in 2024 in dt"
@@ -200,7 +227,10 @@ label var herber_refus "Reasons for not buying the web hosting domain"
 * 	PART 5: 	Label the variables values	  			
 ***********************************************************************
 
-local yesnovariables product dig_presence1 dig_presence2 dig_presence3 dig_presence4 dig_payment1 dig_payment2 dig_payment3 dig_prix web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7 exp_dig exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach   
+local yesnovariables id_ident product dig_presence1 dig_presence2 dig_presence3 dig_presence4 dig_payment1 dig_payment2 dig_payment3 dig_prix //
+web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand  //
+mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7 exp_dig //
+exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach   
 
 label define yesno 1 "Yes" 0 "No" 2 "No"
 foreach var of local yesnovariables {
