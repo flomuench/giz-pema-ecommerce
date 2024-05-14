@@ -18,7 +18,6 @@
 	* import file
 use "$el_final/el_final", clear
 
-
 	* set directory to checks folder
 cd "$el_output"
 
@@ -46,7 +45,7 @@ putpdf image total.png
 putpdf pagebreak
 
 *Number of validated
-graph bar (count) if validation ==1, over(treatment) blabel(total, format(%9.0fc)) ///
+graph bar (count) if attest ==1, over(treatment) blabel(total, format(%9.0fc)) ///
 	title("Number of companies that have validated their answers") note("Date: `c(current_date)'") ///
 	ytitle("Number of entries")
 graph export valide.png, replace
@@ -68,10 +67,10 @@ putpdf pagebreak
 drop share_started
 
 	* total number of firms starting the survey
-count if validation==1
+count if attest==1
 gen share= (`r(N)'/236)*100
 graph bar share, blabel(total, format(%9.2fc)) ///
-	title("Proportion of companies that have validated their answers note("Date: `c(current_date)'") ///
+	title("Proportion of companies that have validated their answers note") note("Date: `c(current_date)'") ///
 	ytitle("Number of entries")
 graph export responserate2.png, replace
 putpdf paragraph, halign(center)
@@ -99,7 +98,7 @@ putpdf paragraph, halign(center)
 putpdf image type_of_surveyanswer.png
 putpdf pagebreak
 
-	* timeline of responses
+	/* timeline of responses
 format %-td date 
 graph twoway histogram date, frequency width(1) ///
 		tlabel(05oct2022(1)16nov2022, angle(60) labsize(vsmall)) ///
@@ -109,7 +108,9 @@ gr export survey_response_byday.png, replace
 putpdf paragraph, halign(center) 
 putpdf image survey_response_byday.png
 putpdf pagebreak
+*/
 }
+
 ***********************************************************************
 * 	PART 3:  Variables checking		  			
 ***********************************************************************	
@@ -526,61 +527,61 @@ putpdf image el_exp_pays_his.png
 putpdf pagebreak
 	
 		*No of international orders
-stripplot cliens_b2c, jitter(4) vertical yline(9, lcolor(red)) ///
+stripplot clients_b2c, jitter(4) vertical yline(9, lcolor(red)) ///
 		ytitle("Number of international orders") ///
 		name(el_exp_pays, replace)
-    gr export el_cliens_b2c.png, replace
+    gr export el_clients_b2c.png, replace
 	putpdf paragraph, halign(center) 
-	putpdf image el_cliens_b2c.png
+	putpdf image el_clients_b2c.png
 	putpdf pagebreak
 	
- graph box cliens_b2c if cliens_b2c > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box clients_b2c if clients_b2c > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of international orders", pos(12))
-gr export el_cliens_b2c_box.png, replace
+gr export el_clients_b2c_box.png, replace
 putpdf paragraph, halign(center) 
-putpdf image el_cliens_b2c_box.png
+putpdf image el_clients_b2c_box.png
 putpdf pagebreak
 
-sum cliens_b2c,d
-histogram(cliens_b2c), width(1) frequency addlabels xlabel(0(1)8, nogrid) discrete ///
+sum clients_b2c,d
+histogram(clients_b2c), width(1) frequency addlabels xlabel(0(1)8, nogrid) discrete ///
 	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
 	ytitle("No. of firms") ///
 	xtitle("Number of international orders") ///
 	ylabel(0(20)100 , nogrid) ///
 	text(100 `r(mean)' "Mean", size(vsmall) place(e)) ///
 	text(100 `r(p50)' "Median", size(vsmall) place(e))
-gr export el_cliens_b2c_his.png, replace
+gr export el_clients_b2c_his.png, replace
 putpdf paragraph, halign(center) 
-putpdf image el_cliens_b2c_his.png
+putpdf image el_clients_b2c_his.png
 putpdf pagebreak
 
 *No of international companies
-stripplot cliens_b2b, jitter(4) vertical yline(9, lcolor(red)) ///
+stripplot clients_b2b, jitter(4) vertical yline(9, lcolor(red)) ///
 		ytitle("Number of international companies") ///
 		name(el_exp_pays, replace)
-    gr export el_cliens_b2b.png, replace
+    gr export el_clients_b2b.png, replace
 	putpdf paragraph, halign(center) 
-	putpdf image el_cliens_b2b.png
+	putpdf image el_clients_b2b.png
 	putpdf pagebreak
 	
- graph box cliens_b2b if cliens_b2b > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box clients_b2b if clients_b2b > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of international companies", pos(12))
-gr export el_cliens_b2b_box.png, replace
+gr export el_clients_b2b_box.png, replace
 putpdf paragraph, halign(center) 
-putpdf image el_cliens_b2b_box.png
+putpdf image el_clients_b2b_box.png
 putpdf pagebreak
 
-sum cliens_b2b,d
-histogram(cliens_b2b), width(1) frequency addlabels xlabel(0(1)8, nogrid) discrete ///
+sum clients_b2b,d
+histogram(clients_b2b), width(1) frequency addlabels xlabel(0(1)8, nogrid) discrete ///
 	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
 	ytitle("No. of firms") ///
 	xtitle("Number of international companies") ///
 	ylabel(0(20)100 , nogrid) ///
 	text(100 `r(mean)' "Mean", size(vsmall) place(e)) ///
 	text(100 `r(p50)' "Median", size(vsmall) place(e))
-gr export el_cliens_b2b_his.png, replace
+gr export el_clients_b2b_his.png, replace
 putpdf paragraph, halign(center) 
-putpdf image el_cliens_b2b_his.png
+putpdf image el_clients_b2b_his.png
 putpdf pagebreak
 	
 	* Export trhough digital channel
@@ -610,7 +611,7 @@ putpdf text ("Section 6: Accounting"), bold
 {
 
 	*Bénéfices/Perte 2023
-graph pie, over(profit_2023_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+graph pie, over(profit_2023_category) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
    bgcolor(white) legend(pos(6)) ///
    title("Did the company make a loss or a profit in 2023?", pos(12))
    gr export profit_2023_category.png, replace
@@ -618,9 +619,9 @@ graph pie, over(profit_2023_category) over(treatment) plabel(_all percent, forma
 	putpdf image profit_2023_category.png
 	putpdf pagebreak
 	
-	graph pie, over(profit_2023_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
-   bgcolor(white) legend(pos(6)) ///
-   title("Did the company make a loss or a profit in 2023?", pos(12))
+graph pie treatment, over(profit_2023_category) plabel(_all percent, format(%9.0f) size(medium)) ///
+    graphregion(fcolor(none) lcolor(none)) bgcolor(white) legend(pos(6)) ///
+    title("Did the company make a loss or a profit in 2023?", pos(12))
    gr export profit_2023_category_treat.png, replace
 	putpdf paragraph, halign(center) 
 	putpdf image profit_2023_category_treat.png
@@ -675,7 +676,7 @@ putpdf image el_compexp_2023_box.png
 putpdf pagebreak
 
 	*Bénéfices/Perte 2023
-graph pie, over(profit_2024_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+graph pie, over(profit_2024_category) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
    bgcolor(white) legend(pos(6)) ///
    title("Did the company make a loss or a profit in 2024?", pos(12))
    gr export profit_2024_category.png, replace
@@ -683,7 +684,7 @@ graph pie, over(profit_2024_category) over(treatment) plabel(_all percent, forma
 	putpdf image profit_2024_category.png
 	putpdf pagebreak
 	
-	graph pie, over(profit_2024_category) over(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+	graph pie treatment, over(profit_2024_category) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
    bgcolor(white) legend(pos(6)) ///
    title("Did the company make a loss or a profit in 2024?", pos(12))
    gr export profit_2024_category_treat.png, replace
