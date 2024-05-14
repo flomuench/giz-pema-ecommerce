@@ -269,3 +269,4 @@ replace matricule_missing = 1 if id_plateforme == 216
 *PART 5: Export the final excel
 ***********************************************************************
 export excel "${master_pii}/endline_contactlist.xlsx", firstrow(variables) replace
+save "${master_pii}/endline_contactlist", replace
