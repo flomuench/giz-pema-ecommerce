@@ -154,7 +154,7 @@ if (0) do "${master_github}/master_test_ml.do"
 /*--------------------------------------------------------------------
 	PART 3.7: Test coherence between survey rounds / questions endline
 ----------------------------------------------------------------------*/
-if (0) do "${master_github}/master_test_el.do"
+if (1) do "${master_github}/master_test_el.do"
 
 ***********************************************************************
 * 	PART 4: 	Run final analysis

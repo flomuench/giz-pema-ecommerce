@@ -34,6 +34,7 @@
 
 use "${master_final}/ecommerce_master_final", clear
 
+drop needs_check
 gen needs_check = 0
 lab var needs_check "logical test to be checked by El Amouri"
 
@@ -48,16 +49,16 @@ lab var questions_needing_checks "questions to be checked by El Amouri"
 ----------------------------------------------------------------------*/	
 *number of product innovations
 	* number of product innovations large
-replace needs_check = 1 if surveyround == 3 & inno_produit_ext > 10 & inno_produit_ext !=.
-replace questions_needing_checks = "nombre d'innovations de produit est grand / " if surveyround == 3 & inno_produit_ext > 10 & inno_produit_ext !=.
+replace needs_check = 1 if surveyround == 3 & inno_produit > 10 & inno_produit !=.
+replace questions_needing_checks = "nombre d'innovations de produit est grand / " if surveyround == 3 & inno_produit > 10 & inno_produit !=.
 	
 	* number of product innovations negative
-replace needs_check = 1 if surveyround == 3 & inno_produit_ext < 0 & inno_produit_ext !=. & inno_produit_ext !=. -777 & inno_produit_ext != -888 & inno_produit_ext != -999
-replace questions_needing_checks = "nombre d'innovations de produit est négatif / " if surveyround == 3 & inno_produit_ext < 0 & inno_produit_ext !=. & inno_produit_ext !=. -777 & inno_produit_ext != -888 & inno_produit_ext != -999
+replace needs_check = 1 if surveyround == 3 & inno_produit < 0 & inno_produit !=. & inno_produit !=. -777 & inno_produit != -888 & inno_produit != -999
+replace questions_needing_checks = "nombre d'innovations de produit est négatif / " if surveyround == 3 & inno_produit < 0 & inno_produit !=. & inno_produit !=. -777 & inno_produit != -888 & inno_produit != -999
 
 *number of employees
 	*loop over all employees var
-local employees_var empl car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 dig_empl
+local employees_var fte car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 dig_empl
 
 foreach var of employees_var {
 		* number of employees is over 200
@@ -71,16 +72,16 @@ foreach var of employees_var {
 }
 
 	*females + youth (under 36) is more than number of employees
-replace needs_check = 1 if surveyround == 3 & (car_carempl_div1 + car_carempl_div2 > empl)
-replace questions_needing_checks = "Nombre d'employés femmes et jeune (<36) est plus que nombre d'employés" / " if surveyround == 3 & (car_carempl_div1 + car_carempl_div2 > empl)
+replace needs_check = 1 if surveyround == 3 & (car_carempl_div1 + car_carempl_div2 > fte)
+replace questions_needing_checks = "Nombre d'employés femmes et jeune (<36) est plus que nombre d'employés / " if surveyround == 3 & (car_carempl_div1 + car_carempl_div2 > fte)
 	
 	*females + youth (under 24) is more than the number of employees
-replace needs_check = 1 if surveyround == 3 & (car_carempl_div1 + car_carempl_div3 > empl)
-replace questions_needing_checks = "Nombre d'employés femmes et jeune (<24) est plus que nombre d'employés" / " if surveyround == 3 & (car_carempl_div1 + car_carempl_div3 > empl)
+replace needs_check = 1 if surveyround == 3 & (car_carempl_div1 + car_carempl_div3 > fte)
+replace questions_needing_checks = "Nombre d'employés femmes et jeune (<24) est plus que nombre d'employés / " if surveyround == 3 & (car_carempl_div1 + car_carempl_div3 > fte)
 
 	*permanent is more than the number of employees
-replace needs_check = 1 if surveyround == 3 & car_carempl_div4 > empl
-replace questions_needing_checks = "Nombre d'employés permanent est plus que nombre d'employés" / " if surveyround == 3 & car_carempl_div4 > empl
+replace needs_check = 1 if surveyround == 3 & car_carempl_div4 > fte
+replace questions_needing_checks = "Nombre d'employés permanent est plus que nombre d'employés / " if surveyround == 3 & car_carempl_div4 > fte
 
 /* --------------------------------------------------------------------
 	PART 2.2: Digital Technology Adoption
@@ -149,15 +150,15 @@ replace needs_check = 1 if export_3 == 1 & clients_b2b > 0 & surveyround == 3
 replace questions_needing_checks = questions_needing_checks + "l'entreprise n'export pas mais a des entreprises internationaux /" if export_3 == 1 & clients_b2b > 0 & surveyround == 3
 
 	* Countries & Number of multinationals
-replace needs_check = 1 if dig_presence1 != 1 & dig_presence2 != 1 & dig_presnce3 != 1 & export_1 == 1 & exp_dig == 1 & surveyround == 3
-replace questions_needing_checks = questions_needing_checks + "l'entreprise exporte grace à ses plateformes enligne mais n'a pas de presence en ligne /" if dig_presence1 != 1 & dig_presence2 != 1 & dig_presnce3 != 1 & export_1 == 1 & exp_dig == 1 & surveyround == 3
+replace needs_check = 1 if dig_presence1 != 1 & dig_presence2 != 1 & dig_presence3 != 1 & export_1 == 1 & exp_dig == 1 & surveyround == 3
+replace questions_needing_checks = questions_needing_checks + "l'entreprise exporte grace à ses plateformes enligne mais n'a pas de presence en ligne /" if dig_presence1 != 1 & dig_presence2 != 1 & dig_presence3 != 1 & export_1 == 1 & exp_dig == 1 & surveyround == 3
 
 	*exporting status changed throughout the surveyrounds
 local exporting_vars "export"
 foreach var of local exporting_vars {
 	
-	bys id (surveyround): replace needs_check = 1 if `var'[_n] != `var'[_n-1]  & surveyround == 3 
-	bys id (surveyround): replace questions_needing_checks = questions_needing_checks + "export status a changé entre les surveyrounds, vérifier /" if `var'[_n] != `var'[_n-1]  & surveyround == 3 
+	bys id_plateforme (surveyround): replace needs_check = 1 if `var'[_n] != `var'[_n-1]  & surveyround == 3 
+	bys id_plateforme (surveyround): replace questions_needing_checks = questions_needing_checks + "export status a changé entre les surveyrounds, vérifier /" if `var'[_n] != `var'[_n-1]  & surveyround == 3 
 
 }
 /* --------------------------------------------- -----------------------
@@ -194,8 +195,8 @@ foreach var of local accountvars {
 }
 
 	* Export is zero and the company is exporting
-replace needs_check = 1 if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & (export_1 == 1 | epxort_2 == 1)
-replace questions_needing_checks = questions_needing_checks + "ca export zero alors que l'entreprise export / " if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & (export_1 == 1 | epxort_2 == 1)
+replace needs_check = 1 if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & (export_1 == 1 | export_2 == 1)
+replace questions_needing_checks = questions_needing_checks + "ca export zero alors que l'entreprise export / " if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & (export_1 == 1 | export_2 == 1)
 
 	
 	* Profits > sales 2023
@@ -336,7 +337,7 @@ local order_vars "id_plateforme surveyround methode_reponse endline_enqueteur ne
 local accounting_vars "`order_vars' mark_invest dig_invest comp_ca2023 comp_ca2024 comp_exp2023 comp_exp2024 comp_benefice2023 comp_benefice2024"
 local dig_vars "`accounting_vars' dig_miseajour1 dig_miseajour2 dig_miseajour3 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_presence1 dig_presence2 dig_presence3"
 local exp_vars "`dig_vars' export_1 export_2 export_3 exp_pays clients_b2b clients_b2c"
-local employee_vars "`exp_vars' empl car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 dig_empl"
+local employee_vars "`exp_vars' fte car_carempl_div1 car_carempl_div2 car_carempl_div3 car_carempl_div4 dig_empl"
 
 /* IF NEEDED?
 			* remove previous surveyround values for better visbility

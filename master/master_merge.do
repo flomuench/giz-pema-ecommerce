@@ -90,8 +90,8 @@ tsfill, full
 		* check: 472 ros after (2*236)
 
 	* append with endline (uncomment once we have endline data)
-*cd "$endline_final"
-*append using el_final
+cd "$endline_final"
+append using "${el_final}/el_final"
 
     * save
 sort id_plateforme surveyround, stable

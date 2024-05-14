@@ -61,7 +61,7 @@ foreach var of local el_changes {
 }
 
 	* put all pii variables into a local
-local pii id_plateforme new_firmname_el repondant_endline id_ident id_ident_el new_ident_repondent_position_el q29_nom_el q29_tel_el q29_mail_el q29 
+local pii id_plateforme new_firmname_el repondant_endline id_ident id_ident_el new_ident_repondent_position_el q29_nom_el q29_tel_el q29_mail_el 
 
 	* save as stata master data
 preserve
@@ -78,7 +78,7 @@ restore
 * 	PART 3:  save a de-identified analysis file	
 ***********************************************************************
 	* drop all pii
-drop new_firmname_el repondant_endline id_ident id_ident_el new_ident_repondent_position_el q29_nom_el q29_tel_el q29_mail_el q29 
+drop new_firmname_el repondant_endline id_ident id_ident_el new_ident_repondent_position_el q29_nom_el q29_tel_el q29_mail_el 
 
 ***********************************************************************
 * 	PART 4:  Add treatment status	

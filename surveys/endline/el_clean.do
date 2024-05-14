@@ -161,7 +161,7 @@ label var exp_pra_vent "Investment in sales structure"
 ***************************
 **********Accounting*******
 ***************************
-*label var q29 "Tax identification number"
+label var q29 "Tax identification number"
 
 *label var q29_nom "Accountant's name"
 *label var q29_tel "Accountant's phone number"
