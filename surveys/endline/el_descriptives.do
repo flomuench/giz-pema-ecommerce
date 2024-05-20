@@ -20,7 +20,7 @@ use "$el_final/el_final", clear
 
 	* set directory to checks folder
 cd "$el_output"
-
+set scheme burd
 	* create pdf document
 putpdf clear
 putpdf begin 
@@ -370,7 +370,7 @@ putpdf image el_maj_digital.png, width(5000)
 putpdf pagebreak
 
 	*Activities of digital marketing
-graph hbar (mean) mark_online1 mark_online2 mark_online3 mark_online4 mark_online5, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
+graph hbar (count) mark_online1 mark_online2 mark_online3 mark_online4 mark_online5, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
 	title("Online marketing activities") ///
 	legend (pos(6) row(6) label (1 "E-mailing & Newsletters") label(2 "SEO or SEA") ///
 	label(3 "Free social media marketing") label(4 "Paid social media advertising") ///
@@ -454,7 +454,7 @@ putpdf image el_investecom_benefit2.png, width(5000)
 putpdf pagebreak
 	 
 	*Barriers to digital adoption
-graph hbar (mean) dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
+graph hbar (count) dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
 	title("Barriers to technology adoption") ///
 	legend (pos(6) row(6) label (1 "Absence/uncertainty of online demand") label(2 "Lack of skilled staff") ///
 	label(3 "Inadequate infrastructure") label(4 "Cost is too high") ///
@@ -470,7 +470,7 @@ putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 5: Export"), bold
 {
 	* Export: direct, indirect, no export
-graph bar (mean) export_1 export_2 export_3, over(treatment) percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
+graph bar (count) export_1 export_2 export_3, over(treatment) percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
     legend (pos(6) row(6) label (1 "Direct export") label (2 "Indirect export") ///
 	label (3 "No export")) ///
 	title("Firm & export status", pos(12)) ///
@@ -481,7 +481,7 @@ putpdf image el_firm_exports.png, width(5000)
 putpdf pagebreak
 
 	* Reasons for not exporting
-graph bar (mean) export_41 export_42 export_43 export_44, over(treatment) percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
+graph bar (count) export_41 export_42 export_43 export_44, over(treatment) percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
     legend (pos(6) row(6) label (1 "Not profitable") label (2 "Did not find clients abroad") ///
 	label (3 "Too complicated") label (4 "Requires too much investment")) ///
 	ylabel(0(20)100, nogrid)  ///
@@ -588,7 +588,7 @@ graph pie, over(exp_dig) plabel(_all percent, format(%9.0f) size(medium)) graphr
 	putpdf pagebreak
 	
 	*Export practices
-graph hbar (mean) exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
+graph hbar (count) exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach, percentage over(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
 	title("Export practices") ///
 	legend (pos(6) row(8) label (1 "International fair/exhibition") label(2 "Sales partner") ///
 	label(3 "Export manager") label(4 "Export plan") ///
@@ -668,7 +668,7 @@ putpdf paragraph, halign(center)
 putpdf image el_compexp_2023_box.png, width(5000)
 putpdf pagebreak
 
-	*Bénéfices/Perte 2023
+	*Bénéfices/Perte 2024
 graph pie, over(profit_2024_category) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
    bgcolor(white) legend(pos(6)) ///
    title("Did the company make a loss or a profit in 2024?", pos(12))

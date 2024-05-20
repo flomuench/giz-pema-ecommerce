@@ -220,6 +220,9 @@ label values clients label_clients
 label define dig_fre 1"Never" 2 "Annually" 3 "Monthly" 4 "Weekly" 5 "More than one time per week"
 label values dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_fre
 
+label define profit_loss 0 "A loss" 1 "A profit"
+label values profit_2023_category profit_2024_category profit_loss
+
 ***********************************************************************
 * 	PART 6: 	Change format of variable  			
 ***********************************************************************
