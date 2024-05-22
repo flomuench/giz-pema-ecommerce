@@ -138,6 +138,17 @@ gr export el_inno_produit_treat.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_inno_produit_treat.png, width(5000)
 putpdf pagebreak 
+
+twoway (kdensity inno_produit if treatment == 0 & inno_produit > 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity inno_produit if treatment == 1 & inno_produit > 0, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number good or service innovation", pos(12)) ///
+	   xtitle("Number good or service innovation",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_inno_produit_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_inno_produit_kdens.png, width(5000)
+putpdf pagebreak
 	
  graph box inno_produit if inno_produit > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number good or service innovation", pos(12))
@@ -160,11 +171,11 @@ putpdf image el_inno_produit_his.png, width(5000)
 putpdf pagebreak
 
 *Type of clients
-graph bar, over(clients) by(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
-	legend(pos(6) row(6) label(1 "Exclusively to individuals") label(2 "To other firms") ///
-	label(3 "To individuals and other firms"))  ///
-	title("Types of Customers") ///
-	ylabel(0(20)100, nogrid) 
+graph bar (percent), over(clients) by(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
+    legend(pos(6) row(6) label(1 "Exclusively to individuals") label(2 "To other firms") ///
+    label(3 "To individuals and other firms") size(vtiny))  ///
+    title("Types of Customers") ///
+    ylabel(0(20)100, nogrid)
 gr export el_customer_types.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_customer_types.png, width(5000)
@@ -190,7 +201,18 @@ stripplot fte, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_fte_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity fte if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity fte if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of full-time employees", pos(12)) ///
+	   xtitle("Number of full-time employees",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_fte_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_fte_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box fte if fte > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of employees", size(medium) pos(12))
 gr export el_fte_box.png, width(5000) replace
@@ -231,7 +253,18 @@ stripplot car_carempl_div1, by(treatment) jitter(4) vertical  ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_car_carempl_div1_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+	twoway (kdensity car_carempl_div1 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity car_carempl_div1 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of female employees", pos(12)) ///
+	   xtitle("Number of employees",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_car_carempl_div1_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_car_carempl_div1_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box car_carempl_div1 if car_carempl_div1 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of female employees", pos(12))
 gr export el_car_carempl_div1_box.png, width(5000) replace
@@ -272,7 +305,18 @@ stripplot car_carempl_div2, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_car_carempl_div2_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity car_carempl_div2 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity car_carempl_div2 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of young employees (less than 36 yo)", pos(12)) ///
+	   xtitle("Number of employees",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_car_carempl_div2_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_car_carempl_div2_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box car_carempl_div2 if car_carempl_div2 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of young employees (less than 36 yo)", pos(12))
 gr export el_car_carempl_div2_box.png, width(5000) replace
@@ -313,8 +357,19 @@ stripplot car_carempl_div3, by(treatment) jitter(4) vertical  ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_car_carempl_div3_treat.png, width(5000)
 	putpdf pagebreak
-	
- graph box car_carempl_div3 if car_carempl_div3 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+
+twoway (kdensity car_carempl_div3 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity car_carempl_div3 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of young employees (less than 24 yo)", pos(12)) ///
+	   xtitle("Number of employees",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_car_carempl_div3_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_car_carempl_div3_treat_kdens.png, width(5000)
+putpdf pagebreak
+
+graph box car_carempl_div3 if car_carempl_div3 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of young employees (less than 24 yo)", pos(12))
 gr export el_car_carempl_div3_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -412,6 +467,17 @@ gr export el_dig_revenues_ecom_treat.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_dig_revenues_ecom_treat.png, width(5000)
 putpdf pagebreak 
+
+twoway (kdensity dig_revenues_ecom if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity dig_revenues_ecom if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Online sales as % of total sales", pos(12)) ///
+	   xtitle("% of total sales",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_dig_revenues_ecom_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_dig_revenues_ecom_treat_kdens.png, width(5000)
+putpdf pagebreak
 	
  graph box dig_revenues_ecom if dig_revenues_ecom> 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Online sales as % of total sales", pos(12))
@@ -544,8 +610,19 @@ stripplot dig_empl, by(treatment) jitter(4) vertical  ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_dig_empl_treat.png, width(5000)
 	putpdf pagebreak
-	
- graph box dig_empl if dig_empl > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+
+twoway (kdensity dig_empl if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity dig_empl if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of employees in charge of online activities", pos(12)) ///
+	   xtitle("Number of employees",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_dig_empl_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_dig_empl_treat_kdens.png, width(5000)
+putpdf pagebreak
+
+graph box dig_empl if dig_empl > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of employees in charge of online activities", pos(12))
 gr export el_dig_empl_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -571,7 +648,18 @@ sum dig_invest
 	putpdf paragraph, halign(center) 
 	putpdf image el_dig_invest_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity dig_invest if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity dig_invest if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Investment in online marketing activities in 2023 and 2024", pos(12) size(medium)) ///
+	   xtitle("Amount invested in TND",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_dig_invest_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_dig_invest_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box dig_invest if dig_invest > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Investment in online marketing activities in 2023 and 2024", pos(12) size(medium))
 gr export el_dig_invest_box.png, width(5000) replace
@@ -598,7 +686,18 @@ stripplot mark_invest, by(treatment) jitter(4) vertical  ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_mark_invest_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity mark_invest if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity mark_invest if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Investment in offline marketing activities in 2023 and 2024", pos(12) size(medium)) ///
+	   xtitle("Amount invested in TND",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_mark_invest_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_mark_invest_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box mark_invest if mark_invest > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Investment in offline marketing activities in 2023 and 2024", pos(12) size(medium))
 gr export el_mark_invest_box.png, width(5000) replace
@@ -639,6 +738,16 @@ graph hbar (mean) dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6, p
 gr export el_barriers.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_barriers.png, width(5000)
+putpdf pagebreak
+
+betterbar dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6, over(treatment) barlab ci ///
+	title("Barriers to technology adoption" , pos(12)) ///
+	legend (pos(6) row(6) label (1 "Absence/uncertainty of online demand") label(2 "Lack of skilled staff") ///
+	label(3 "Inadequate infrastructure") label(4 "Cost is too high") ///
+	label(5 "Restrictive government regulations") label(6 "Resistance to change"))  
+gr export el_barriers_ci.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_barriers_ci.png, width(5000)
 putpdf pagebreak
 }
 ***********************************************************************	
@@ -685,7 +794,18 @@ stripplot exp_pays, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_exp_pays_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+	twoway (kdensity exp_pays if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity exp_pays if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of export countries", pos(12) size(medium)) ///
+	   xtitle("Number of countries",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_exp_pays_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_exp_pays_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box exp_pays if exp_pays > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of export countries", pos(12))
 gr export el_exp_pays_box.png, width(5000) replace
@@ -726,7 +846,18 @@ stripplot clients_b2c, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_clients_b2c_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+	twoway (kdensity clients_b2c if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity clients_b2c if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of international orders/ clients", pos(12) size(medium)) ///
+	   xtitle("Number of orders",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_clients_b2c_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_clients_b2c_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box clients_b2c if clients_b2c > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of international orders", pos(12))
 gr export el_clients_b2c_box.png, width(5000) replace
@@ -768,7 +899,18 @@ stripplot clients_b2b, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_clients_b2b_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity clients_b2b if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	  (kdensity clients_b2b if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Number of international companies", pos(12) size(medium)) ///
+	   xtitle("Number of companies",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_clients_b2b_treat_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_clients_b2b_treat_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box clients_b2b if clients_b2b > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of international companies", pos(12))
 gr export el_clients_b2b_box.png, width(5000) replace
@@ -818,6 +960,17 @@ gr export el_export_practices.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_export_practices.png, width(5000)
 putpdf pagebreak
+
+betterbar exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach, over(treatment) barlab ci ///
+	title("Export practices",size(medium) pos(12)) ///
+	legend (pos(6) row(8) label (1 "International fair/exhibition") label(2 "Sales partner") ///
+	label(3 "Export manager") label(4 "Export plan") ///
+	label(5 "Certification") label(6 "External funding") label(7 "Sales structure") label(8 "Interest by a foreign buyer"))  ///
+	ylabel(0(10)40, nogrid)    
+gr export el_export_practices_ci.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_export_practices_ci.png, width(5000)
+putpdf pagebreak
 }
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
@@ -860,6 +1013,17 @@ stripplot comp_ca2023, by(treatment) jitter(4) vertical  ///
 	putpdf image el_comp_ca2023_treat.png, width(5000)
 	putpdf pagebreak
 	
+twoway (kdensity comp_ca2023 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+       (kdensity comp_ca2023 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Total turnover in 2023", pos(12)) ///
+	   xtitle("Total turnover",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_comp_ca2023_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_comp_ca2023_kdens.png, width(5000)
+putpdf pagebreak
+	   
  graph box comp_ca2023 if comp_ca2023 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Total turnover in 2023 in dt", pos(12))
 gr export el_comp_ca2023_box.png, width(5000) replace
@@ -886,7 +1050,18 @@ stripplot comp_ca2024, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_comp_ca2024_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity comp_ca2024 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+       (kdensity comp_ca2024 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Total turnover in 2024", pos(12)) ///
+	   xtitle("Total turnover",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_comp_ca2024_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_comp_ca2024_kdens.png, width(5000)
+putpdf pagebreak
+	   	
  graph box comp_ca2024 if comp_ca2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Total turnover in 2024 in dt", pos(12))
 gr export el_comp_ca2024_box.png, width(5000) replace
@@ -914,6 +1089,16 @@ stripplot compexp_2023, by(treatment) jitter(4) vertical ///
 	putpdf image el_compexp_2023_treat.png, width(5000)
 	putpdf pagebreak
 	
+twoway (kdensity compexp_2023 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+       (kdensity compexp_2023 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Export turnover in 2023", pos(12)) ///
+	   xtitle("Export turnover",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_compexp_2023_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_compexp_2023_kdens.png, width(5000)
+putpdf pagebreak
 	
  graph box compexp_2023 if compexp_2023 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Export turnover in 2023 in dt", pos(12))
@@ -958,8 +1143,19 @@ stripplot compexp_2024, by(treatment) jitter(4) vertical  ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_compexp_2024_treat.png, width(5000)
 	putpdf pagebreak
-	
- graph box compexp_2024 if compexp_2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+
+twoway (kdensity compexp_2024 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity compexp_2024 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Export turnover in 2024", pos(12)) ///
+	   xtitle("Export turnover",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_compexp_2024_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_compexp_2024_kdens.png, width(5000)
+putpdf pagebreak
+
+graph box compexp_2024 if compexp_2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Export turnover in 2024 in dt", pos(12))
 gr export el_compexp_2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -985,7 +1181,19 @@ stripplot comp_benefice2023, by(treatment) jitter(4) vertical ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_comp_benefice2023_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity comp_benefice2023 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity comp_benefice2023 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Company profit in 2023", pos(12)) ///
+	   xtitle("Company profit",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_comp_benefice2023_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_comp_benefice2023_kdens.png, width(5000)
+putpdf pagebreak
+
+
  graph box comp_benefice2023, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Company profit in 2023 in dt", pos(12))
 gr export el_comp_benefice2023_box.png, width(5000) replace
@@ -1012,7 +1220,18 @@ stripplot comp_benefice2024, by(treatment) jitter(4) vertical  ///
 	putpdf paragraph, halign(center) 
 	putpdf image el_comp_benefice2024_treat.png, width(5000)
 	putpdf pagebreak
-	
+
+twoway (kdensity comp_benefice2024 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity comp_benefice2024 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+       legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
+	   title("Company profit in 2024", pos(12)) ///
+	   xtitle("Company profit",size(medium)) ///
+	   ytitle("Densitiy", size(medium))
+gr export el_comp_benefice2024_kdens.png, width(5000) replace
+putpdf paragraph, halign(center) 
+putpdf image el_comp_benefice2024_kdens.png, width(5000)
+putpdf pagebreak
+
  graph box comp_benefice2024, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Company profit in 2024 in dt", pos(12))
 gr export el_comp_benefice2024_box.png, width(5000) replace
@@ -1020,6 +1239,29 @@ putpdf paragraph, halign(center)
 putpdf image el_comp_benefice2024_box.png, width(5000)
 putpdf pagebreak
 }
+
+graph hbar (mean) activite1 activite2 activite3 activite4 if treatment == 1,  blabel(total, format(%9.2fc) gap(-0.2)) ///
+	legend(pos(6) row(3) label(1 "Classroom Training") ///
+	label(2 "Student deployment") ///
+	label(3 "Experts deployment for website") label(4 "evaluation co-financing")) ///
+	ylabel(0(1)7, nogrid) ///
+    title("Evaluation of the different activities for e-commerce", pos(12)) note("1 = not important, 7 = very important", pos(6)) 
+gr export el_treat_activities.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_treat_activities.png
+putpdf pagebreak	
+		
+
+betterbarci activite1 activite2 activite3 activite4, legend(pos(6) row(3) label(1 "Classroom Training") ///
+	label(2 "Student deployment") ///
+	label(3 "Experts deployment for website") label(4 "evaluation co-financing")) ///
+    title("Evaluation of the different activities for export", pos(12)) note("1 = not important, 7 = very important", pos(6))  ///
+legend(symxsize(small) ///
+c(1) pos(6) ring(6)) 
+gr export el_treat_activities_bb.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_treat_activities_bb.png
+putpdf pagebreak	
 ***********************************************************************
 * 	PART 4:  save pdf
 ***********************************************************************
