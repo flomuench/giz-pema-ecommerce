@@ -132,7 +132,7 @@ putpdf pagebreak
 
  stripplot inno_produit if inno_produit > 0, by(treatment) jitter(4) vertical ///
 		ytitle("Number good or service innovation") ///
-		title("Number good or service innovation", pos(12)) ///
+		title("Number good or service innovation", pos(12) size(medium)) ///
 		name(el_inno_produit_treat, replace)
 gr export el_inno_produit_treat.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -171,11 +171,14 @@ putpdf image el_inno_produit_his.png, width(5000)
 putpdf pagebreak
 
 *Type of clients
-graph bar (percent), over(clients) by(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
-    legend(pos(6) row(6) label(1 "Exclusively to individuals") label(2 "To other firms") ///
-    label(3 "To individuals and other firms") size(vtiny))  ///
-    title("Types of Customers") ///
-    ylabel(0(20)100, nogrid)
+graph hbar (percent), over(clients) by(treatment) blabel(total, format(%9.2fc) gap(-0.2)) ///
+    legend(pos(6) row(6) ///
+        label(1 "Exclusively to individuals") ///
+        label(2 "To other firms") ///
+        label(3 "To individuals and other firms") ///
+        size(vsmall)) ///
+    title("Types of Customers", size(medium)) ///
+    ylabel(0(20)80, nogrid labsize(small))
 gr export el_customer_types.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_customer_types.png, width(5000)
@@ -273,7 +276,7 @@ putpdf image el_car_carempl_div1_box.png, width(5000)
 putpdf pagebreak
 
 sum car_carempl_div1,d
-histogram car_carempl_div1, width(1) frequency addlabels xlabel(0(25)100, nogrid) discrete ///
+histogram car_carempl_div1, width(1) frequency addlabels xlabel(0(25)200, nogrid) discrete ///
 	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
 	title ("Number of female employees" ,size(medium) pos(12)) ///
 	ytitle("No. of firms") ///
@@ -325,7 +328,7 @@ putpdf image el_car_carempl_div2_box.png, width(5000)
 putpdf pagebreak
 
 sum car_carempl_div2,d
-histogram car_carempl_div2, width(1) frequency addlabels xlabel(0(25)150, nogrid) discrete ///
+histogram car_carempl_div2, width(1) frequency addlabels xlabel(0(25)200, nogrid) discrete ///
 	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
 	ytitle("No. of firms") ///
 	xtitle("Number of employees") ///
@@ -377,7 +380,7 @@ putpdf image el_car_carempl_div3_box.png, width(5000)
 putpdf pagebreak
 
 sum car_carempl_div3,d
-histogram car_carempl_div3, width(1) frequency addlabels xlabel(0(25)150, nogrid) discrete ///
+histogram car_carempl_div3, width(1) frequency addlabels xlabel(0(25)200, nogrid) discrete ///
 	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
 	ytitle("No. of firms") ///
 	xtitle("Number employees") ///
@@ -603,7 +606,7 @@ stripplot dig_empl, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf pagebreak
 
 stripplot dig_empl, by(treatment) jitter(4) vertical  ///
-		title("Number of employees in charge of online activities" ,size(medium) pos(12)) ///
+		title("Number of employees in charge of online activities" ,size(small) pos(12)) ///
 		ytitle("Number of employees") ///
 		name(el_dig_empl_treat, replace)
     gr export el_dig_empl_treat.png, width(5000) replace
@@ -632,8 +635,8 @@ putpdf pagebreak
     *Investissement dans les activités de marketing en ligne en 2023 et 2024
 sum dig_invest
 	stripplot dig_invest, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
-		title("Investment in online marketing activities in 2023 and 2024" ,size(medium) pos(12)) ///
-		ytitle("Amount invested in TND") ///
+		title("Investment in online marketing activities" ,size(medium) pos(12)) ///
+		ytitle("Amount invested in TND in 2023 and 2024") ///
 		name(el_dig_invest, replace)
     gr export el_dig_invest.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -641,8 +644,8 @@ sum dig_invest
 	putpdf pagebreak
 
 	stripplot dig_invest, by(treatment) jitter(4) vertical  ///
-		title("Investment in online marketing activities in 2023 and 2024", size(small)) ///
-		ytitle("Amount invested in TND") ///
+		title("Investment in online marketing activities ", size(small)) ///
+		ytitle("Amount invested in TND in 2023 and 2024") ///
 		name(el_dig_invest_treat, replace)
     gr export el_dig_invest_treat.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -679,8 +682,8 @@ stripplot mark_invest, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf pagebreak
 	
 stripplot mark_invest, by(treatment) jitter(4) vertical  ///
-		title("Investment in offline marketing activities in 2023 and 2024", size(small)) ///
-		ytitle("Amount invested in TND") ///
+		title("Investment in offline marketing activities", size(small)) ///
+		ytitle("Amount invested in TND in 2023 and 2024") ///
 		name(el_mark_invest_treat, replace)
     gr export el_mark_invest_treat.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -997,7 +1000,7 @@ graph pie, over(profit_2023_category) by(treatment) plabel(_all percent, format(
 sum comp_ca2023
 stripplot comp_ca2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Total turnover in 2023",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_comp_ca2023, replace)
     gr export el_comp_ca2023.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1006,7 +1009,7 @@ stripplot comp_ca2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 
 stripplot comp_ca2023, by(treatment) jitter(4) vertical  ///
 		title("Total turnover in 2023",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_comp_ca2023_treat, replace)
     gr export el_comp_ca2023_treat.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1025,7 +1028,7 @@ putpdf image el_comp_ca2023_kdens.png, width(5000)
 putpdf pagebreak
 	   
  graph box comp_ca2023 if comp_ca2023 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Total turnover in 2023 in dt", pos(12))
+	title("Total turnover in 2023 in TND", pos(12))
 gr export el_comp_ca2023_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_comp_ca2023_box.png, width(5000)
@@ -1035,7 +1038,7 @@ putpdf pagebreak
 sum comp_ca2024
 stripplot comp_ca2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Total turnover in 2024",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_comp_ca2024, replace)
     gr export el_comp_ca2024.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1044,7 +1047,7 @@ stripplot comp_ca2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 
 stripplot comp_ca2024, by(treatment) jitter(4) vertical ///
 		title("Total turnover in 2024",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_comp_ca2024_treat, replace)
     gr export el_comp_ca2024_treat.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1063,7 +1066,7 @@ putpdf image el_comp_ca2024_kdens.png, width(5000)
 putpdf pagebreak
 	   	
  graph box comp_ca2024 if comp_ca2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Total turnover in 2024 in dt", pos(12))
+	title("Total turnover in 2024 in TND", pos(12))
 gr export el_comp_ca2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_comp_ca2024_box.png, width(5000)
@@ -1073,7 +1076,7 @@ putpdf pagebreak
  sum compexp_2023
 stripplot compexp_2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Export turnover in 2023",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_compexp_2023, replace)
     gr export el_compexp_2023.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1082,7 +1085,7 @@ stripplot compexp_2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 
 stripplot compexp_2023, by(treatment) jitter(4) vertical ///
 		title("Export turnover in 2023",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_compexp_2023_treat, replace)
     gr export el_compexp_2023_treat.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1101,7 +1104,7 @@ putpdf image el_compexp_2023_kdens.png, width(5000)
 putpdf pagebreak
 	
  graph box compexp_2023 if compexp_2023 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Export turnover in 2023 in dt", pos(12))
+	title("Export turnover in 2023 in TND", pos(12))
 gr export el_compexp_2023_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_compexp_2023_box.png, width(5000)
@@ -1127,7 +1130,7 @@ graph pie, over(profit_2024_category) plabel(_all percent, format(%9.0f) size(me
    *Chiffre d'affaires à l’export en dt en 2024
 sum compexp_2024
 stripplot compexp_2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		title("Export turnover in 2024",size(medium) pos(12)) ///
 		name(el_compexp_2024, replace)
     gr export el_compexp_2024.png, width(5000) replace
@@ -1136,7 +1139,7 @@ stripplot compexp_2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf pagebreak
 	
 stripplot compexp_2024, by(treatment) jitter(4) vertical  ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		title("Export turnover in 2024",size(medium) pos(12)) ///
 		name(el_compexp_2024_treat, replace)
     gr export el_compexp_2024_treat.png, width(5000) replace
@@ -1156,7 +1159,7 @@ putpdf image el_compexp_2024_kdens.png, width(5000)
 putpdf pagebreak
 
 graph box compexp_2024 if compexp_2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Export turnover in 2024 in dt", pos(12))
+	title("Export turnover in 2024 in TND", pos(12))
 gr export el_compexp_2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_compexp_2024_box.png, width(5000)
@@ -1165,7 +1168,7 @@ putpdf pagebreak
  *Profit en dt en 2023
 sum comp_benefice2023
 stripplot comp_benefice2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		title("Company profit in 2023",size(medium) pos(12)) ///
 		name(el_comp_benefice2023, replace)
     gr export el_comp_benefice2023.png, width(5000) replace
@@ -1174,7 +1177,7 @@ stripplot comp_benefice2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) /
 	putpdf pagebreak
 
 stripplot comp_benefice2023, by(treatment) jitter(4) vertical ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		title("Company profit in 2023",size(medium) pos(12)) ///
 		name(el_comp_benefice2023_treat, replace)
     gr export el_comp_benefice2023_treat.png, width(5000) replace
@@ -1195,7 +1198,7 @@ putpdf pagebreak
 
 
  graph box comp_benefice2023, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Company profit in 2023 in dt", pos(12))
+	title("Company profit in 2023 in TND", pos(12))
 gr export el_comp_benefice2023_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_comp_benefice2023_box.png, width(5000)
@@ -1205,7 +1208,7 @@ putpdf pagebreak
 sum comp_benefice2024
 stripplot comp_benefice2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Company profit in 2024",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_comp_benefice2024, replace)
     gr export el_comp_benefice2024.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1214,7 +1217,7 @@ stripplot comp_benefice2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) /
 	
 stripplot comp_benefice2024, by(treatment) jitter(4) vertical  ///
 		title("Company profit in 2024",size(medium) pos(12)) ///
-		ytitle("Amount in dt") ///
+		ytitle("Amount in TND") ///
 		name(el_comp_benefice2024_treat, replace)
     gr export el_comp_benefice2024_treat.png, width(5000) replace
 	putpdf paragraph, halign(center) 
@@ -1233,7 +1236,7 @@ putpdf image el_comp_benefice2024_kdens.png, width(5000)
 putpdf pagebreak
 
  graph box comp_benefice2024, over(treatment) blabel(total, format(%9.2fc)) ///
-	title("Company profit in 2024 in dt", pos(12))
+	title("Company profit in 2024 in TND", pos(12))
 gr export el_comp_benefice2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_comp_benefice2024_box.png, width(5000)
