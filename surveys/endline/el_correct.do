@@ -136,8 +136,92 @@ foreach var of local numvars {
 destring `var', replace
 recast int `var'
 }
+
 ***********************************************************************
-* 	Part 6: Save the changes made to the data		  			
+* 	PART 6:  translation of open-ended questions
+***********************************************************************
+*dig_payment_refus
+replace dig_payment_refus="ils ne sont pas assez développé et ne sont pas encore arrivés à cette étape" if dig_payment_refus=="matawerouch w maweslouch ll etape edhika"
+replace dig_payment_refus="ils n'ont pas de site d'e-commerce" if dig_payment_refus=="maandekch site e-commerce"
+replace dig_payment_refus="le produit est très couteux, il n'est pas fait pour le paiement sur internet" if dig_payment_refus=="produit tetkalef bercha moch mt3 payement sur internet"
+replace dig_payment_refus="le client n'a pas confiance dans le paiement en ligne" if dig_payment_refus=="client m3ndhomech thi9a fi lkhlass ala internet"
+replace dig_payment_refus="ils n'ont pas encore accordé suffisament de temps pour cette problématique" if dig_payment_refus=="mezelou makhasesouch wa9et lelhaja hethy"
+replace dig_payment_refus="c'est la nature des produits qui ne le permet pas" if dig_payment_refus=="nature des produit heya aly tohkom"
+replace dig_payment_refus="nous n'avons pas paypal, nous devons chercher des moyens pour être payer mais il n'y a pas comment" if dig_payment_refus=="ma3andkomch paypal , lezem tlawej kifeh to5less mochkla kifeh bech to5less "
+replace dig_payment_refus="" if dig_payment_refus=="kkk"
+replace dig_payment_refus="aucune raison, ils travaillent avec les virements bancaires et doivent avoir des documents justificatifs car ils travaillent avec les devises étrangères" if dig_payment_refus=="aucun raison yekhdmou m3a banque les virementes lezem andhom des justification khater yekhdmou b devise"
+replace dig_payment_refus="ils sont B2B" if dig_payment_refus=="ahna be to be"
+replace dig_payment_refus="il n'y a pas d'initiative et on n'est pas encouragé à adopter le paiement en ligne" if dig_payment_refus=="mafmach tachji3at o ahna mabedrnech o mafamech chkoun chajaana"
+replace dig_payment_refus="c'est un problème de temps, on a pas trouvé de temps" if dig_payment_refus=="hkeyt waqt maanech waqt"
+replace dig_payment_refus="nous payons sur Internet" if dig_payment_refus=="nkhalsou aal internet"
+replace dig_payment_refus="car nouus ne vendons par aux particuliers mais seulement à des entreprises" if dig_payment_refus=="khater manbi3ouch lil particullier / nbi3ou ken l societe"
+replace dig_payment_refus="le produit n'a pas besoin d'être payé en ligne" if dig_payment_refus=="mayestha9ech produit bech tserlou en ligne"
+replace dig_payment_refus="un peu de peur sur la confidentialité des paiements/ manque de moyens" if dig_payment_refus=="chwy khouf mel secerte mel paiment / no9ss les moyen"
+replace dig_payment_refus="on ne vend pas en Tunisie; notre marque exporte et n'est pas intéressé par la vente en ligne en Tunisie" if dig_payment_refus=="manbi3ouch f tunis ; la marque mteena export o manech interssé bel vente en ligne f tnis"
+replace dig_payment_refus="l'occassion ne s'est pas encore présentée" if dig_payment_refus=="mejetech forsa"
+replace dig_payment_refus="nous travaillons dans le marché du gros et dans le marché du détail" if dig_payment_refus=="tekhdmo en gros mech details"
+replace dig_payment_refus="il n'y a pas de raison" if dig_payment_refus=="mefamech sbab"
+replace dig_payment_refus="je n'y ai pas pensé" if dig_payment_refus=="mekhamemtouch fih"
+replace dig_payment_refus="la stratégie fonctionne avec les sociétés B2B" if dig_payment_refus=="strategie mchet maa les sociétés btob"
+replace dig_payment_refus="ils ne souhaitent payer que si la marchandise arrive" if dig_payment_refus=="yhebou ykhalsou k tousel sel3a"
+replace dig_payment_refus="il faut toujours un virement bancaise quand on vend" if dig_payment_refus=="lezem dima fama virment bancaire k ybi3ou"
+replace dig_payment_refus="parce que ils vendent en gros et ils vendent des produits personnalisés donc les clients viennent pour voir les produits sur place" if dig_payment_refus=="khater ybi3ou en greaux w ybi3ou des produits personnalisés danc yjiw les clients ychoufou les produits sur place"
+replace dig_payment_refus="la nature de notre produit et on n'a pas d'e-commerce" if dig_payment_refus=="nature de la produit mte3na w manech e commerce a7na"
+replace dig_payment_refus="parce que nous n'avons pas de produit prêt pour tout le monde; l'appel d'offre et le prix ne sont pas fixes par rapport l'expertise" if dig_payment_refus=="khater ma3anech produit hadher l ness kol enti w appel doffre w prix mahomch fixe par rapport ll expirtisse"
+replace dig_payment_refus="parce que nous n'avons pas de services standards; les services dépendent de la nature du client" if dig_payment_refus=="3la 5ater ma3andnech des services standards parceque des services marbout bi naw3iet clients"
+replace dig_payment_refus="parce que la loi interdit de vendre à n'importe qui; il faut passer un bon de commande et être une société qui peut acheter les médicaments" if dig_payment_refus=="5ater 9anoun yamna3 bech nbi3 l n'importe qui 5ater lezem ykoun mowaza3 lil dwe w t3adili bon de commande"
+replace dig_payment_refus="Pour bientôt, si on se développe encore plus nous pourrons permettre le paiement sur Internet" if dig_payment_refus=="nchlh bientot ntawro akther nwalo n5alsso 3al internet"
+replace dig_payment_refus="je n'ai pas une idée précise, c'est un problème dans le site" if dig_payment_refus=="ma3andich fekra probléme dans le site"
+replace dig_payment_refus="Ceux avec qui nous traitons n'ont pas de paiement électronique" if dig_payment_refus=="الي نتعامل معاهم معندهمش خلاص الكتروني"
+replace dig_payment_refus="nous n'avons pas une personne reponsable et nous ne considérons pas la possibilité" if dig_payment_refus=="ma anech chkoun lehi w famech chkoun ykhamem feha"
+replace dig_payment_refus="on en a pas besoin" if dig_payment_refus=="ma jatech necessite"
+replace dig_payment_refus="je n'ai pas essayé, l'occassion ne s'est pas présenté pour développer ces formules" if dig_payment_refus=="ma jarabtouch , ma jatech l'occasion pour developper ces formules"
+replace dig_payment_refus="on ne vend pas de produits sur Internet" if dig_payment_refus=="pas des produits yetbaoo aal internet"
+replace dig_payment_refus="les clients ont des méthodes de paiement specifiques" if dig_payment_refus=="les clients andhom methode de paiements mouayna"
+
+*mark_online5_other
+replace mark_online5_other="la participation aux foires nationales et de travail" if mark_online5_other=="moucherka fl ma3aredh el 3alameya w dowaleya"
+
+
+*dig_barr7_other
+replace dig_barr7_other="la chienne, par exemple nessma" if dig_barr7_other=="el9alba par ex nessma"
+replace dig_barr7_other="le pouvoir d'achat, il y a une crise" if dig_barr7_other=="le pouvoir dachat fama crisse"
+replace dig_barr7_other="le paiement en ligne en devise n'est pas disponible à tunis" if dig_barr7_other=="paiement en ligne en devise moch mawjouda fi tunis"
+
+*export_45_other
+replace export_45_other="il n'y a pas de demande" if export_45_other=="mafamech demande"
+
+*dropout_why
+replace dropout_why="" if treatment==0
+replace dropout_why="Mr. Sahbi était la personne qui a participé aux formations puis il a quitté l'entreprise. Il a été remplacé par Mr. Mounir, qui ne comprend même pas pourquoi il a été contacté." if dropout_why=="mr sahbi howa li cherek w baad khraj chad fi blastou mr mounir w awel mara nkalmouh mayaarech aleh"
+replace dropout_why="la nature du produit n'est pas compatible avec le programme" if dropout_why== "nature de produit maytmachech m3a lbarnemj"
+replace dropout_why="à cause de problème de disponibilité" if dropout_why== "ala khater disponibilté mteei"
+replace dropout_why="la personne qui était en charge d'assister aux activités du projet a quitté l'entreprise" if dropout_why== "kent maana bnaya o khjarjt ken lehya"
+replace dropout_why="manque de ressources humaines / nous n'avons pas d'employés qui s'occupe du marketing" if dropout_why== "manque de ressources humaines /mehadedech chkoun bech yetlhe bel marketing"
+replace dropout_why="je ne suis pas satisfait: une personne vient et vole tes idées, ensuite il sous-traite le travail" if dropout_why== "manich satisfait mafemech mesde9iya yji wehed yesre9lek afkarek w ymawlou wehed ekher bech yekhdemha tete3ta bel wjouh" 
+replace dropout_why="beaucoup trop de temps, projet en ligne et je suis occupé au bureau" if dropout_why== "barcha wakt w projet en ligne w howa yabda lehy f bureau meynajemch"
+replace dropout_why="j'étais occupé et ils ne répondaient pas au mail" if dropout_why== "telhyt w mejwehech mail"
+replace dropout_why="elle ne sait pas celle qui a participé au programme a quitté l'entreprise mais s'il y a possibilité de revenir au programme, elle le souhaiterait" if dropout_why== "heya metaarech khater li hadhret f programme kharjet aandha barcha mel ese ama katly fama posibilité tarjaa lel programme alech le"
+replace dropout_why="parce qu'ils avaient un autre travail en parallèle et par conséquent, un manque de temps" if dropout_why== "khater jethom khedma okhra en parallele danc manque de temps"
+replace dropout_why= "ils ne m'ont pas appellé, je crois ne pas me souvenir" if dropout_why== "ma3aytoulich jemla yodhherli manetfakerch"
+replace dropout_why= "parce que j'ai demander à la giz pour adapter aux besoins pharmacetique parce je ne peux pas vendre en ligne" if dropout_why== "parce que j'ai demander au giz pour adapter aux besoins pharmacetique parce najamch nbi3 en ligne" 
+replace dropout_why= "le problème de la manière avec laquelle la GIZ traite avec nous: elle nous a ignoré presque pour 2 ans" if dropout_why== "mochkla mi giz kifeh yetsarfo comme si tafewna 3andna 2 ans presque ."
+
+*herber_refus
+replace herber_refus="" if treatment==0
+replace herber_refus="ils ont déjà un site web" if herber_refus=="deja andhom site web"
+replace herber_refus="j'ai un domaine d'hébergement" if herber_refus=="3andi domaine d'hébergement"
+replace herber_refus="je suis entrain de l'essayer et je n'ai terminé avec l'essai" if herber_refus=="mezlt en cours dece o mezelt makamltch lessai"
+replace herber_refus="c'est un problème de manque de temps" if herber_refus=="hkeyt waqt"
+replace herber_refus="j'ai achété un domaine d'hebergement" if herber_refus=="chre maw9a3"
+replace herber_refus="okay" if herber_refus=="k"
+replace herber_refus="j'ai achété" if herber_refus=="chrit"
+replace herber_refus="j'ai achété et j'ai tout" if herber_refus=="chrit w aandi kol chy"
+replace herber_refus="elle ne sait pas" if herber_refus=="ma taarech"
+replace herber_refus="la marque prada a fait une réclamation contre le nom de la marque" if herber_refus=="la marque prada taati eetiradh aal esem el marque"
+replace herber_refus="j'ai peur l'argent soit volé" if herber_refus=="khayef la flouso tetsrek"
+***********************************************************************
+* 	Part 7: Save the changes made to the data		  			
 ***********************************************************************
 cd "$el_intermediate"
 save "el_intermediate", replace
