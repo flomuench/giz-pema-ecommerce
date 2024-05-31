@@ -170,16 +170,6 @@ replace n`x' = check_again if `x' == check_again
 replace n`x' = `x'/employes if n`x'!= not_know | n`x'!= refused | n`x'!= check_again
 }
 */
-***********************************************************************
-* 	PART 6:  Generate export variable for 2023 & 2024 like baseline format
-***********************************************************************
-gen export2023 = 0
-lab var export2023 "exports in 2023"
-replace export2023 = 1 if export_3 == 0
-
-gen export2024 = 0
-lab var export2024 "exports in 2024"
-replace export2024 = 1 if export_3 == 0
 
 **********************************************************************
 * 	PART 7:  save			
