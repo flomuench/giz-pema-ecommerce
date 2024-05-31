@@ -124,15 +124,15 @@ foreach var of local accountvars {
 local accountexpvars compexp_2023 compexp_2024
 foreach var of local accountexpvars {
 		* = 0
-	replace needs_check = 1 if surveyround == 3 & `var' == 0 & export2024 == 1
-	replace questions_needing_checks = questions_needing_checks + "`var' est zero alors qu'elle exporte, êtes vous sure? / " if surveyround == 3 & `var' == 0 & export2024 == 1
+	replace needs_check = 1 if surveyround == 3 & `var' == 0 & export_1 == 1 & export_2 == 1
+	replace questions_needing_checks = questions_needing_checks + "`var' est zero alors qu'elle exporte, êtes vous sure? / " if surveyround == 3 & `var' == 0  & export_1 == 1 & export_2 == 1
 	
 }	
 
 	*Company does not export but has ca export
 	
-replace needs_check = 1 if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & (export2023 == 0 | export2024 == 0) & compexp_2023 != 666 & compexp_2023 != 777 & compexp_2023 != 888 & compexp_2023 != 999 & compexp_2023 != . & compexp_2023 != 1234 & compexp_2024 != 666 & compexp_2024 != 777  & compexp_2024 != 888  & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 1234
-replace questions_needing_checks = questions_needing_checks + "L'entreprise n'export pas alors qu'elle a ca export / " if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & (export2023 == 0 | export2024 == 0) & compexp_2023 != 666 & compexp_2023 != 777 & compexp_2023 != 888 & compexp_2023 != 999 & compexp_2023 != . & compexp_2023 != 1234 & compexp_2024 != 666 & compexp_2024 != 777  & compexp_2024 != 888  & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 1234
+replace needs_check = 1 if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & export_1 == 0 & export_2 == 0 & compexp_2023 != 666 & compexp_2023 != 777 & compexp_2023 != 888 & compexp_2023 != 999 & compexp_2023 != . & compexp_2023 != 1234 & compexp_2024 != 666 & compexp_2024 != 777  & compexp_2024 != 888  & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 1234
+replace questions_needing_checks = questions_needing_checks + "L'entreprise n'export pas alors qu'elle a ca export / " if (compexp_2023 > 0 | compexp_2024 > 0 ) & surveyround == 3 & export_1 == 0 & export_2 == 0 & compexp_2023 != 666 & compexp_2023 != 777 & compexp_2023 != 888 & compexp_2023 != 999 & compexp_2023 != . & compexp_2023 != 1234 & compexp_2024 != 666 & compexp_2024 != 777  & compexp_2024 != 888  & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 1234
 	
 	* Profits > sales 2023
 
@@ -239,14 +239,15 @@ foreach var of local profit_vars {
 }	
 
 	*employees
-local fte_surveyround "surveyround==1 surveyround==2 surveyround==3"
-scalar maxm_p95 = .
+local fte_surveyround "surveyround==1 surveyround==2"
+scalar maxm_p95 = 0
 
 foreach var of local fte_surveyround {
     sum fte if `var', detail
     if r(p95) > maxm_p95 {
 		scalar drop maxm_p95
 		scalar maxm_p95 = r(p95)
+		di maxm_p95
 	}
 }
 
@@ -254,18 +255,21 @@ foreach var of local fte_surveyround {
 replace needs_check = 1 if fte != . & surveyround == 3 & fte > maxm_p95
 replace questions_needing_checks = questions_needing_checks + "employés très grand par rapport aux dernières vagues, êtes vous sure? / " if fte != . & surveyround == 3 & fte > maxm_p95
 
-scalar maxf_p95 = .
-	*female employees
+*employees femmes
+local fte_surveyround "surveyround==1 surveyround==2"
+scalar maxf_p95 = 0
+
 foreach var of local fte_surveyround {
-    sum fte if `var', detail
+    sum car_carempl_div1 if `var', detail
     if r(p95) > maxf_p95 {
 		scalar drop maxf_p95
 		scalar maxf_p95 = r(p95)
+		di maxf_p95
 	}
 }
 
-replace needs_check = 1 if fte_femmes  != . & surveyround == 3 & fte_femmes  > r(p95) 
-replace questions_needing_checks = questions_needing_checks + "fte_femmes très grand par rapport aux dernières vagues, êtes vous sure? / " if fte_femmes  != . & surveyround == 3 & fte_femmes  > r(p95) 
+replace needs_check = 1 if car_carempl_div1 != . & surveyround == 3 & car_carempl_div1 > maxm_p95
+replace questions_needing_checks = questions_needing_checks + "employés femmes très grand par rapport aux dernières vagues, êtes vous sure? / " if car_carempl_div1 != . & surveyround == 3 & car_carempl_div1 > maxm_p95
 
 ***********************************************************************
 * 	PART 4: Variable has been tagged as "needs_check" = 888, 777 or .
@@ -333,10 +337,10 @@ drop if el_completed < 1
 			
 			* export excel file. manually add variables listed in questions_needing_check
 				* group variables into lists (locals) to facilitate overview
-local order_vars "id_plateforme surveyround survey_type needs_check attest commentaires_ElAmouri questions_needing_checks"
-local accounting_vars "`order_vars' comp_ca2023 comp_ca2024 export2024 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
+local order_vars "id_plateforme surveyround survey_type needs_check attest commentaires_ElAmouri questions_needing_checks fte"
+local accounting_vars "`order_vars' comp_ca2023 comp_ca2024 export_1 export_2 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
 local dig_vars "`accounting_vars' dig_miseajour1 dig_miseajour2 dig_miseajour3 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_presence1 dig_presence2 dig_presence3"
-local fteoyee_vars "`dig_vars' fte car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_empl"
+local fteoyee_vars "`dig_vars' car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_empl"
 
 /*
 			* remove previous surveyround values for better visbility
