@@ -414,7 +414,7 @@ lab var ssa_aggregate "The company responded yes to at least one of the ssa_acti
 label define yesno1 0 "no" 1 "yes" 
 label value ssa_aggregate yesno1
 
-/***********************************************************************
+***********************************************************************
 *PART 8: Creation of index for the endline
 ***********************************************************************	
 	* Put all variables used to calculate indices into a local
@@ -425,56 +425,40 @@ local dsi dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 di
 local dmi mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl dig_invest mark_invest
 			
 			*Digital Technology Perception
-local dtp investecom_benefit1  investecom_benefit2
+local dtp investecom_benefit1 investecom_benefit2
 	
 			*Digital technology adoption index
 local dtai dsi dmi		
 			
 			*Export practices index
-local eri exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme exp_pra_fin exp_pra_vent exp_pra_ach			
+local eri exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach		
 			
 			*Export performance index
-local epi export_1 export_2 exp_pays cliens_b2c cliens_b2b exp_dig			
+local epi export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig			
 			
 			
 			*Business performance index
-local bpi fte comp_ca2023 comp_benefice2023
+local bpi fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024
 
-
-local allvars `dsi' `dmi' `dtp' `dtai' `eri' `epi' `bpi'
-
-* Check whether all are numeric
-ds `allvars', has(type string)
-
-	*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros*
-foreach var of local allvars {
-	g temp_`var' = `var'
-	replace temp_`var' = 0 if `var' == -999		// dont know transformed to zeros
-	replace temp_`var' = 0 if `var' == -888
-	replace temp_`var' = 0 if `var' == -777
-	
+local all_index "`dsi' `dmi' `dtp' `dtai' `eri' `epi' `bpi'"
+local all_index
+* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
+foreach var of local all_index {
+    gen temp_`var' = `var'
+    replace temp_`var' = 0 if `var' == -999   // don't know transformed to zeros
+    replace temp_`var' = 0 if `var' == -888
+    replace temp_`var' = 0 if `var' == -777
 }
 
-	* calculate z-score for each individual outcome
-		* write a program calculates the z-score
-			* if you re-run the code, execture before: 
-capture program drop zscore
-program define zscore /* opens a program called zscore */
-	sum `1' if treatment == 0
-	gen `1'z = (`1' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
-end
-
 		* calcuate the z-score for each variable
-foreach var of local allvars {
-	zscore temp_`var'
+foreach var of local all_index {
+	sum temp_`var' if treatment == 0
+	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
 }
 
 	* calculate the index value: average of zscores
 			*Digital sales index
-egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z temp_dig_prixz //
-temp_dig_revenues_ecomz temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz //
-temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz //
-temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z temp_dig_prixz temp_dig_revenues_ecomz temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
 
 			*Digital marketing index
 egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z temp_dig_emplz temp_dig_investz temp_mark_investz)
@@ -520,8 +504,7 @@ egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 ma
 egen dtai_points = rowtotal(dsi_points dmi_points) // total 24 points	
 			
 			* export readiness index (eri)
-egen eri_points = rowtotal(exp_pra_foire exp_pra_sci exp_pra_rexp exp_pra_plan exp_pra_norme //
-exp_pra_fin exp_pra_vent exp_pra_ach), missing // total 8 points
+egen eri_points = rowtotal(exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach), missing // total 5 points
 
 
 		* labeling
