@@ -43,7 +43,33 @@ label define yesno 0 "no" 1 "yes" -999 "Don't know", replace
 
 	*Presence of absent take_up
 lab def presence 1 "present" 0 "absent"
-lab values take_up_for take_up_for1 take_up_for2 take_up_for3 take_up_for4 take_up_for5 take_up_std take_up_seo take_up_smo take_up_smads take_up_website presence
+lab values take_up_for1 take_up_for2 take_up_for3 take_up_for4 take_up_for5 presence
+	
+lab def presence_std 1 "present for student phase" 0 "absent"	
+lab values take_up_std presence_std
+
+lab def presence_seo 1 "present for SEO phase" 0 "absent"	
+lab values take_up_std presence_seo
+
+lab def presence_smo 1 "present for social medias organic phase" 0 "absent"	
+lab values take_up_smo presence_seo
+
+lab def presence_for 1 "present for classroom training" 0 "absent"	
+lab values take_up_for presence_for
+
+lab def presence_smads 1 "present for social medias ads phase" 0 "absent"	
+lab values take_up_smads presence_smads
+
+lab def presence_site 1 "present for website phase" 0 "absent"	
+lab values take_up_website presence_site
+
+lab def presence_heber 1 "bought the website" 0 "absent"	
+lab values take_up_heber presence_heber
+
+   
+	
+	
+	
 	* numeric 
 ds, has(type numeric) 
 local numvars "`r(varlist)'"
