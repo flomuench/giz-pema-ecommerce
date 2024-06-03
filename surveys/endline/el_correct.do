@@ -128,6 +128,9 @@ replace dig_revenues_ecom = "0" if dig_vente == 0
 replace comp_benefice2024 = "30000000" if id_plateforme == 237 // IT LOOKS WRONG, WILL RETURN IN CORRECTION FILE
 replace comp_benefice2023 = "782720" if comp_benefice2023 == "782 720"
 
+replace comp_benefice2023 = "888" if comp_benefice2023 == "refus"
+replace comp_benefice2024 = "888" if comp_benefice2024 == "refus"
+
 ***********************************************************************
 * 	PART 5:  destring variables that should be numeric
 ***********************************************************************
