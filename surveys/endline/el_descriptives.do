@@ -46,7 +46,7 @@ putpdf pagebreak
 
 *Number of validated
 graph bar (count) if attest ==1, over(treatment) blabel(total, format(%9.0fc)) ///
-	title("Number of companies that have validated their answers" pos(12)) note("Date: `c(current_date)'") ///
+	title("Number of companies that have validated their answers", pos(12)) note("Date: `c(current_date)'") ///
 	ytitle("Number of entries")
 graph export valide.png, width(5000) replace
 putpdf paragraph, halign(center)

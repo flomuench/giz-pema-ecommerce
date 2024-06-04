@@ -199,6 +199,14 @@ label var herber_refus "Reasons for not buying the web hosting domain"
 ***********************************************************************
 * 	PART 5: 	Label the variables values	  			
 ***********************************************************************
+replace sm_use_catalogue = "0" if sm_use_catalogue == "r2 0"
+
+destring sm_use_catalogue, replace
+recast int sm_use_catalogue
+
+replace profit_2023_category = "1" if profit_2023_category == "r2 1"
+destring profit_2023_category, replace
+recast int profit_2023_category
 
 local yesnovariables product dig_presence1 dig_presence2 dig_presence3 dig_presence4 dig_payment1 dig_payment2 dig_payment3 dig_prix web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7 exp_dig exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach   
 
