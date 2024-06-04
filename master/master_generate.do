@@ -419,35 +419,32 @@ label value ssa_aggregate yesno1
 ***********************************************************************	
 	* Put all variables used to calculate indices into a local
 			*Digital sales index
-local dsi dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3
+local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
 			
 			*Digital marketing index
-local dmi mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl dig_invest mark_invest
+local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl dig_invest mark_invest"
 			
 			*Digital Technology Perception
-local dtp investecom_benefit1 investecom_benefit2
+local dtp "investecom_benefit1 investecom_benefit2"
 	
-			*Digital technology adoption index
-local dtai dsi dmi		
-			
 			*Export practices index
-local eri exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach		
+local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach"		
 			
 			*Export performance index
-local epi export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig			
+local epi "export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
 			
 			
 			*Business performance index
-local bpi fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024
+local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
 
-local all_index "`dsi' `dmi' `dtp' `dtai' `eri' `epi' `bpi'"
-local all_index
+local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi'
+
 * IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
 foreach var of local all_index {
     gen temp_`var' = `var'
-    replace temp_`var' = 0 if `var' == -999   // don't know transformed to zeros
-    replace temp_`var' = 0 if `var' == -888
-    replace temp_`var' = 0 if `var' == -777
+    replace temp_`var' = 0 if `var' == -999 // don't know transformed to zeros
+    replace temp_`var' = 0 if `var' == -888 
+    replace temp_`var' = 0 if `var' == -777 
 }
 
 		* calcuate the z-score for each variable
@@ -470,11 +467,10 @@ egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
 egen dtai = rowmean(dsi dmi)		
 			
 			*Export readiness index
-egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_rexpz temp_exp_pra_planz temp_exp_pra_normez //
-temp_exp_pra_finz temp_exp_pra_ventz temp_exp_pra_achz)			
+egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez temp_exp_pra_ventz temp_exp_pra_achz)			
 			
 			*Export performance index
-egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_cliens_b2cz temp_cliens_b2bz temp_exp_digz)			
+egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_clients_b2cz temp_clients_b2bz temp_exp_digz)			
 			
 			*Business performance index
 egen bpi = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
@@ -492,16 +488,13 @@ label var bpi "Business performance index- Z-score"
 	* create total points per index dimension
 			
 			*Digital sales index
-egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix //
-web_use_contacts web_use_catalogue web_use_engagement web_use_com //
-web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand //
-dig_miseajour1 dig_miseajour2 dig_miseajour3) // total 19 points
+egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing // total 19 points
 			
 			*Digital marketing index
-egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5) // total 5 points
+egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5), missing // total 5 points
 			
 			*Digital technology adoption index
-egen dtai_points = rowtotal(dsi_points dmi_points) // total 24 points	
+egen dtai_points = rowtotal(dsi_points dmi_points), missing // total 24 points	
 			
 			* export readiness index (eri)
 egen eri_points = rowtotal(exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach), missing // total 5 points
