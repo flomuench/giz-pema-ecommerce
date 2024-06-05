@@ -52,7 +52,7 @@ local empl_vars "car_carempl_div1 car_carempl_div2 car_carempl_div3"
 
 foreach var of local empl_vars {
 	replace needs_check = 1 if `var' > fte & surveyround == 3
-	replace questions_needing_checks = "`var' plus grand que nombre total d'employés / " if `var' > fte & surveyround == 3
+	replace questions_needing_checks = questions_needing_checks + "`var' plus grand que nombre total d'employés / " if `var' > fte & surveyround == 3
 }
 /* --------------------------------------------------------------------
 	PART 2.2: Digital Technology Adoption
@@ -63,14 +63,14 @@ local dig_updates "dig_miseajour1 dig_miseajour2 dig_miseajour3"
 	*has digital employees but does not do any kind of updates
 foreach var of local dig_updates {
 	replace needs_check = 1 if surveyround == 3 & `var' == 1 & dig_empl == 0 & dig_empl != 666 & dig_empl != 777 & dig_empl != 888 & dig_empl != 999 & dig_empl != .
-	replace questions_needing_checks = "L'entreprise utilise `var' alors qu'elle n'a pas d'employés en marketing digital / " if surveyround == 3 & `var' == 1 ///
+	replace questions_needing_checks = questions_needing_checks + "L'entreprise utilise `var' alors qu'elle n'a pas d'employés en marketing digital / " if surveyround == 3 & `var' == 1 ///
 		& dig_empl == 0 & dig_empl != 666 & dig_empl != 777 & dig_empl != 888 & dig_empl != 999 & dig_empl != .
 }
 
 	*invests in digital marketing but does not do any updates
 foreach var of local dig_updates {
 	replace needs_check = 1 if surveyround == 3 & `var' == 1 & dig_invest == 0 & dig_invest != 666 & dig_invest != 777 & dig_invest != 888 & dig_invest != 999 & dig_invest != .
-	replace questions_needing_checks = "L'entreprise utilise `var' alors qu'elle n'investie pas en marketing digital / " if surveyround == 3 & `var' == 1 & dig_invest == 0 ///
+	replace questions_needing_checks = questions_needing_checks + "L'entreprise utilise `var' alors qu'elle n'investie pas en marketing digital / " if surveyround == 3 & `var' == 1 & dig_invest == 0 ///
 		& dig_invest != 666 & dig_invest != 777 & dig_invest != 888 & dig_invest != 999 & dig_invest != .
 }
 
@@ -82,14 +82,14 @@ local dig_marketing "mark_online1 mark_online2 mark_online3 mark_online4 mark_on
 	*uses marketing tools but does not have any digital employees
 foreach var of local dig_marketing {
 	replace needs_check = 1 if surveyround == 3 & `var' == 1 & dig_empl == 0 & dig_empl != 666 & dig_empl != 777 & dig_empl != 888 & dig_empl != 999 & dig_empl != .
-	replace questions_needing_checks = "L'entreprise n'a pas d'employés digital mais elle fait `var' / " if surveyround == 3 & `var' == 1 & dig_empl == 0 ///
+	replace questions_needing_checks = questions_needing_checks + "L'entreprise n'a pas d'employés digital mais elle fait `var' / " if surveyround == 3 & `var' == 1 & dig_empl == 0 ///
 		& dig_empl != 666 & dig_empl != 777 & dig_empl != 888 & dig_empl != 999 & dig_empl != .
 }
 
 	*uses marketing tools but does not invest in digital marketing
 foreach var of local dig_marketing {
 	replace needs_check = 1 if surveyround == 3 & `var' == 1 & dig_invest == 0 & dig_invest != 666 & dig_invest != 777 & dig_invest != 888 & dig_invest != 999 & dig_invest != .
-	replace questions_needing_checks = "L'entreprise n'investie pas dans le marketing digital mais elle fait `var' / " if surveyround == 3 & `var' == 1 & dig_invest == 0 ///
+	replace questions_needing_checks = questions_needing_checks + "L'entreprise n'investie pas dans le marketing digital mais elle fait `var' / " if surveyround == 3 & `var' == 1 & dig_invest == 0 ///
 		& dig_invest != 666 & dig_invest != 777 & dig_invest != 888 & dig_invest != 999 & dig_invest != .
 }
 
@@ -142,23 +142,32 @@ replace questions_needing_checks = questions_needing_checks + "Benefices sont pl
 
 	* Profits > sales 2024
 	
-replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > comp_ca2024 & compexp_2024 != 666 & compexp_2024 != 777 & compexp_2024 != 888 & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 0 & compexp_2024 != 1234 & ///
-	comp_benefice2024 != 666 & compexp_2024 != 777  & compexp_2024 != 888  & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 0 & compexp_2024 != 1234
-replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que CA 2024 / "  if surveyround == 3 & comp_benefice2024 > comp_ca2024 & compexp_2024 != 666 & compexp_2024 != 777 & compexp_2024 != 888 ///
-	& compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 0 & compexp_2024 != 1234 & comp_benefice2024 != 666 & compexp_2024 != 777  & compexp_2024 != 888  & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 0 & compexp_2024 != 1234
+replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > comp_ca2024 & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234 & ///
+	comp_benefice2024 != 666 & comp_benefice2024 != 777  & comp_benefice2024 != 888  & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234
+replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que CA 2024 / " if surveyround == 3 & comp_benefice2024 > comp_ca2024 & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234 & comp_benefice2024 != 666 & comp_benefice2024 != 777  & comp_benefice2024 != 888  & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234 
 
 	* Outliers/extreme values: Very low values
-		* ca2023
+		* ca2023 just above zero
 	
 replace needs_check = 1 if surveyround == 3 & comp_ca2023 < 5000 & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != . & comp_ca2023 != 0 & comp_ca2023 != 1234
 replace questions_needing_checks = questions_needing_checks + "CA 2023 moins que 5000 TND, êtes vous sure? / " if surveyround == 3 & comp_ca2023 < 5000 & comp_ca2023 != 666 & comp_ca2023 != 777 ///
 	& comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != . & comp_ca2023 != 0 & comp_ca2023 != 1234
 
-		* ca2024
+		* ca2024 just above zero
 
 replace needs_check = 1 if surveyround == 3 & comp_ca2024 < 5000 & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234
 replace questions_needing_checks = questions_needing_checks + "CA 2024 moins que 5000 TND, êtes vous sure? / " if surveyround == 3 & comp_ca2024 < 5000 ///
 	& comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234
+	
+		*compexp_2023  just above zero
+replace needs_check = 1 if surveyround == 3 & compexp_2023 < 5000 & compexp_2023 != 666 & compexp_2023 != 777 & compexp_2023 != 888 & compexp_2023 != 999 & compexp_2023 != . & compexp_2023 != 0 & compexp_2023 != 1234
+replace questions_needing_checks = questions_needing_checks + "CA export 2023 moins que 5000 TND, êtes vous sure? / " if surveyround == 3 & compexp_2023 < 5000 & compexp_2023 != 666 & compexp_2023 != 777 ///
+	& compexp_2023 != 888 & compexp_2023 != 999 & compexp_2023 != . & compexp_2023 != 0 & compexp_2023 != 1234
+	
+		*compexp_2024  just above zero
+replace needs_check = 1 if surveyround == 3 & compexp_2024 < 5000 & compexp_2024 != 666 & compexp_2024 != 777 & compexp_2024 != 888 & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 0 & compexp_2024 != 1234
+replace questions_needing_checks = questions_needing_checks + "CA export 2024 moins que 5000 TND, êtes vous sure? / " if surveyround == 3 & compexp_2024 < 5000 & compexp_2024 != 666 & compexp_2024 != 777 ///
+	& compexp_2024 != 888 & compexp_2024 != 999 & compexp_2024 != . & compexp_2024 != 0 & compexp_2024 != 1234
 
 		* profit2023 just above zero
 
@@ -187,16 +196,37 @@ replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > -2500 & comp_b
 replace questions_needing_checks = questions_needing_checks + "benefice 2024 + que -2500 TND mais - que zero / " if surveyround == 3 & comp_benefice2024 > -2500 & comp_benefice2024 < 0 ///
 	& comp_benefice2024 != . & comp_benefice2024 != 1234 & comp_benefice2024 != 0
 
-		*profit2023 Very big values
-				
+		*profit 2023 very big value
 replace needs_check = 1 if surveyround == 3 & comp_benefice2023 > 1000000 & comp_benefice2023 != . 
 replace questions_needing_checks = questions_needing_checks + "Profit 2023 trop grand, supérieur à 1 millions de dinars / " if surveyround == 3 & comp_benefice2023 > 1000000 & comp_benefice2023 != . 
-	
-		*profit2024 Very big values
+
+
+		*profit2024 very big value
 				
 replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > 1000000 & comp_benefice2024 != . 
 replace questions_needing_checks = questions_needing_checks + "Profit 2024 trop grand, supérieur à 1 millions de dinars / " if surveyround == 3 & comp_benefice2024 > 1000000 & comp_benefice2024 != . 
 
+	*invest > CA
+local invest_vars "mark_invest dig_invest"
+
+foreach var of local invest_vars {
+	replace needs_check = 1 if `var' > (comp_ca2023 + comp_ca2024) & `var' != 666 & `var' != 777 & `var' != 888 & `var' != 999 & `var' != 1234 & `var' != 0 & `var' != . & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != 1234 & comp_ca2023 != 0 & comp_ca2023 != . & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != 1234 & comp_ca2024 != 0 & comp_ca2024 != . 
+	replace questions_needing_checks = questions_needing_checks + "`var' plus grand que CA2023 + CA2024 / " if `var' > (comp_ca2023 + comp_ca2024) & `var' != 666 & `var' != 777 & `var' != 888 & `var' != 999 & `var' != 1234 & `var' != 0 & `var' != . & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != 1234 & comp_ca2023 != 0 & comp_ca2023 != . & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != 1234 & comp_ca2024 != 0 & comp_ca2024 != . 
+}
+
+	*CA very big values
+local ca_vars "comp_ca2023 comp_ca2024 compexp_2023 compexp_2024"
+foreach var of local ca_vars {
+	replace needs_check = 1 if surveyround == 3 & `var' > 2500000 & `var' != .
+	replace questions_needing_checks = questions_needing_checks + "`var' supérieur à 2.5 millions de dinars de dinars / " if surveyround == 3 & `var' > 2500000 & `var' != .
+}	
+
+	*invest very big values
+local compta_vars "mark_invest dig_invest"
+foreach var of local compta_vars {
+	replace needs_check = 1 if surveyround == 3 & `var' > 750000 & `var' != .
+	replace questions_needing_checks = questions_needing_checks + "`var' supérieur à 750000 de dinars / " if surveyround == 3 & `var' > 750000 & `var' != .
+}	
 
 		*comptability vars that should not be 1234
 local not1234_vars "comp_ca2023 comp_ca2024 compexp_2023 compexp_2024 mark_invest dig_invest"
