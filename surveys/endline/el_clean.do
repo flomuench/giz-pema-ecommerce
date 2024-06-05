@@ -181,10 +181,10 @@ label var comp_benefice2024 "Company profit in 2024 in dt"
 
 
 label var profit_2023_category_perte "Company loss category in 2023 in dt"
-label var profit_2023_category_gain "Company loss category in 2023 in dt"
+label var profit_2023_category_gain "Company gain category in 2023 in dt"
 
 label var profit_2024_category_perte "Company loss category in 2024 in dt"
-label var profit_2024_category_gain "Company loss category in 2024 in dt"
+label var profit_2024_category_gain "Company gain category in 2024 in dt"
 ***************************
 **********Program**********
 ***************************

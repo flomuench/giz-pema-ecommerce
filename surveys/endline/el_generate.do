@@ -155,8 +155,35 @@ label define Surveytype 1 "Phone" 0 "En ligne"
 * 	PART 4:  Change format type	
 ***********************************************************************
 
+
 ***********************************************************************
-* 	PART 5:  generate normalized financial data (per employee)
+* 	PART 5:  Transform categorical variables into continuous variables
+***********************************************************************
+replace comp_benefice2023 = -5000 if profit_2023_category_perte==1
+replace comp_benefice2023 = -55000 if profit_2023_category_perte==2
+replace comp_benefice2023 = -300000 if profit_2023_category_perte==3
+replace comp_benefice2023 =  -750000 if profit_2023_category_perte==4
+replace comp_benefice2023 =  -1250000 if profit_2023_category_perte==5
+
+replace comp_benefice2023 = 5000 if profit_2023_category_gain==1
+replace comp_benefice2023 = 55000 if profit_2023_category_gain==2
+replace comp_benefice2023 = 300000 if profit_2023_category_gain==3
+replace comp_benefice2023 = 750000 if profit_2023_category_gain==4
+replace comp_benefice2023 = 1250000 if profit_2023_category_gain==5
+
+replace comp_benefice2024 = -5000 if profit_2024_category_perte==1
+replace comp_benefice2024 = -55000 if profit_2024_category_perte==2
+replace comp_benefice2024 = -300000 if profit_2024_category_perte==3
+replace comp_benefice2024 = -750000 if profit_2024_category_perte==4
+replace comp_benefice2024 = -1250000 if profit_2024_category_perte==5
+
+replace comp_benefice2024 = 5000 if profit_2024_category_gain==1
+replace comp_benefice2024 = 55000 if profit_2024_category_gain==2
+replace comp_benefice2024 = 300000 if profit_2024_category_gain==3
+replace comp_benefice2024 = 750000 if profit_2024_category_gain==4
+replace comp_benefice2024 = 1250000 if profit_2024_category_gain==5
+***********************************************************************
+* 	PART 6:  generate normalized financial data (per employee)
 ***********************************************************************
 
 local varn fte dig_empl mark_invest dig_invest comp_ca2023 comp_ca2024 comp_exp2023 comp_exp2024 comp_benefice2023 comp_benefice2024
