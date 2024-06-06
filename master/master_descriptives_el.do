@@ -361,7 +361,7 @@ putpdf paragraph, halign(center)
 putpdf image el_barriers_`x'.png
 putpdf pagebreak
 }
-}
+
 ***********************************************************************
 * 	PART 5: Export
 ***********************************************************************	
@@ -456,7 +456,7 @@ putpdf text ("Section 6: Accounting"), bold
 
 
 *Chiffre d'affaires total en TND 
-betterbar comp_ca2024 comp_ca2023 comp_ca2020 if surveyround !=2, over(treatment) barlab ci     
+betterbar comp_ca2024 comp_ca2023 comp_ca2020 if surveyround !=2, over(treatment) barlab ci ///
 	title("Total turnover in dt", pos(12))
 gr export el_total_turnover.png, replace
 putpdf paragraph, halign(center) 
@@ -511,7 +511,7 @@ putpdf pagebreak
 }
 
 *Chiffre d'affaires export en TND 
-betterbar compexp_2024 compexp_2023 compexp_2020 if surveyround !=2, over(treatment) barlab ci     
+betterbar compexp_2024 compexp_2023 compexp_2020 if surveyround !=2, over(treatment) barlab ci ///     
 	title("Export turnover in dt", pos(12))
 gr export el_total_export_turnover.png, replace
 putpdf paragraph, halign(center) 
@@ -633,7 +633,7 @@ putpdf pagebreak
 }
 
 *Profit in TND
-betterbar comp_benefice2024 comp_benefice2023 comp_benefice2020 if surveyround !=2, over(treatment) barlab ci     
+betterbar comp_benefice2024 comp_benefice2023 comp_benefice2020 if surveyround !=2, over(treatment) barlab ci ///    
 	title("Company profit in dt", pos(12))
 gr export el_profit.png, replace
 putpdf paragraph, halign(center) 

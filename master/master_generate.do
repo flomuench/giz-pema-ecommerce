@@ -417,7 +417,7 @@ label value ssa_aggregate yesno1
 ***********************************************************************
 *PART 8: Creation of index for the endline
 ***********************************************************************	
-/*
+
 	* Put all variables used to calculate indices into a local
 			*Digital sales index
 local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
@@ -510,7 +510,7 @@ label var eri_points "Export readiness index points"
 
 *drop temporary vars		  
 drop temp_*
-*/
+
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
