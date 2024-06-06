@@ -91,7 +91,7 @@ tsfill, full
 
 	* append with endline (uncomment once we have endline data)
 cd "$endline_final"
-append using "${el_final}/el_final"
+append using "${el_final}/el_final", force
 
     * save
 sort id_plateforme surveyround, stable

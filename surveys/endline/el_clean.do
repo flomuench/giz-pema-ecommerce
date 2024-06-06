@@ -167,24 +167,24 @@ label var q29 "Tax identification number"
 *label var q29_tel "Accountant's phone number"
 *label var q29_mail "Accountant's email"
 
-label var comp_ca2023 "Total turnover in 2023 in dt"
-label var comp_ca2024 "Total turnover in 2024 in dt"
+label var comp_ca2023 "Total turnover in 2023"
+label var comp_ca2024 "Total turnover in 2024"
 
-label var compexp_2023 "Export turnover in 2023 in dt"
-label var compexp_2024 "Export turnover in 2024 in dt"
+label var compexp_2023 "Export turnover in 2023"
+label var compexp_2024 "Export turnover in 2024"
 
-label var profit_2023_category "Profit/Loss in 2023 in dt"
-label var profit_2024_category "Profit/Loss in 2024 in dt"
+label var profit_2023_category "Profit/Loss in 2023"
+label var profit_2024_category "Profit/Loss in 2024"
 
-label var comp_benefice2023 "Company profit in 2023 in dt"
-label var comp_benefice2024 "Company profit in 2024 in dt"
+label var comp_benefice2023 "Company profit in 2023"
+label var comp_benefice2024 "Company profit in 2024"
 
 
-label var profit_2023_category_perte "Company loss category in 2023 in dt"
-label var profit_2023_category_gain "Company gain category in 2023 in dt"
+label var profit_2023_category_perte "Company loss category in 2023"
+label var profit_2023_category_gain "Company gain category in 2023"
 
-label var profit_2024_category_perte "Company loss category in 2024 in dt"
-label var profit_2024_category_gain "Company gain category in 2024 in dt"
+label var profit_2024_category_perte "Company loss category in 2024"
+label var profit_2024_category_gain "Company gain category in 2024"
 ***************************
 **********Program**********
 ***************************

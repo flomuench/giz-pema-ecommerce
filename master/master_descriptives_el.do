@@ -16,7 +16,7 @@
 * 	PART 1: Midline and take-up statistics
 ***********************************************************************
 use "${master_final}/ecommerce_master_final", clear
-		
+set graphics on		
 		* change directory to regis folder for merge with regis_final
 cd "${master_gdrive}/output"
 set scheme burd
@@ -41,6 +41,15 @@ putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 2: The company"), bold
 {
 
+graph hbar take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber if treatment == 1 & surveyround==1, ///
+    title("Average take-up for each activity", pos(12)) ///
+	legend (pos(6) row(6) label (1 "Take up for classroom training") label(2 "Take up for student intervention") ///
+	label(3 "Take up for SEO intervention") label(4 "Take up for social medias organic") label(5 "Take up for social medias ads") label(6 "Take up for website intervention") label(7 "Bought the website")) 
+    gr export el_take_up.png, replace
+    putpdf paragraph, halign(center)
+    putpdf image el_take_up.png
+    putpdf pagebreak
+	
 *Number of product innovation	
  
  foreach x of local take_up { 
@@ -75,19 +84,6 @@ putpdf image el_inno_produit_kdens_`x'.png, width(5000)
 putpdf pagebreak
 }
 
-*Type of clients
- 	foreach x of local take_up{
-graph hbar (percent) if surveyround == 3, over(clients) by(`x') blabel(total, format(%9.2fc) gap(-0.2)) ///
-	legend(pos(6) row(6) label(1 "Exclusively to individuals") label(2 "To other firms") ///
-	label(3 "To individuals and other firms"))  ///
-	title("Types of Customers") ///
-	ylabel(0(20)100, nogrid) 
-	gr export el_customer_types_`x'.png, replace
-	putpdf paragraph, halign(center) 
-	putpdf image el_customer_types_`x'.png
-	putpdf pagebreak
-	}	
-	
     * variable employees
  	foreach x of local take_up{
 graph box fte if fte > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
@@ -250,7 +246,7 @@ graph pie if surveyround == 3, over(dig_prix) by(`x') plabel(_all percent, forma
 }		
 
 
-	 * variable dig_revenues_ecom:
+	 * variable dig_revenues_ecom
 	  	foreach x of local take_up{
  graph box dig_revenues_ecom if dig_revenues_ecom> 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
 	title("Online sales as % of total sales", pos(12))
@@ -274,125 +270,6 @@ putpdf image el_dig_revenues_ecom_treat_kdens_`x'.png, width(5000)
 putpdf pagebreak
 }
 
-*Présence sur quel réseau social ?
- 	foreach x of local take_up{
-graph hbar (mean) dig_presence2_sm1 dig_presence2_sm2 dig_presence2_sm3 dig_presence2_sm4 dig_presence2_sm5 dig_presence2_sm6 if surveyround == 3, over(`x') percent blabel(total, format(%9.1fc)) ///
-title("Social media presence", position(12)) ///
-legend (pos(6) row(6) label (1 "Instagram") label(2 "Facebook") ///
-label(3 "Twitter") label(4 "Youtube") label(5 "LinkedIn") label(6 "Others")) 
-graph export el_dig_presence2_sm_freq_`x'.png, width(5000) replace 
-putpdf paragraph, halign(center) 
-putpdf image el_dig_presence2_sm_freq_`x'.png, width(5000)
-putpdf pagebreak
-}
-
- 	foreach x of local take_up{
-betterbar dig_presence2_sm1 dig_presence2_sm2 dig_presence2_sm3 dig_presence2_sm4 dig_presence2_sm5 dig_presence2_sm6 if surveyround == 3, over(`x') ci barlab ///
-	title("Social media presence") ///
-	ylabel(,labsize(vsmall) angle(horizontal))
-graph export el_dig_presence2_sm_`x'.png, replace 
-putpdf paragraph, halign(center) 
-putpdf image el_dig_presence2_sm_`x'.png
-putpdf pagebreak
-}
-*Présence sur quel plateforme d'e-commerce ?
- 	foreach x of local take_up{
-graph hbar (mean) dig_presence3_plateform1 dig_presence3_plateform2 dig_presence3_plateform3 dig_presence3_plateform4 dig_presence3_plateform5 dig_presence3_plateform6 dig_presence3_plateform7 dig_presence3_plateform8  if surveyround == 3, over(`x') percent blabel(total, format(%9.1fc)) ///
-title("Marketplace presence", position(12)) ///
-legend (pos(6) row(6) label (1 "Little Jneina") label(2 "Founa") ///
-label(3 "Made in Tunisia") label(4 "Jumia") label(5 "Amazon") label(6 "Ali baba") label(7 "Upwork") label(8 "Others")) 
-graph export el_dig_presence3_plateform_freq_`x'.png, width(5000) replace 
-putpdf paragraph, halign(center) 
-putpdf image el_dig_presence3_plateform_freq_`x'.png, width(5000)
-putpdf pagebreak
-}
- 
- foreach x of local take_up{
-betterbar dig_presence3_plateform1 dig_presence3_plateform2 dig_presence3_plateform3 dig_presence3_plateform4 dig_presence3_plateform5 dig_presence3_plateform6 dig_presence3_plateform7 dig_presence3_plateform8 if surveyround == 3, over(`x') ci barlab ///
-	title("Marketplace presence") ///
-	ylabel(,labsize(vsmall) angle(horizontal))
-graph export el_dig_presence3_plateform_`x'.png, replace 
-putpdf paragraph, halign(center) 
-putpdf image el_dig_presence3_plateform_`x'.png
-putpdf pagebreak
-}
-*Utilisation du site web
- 	foreach x of local take_up{
-betterbar web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand if surveyround == 3, over(`x') ci barlab ///
-	title("Use of the website") ///
-	ylabel(,labsize(vsmall) angle(horizontal))
-graph export el_web_use_`x'.png, replace 
-putpdf paragraph, halign(center) 
-putpdf image el_web_use_`x'.png
-putpdf pagebreak
-}
- 	foreach x of local take_up{
-graph hbar (mean) web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand if surveyround == 3, over(`x') percent blabel(total, format(%9.1fc)) ///
-	title("Use of the website", position(12)) ///
-legend (pos(6) row(6) label (1 "Company contact details") label(2 "Cataloging goods & services") ///
-label(3 "Study consumer behavior") label(4 "Communicate with customers") label(5 "Promoting a brand image")) 
-graph export el_web_use_freq_`x'.png, width(5000) replace 
-putpdf paragraph, halign(center) 
-putpdf image el_web_use_freq_`x'.png, width(5000)
-putpdf pagebreak
-}
-
-*Utilisation des réseaux sociaux
- 	foreach x of local take_up {
-graph hbar (mean) sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand if surveyround == 3, over(`x') percent blabel(total, format(%9.1fc)) ///
-	title("Use of social medias", position(12)) ///
-legend (pos(6) row(6) label (1 "Company contact details") label(2 "Cataloging goods & services") ///
-label(3 "Study consumer behavior") label(4 "Communicate with customers") label(5 "Promoting a brand image")) 
-graph export el_sm_use_freq_`x'.png, width(5000) replace 
-putpdf paragraph, halign(center) 
-putpdf image el_sm_use_freq_`x'.png, width(5000)
-putpdf pagebreak
-}
-
- 	foreach x of local take_up {
-betterbar sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand if surveyround == 3, over(`x') ci barlab ///
-	title("Use of social medias") ///
-	ylabel(,labsize(vsmall) angle(horizontal))
-graph export el_sm_use_`x'.png, replace 
-putpdf paragraph, halign(center) 
-putpdf image el_sm_use_`x'.png
-putpdf pagebreak
-}
-*Variable mise à jour
- 	foreach x of local take_up{
-graph hbar (mean) dig_miseajour1 dig_miseajour2 dig_miseajour3 if surveyround == 3, over(`x') percent blabel(total, format(%9.1fc)) ///
-	title("Frequency of updates", position(12)) ///
-	legend (pos(6) row(6) label (1 "Website update") label(2 "Social Medias update") ///
-label(3 "Marketplace update")) ///
-	ylabel(,labsize(vsmall) angle(horizontal))
-graph export el_maj_digital_freq_`x'.png, width(5000) replace 
-putpdf paragraph, halign(center) 
-putpdf image el_maj_digital_freq_`x'.png, width(5000)
-putpdf pagebreak
-}
-
- 	foreach x of local take_up{
-betterbar dig_miseajour1 dig_miseajour2 dig_miseajour3 if surveyround == 3, over(`x') ci barlab ///
-	title("Frequency of updates") ///
-	ylabel(,labsize(vsmall) angle(horizontal))
-graph export el_maj_digital_`x'.png, replace 
-putpdf paragraph, halign(center) 
-putpdf image el_maj_digital_`x'.png
-putpdf pagebreak
-}
-	*Activities of digital marketing
-	 	foreach x of local take_up{
-graph hbar (mean) mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 if surveyround == 3, percentage over(`x') blabel(total, format(%9.2fc) gap(-0.2)) ///
-	title("Online marketing activities") ///
-	legend (pos(6) row(6) label (1 "E-mailing & Newsletters") label(2 "SEO or SEA") ///
-	label(3 "Free social media marketing") label(4 "Paid social media advertising") ///
-	label(5 "Other marketing activities"))  ///
-	ylabel(0(10)40, nogrid)    
-gr export el_mark_online_`x'.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_mark_online_`x'.png
-putpdf pagebreak
-}
     *Nombre d'émployés chargés activités en ligne
 
  	foreach x of local take_up{
@@ -470,29 +347,7 @@ putpdf pagebreak
 ***********************************************************************	
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 4: Digital Technology Perception"), bold
-{
-	 *Perception coût du marketing digital
- 	foreach x of local take_up{
-	 graph bar (mean) investecom_benefit1 if surveyround == 3, over(`x') blabel(total, format(%9.1fc) gap(-0.2)) ///
-    title("Perception of digital marketing costs", pos(12)) note("1 = very low, 5 = very high", pos(6)) ///
-    ylabel(0(1)7, nogrid) ///
-    ytitle("Mean perception of digital marketing costs")
-gr export el_investecom_benefit1_`x'.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_investecom_benefit1_`x'.png
-putpdf pagebreak
-}
-	 *Perception bénéfice du marketing digital
- 	foreach x of local take_up{
-	 graph bar (mean) investecom_benefit2 if surveyround == 3, over(`x') blabel(total, format(%9.1fc) gap(-0.2)) ///
-    title("Perception of digital marketing benefits", pos(12)) note("1 = very low, 5 = very high", pos(6)) ///
-    ylabel(0(1)7, nogrid) ///
-    ytitle("Mean perception of digital marketing benefits")
-gr export el_investecom_benefit2_`x'.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_investecom_benefit2_`x'.png
-putpdf pagebreak
-}	 
+
 	*Barriers to digital adoption
  	foreach x of local take_up{
 graph hbar (mean) dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 if surveyround == 3, percentage over(`x') blabel(total, format(%9.2fc) gap(-0.2)) ///
@@ -513,30 +368,6 @@ putpdf pagebreak
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 5: Export"), bold
 {
-	* Export: direct, indirect, no export
- 	foreach x of local take_up {
-graph bar (mean) export_1 export_2 export_3 if surveyround == 3, over(`x') percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
-    legend (pos(6) row(6) label (1 "Direct export") label (2 "Indirect export") ///
-	label (3 "No export")) ///
-	title("Firm & export status", pos(12)) ///
-	ylabel(0(10)60, nogrid)  
-gr export el_firm_exports_`x'.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_firm_exports_`x'.png
-putpdf pagebreak
-}
-	* Reasons for not exporting
- 	foreach x of local take_up {
-graph bar (mean) export_41 export_42 export_43 export_44 if surveyround == 3, over(`x') percentage blabel(total, format(%9.1fc) gap(-0.2)) ///
-    legend (pos(6) row(6) label (1 "Not profitable") label (2 "Did not find clients abroad") ///
-	label (3 "Too complicated") label (4 "Requires too much investment")) ///
-	ylabel(0(20)100, nogrid)  ///
-	title("Reasons for not exporting", pos(12)) 
-gr export el_no_exports_`x'.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_no_exports_`x'.png
-putpdf pagebreak
-}
 	*No of export destinations
  	foreach x of local take_up{
  graph box exp_pays if exp_pays > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
@@ -615,19 +446,6 @@ graph pie if surveyround == 3, over(exp_dig) by(`x') plabel(_all percent, format
 	putpdf image el_exp_dig_pie_`x'.png
 	putpdf pagebreak
 }	
-	*Export practices
- 	foreach x of local take_up{
-	graph hbar (mean) exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach if surveyround == 3, percentage over(`x') blabel(total, format(%9.2fc) gap(-0.2)) ///
-	title("Export practices") ///
-	legend (pos(6) row(8) label (1 "International fair/exhibition") label(2 "Sales partner") ///
-	label(3 "Export manager") label(4 "Export plan") ///
-	label(5 "Certification") label(6 "External funding") label(7 "Sales structure") label(8 "Interest by a foreign buyer"))  ///
-	ylabel(0(10)40, nogrid)    
-gr export el_export_practices_`x'.png, replace
-putpdf paragraph, halign(center) 
-putpdf image el_export_practices_`x'.png
-putpdf pagebreak
-}
 }
 ***********************************************************************
 * 	PART 6: Accounting
@@ -635,6 +453,16 @@ putpdf pagebreak
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 6: Accounting"), bold
 {
+
+
+*Chiffre d'affaires total en TND 
+betterbar comp_ca2024 comp_ca2023 comp_ca2020 if surveyround !=2, over(treatment) barlab ci     
+	title("Total turnover in dt", pos(12))
+gr export el_total_turnover.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_total_turnover.png
+putpdf pagebreak
+
     * Chiffre d'affaires total en dt en 2023 
  	foreach x of local take_up{	
  graph box comp_ca2023 if comp_ca2023 > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
@@ -681,6 +509,15 @@ putpdf paragraph, halign(center)
 putpdf image el_comp_ca2024_kdens_`x'.png, width(5000)
 putpdf pagebreak
 }
+
+*Chiffre d'affaires export en TND 
+betterbar compexp_2024 compexp_2023 compexp_2020 if surveyround !=2, over(treatment) barlab ci     
+	title("Export turnover in dt", pos(12))
+gr export el_total_export_turnover.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_total_export_turnover.png
+putpdf pagebreak
+
    *Chiffre d'affaires à l’export en dt en 2023
  	foreach x of local take_up{	
  graph box compexp_2023 if compexp_2023 > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
@@ -794,6 +631,14 @@ putpdf paragraph, halign(center)
 putpdf image el_comp_benefice2024_kdens_`x'.png, width(5000)
 putpdf pagebreak
 }
+
+*Profit in TND
+betterbar comp_benefice2024 comp_benefice2023 comp_benefice2020 if surveyround !=2, over(treatment) barlab ci     
+	title("Company profit in dt", pos(12))
+gr export el_profit.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_profit.png
+putpdf pagebreak
 }
 ***********************************************************************
 * 	PART 7: Indices
@@ -801,6 +646,28 @@ putpdf pagebreak
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 7: Indices"), bold
 {
+
+gr tw ///
+	(kdensity dsi if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dsi if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dsi if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dsi if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Digital sales index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Digital Sales Index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(dsi_el_treat, replace)
+graph export dsi_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dsi_el_treat.png
+putpdf pagebreak
+
  	foreach x of local take_up{	
 gr tw ///
 	(kdensity dsi if treatment == 1 & `x' == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
@@ -826,6 +693,27 @@ putpdf paragraph, halign(center)
 putpdf image dsi_el_`x'.png
 putpdf pagebreak
 }
+
+gr tw ///
+	(kdensity dmi if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dmi if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dmi if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dmi if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Digital Marketing index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Digital Marketing Index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(dmi_el_treat, replace)
+graph export dmi_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dmi_el_treat.png
+putpdf pagebreak
 
  	foreach x of local take_up{	
 gr tw ///
@@ -853,6 +741,28 @@ putpdf image dmi_el_`x'.png
 putpdf pagebreak
 }
 
+gr tw ///
+	(kdensity dtp if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dtp if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dtp if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dtp if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Digital technology Perception index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Digital technology Perception index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(dtp_el_treat, replace)
+graph export dtp_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dtp_el_treat.png
+putpdf pagebreak
+
+
  	foreach x of local take_up{	
 gr tw ///
 	(kdensity dtp if treatment == 1 & `x' == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
@@ -878,6 +788,27 @@ putpdf paragraph, halign(center)
 putpdf image dtp_el_`x'.png
 putpdf pagebreak
 }
+
+gr tw ///
+	(kdensity dtai if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram dtai if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity dtai if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram dtai if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Digital technology adoption index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Digital technology adoption index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(dtai_el_treat, replace)
+graph export dtai_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image dtai_el_treat.png
+putpdf pagebreak
 
  	foreach x of local take_up{	
 gr tw ///
@@ -905,6 +836,27 @@ putpdf image dtai_el_`x'.png
 putpdf pagebreak
 }
 
+gr tw ///
+	(kdensity eri if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram eri if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity eri if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram eri if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Export readiness index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Export readiness index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(eri_el_treat, replace)
+graph export eri_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image eri_el_treat.png
+putpdf pagebreak
+
  	foreach x of local take_up{	
 gr tw ///
 	(kdensity eri if treatment == 1 & `x' == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
@@ -931,6 +883,26 @@ putpdf image eri_el_`x'.png
 putpdf pagebreak
 }
 
+gr tw ///
+	(kdensity epi if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram epi if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity epi if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram epi if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Export performance index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Export performance index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(epi_el_treat, replace)
+graph export epi_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image epi_el_treat.png
+putpdf pagebreak
 
  	foreach x of local take_up{	
 gr tw ///
@@ -957,6 +929,27 @@ putpdf paragraph, halign(center)
 putpdf image epi_el_`x'.png
 putpdf pagebreak
 }
+
+gr tw ///
+	(kdensity bpi if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram bpi if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity bpi if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram bpi if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Business performance index}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Business performance index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(bpi_el_treat, replace)
+graph export bpi_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image bpi_el_treat.png
+putpdf pagebreak
 
 	foreach x of local take_up{	
 gr tw ///
