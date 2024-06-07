@@ -526,8 +526,68 @@ drop temp_*
 
 
 ***********************************************************************
-*PART 9: Transform enline accounting variables
+*PART 9: Transform enline variables
 ***********************************************************************	
+*Digital investment
+winsor dig_invest, gen(w99_dig_invest) p(0.01) highonly
+winsor dig_invest, gen(w97_dig_invest) p(0.03) highonly
+winsor dig_invest, gen(w95_dig_invest) p(0.05) highonly
+
+gen ihs_dig_invest_99 = log(w99_dig_invest + sqrt((w99_dig_invest*w99_dig_invest)+1))
+lab var ihs_dig_invest_99 "IHS of digital investment, wins.99th"
+gen ihs_dig_invest_97 = log(w97_dig_invest + sqrt((w97_dig_invest*w97_dig_invest)+1))
+lab var ihs_dig_invest_97 "IHS of digital investment, wins.97th"
+gen ihs_dig_invest_95 = log(w95_dig_invest + sqrt((w95_dig_invest*w95_dig_invest)+1))
+lab var ihs_dig_invest_95 "IHS of digital investment, wins.95th"
+
+*Offine marketing investment
+winsor mark_invest, gen(w99_mark_invest) p(0.01) highonly
+winsor mark_invest, gen(w97_mark_invest) p(0.03) highonly
+winsor mark_invest, gen(w95_mark_invest) p(0.05) highonly
+
+gen ihs_mark_invest_99 = log(w99_mark_invest + sqrt((w99_mark_invest*w99_mark_invest)+1))
+lab var ihs_mark_invest_99 "IHS of offine marketing investment, wins.99th"
+gen ihs_mark_invest_97 = log(w97_mark_invest + sqrt((w97_mark_invest*w97_mark_invest)+1))
+lab var ihs_mark_invest_97 "IHS of offine marketing investment, wins.97th"
+gen ihs_mark_invest_95 = log(w95_mark_invest + sqrt((w95_mark_invest*w95_mark_invest)+1))
+lab var ihs_mark_invest_95 "IHS of offine marketing investment, wins.95th"
+
+*Full time employees
+winsor fte, gen(w99_fte) p(0.01) highonly
+winsor fte, gen(w97_fte) p(0.03) highonly
+winsor fte, gen(w95_fte) p(0.05) highonly
+
+gen ihs_fte_99 = log(w99_fte + sqrt((w99_fte*w99_fte)+1))
+lab var ihs_fte_99 "IHS of full time employees, wins.99th"
+gen ihs_fte_97 = log(w97_fte + sqrt((w97_fte*w97_fte)+1))
+lab var ihs_fte_97 "IHS of full time employees, wins.97th"
+gen ihs_fte_95 = log(w95_fte + sqrt((w95_fte*w95_fte)+1))
+lab var ihs_fte_95 "IHS of full time employees, wins.95th"
+
+/*clients_b2b
+winsor clients_b2b, gen(w99_clients_b2b) p(0.01)
+winsor clients_b2b, gen(w97_clients_b2b) p(0.03) 
+winsor clients_b2b, gen(w95_clients_b2b) p(0.05) 
+
+gen ihs_clients_b2b_99 = log(w99_clients_b2b + sqrt((w99_clients_b2b*w99_clients_b2b)+1))
+lab var ihs_clients_b2b_99 "IHS of number of international companies, wins.99th"
+gen ihs_clients_b2b_97 = log(w97_clients_b2b + sqrt((w97_clients_b2b*w97_clients_b2b)+1))
+lab var ihs_clients_b2b_97 "IHS of number of international companies, wins.97th"
+gen ihs_clients_b2b_95 = log(w95_clients_b2b + sqrt((w95_clients_b2b*w95_clients_b2b)+1))
+lab var ihs_clients_b2b_95 "IHS of number of international companies, wins.95th"
+
+*clients_b2c
+winsor clients_b2c, gen(w99_clients_b2c) p(0.01) 
+winsor clients_b2c, gen(w97_clients_b2c) p(0.03) 
+winsor clients_b2c, gen(w95_clients_b2c) p(0.05) 
+
+gen ihs_clients_b2c_99 = log(w99_clients_b2c + sqrt((w99_clients_b2c*w99_clients_b2c)+1))
+lab var ihs_clients_b2c_99 "IHS of number of international orders, wins.99th"
+gen ihs_clients_b2c_97 = log(w97_clients_b2c + sqrt((w97_clients_b2c*w97_clients_b2c)+1))
+lab var ihs_clients_b2c_97 "IHS of number of international orders, wins.97th"
+gen ihs_clients_b2c_95 = log(w95_clients_b2c + sqrt((w95_clients_b2c*w95_clients_b2c)+1))
+lab var ihs_clients_b2c_95 "IHS of number of international orders, wins.95th"
+*/
 *Total turnover variable
 	*In 2023
 winsor comp_ca2023, gen(w99_comp_ca2023) p(0.01) highonly
