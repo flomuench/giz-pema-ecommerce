@@ -463,6 +463,27 @@ putpdf paragraph, halign(center)
 putpdf image el_total_turnover.png
 putpdf pagebreak
 
+betterbar w99_comp_ca2024 w99_comp_ca2023 w99_comp_ca2020 if surveyround !=2, over(treatment) barlab ci ///     
+	title("Total turnover in dt, ihs transformed win. 99th", pos(12))
+gr export el_ihs_ca99.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_ca99.png
+putpdf pagebreak
+
+betterbar w97_comp_ca2024 w97_comp_ca2023 w97_comp_ca2020 if surveyround !=2, over(treatment) barlab ci ///     
+	title("Total turnover in dt, ihs transformed win. 97th", pos(12))
+gr export el_ihs_ca97.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_ca97.png
+putpdf pagebreak
+
+betterbar w95_comp_ca2024 w95_comp_ca2023 w95_comp_ca2020 if surveyround !=2, over(treatment) barlab ci ///     
+	title("Total turnover in dt, ihs transformed win. 95th", pos(12))
+gr export el_ihs_ca95.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_ca95.png
+putpdf pagebreak
+
     * Chiffre d'affaires total en dt en 2023 
  	foreach x of local take_up{	
  graph box comp_ca2023 if comp_ca2023 > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
@@ -518,6 +539,26 @@ putpdf paragraph, halign(center)
 putpdf image el_total_export_turnover.png
 putpdf pagebreak
 
+betterbar ihs_exports99_2024 ihs_exports99_2023 ihs_exports99_2020 if surveyround !=2, over(treatment) barlab ci ///     
+	title("Export turnover in dt, ihs transformed win. 99th", pos(12))
+gr export el_ihs_exports99.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_exports99.png
+putpdf pagebreak
+
+betterbar ihs_exports97_2024 ihs_exports97_2023 ihs_exports97_2020 if surveyround !=2, over(treatment) barlab ci ///     
+	title("Export turnover in dt, ihs transformed win. 97th", pos(12))
+gr export el_ihs_exports97.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_exports97.png
+putpdf pagebreak
+
+betterbar ihs_exports95_2024 ihs_exports95_2023 ihs_exports95_2020 if surveyround !=2, over(treatment) barlab ci ///     
+	title("Export turnover in dt, ihs transformed win. 95th", pos(12))
+gr export el_ihs_exports95.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_exports95.png
+putpdf pagebreak
    *Chiffre d'affaires à l’export en dt en 2023
  	foreach x of local take_up{	
  graph box compexp_2023 if compexp_2023 > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
@@ -634,10 +675,31 @@ putpdf pagebreak
 
 *Profit in TND
 betterbar comp_benefice2024 comp_benefice2023 comp_benefice2020 if surveyround !=2, over(treatment) barlab ci ///    
-	title("Company profit in dt", pos(12))
+	title("Company IHS transformed profit in dt", pos(12))
 gr export el_profit.png, replace
 putpdf paragraph, halign(center) 
 putpdf image el_profit.png
+putpdf pagebreak
+
+betterbar ihs_profit99_2024 ihs_profit99_2023 ihs_profit_2020_99 if surveyround !=2, over(treatment) barlab ci ///    
+	title("Company profit in dt, IHS transformed win. 99th", pos(12))
+gr export el_ihs_profit_99.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_profit_99.png
+putpdf pagebreak
+
+betterbar ihs_profit97_2024 ihs_profit97_2023 ihs_profit_2020_97 if surveyround !=2, over(treatment) barlab ci ///    
+	title("Company profit in dt, IHS transformed win. 97th", pos(12))
+gr export el_ihs_profit_97.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_profit_97.png
+putpdf pagebreak
+
+betterbar ihs_profit95_2024 ihs_profit95_2023 ihs_profit_2020_95 if surveyround !=2, over(treatment) barlab ci ///    
+	title("Company profit in dt, IHS transformed win. 95th", pos(12))
+gr export el_ihs_profit_95.png, replace
+putpdf paragraph, halign(center) 
+putpdf image el_ihs_profit_95.png
 putpdf pagebreak
 }
 ***********************************************************************
