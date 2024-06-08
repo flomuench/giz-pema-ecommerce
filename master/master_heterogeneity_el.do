@@ -312,7 +312,7 @@ end
 
 {
 local ys ///
-	 dsi dmi dtp dtai eri epi bpi dig_revenues_ecom dig_invest comp_ca2023 comp_ca2024 comp_benefit2023 comp_benefit2024
+	 dsi dmi dtp dtai eri epi bpi dig_revenues_ecom dig_invest comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024 dig_empl
 
 foreach var of local ys {
 		* generate YO
@@ -1452,6 +1452,7 @@ gr export el_het_sector1_`outcome'.png, replace
 ***********************************************************************
 * 	PART 3: B2C vs. B2B Heterogeneity (entreprise_models)
 ***********************************************************************
+/* NOT ENOUGH SAMPLE SIZE FOR CLIENTS==1
 {
 {
 local outcome "dtai"
@@ -2334,7 +2335,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "comp_benefit2023"
+local outcome "comp_benefice2023"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2414,7 +2415,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "comp_benefit2023"
+local outcome "comp_benefice2023"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2493,6 +2494,7 @@ gr export el_het_model_`outcome'.png, replace
 
 }
 }
+*/
 ***********************************************************************
 * 	PART 3: Size heterogeneity
 ***********************************************************************
@@ -3466,7 +3468,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "comp_benefit2023"
+local outcome "comp_benefice2023"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3546,7 +3548,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "comp_benefit2024"
+local outcome "comp_benefice2024"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
