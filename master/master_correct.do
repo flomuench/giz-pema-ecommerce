@@ -465,6 +465,158 @@ replace dig_revenues_ecom= 50000 if id_plateforme== 875 & surveyround==2
 replace fte= 15 if id_plateforme== 767 & surveyround==2
 
 ***********************************************************************
+* 	PART 3: endline data (surveyround==3)
+***********************************************************************
+	*id_plateforme 841
+replace comp_ca2024 = 999 if id_plateforme == 841 & surveyround == 3
+replace compexp_2024 = 999 if id_plateforme == 841 & surveyround == 3
+
+	*id_plateforme 773
+replace comp_ca2023 = 1200000 if id_plateforme == 773 & surveyround == 3
+
+	*id_plateforme 483
+replace dig_invest = 2000 if id_plateforme == 483 & surveyround == 3
+
+	*id_plateforme 735
+replace comp_ca2023 = 800000 if id_plateforme == 735 & surveyround == 3
+
+	*id_plateforme 716
+replace comp_ca2023 = 424000 if id_plateforme == 716 & surveyround == 3
+replace comp_ca2024 = 550000 if id_plateforme == 716 & surveyround == 3
+replace comp_ca2023 = 63600 if id_plateforme == 716 & surveyround == 3
+replace comp_ca2023 = 82500 if id_plateforme == 716 & surveyround == 3
+
+	*id_plateforme 827 // Refuses to give comptability
+local compta_vars "comp_ca2023 comp_ca2024 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
+
+foreach var of local compta_vars {
+	replace `var' = 888 if id_plateforme == 827 & surveyround == 3
+}
+
+	*id_plateforme 381
+replace comp_ca2023 = 11000 if id_plateforme == 381 & surveyround == 3
+replace comp_ca2024 = 15000 if id_plateforme == 381 & surveyround == 3
+replace compexp_2023 = 2000 if id_plateforme == 381 & surveyround == 3
+replace compexp_2024 = 5000 if id_plateforme == 381 & surveyround == 3
+replace comp_benefice2023 = 2000 if id_plateforme == 381 & surveyround == 3
+replace comp_benefice2023 = 4000 if id_plateforme == 381 & surveyround == 3
+
+	*id_plateforme 457
+replace dig_invest = 135 if id_plateforme == 457 & surveyround == 3 // EURO TO TND : 3.37 
+
+	*id_plateforme 237
+replace comp_ca2023 = 16000000 if id_plateforme == 237 & surveyround == 3
+replace comp_ca2024 = 5046270 if id_plateforme == 237 & surveyround == 3
+replace comp_benefice2023 = 0 if id_plateforme == 237 & surveyround == 3
+replace comp_benefice2024 = 30000 if id_plateforme == 237 & surveyround == 3
+replace mark_invest = 25000 if id_plateforme == 237 & surveyround == 3 
+replace dig_invest = 3000 if id_plateforme == 237 & surveyround == 3
+
+	*id_plateforme 541
+replace comp_ca2023 = 50000 if id_plateforme == 541 & surveyround == 3
+replace comp_ca2024 = 10000 if id_plateforme == 541 & surveyround == 3
+replace comp_benefice2023 = 20000 if id_plateforme == 541 & surveyround == 3
+replace comp_benefice2024 = 20000 if id_plateforme == 541 & surveyround == 3
+
+	*id_plateforme 925
+replace comp_benefice2023 = 999 if id_plateforme == 925 & surveyround == 3
+replace comp_benefice2024 = 999 if id_plateforme == 925 & surveyround == 3
+
+	*id_plateforme 478
+replace comp_ca2023 = 2700000 if id_plateforme == 478 & surveyround == 3
+replace compexp_2023 = 120000 if id_plateforme == 478 & surveyround == 3
+
+	*id_plateforme 466
+replace comp_ca2023 = 12000000 if id_plateforme == 466 & surveyround == 3
+
+	*id_plateforme 810 // Refuses to give comptability
+foreach var of local compta_vars {
+	replace `var' = 888 if id_plateforme == 810 & surveyround == 3
+}
+
+	*id_plateforme 323
+replace comp_ca2024 = 2900000 if id_plateforme == 323 & surveyround == 3
+
+	*id_plateforme 543
+replace compexp_2023 = 888 if id_plateforme == 543 & surveyround == 3
+replace compexp_2024 = 888 if id_plateforme == 543 & surveyround == 3
+
+	*id_plateforme 597
+replace comp_benefice2023 = 150000 if id_plateforme == 597 & surveyround == 3
+replace comp_benefice2024 = 170000 if id_plateforme == 597 & surveyround == 3
+
+	*id_plateforme 527
+replace compexp_2023 = 400000 if id_plateforme == 527 & surveyround == 3
+replace comp_ca2023 = 700000 if id_plateforme == 527 & surveyround == 3
+replace comp_ca2024 = 467000 if id_plateforme == 527 & surveyround == 3
+replace comp_benefice2023 = 700000 if id_plateforme == 527 & surveyround == 3
+replace comp_benefice2024 = 720000 if id_plateforme == 527 & surveyround == 3 
+
+	*id_plateforme 655
+replace compexp_2024 = 6500000 if id_plateforme == 655 & surveyround == 655
+
+	*id_plateforme 337
+replace comp_ca2024 = 10500000 if id_plateforme == 337 & surveyround == 3
+
+	*id_plateforme 488
+replace mark_invest = 25000 if id_plateforme == 488 & surveyround == 3
+
+	*id_plateforme 453
+replace comp_ca2024 = 1500000 if id_plateforme == 453 & surveyround == 3
+replace compexp_2024 = 1020000 if id_plateforme == 453 & surveyround == 3
+replace comp_benefice2023 = 100000 if id_plateforme == 453 & surveyround == 3
+
+	*id_plateforme 765
+replace comp_ca2024 = 999 if id_plateforme == 765 & surveyround == 3
+
+	*id_plateforme 259
+replace dig_invest = 0 if id_plateforme == 259 & surveyround == 3
+replace mark_invest = 750000 if id_plateforme == 259 & surveyround == 3
+replace comp_ca2023 = 1800000 if id_plateforme == 259 & surveyround == 3
+replace comp_ca2024 = 1800000 if id_plateforme == 259 & surveyround == 3
+
+	*id_plateforme 489
+replace mark_invest = 58961 if id_plateforme == 489 & surveyround ==3 //entre 15000euros et 20000 = 17500 * 3.37 Tunisian Dinar
+	
+	*id_plateforme 679
+replace comp_ca2023 = 1650000 if id_plateforme == 679 & surveyround == 3
+
+	*id_plateforme 511
+replace mark_invest = 1500000 if id_plateforme == 511 & surveyround == 3
+replace comp_benefice2023 = -180000 if id_plateforme == 511 & surveyround == 3
+replace comp_ca2023 = 1082864 if id_plateforme == 511 & surveyround == 3
+replace compexp_2020 = 1082864 if id_plateforme == 511 & surveyround == 3 // TOTALY EXPORTING.
+replace comp_benefice2023 = 18000000 if id_plateforme == 511 & surveyround == 3
+
+	*id_plateforme 547
+replace comp_ca2023 = 400000 if id_plateforme == 547 & surveyround == 3
+replace compexp_2023 = 50000 if id_plateforme == 547 & surveyround == 3
+replace comp_ca2024 = 250000 if id_plateforme == 547 & surveyround == 3
+replace compexp_2024 = 10000 if id_plateforme == 547 & surveyround == 3
+replace comp_benefice2023 = 30000 if id_plateforme == 547 & surveyround == 3
+replace comp_benefice2024 = 5000 if id_plateforme == 547 & surveyround == 3
+	
+	*id_plateforme 398
+replace fte = 1000 if id_plateforme == 398 & surveyround == 3
+replace car_carempl_div1 = 800 if id_plateforme == 398 & surveyround == 3
+replace car_carempl_div2 = 500 if id_plateforme == 398 & surveyround == 3
+replace car_carempl_div3 = 200 if id_plateforme == 398 & surveyround == 3
+
+	*id_plateforme 670
+replace comp_benefice2023 = -50000 if id_plateforme == 670 & surveyround == 3
+replace comp_ca2023 = -20000 if id_plateforme == 670 & surveyround == 3
+replace comp_benefice2023 = 500000 if id_plateforme == 670 & surveyround == 3
+replace comp_benefice2024 = 200000 if id_plateforme == 670 & surveyround == 3
+
+	*id_plateforme 443
+replace comp_benefice2023 = 2000000 if id_plateforme == 443 & surveyround == 3
+replace comp_benefice2024 = 3000000 if id_plateforme == 443 & surveyround == 3
+replace comp_ca2023 = 40000000 if id_plateforme == 443  & surveyround == 3
+replace comp_ca2024 = 48000000 if id_plateforme == 443  & surveyround == 3
+replace compexp_2023 = 26000000 if id_plateforme == 443  & surveyround == 3
+replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
+
+***********************************************************************
 * 	PART 3: Replacing missing values with zeros where applicable
 ***********************************************************************
 *Definition of all variables that are being used in index calculation*

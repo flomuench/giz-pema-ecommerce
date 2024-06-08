@@ -172,16 +172,16 @@ replace questions_needing_checks = questions_needing_checks + "CA export 2024 mo
 		* profit2023 just above zero
 
 replace needs_check = 1 if surveyround == 3 & comp_benefice2023 < 2500 & comp_benefice2023 != 666 & comp_benefice2023 != 777 & comp_benefice2023 != 888 ///
-	& comp_benefice2023 != 999 & comp_benefice2023 != . & comp_benefice2023 != 0 & comp_benefice2023 != 1234 
+	& comp_benefice2023 != 999 & comp_benefice2023 != . & comp_benefice2023 > 0 & comp_benefice2023 != 1234 
 replace questions_needing_checks = questions_needing_checks + "Benefice 2023 moins que 2500 TND / " if surveyround == 3 & comp_benefice2023 < 2500 ///
-	& comp_benefice2023 != 666 & comp_benefice2023 != 777 & comp_benefice2023 != 888 & comp_benefice2023 != 999 & comp_benefice2023 != . & comp_benefice2023 != 0 & comp_benefice2023 != 1234 
+	& comp_benefice2023 != 666 & comp_benefice2023 != 777 & comp_benefice2023 != 888 & comp_benefice2023 != 999 & comp_benefice2023 != . & comp_benefice2023 > 0 & comp_benefice2023 != 1234 
 
 		* profit2024 just above zero
 
 replace needs_check = 1 if surveyround == 3 & comp_benefice2024 < 2500 & comp_benefice2024 != 666 & comp_benefice2024 != 777 & comp_benefice2024 != 888 ///
-	& comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234
+	& comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 > 0 & comp_benefice2024 != 1234
 replace questions_needing_checks = questions_needing_checks + "benefice 2024 moins que 2500 TND / " if surveyround == 3 & comp_benefice2024 < 2500 ///
-	& comp_benefice2024 != 666 & comp_benefice2024 != 777 & comp_benefice2024 != 888 & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234
+	& comp_benefice2024 != 666 & comp_benefice2024 != 777 & comp_benefice2024 != 888 & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 > 0 & comp_benefice2024 != 1234
 
 
 		* profit2023 just below zero
@@ -335,15 +335,227 @@ foreach var of local compta_vars {
 	replace questions_needing_checks = questions_needing_checks + "`var' est 777, Il faut réécouter l'appel / " if surveyround == 3 & `var' == 777
 	
 }
-
 ***********************************************************************
 * 	PART 5:  Remove firms from needs_check in case calling them again did not solve the issue		
 ***********************************************************************
+replace needs_check = 0 if id_plateforme == 909 & surveyround == 3 // ElAmouri rechecked the call & comptability logical when checking activity/website of company
+
+replace needs_check = 0 if id_plateforme == 938 & surveyround == 3  // ElAmouri rechecked the call & comptability logical when checking activity/website of company
+
+replace needs_check = 0 if id_plateforme == 773 & surveyround == 3  // Fixed comp_ca2023
+
+replace needs_check = 0 if id_plateforme == 873 & surveyround == 3  // mark_online 3 is free / code fixed
+
+replace needs_check = 0 if id_plateforme == 890 & surveyround == 3  // mark_online 1 is free / code fixed
+
+replace needs_check = 0 if id_plateforme == 767 & surveyround == 3  // Will answer online
+
+replace needs_check = 0 if id_plateforme == 825 & surveyround == 3  // mark_online 1 is free / code fixed
+
+replace needs_check = 0 if id_plateforme == 650 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 381 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 457 & surveyround == 3 // Le montant du mark_dig est faible puisqu'on ne fait pas de ventes directes / vente en ligne. On a fait du sponsoring seulement deux fois. on est présent sur des plateformes seulement pour présenter les produits et l'entreprise. On ne fait pas trop de marketing digital dans notre entreprise
+
+replace needs_check = 0 if id_plateforme == 237 & surveyround == 3 // ElAmouri a appelé l'entreprise
+
+replace needs_check = 0 if id_plateforme == 541 & surveyround ==3 //Nous avons rappelé l'entreprise : dig_invest=0 mark online3= 1 : effort personnel
+
+replace needs_check = 0 if id_plateforme == 478 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 466 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 519 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 600 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 602 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 604 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 323 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 144 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 805 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 655 & surveyround == 3 // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 337 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 488 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 453 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 270 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 183 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 352 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 311 & surveyround == 3  // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 679 & surveyround == 3  // l'entreprise sous-traite ses activités digitales à une agence
+
+replace needs_check = 0 if id_plateforme == 91 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 846 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 511 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 511 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 547 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 581 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 398 & surveyround == 3   // ElAmouri rechecked the call
+
+replace needs_check = 0 if id_plateforme == 443 & surveyround == 3   // ElAmouri rechecked the call
+
+*extra cases (ElAmouri correction not enough)
+
+replace needs_check = 1 if id_plateforme == 896 & surveyround == 3
+replace questions_needing_check = questions_needing_check + "Profit plus grand que chiffre d'affaire qui est declaré 0 / " if id_plateforme == 896 & surveyround == 3
+
+replace needs_check = 1 if id_plateforme == 724 & surveyround == 3
+replace questions_needing_check = questions_needing_check + "Pourquoi il/elle a donné(e) des chiffres s'ils sont confidentiels ? / "  if id_plateforme == 724 & surveyround == 3
+
+replace needs_check = 1 if id_plateforme == 365 & surveyround == 3
+replace questions_needing_check = questions_needing_check + "L'entreprise refuse de donner les chiffres d'affaires ou c'est 0 ? / "  if id_plateforme == 365 & surveyround == 3
+
+replace needs_check = 1 if id_plateforme == 151 & surveyround == 3
+replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 151 & surveyround == 3
+
+replace needs_check = 1 if id_plateforme == 95 & surveyround == 3
+replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 95 & surveyround == 3
+***********************************************************************
+* 	PART 6:  Manually add tests for respondant position		
+***********************************************************************
+/*id_plateforme	id_ident_el	new_ident_repondent_position_el
+635	anwer	
+628	ibtissem hamdi	responsabe de production
+58	Abdelhakim Bouabdallah	
+78	BECHIR BEN MAAD	
+324	BEN OUIRANE KAMEL	DRH
+144	Mounir bousseeta	
+695	HEDI  FEKHI	
+765	olfa	responsable logistique
+398	khalil	
+629	ghofrane ghodhbene	
+508	dhoha	
+773	hafedh	gérant
+91	rym	
+213	hbib	
+521	chadlia	responsable juridique
+543	ilef kacem	responsable achat et export
+800	noomen	gérant
+655	moaataz ben hamouda	
+394	mohamed ali	administratif
+670	hela	responsable grh
+148	Amir masmoudi	
+821	hmida chamem	gérant
+576	bassem	
+587	mohamed rajdi	
+387	amyra ben youssef	
+443	IMEN AJILI	CORDINATRICE
+453	MADAME HAJER	RESPONSABLE ADMINSTRATIF
+846	Insaf	
+859	mariem bou zaida	
+373	ben rhouma rabiaa	resseponsable ressources humaines
+365	hayet	
+352	hechmi dhifi	
+890	Mohamed Ali Ragoubi	
+916	Fawzi Yaakouni	
+938	Radhouane Bouricha	
+959	Basma wachem	
+961	Nabil ben hsin	
+*/
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 635
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) anwer (variable vide) / " if surveyround == 3 & id_plateforme == 635
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 58
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Abdelhakim Bouabdallah (variable vide) / " if surveyround == 3 & id_plateforme == 58
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 78
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) BECHIR BEN MAAD (variable vide) / " if surveyround == 3 & id_plateforme == 78
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 144
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Mounir bousseeta (variable vide) / " if surveyround == 3 & id_plateforme == 144
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 695
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) HEDI FEKHI (variable vide) / " if surveyround == 3 & id_plateforme == 695
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 398
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) khalil (variable vide) / " if surveyround == 3 & id_plateforme == 398
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 629
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) ghofrane ghodhbene (variable vide) / " if surveyround == 3 & id_plateforme == 629
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 508
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) dhoha (variable vide) / " if surveyround == 3 & id_plateforme == 508
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 91
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) rym (variable vide) / " if surveyround == 3 & id_plateforme == 91
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 213
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) hbib (variable vide) / " if surveyround == 3 & id_plateforme == 213
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 655
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) moaataz ben hamouda (variable vide) / " if surveyround == 3 & id_plateforme == 655
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 394
+replace questions_needing_checks = questions_needing_checks + "Monsieur Mohamed Ali est indiqué comme administratif seulement. Quelle position occupe-t-il au sein de ce dernier ? / " if surveyround == 3 & id_plateforme == 394
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 148
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Amir masmoudi (variable vide) / " if surveyround == 3 & id_plateforme == 148
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 576
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) bassem (variable vide) / " if surveyround == 3 & id_plateforme == 576
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 587
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) mohamed rajdi (variable vide) / " if surveyround == 3 & id_plateforme == 587
+	
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 387
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) amyra ben youssef	(variable vide) / " if surveyround == 3 & id_plateforme == 387
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 387
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) amyra ben youssef	(variable vide) / " if surveyround == 3 & id_plateforme == 387
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 846
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Insaf (variable vide) / " if surveyround == 3 & id_plateforme == 846
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 859
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) mariem bou zaida (variable vide) / " if surveyround == 3 & id_plateforme == 859
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 365
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) hayet (variable vide) / " if surveyround == 3 & id_plateforme == 365
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 352
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) hechmi dhifi (variable vide) / " if surveyround == 3 & id_plateforme == 352
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 890
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Mohamed Ali Ragoubi (variable vide) / " if surveyround == 3 & id_plateforme == 890
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 916
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Fawzi Yaakouni (variable vide) / " if surveyround == 3 & id_plateforme == 916
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 938
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Radhouane Bouricha (variable vide) / " if surveyround == 3 & id_plateforme == 938
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 959
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Basma wachem (variable vide) / " if surveyround == 3 & id_plateforme == 959
+
+replace needs_check = 1 if surveyround == 3 & id_plateforme == 961
+replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Nabil ben hsin (variable vide) / " if surveyround == 3 & id_plateforme == 961
 
 
 ***********************************************************************
-* 	PART 6:  Export an excel sheet with needs_check variables  			
+* 	PART 7:  Export an excel sheet with needs_check variables  			
 ***********************************************************************
+merge m:1 id_plateforme using "${el_raw}/ecommerce_el_pii"
 
 preserve
 			* generate empty variable for survey institute comments/corrections
@@ -368,7 +580,8 @@ drop if el_completed < 1
 			* export excel file. manually add variables listed in questions_needing_check
 				* group variables into lists (locals) to facilitate overview
 local order_vars "id_plateforme surveyround survey_type needs_check attest commentaires_ElAmouri questions_needing_checks fte"
-local accounting_vars "`order_vars' comp_ca2023 comp_ca2024 export_1 export_2 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
+local respondent_vars "`order_vars' id_ident id_ident_el new_ident_repondent_position_el"
+local accounting_vars "`respondent_vars' comp_ca2023 comp_ca2024 export_1 export_2 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
 local dig_vars "`accounting_vars' dig_miseajour1 dig_miseajour2 dig_miseajour3 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_presence1 dig_presence2 dig_presence3"
 local fteoyee_vars "`dig_vars' car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_empl"
 
