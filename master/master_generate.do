@@ -148,16 +148,16 @@ lab var dig_con6_bl "Correct answers to knowledge question on Google Analaytics"
 ***********************************************************************	
 *regenerate winsorized IHS exports after slight modification of underlying variable
 *(assuming zero exports for firms that had missing value and declared to have not exported prior to 2021)
-winsor compexp_2020, gen(w99_compexp) p(0.01) highonly
-winsor compexp_2020, gen(w97_compexp) p(0.03) highonly
-winsor compexp_2020, gen(w95_compexp) p(0.05) highonly
+winsor compexp_2020, gen(w99_compexp2020) p(0.01) highonly
+winsor compexp_2020, gen(w97_compexp2020) p(0.03) highonly
+winsor compexp_2020, gen(w95_compexp2020) p(0.05) highonly
 
-gen ihs_exports99 = log(w99_compexp + sqrt((w99_compexp*w99_compexp)+1))
-lab var ihs_exports99 "IHS of exports in 2020, wins.99th"
-gen ihs_exports97 = log(w97_compexp + sqrt((w97_compexp*w97_compexp)+1))
-lab var ihs_exports97 "IHS of exports in 2020, wins.97th"
-gen ihs_exports95 = log(w95_compexp + sqrt((w95_compexp*w95_compexp)+1))
-lab var ihs_exports95 "IHS of exports in 2020, wins.95th"
+gen ihs_exports99_2020 = log(w99_compexp2020 + sqrt((w99_compexp2020*w99_compexp2020)+1))
+lab var ihs_exports99_2020 "IHS of exports in 2020, wins.99th"
+gen ihs_exports97_2020 = log(w97_compexp2020 + sqrt((w97_compexp2020*w97_compexp2020)+1))
+lab var ihs_exports97_2020 "IHS of exports in 2020, wins.97th"
+gen ihs_exports95_2020 = log(w95_compexp2020 + sqrt((w95_compexp2020*w95_compexp2020)+1))
+lab var ihs_exports95_2020 "IHS of exports in 2020, wins.95th"
 
 *generate domestic revenue from total revenue and exports
 gen dom_rev2020= comp_ca2020-compexp_2020
@@ -171,12 +171,12 @@ winsor comp_ca2020, gen(w99_comp_ca2020) p(0.01) highonly
 winsor comp_ca2020, gen(w97_comp_ca2020) p(0.03) highonly
 winsor comp_ca2020, gen(w95_comp_ca2020) p(0.05) highonly
 
-gen ihs_revenue99 = log(w99_comp_ca2020 + sqrt((w99_comp_ca2020*w99_comp_ca2020)+1))
-lab var ihs_revenue99 "IHS of revenue in 2020, wins.99th"
-gen ihs_revenue97 = log(w97_comp_ca2020 + sqrt((w97_comp_ca2020*w97_comp_ca2020)+1))
-lab var ihs_revenue97 "IHS of revenue in 2020, wins.97th"
-gen ihs_revenue95 = log(w95_comp_ca2020 + sqrt((w95_comp_ca2020*w95_comp_ca2020)+1))
-lab var ihs_revenue95 "IHS of revenue in 2020, wins.95th"
+gen ihs_ca99_2020 = log(w99_comp_ca2020 + sqrt((w99_comp_ca2020*w99_comp_ca2020)+1))
+lab var ihs_ca99_2020 "IHS of revenue in 2020, wins.99th"
+gen ihs_ca97_2020 = log(w97_comp_ca2020 + sqrt((w97_comp_ca2020*w97_comp_ca2020)+1))
+lab var ihs_ca97_2020 "IHS of revenue in 2020, wins.97th"
+gen ihs_ca95_2020 = log(w95_comp_ca2020 + sqrt((w95_comp_ca2020*w95_comp_ca2020)+1))
+lab var ihs_ca95_2020 "IHS of revenue in 2020, wins.95th"
 
 
 * digital revenues
@@ -186,6 +186,19 @@ winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly
 ihstrans w97_dig_rev20
 winsor dig_revenues_ecom, gen(w99_dig_rev20) p(0.01) highonly
 ihstrans w99_dig_rev20
+
+*re-generate total profit with additional winsors
+
+winsor comp_benefice2020, gen(w99_comp_benefice2020) p(0.01) highonly
+winsor comp_benefice2020, gen(w97_comp_benefice2020) p(0.03) highonly
+winsor comp_benefice2020, gen(w95_comp_benefice2020) p(0.05) highonly
+
+gen ihs_profit_2020_99 = log(w99_comp_benefice2020 + sqrt((w99_comp_benefice2020*w99_comp_benefice2020)+1))
+lab var ihs_profit_2020_99 "IHS of profit in 2020, wins.99th"
+gen ihs_profit_2020_97 = log(w97_comp_benefice2020 + sqrt((w97_comp_benefice2020*w97_comp_benefice2020)+1))
+lab var ihs_profit_2020_97 "IHS of profit in 2020, wins.97th"
+gen ihs_profit_2020_95 = log(w95_comp_benefice2020 + sqrt((w95_comp_benefice2020*w95_comp_benefice2020)+1))
+lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 
 ***********************************************************************
 *PART 4. Index Creation
@@ -443,6 +456,7 @@ label value ssa_aggregate yesno1
 ***********************************************************************
 *PART 8: Creation of index for the endline
 ***********************************************************************	
+
 	* Put all variables used to calculate indices into a local
 			*Digital sales index
 local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_prix dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
@@ -535,6 +549,147 @@ label var eri_points "Export readiness index points"
 
 *drop temporary vars		  
 drop temp_*
+
+
+***********************************************************************
+*PART 9: Transform enline variables
+***********************************************************************	
+*Digital investment
+winsor dig_invest, gen(w99_dig_invest) p(0.01) highonly
+winsor dig_invest, gen(w97_dig_invest) p(0.03) highonly
+winsor dig_invest, gen(w95_dig_invest) p(0.05) highonly
+
+gen ihs_dig_invest_99 = log(w99_dig_invest + sqrt((w99_dig_invest*w99_dig_invest)+1))
+lab var ihs_dig_invest_99 "IHS of digital investment, wins.99th"
+gen ihs_dig_invest_97 = log(w97_dig_invest + sqrt((w97_dig_invest*w97_dig_invest)+1))
+lab var ihs_dig_invest_97 "IHS of digital investment, wins.97th"
+gen ihs_dig_invest_95 = log(w95_dig_invest + sqrt((w95_dig_invest*w95_dig_invest)+1))
+lab var ihs_dig_invest_95 "IHS of digital investment, wins.95th"
+
+*Offine marketing investment
+winsor mark_invest, gen(w99_mark_invest) p(0.01) highonly
+winsor mark_invest, gen(w97_mark_invest) p(0.03) highonly
+winsor mark_invest, gen(w95_mark_invest) p(0.05) highonly
+
+gen ihs_mark_invest_99 = log(w99_mark_invest + sqrt((w99_mark_invest*w99_mark_invest)+1))
+lab var ihs_mark_invest_99 "IHS of offine marketing investment, wins.99th"
+gen ihs_mark_invest_97 = log(w97_mark_invest + sqrt((w97_mark_invest*w97_mark_invest)+1))
+lab var ihs_mark_invest_97 "IHS of offine marketing investment, wins.97th"
+gen ihs_mark_invest_95 = log(w95_mark_invest + sqrt((w95_mark_invest*w95_mark_invest)+1))
+lab var ihs_mark_invest_95 "IHS of offine marketing investment, wins.95th"
+
+*Full time employees
+winsor fte, gen(w99_fte) p(0.01) highonly
+winsor fte, gen(w97_fte) p(0.03) highonly
+winsor fte, gen(w95_fte) p(0.05) highonly
+
+gen ihs_fte_99 = log(w99_fte + sqrt((w99_fte*w99_fte)+1))
+lab var ihs_fte_99 "IHS of full time employees, wins.99th"
+gen ihs_fte_97 = log(w97_fte + sqrt((w97_fte*w97_fte)+1))
+lab var ihs_fte_97 "IHS of full time employees, wins.97th"
+gen ihs_fte_95 = log(w95_fte + sqrt((w95_fte*w95_fte)+1))
+lab var ihs_fte_95 "IHS of full time employees, wins.95th"
+
+/*clients_b2b
+winsor clients_b2b, gen(w99_clients_b2b) p(0.01)
+winsor clients_b2b, gen(w97_clients_b2b) p(0.03) 
+winsor clients_b2b, gen(w95_clients_b2b) p(0.05) 
+
+gen ihs_clients_b2b_99 = log(w99_clients_b2b + sqrt((w99_clients_b2b*w99_clients_b2b)+1))
+lab var ihs_clients_b2b_99 "IHS of number of international companies, wins.99th"
+gen ihs_clients_b2b_97 = log(w97_clients_b2b + sqrt((w97_clients_b2b*w97_clients_b2b)+1))
+lab var ihs_clients_b2b_97 "IHS of number of international companies, wins.97th"
+gen ihs_clients_b2b_95 = log(w95_clients_b2b + sqrt((w95_clients_b2b*w95_clients_b2b)+1))
+lab var ihs_clients_b2b_95 "IHS of number of international companies, wins.95th"
+
+*clients_b2c
+winsor clients_b2c, gen(w99_clients_b2c) p(0.01) 
+winsor clients_b2c, gen(w97_clients_b2c) p(0.03) 
+winsor clients_b2c, gen(w95_clients_b2c) p(0.05) 
+
+gen ihs_clients_b2c_99 = log(w99_clients_b2c + sqrt((w99_clients_b2c*w99_clients_b2c)+1))
+lab var ihs_clients_b2c_99 "IHS of number of international orders, wins.99th"
+gen ihs_clients_b2c_97 = log(w97_clients_b2c + sqrt((w97_clients_b2c*w97_clients_b2c)+1))
+lab var ihs_clients_b2c_97 "IHS of number of international orders, wins.97th"
+gen ihs_clients_b2c_95 = log(w95_clients_b2c + sqrt((w95_clients_b2c*w95_clients_b2c)+1))
+lab var ihs_clients_b2c_95 "IHS of number of international orders, wins.95th"
+*/
+*Total turnover variable
+	*In 2023
+winsor comp_ca2023, gen(w99_comp_ca2023) p(0.01) highonly
+winsor comp_ca2023, gen(w97_comp_ca2023) p(0.03) highonly
+winsor comp_ca2023, gen(w95_comp_ca2023) p(0.05) highonly
+
+gen ihs_ca99_2023 = log(w99_comp_ca2023 + sqrt((w99_comp_ca2023*w99_comp_ca2023)+1))
+lab var ihs_ca99_2023 "IHS of total turnover in 2023, wins.99th"
+gen ihs_ca97_2023 = log(w97_comp_ca2023 + sqrt((w97_comp_ca2023*w97_comp_ca2023)+1))
+lab var ihs_ca97_2023 "IHS of total turnover in 2023, wins.97th"
+gen ihs_ca95_2023 = log(w95_comp_ca2023 + sqrt((w95_comp_ca2023*w95_comp_ca2023)+1))
+lab var ihs_ca95_2023 "IHS of total turnover in 2023, wins.95th"
+
+	*In 2024
+winsor comp_ca2024, gen(w99_comp_ca2024) p(0.01) highonly
+winsor comp_ca2024, gen(w97_comp_ca2024) p(0.03) highonly
+winsor comp_ca2024, gen(w95_comp_ca2024) p(0.05) highonly
+
+gen ihs_ca99_2024 = log(w99_comp_ca2024 + sqrt((w99_comp_ca2024*w99_comp_ca2024)+1))
+lab var ihs_ca99_2024 "IHS of total turnover in 2024, wins.99th"
+gen ihs_ca97_2024 = log(w97_comp_ca2024 + sqrt((w97_comp_ca2024*w97_comp_ca2024)+1))
+lab var ihs_ca97_2024 "IHS of total turnover in 2024, wins.97th"
+gen ihs_ca95_2024 = log(w95_comp_ca2024 + sqrt((w95_comp_ca2024*w95_comp_ca2024)+1))
+lab var ihs_ca95_2024 "IHS of total turnover in 2024, wins.95th"
+
+
+*Export turnover variable
+	*In 2023
+winsor compexp_2023, gen(w99_compexp2023) p(0.01) highonly
+winsor compexp_2023, gen(w97_compexp2023) p(0.03) highonly
+winsor compexp_2023, gen(w95_compexp2023) p(0.05) highonly
+
+gen ihs_exports99_2023 = log(w99_compexp2023 + sqrt((w99_compexp2023*w99_compexp2023)+1))
+lab var ihs_exports99_2023 "IHS of exports in 2023, wins.99th"
+gen ihs_exports97_2023 = log(w97_compexp2023 + sqrt((w97_compexp2023*w97_compexp2023)+1))
+lab var ihs_exports97_2023 "IHS of exports in 2023, wins.97th"
+gen ihs_exports95_2023 = log(w95_compexp2023 + sqrt((w95_compexp2023*w95_compexp2023)+1))
+lab var ihs_exports95_2023 "IHS of exports in 2023, wins.95th"
+
+	*In 2024
+winsor compexp_2024, gen(w99_compexp2024) p(0.01) highonly
+winsor compexp_2024, gen(w97_compexp2024) p(0.03) highonly
+winsor compexp_2024, gen(w95_compexp2024) p(0.05) highonly
+
+gen ihs_exports99_2024 = log(w99_compexp2024 + sqrt((w99_compexp2024*w99_compexp2024)+1))
+lab var ihs_exports99_2024 "IHS of exports in 2024, wins.99th"
+gen ihs_exports97_2024 = log(w97_compexp2024 + sqrt((w97_compexp2024*w97_compexp2024)+1))
+lab var ihs_exports97_2024 "IHS of exports in 2024, wins.97th"
+gen ihs_exports95_2024 = log(w95_compexp2024 + sqrt((w95_compexp2024*w95_compexp2024)+1))
+lab var ihs_exports95_2024 "IHS of exports in 2024, wins.95th"
+
+	
+*Profit variable
+	*In 2023
+winsor comp_benefice2023, gen(w99_comp_benefice2023) p(0.01) highonly
+winsor comp_benefice2023, gen(w97_comp_benefice2023) p(0.03) highonly
+winsor comp_benefice2023, gen(w95_comp_benefice2023) p(0.05) highonly
+
+gen ihs_profit99_2023 = log(w99_comp_benefice2023 + sqrt((w99_comp_benefice2023*w99_comp_benefice2023)+1))
+lab var ihs_profit99_2023 "IHS of profit in 2023, wins.99th"
+gen ihs_profit97_2023 = log(w97_comp_benefice2023 + sqrt((w97_comp_benefice2023*w97_comp_benefice2023)+1))
+lab var ihs_profit97_2023 "IHS of profit in 2023, wins.97th"
+gen ihs_profit95_2023 = log(w95_comp_benefice2023 + sqrt((w95_comp_benefice2023*w95_comp_benefice2023)+1))
+lab var ihs_profit95_2023 "IHS of profit in 2023, wins.95th"
+
+	*In 2024
+winsor comp_benefice2024, gen(w99_comp_benefice2024) p(0.01) highonly
+winsor comp_benefice2024, gen(w97_comp_benefice2024) p(0.03) highonly
+winsor comp_benefice2024, gen(w95_comp_benefice2024) p(0.05) highonly
+
+gen ihs_profit99_2024 = log(w99_comp_benefice2024 + sqrt((w99_comp_benefice2024*w99_comp_benefice2024)+1))
+lab var ihs_profit99_2024 "IHS of profit in 2024, wins.99th"
+gen ihs_profit97_2024 = log(w97_comp_benefice2024 + sqrt((w97_comp_benefice2024*w97_comp_benefice2024)+1))
+lab var ihs_profit97_2024 "IHS of profit in 2024, wins.97th"
+gen ihs_profit95_2024 = log(w95_comp_benefice2024 + sqrt((w95_comp_benefice2024*w95_comp_benefice2024)+1))
+lab var ihs_profit95_2024 "IHS of profit in 2024, wins.95th"
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

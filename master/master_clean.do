@@ -32,6 +32,10 @@ replace `x' = stritrim(strtrim(`x'))
 
 *Put correct labels 
 	* treatment status
+*replace treatment="0" if treatment== "Control"
+*replace treatment="1" if treatment== "Treatment"
+*destring treatment, replace
+*recast int treatment
 lab def treatment_status 0 "Control" 1 "Treatment" 
 lab values treatment treatment_status
 
@@ -52,7 +56,7 @@ lab def presence_seo 1 "present for SEO phase" 0 "absent"
 lab values take_up_std presence_seo
 
 lab def presence_smo 1 "present for social medias organic phase" 0 "absent"	
-lab values take_up_smo presence_seo
+lab values take_up_smo presence_smo
 
 lab def presence_for 1 "present for classroom training" 0 "absent"	
 lab values take_up_for presence_for
@@ -66,8 +70,10 @@ lab values take_up_website presence_site
 lab def presence_heber 1 "bought the website" 0 "absent"	
 lab values take_up_heber presence_heber
 
-   
-	
+	*Label variables
+label var compexp_2020 "Total turnover in 2020"
+label var comp_ca2020 "Export turnover in 2020"
+label var comp_benefice2020	"Company profit in 2020"
 	
 	
 	* numeric 
