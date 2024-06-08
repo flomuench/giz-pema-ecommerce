@@ -39,8 +39,19 @@ tab treatment
 */ 
 
 drop _merge
-
 ***********************************************************************
-* 	PART 2: Save in bl_final folder
+* 	PART 2: Label treatment status
+***********************************************************************
+replace treatment ="0" if treatment=="Control"
+replace treatment ="1" if treatment=="Treatment"
+
+destring treatment, replace
+format treatment %25.0fc
+
+label var treatment "Treatment status"
+label define treat 0 "Control" 1 "Treatment" 
+label values treatment treat 
+***********************************************************************
+* 	PART 3: Save in bl_final folder
 ***********************************************************************
 save "${bl_final}/bl_final", replace

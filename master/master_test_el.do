@@ -77,7 +77,7 @@ foreach var of local dig_updates {
 /* --------------------------------------------------------------------
 	PART 2.3: Marketing & Communication
 ----------------------------------------------------------------------*/
-local dig_marketing "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
+local dig_marketing "mark_online2 mark_online4"
 *online marketing
 	*uses marketing tools but does not have any digital employees
 foreach var of local dig_marketing {

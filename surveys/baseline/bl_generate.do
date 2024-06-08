@@ -284,6 +284,17 @@ drop temp_dig_con1z temp_dig_con2z temp_dig_con3z temp_dig_con4z temp_dig_con5z 
 
 drop temp_dig_con1 temp_dig_con2 temp_dig_con3 temp_dig_con4 temp_dig_con5 temp_dig_con6_score temp_dig_presence_score temp_dig_miseajour1 temp_dig_miseajour2 temp_dig_miseajour3 temp_dig_payment1 temp_dig_payment2 temp_dig_payment3 temp_dig_vente temp_dig_marketing_lien temp_dig_marketing_ind1 temp_dig_marketing_ind2 temp_dig_marketing_score temp_dig_logistique_entrepot temp_dig_service_responsable temp_dig_service_satisfaction temp_expprep_cible temp_expprep_norme temp_expprep_demande temp_exp_per temp_dig_description1 temp_dig_description2 temp_dig_description3 temp_dig_mar_res_per temp_dig_ser_res_per temp_exp_prep_res_per t_dig_logistique_retour_scorez temp_exp_pays_avg
 
+
+**************************************************************************
+* 	PART 5: Generate refusal var		  										  
+**************************************************************************
+drop dup
+
+*gen refus variable
+duplicates tag id_plateforme, gen(dup)
+gen bl_refus = (dup < 1)
+drop dup
+
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************

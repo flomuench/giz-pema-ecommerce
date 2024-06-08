@@ -48,6 +48,25 @@ bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
 
 *replace take_up2=0 if take_up2==. 
 
+*take_up_sm qui est = 1 si soit take_up_seo ou take_up_smads or take_up_smo = 1
+gen take_up_sm = 0
+lab var take_up_sm "Presence in one social media activity"
+
+replace take_up_sm = 1 if (take_up_seo == 1 | take_up_smo == 1 | take_up_smads == 1)
+
+
+*gen take_up_web_sm qui est = 1 si take_up_sm == 1 | take_up_website == 1
+gen take_up_web_sm = 0
+lab var take_up_web_sm "Presence in one social media activity OR website activity"
+
+replace take_up_web_sm = 1 if (take_up_sm == 1 | take_up_website == 1)
+
+*gen take_up  take_up_for == 1 & (take_up_sm == 1 | take_up_website == 1)
+gen take_up = 0
+lab var take_up "Presence in 3/5 workshops & 1 digital activity (Web/Social media)"
+
+replace take_up = 1 if take_up_for == 1 & take_up_web_sm == 1
+
 /*create simplified training group variable (tunis vs. non-tunis)
 gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
@@ -371,6 +390,13 @@ lab var needs_check" if larger than 0, this rows needs to be checked"
 *tsfill, full
 
 *generate attrition variables for baseline, midline and endline
+gen el_attrit2 = .
+replace el_attrit2=1 if treatment ==. 
+bysort id_plateforme : mipolate el_attrit2 surveyround, gen(el_attrit) groupwise
+replace el_attrit=0 if el_attrit==.
+drop el_attrit2
+lab var el_attrit "Not present in endline"
+
 gen ml_attrit2 = .
 replace ml_attrit2=1 if treatment ==. 
 bysort id_plateforme : mipolate ml_attrit2 surveyround, gen(ml_attrit) groupwise
