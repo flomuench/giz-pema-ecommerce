@@ -137,14 +137,16 @@ replace questions_needing_checks = questions_needing_checks + "L'entreprise n'ex
 	* Profits > sales 2023
 
 replace needs_check = 1 if surveyround == 3 & comp_benefice2023 > comp_ca2023 & comp_benefice2023 != 666 & comp_benefice2023 != 777 & comp_benefice2023 != 888 & comp_benefice2023 != 999 & comp_benefice2023 != 1234 & comp_benefice2023 != . ///
-	& comp_benefice2023 != 0 & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != . & comp_ca2023 != 0 & comp_ca2023 != 1234
-replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que CA 2023 / "  if surveyround == 3 & comp_benefice2023 > comp_ca2023 & comp_benefice2023 != 666 & comp_benefice2023 != 777 & comp_benefice2023 != 888 & 	  comp_benefice2023 != 999 & comp_benefice2023 != 1234 & comp_benefice2023 != . & comp_benefice2023 != 0 & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != . & comp_ca2023 != 0 & comp_ca2023 != 1234
+	& comp_benefice2023 != 0 & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != . & comp_ca2023 != 0 & comp_ca2023 != 1234 & profit_2023_category_perte!=1 & profit_2023_category_perte!=2 & profit_2023_category_perte!=3 & profit_2023_category_perte!=4 & profit_2023_category_perte!=5 & profit_2023_category_gain!=1 & profit_2023_category_gain!=2 & profit_2023_category_gain!=3 & profit_2023_category_gain!=4 & profit_2023_category_gain!=5 
+replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que CA 2023 / "  if surveyround == 3 & comp_benefice2023 > comp_ca2023 & comp_benefice2023 != 666 & comp_benefice2023 != 777 & comp_benefice2023 != 888 & 	  comp_benefice2023 != 999 & comp_benefice2023 != 1234 & comp_benefice2023 != . & comp_benefice2023 != 0 & comp_ca2023 != 666 & comp_ca2023 != 777 & comp_ca2023 != 888 & comp_ca2023 != 999 & comp_ca2023 != . & comp_ca2023 != 0 & comp_ca2023 != 1234 & profit_2023_category_perte!=1 & profit_2023_category_perte!=2 & profit_2023_category_perte!=3 & profit_2023_category_perte!=4 & profit_2023_category_perte!=5 & profit_2023_category_gain!=1 & profit_2023_category_gain!=2 & profit_2023_category_gain!=3 & profit_2023_category_gain!=4 & profit_2023_category_gain!=5 
 
 	* Profits > sales 2024
 	
 replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > comp_ca2024 & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234 & ///
-	comp_benefice2024 != 666 & comp_benefice2024 != 777  & comp_benefice2024 != 888  & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234
-replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que CA 2024 / " if surveyround == 3 & comp_benefice2024 > comp_ca2024 & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234 & comp_benefice2024 != 666 & comp_benefice2024 != 777  & comp_benefice2024 != 888  & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234 
+	comp_benefice2024 != 666 & comp_benefice2024 != 777  & comp_benefice2024 != 888  & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234 & profit_2024_category_perte!=1 & profit_2024_category_perte!=2 & profit_2024_category_perte!=3 & profit_2024_category_perte!=4 & profit_2024_category_perte!=5 & profit_2024_category_gain!=1 & profit_2024_category_gain!=2 & profit_2024_category_gain!=3 & profit_2024_category_gain!=4 & profit_2024_category_gain!=5 
+
+replace questions_needing_checks = questions_needing_checks + "Benefices sont plus élevés que CA 2024 / " if surveyround == 3 & comp_benefice2024 > comp_ca2024 & comp_ca2024 != 666 & comp_ca2024 != 777 & comp_ca2024 != 888 & comp_ca2024 != 999 & comp_ca2024 != . & comp_ca2024 != 0 & comp_ca2024 != 1234 & comp_benefice2024 != 666 & comp_benefice2024 != 777  & comp_benefice2024 != 888  & comp_benefice2024 != 999 & comp_benefice2024 != . & comp_benefice2024 != 0 & comp_benefice2024 != 1234 & profit_2024_category_perte!=1 & profit_2024_category_perte!=2 & profit_2024_category_perte!=3 & profit_2024_category_perte!=4 & profit_2024_category_perte!=5 & profit_2024_category_gain!=1 & profit_2024_category_gain!=2 & profit_2024_category_gain!=3 & profit_2024_category_gain!=4 & profit_2024_category_gain!=5 
+
 
 	* Outliers/extreme values: Very low values
 		* ca2023 just above zero
@@ -197,14 +199,17 @@ replace questions_needing_checks = questions_needing_checks + "benefice 2024 + q
 	& comp_benefice2024 != . & comp_benefice2024 != 1234 & comp_benefice2024 != 0
 
 		*profit 2023 very big value
-replace needs_check = 1 if surveyround == 3 & comp_benefice2023 > 1000000 & comp_benefice2023 != . 
-replace questions_needing_checks = questions_needing_checks + "Profit 2023 trop grand, supérieur à 1 millions de dinars / " if surveyround == 3 & comp_benefice2023 > 1000000 & comp_benefice2023 != . 
+replace needs_check = 1 if surveyround == 3 & comp_benefice2023 > 1000000 & comp_benefice2023 != . & profit_2023_category_perte!=1 & profit_2023_category_perte!=2 & profit_2023_category_perte!=3 & profit_2023_category_perte!=4 & profit_2023_category_perte!=5 & profit_2023_category_gain!=1 & profit_2023_category_gain!=2 & profit_2023_category_gain!=3 & profit_2023_category_gain!=4 & profit_2023_category_gain!=5 
+
+replace questions_needing_checks = questions_needing_checks + "Profit 2023 trop grand, supérieur à 1 millions de dinars / " if surveyround == 3 & comp_benefice2023 > 1000000 & comp_benefice2023 != . & profit_2023_category_perte!=1 & profit_2023_category_perte!=2 & profit_2023_category_perte!=3 & profit_2023_category_perte!=4 & profit_2023_category_perte!=5 & profit_2023_category_gain!=1 & profit_2023_category_gain!=2 & profit_2023_category_gain!=3 & profit_2023_category_gain!=4 & profit_2023_category_gain!=5 
+
 
 
 		*profit2024 very big value
 				
-replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > 1000000 & comp_benefice2024 != . 
-replace questions_needing_checks = questions_needing_checks + "Profit 2024 trop grand, supérieur à 1 millions de dinars / " if surveyround == 3 & comp_benefice2024 > 1000000 & comp_benefice2024 != . 
+replace needs_check = 1 if surveyround == 3 & comp_benefice2024 > 1000000 & comp_benefice2024 != . & profit_2024_category_perte!=1 & profit_2024_category_perte!=2 & profit_2024_category_perte!=3 & profit_2024_category_perte!=4 & profit_2024_category_perte!=5 & profit_2024_category_gain!=1 & profit_2024_category_gain!=2 & profit_2024_category_gain!=3 & profit_2024_category_gain!=4 & profit_2024_category_gain!=5 
+
+replace questions_needing_checks = questions_needing_checks + "Profit 2024 trop grand, supérieur à 1 millions de dinars / " if surveyround == 3 & comp_benefice2024 > 1000000 & comp_benefice2024 != . & profit_2024_category_perte!=1 & profit_2024_category_perte!=2 & profit_2024_category_perte!=3 & profit_2024_category_perte!=4 & profit_2024_category_perte!=5 & profit_2024_category_gain!=1 & profit_2024_category_gain!=2 & profit_2024_category_gain!=3 & profit_2024_category_gain!=4 & profit_2024_category_gain!=5 
 
 	*invest > CA
 local invest_vars "mark_invest dig_invest"
@@ -339,80 +344,158 @@ foreach var of local compta_vars {
 * 	PART 5:  Remove firms from needs_check in case calling them again did not solve the issue		
 ***********************************************************************
 replace needs_check = 0 if id_plateforme == 909 & surveyround == 3 // ElAmouri rechecked the call & comptability logical when checking activity/website of company
+replace questions_needing_check = "" if id_plateforme == 909 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 938 & surveyround == 3  // ElAmouri rechecked the call & comptability logical when checking activity/website of company
+replace questions_needing_check = "" if id_plateforme == 938 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 773 & surveyround == 3  // Fixed comp_ca2023
+replace questions_needing_check = "" if id_plateforme == 773 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 873 & surveyround == 3  // mark_online 3 is free / code fixed
+replace questions_needing_check = "" if id_plateforme == 873 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 890 & surveyround == 3  // mark_online 1 is free / code fixed
+replace questions_needing_check = "" if id_plateforme == 890 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 767 & surveyround == 3  // Will answer online
+replace questions_needing_check = "" if id_plateforme == 767 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 825 & surveyround == 3  // mark_online 1 is free / code fixed
+replace questions_needing_check = "" if id_plateforme == 825 & surveyround == 3
+
+
+replace needs_check = 0 if id_plateforme == 483 & surveyround == 3  // dig_invest fixed
+replace questions_needing_check = "" if id_plateforme == 483 & surveyround == 3
 
 replace needs_check = 0 if id_plateforme == 650 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 650 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 381 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 381 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 457 & surveyround == 3 // Le montant du mark_dig est faible puisqu'on ne fait pas de ventes directes / vente en ligne. On a fait du sponsoring seulement deux fois. on est présent sur des plateformes seulement pour présenter les produits et l'entreprise. On ne fait pas trop de marketing digital dans notre entreprise
+replace questions_needing_check = "" if id_plateforme == 457 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 237 & surveyround == 3 // ElAmouri a appelé l'entreprise
+replace questions_needing_check = "" if id_plateforme == 237 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 541 & surveyround ==3 //Nous avons rappelé l'entreprise : dig_invest=0 mark online3= 1 : effort personnel
+replace questions_needing_check = "" if id_plateforme == 541 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 478 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 478 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 466 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 466 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 519 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 519 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 600 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 600 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 602 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 602 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 604 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 604 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 323 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 323 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 144 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 144 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 805 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 805 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 655 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 655 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 337 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 337 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 488 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 488 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 453 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 453 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 270 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 270 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 183 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 183 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 352 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 352 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 311 & surveyround == 3  // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 311 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 679 & surveyround == 3  // l'entreprise sous-traite ses activités digitales à une agence
+replace questions_needing_check = "" if id_plateforme == 679 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 91 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 91 & surveyround == 3
 
 replace needs_check = 0 if id_plateforme == 846 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 846 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 511 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 511 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 511 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 511 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 547 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 547 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 581 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 581 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 398 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 398 & surveyround == 3
+
 
 replace needs_check = 0 if id_plateforme == 443 & surveyround == 3   // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 443 & surveyround == 3
+
 
 *extra cases (ElAmouri correction not enough)
 
@@ -427,6 +510,9 @@ replace questions_needing_check = questions_needing_check + "L'entreprise refuse
 
 replace needs_check = 1 if id_plateforme == 151 & surveyround == 3
 replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 151 & surveyround == 3
+
+replace needs_check = 1 if id_plateforme == 527 & surveyround == 3
+replace questions_needing_check = "Même avec la correction, benefices reste plus élevés que CA 2024." if id_plateforme == 527 & surveyround == 3
 
 replace needs_check = 1 if id_plateforme == 95 & surveyround == 3
 replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 95 & surveyround == 3
@@ -518,9 +604,6 @@ replace questions_needing_checks = questions_needing_checks + "Veuillez vérifie
 replace needs_check = 1 if surveyround == 3 & id_plateforme == 587
 replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) mohamed rajdi (variable vide) / " if surveyround == 3 & id_plateforme == 587
 	
-replace needs_check = 1 if surveyround == 3 & id_plateforme == 387
-replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) amyra ben youssef	(variable vide) / " if surveyround == 3 & id_plateforme == 387
-
 replace needs_check = 1 if surveyround == 3 & id_plateforme == 387
 replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) amyra ben youssef	(variable vide) / " if surveyround == 3 & id_plateforme == 387
 

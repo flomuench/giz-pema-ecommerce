@@ -223,6 +223,168 @@ replace herber_refus="j'ai achété et j'ai tout" if herber_refus=="chrit w aand
 replace herber_refus="elle ne sait pas" if herber_refus=="ma taarech"
 replace herber_refus="la marque prada a fait une réclamation contre le nom de la marque" if herber_refus=="la marque prada taati eetiradh aal esem el marque"
 replace herber_refus="j'ai peur l'argent soit volé" if herber_refus=="khayef la flouso tetsrek"
+
+***********************************************************************
+* 	PART 7:  fiche de correction fixes
+***********************************************************************
+	*id_plateforme 841
+replace comp_ca2024 = 999 if id_plateforme == 841 
+replace compexp_2024 = 999 if id_plateforme == 841 
+
+	*id_plateforme 773
+replace comp_ca2023 = 1200000 if id_plateforme == 773 
+
+	*id_plateforme 483
+replace dig_invest = 2000 if id_plateforme == 483 
+
+	*id_plateforme 735
+replace comp_ca2023 = 800000 if id_plateforme == 735 
+
+	*id_plateforme 716
+replace comp_ca2023 = 424000 if id_plateforme == 716 
+replace comp_ca2024 = 550000 if id_plateforme == 716 
+replace compexp_2023 = 63600 if id_plateforme == 716 
+replace compexp_2024 = 82500 if id_plateforme == 716 
+
+	*id_plateforme 827 // Refuses to give comptability
+local compta_vars "comp_ca2023 comp_ca2024 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
+
+foreach var of local compta_vars {
+	replace `var' = 888 if id_plateforme == 827 
+}
+
+	*id_plateforme 381
+replace comp_ca2023 = 11000 if id_plateforme == 381 
+replace comp_ca2024 = 15000 if id_plateforme == 381 
+replace compexp_2023 = 2000 if id_plateforme == 381 
+replace compexp_2024 = 5000 if id_plateforme == 381 
+replace comp_benefice2023 = 2000 if id_plateforme == 381 
+replace comp_benefice2024 = 4000 if id_plateforme == 381 
+
+	*id_plateforme 457
+replace dig_invest = 135 if id_plateforme == 457  // EURO TO TND : 3.37 
+
+	*id_plateforme 237
+replace comp_ca2023 = 16000000 if id_plateforme == 237 
+replace comp_ca2024 = 5046270 if id_plateforme == 237 
+replace comp_benefice2023 = 0 if id_plateforme == 237 
+replace comp_benefice2024 = 30000 if id_plateforme == 237 
+replace mark_invest = 25000 if id_plateforme == 237  
+replace dig_invest = 3000 if id_plateforme == 237 
+
+	*id_plateforme 541
+replace comp_ca2023 = 50000 if id_plateforme == 541 
+replace comp_ca2024 = 10000 if id_plateforme == 541 
+replace comp_benefice2023 = 20000 if id_plateforme == 541 
+replace comp_benefice2024 = 20000 if id_plateforme == 541 
+
+	*id_plateforme 231
+replace comp_ca2023 = 1400000 if id_plateforme == 231 
+replace compexp_2023 = 300000 if id_plateforme == 231 
+replace comp_ca2024 = 600000 if id_plateforme == 231 
+replace compexp_2024 = 100000 if id_plateforme == 231 
+replace comp_benefice2023 = 140000 if id_plateforme == 231 
+replace comp_benefice2024 = 126000 if id_plateforme == 231 
+
+	*id_plateforme 925
+replace comp_benefice2023 = 999 if id_plateforme == 925 
+replace comp_benefice2024 = 999 if id_plateforme == 925 
+
+	*id_plateforme 478
+replace comp_ca2023 = 2700000 if id_plateforme == 478 
+replace compexp_2023 = 120000 if id_plateforme == 478 
+
+	*id_plateforme 466
+replace comp_ca2023 = 12000000 if id_plateforme == 466 
+
+	*id_plateforme 810 // Refuses to give comptability
+foreach var of local compta_vars {
+	replace `var' = 888 if id_plateforme == 810 
+}
+
+	*id_plateforme 323
+replace comp_ca2024 = 2900000 if id_plateforme == 323 
+
+	*id_plateforme 543
+replace compexp_2023 = 888 if id_plateforme == 543 
+replace compexp_2024 = 888 if id_plateforme == 543 
+
+	*id_plateforme 597
+replace comp_benefice2023 = 150000 if id_plateforme == 597 
+replace comp_benefice2024 = 170000 if id_plateforme == 597 
+
+	*id_plateforme 527
+replace compexp_2023 = 400000 if id_plateforme == 527 
+replace comp_ca2023 = 700000 if id_plateforme == 527 
+replace comp_ca2024 = 467000 if id_plateforme == 527 
+replace comp_benefice2023 = 700000 if id_plateforme == 527 
+replace comp_benefice2024 = 720000 if id_plateforme == 527  
+
+	*id_plateforme 655
+replace compexp_2024 = 6500000 if id_plateforme == 655 
+
+	*id_plateforme 337
+replace comp_ca2024 = 10500000 if id_plateforme == 337 
+
+	*id_plateforme 488
+replace mark_invest = 25000 if id_plateforme == 488 
+
+	*id_plateforme 453
+replace comp_ca2024 = 1500000 if id_plateforme == 453 
+replace compexp_2024 = 1020000 if id_plateforme == 453 
+replace comp_benefice2023 = 100000 if id_plateforme == 453 
+
+	*id_plateforme 765
+replace comp_ca2024 = 999 if id_plateforme == 765 
+
+	*id_plateforme 259
+replace dig_invest = 0 if id_plateforme == 259 
+replace mark_invest = 750000 if id_plateforme == 259 
+replace comp_ca2023 = 1800000 if id_plateforme == 259 
+replace comp_ca2024 = 1800000 if id_plateforme == 259 
+
+	*id_plateforme 489
+replace mark_invest = 58961 if id_plateforme == 489 //entre 15000euros et 20000 = 17500 * 3.37 Tunisian Dinar
+	
+	*id_plateforme 679
+replace comp_ca2023 = 1650000 if id_plateforme == 679 
+
+	*id_plateforme 511
+replace mark_invest = 1500000 if id_plateforme == 511 
+replace comp_benefice2023 = -180000 if id_plateforme == 511 
+replace comp_ca2023 = 1082864 if id_plateforme == 511 
+replace compexp_2023 = 1082864 if id_plateforme == 511  // TOTALY EXPORTING.
+replace comp_benefice2023 = 18000000 if id_plateforme == 511 
+
+	*id_plateforme 547
+replace comp_ca2023 = 400000 if id_plateforme == 547 
+replace compexp_2023 = 50000 if id_plateforme == 547 
+replace comp_ca2024 = 250000 if id_plateforme == 547 
+replace compexp_2024 = 10000 if id_plateforme == 547 
+replace comp_benefice2023 = 30000 if id_plateforme == 547 
+replace comp_benefice2024 = 5000 if id_plateforme == 547 
+	
+	*id_plateforme 398
+replace fte = 1000 if id_plateforme == 398 
+replace car_carempl_div1 = 800 if id_plateforme == 398 
+replace car_carempl_div2 = 500 if id_plateforme == 398 
+replace car_carempl_div3 = 200 if id_plateforme == 398 
+
+	*id_plateforme 670
+replace comp_benefice2024 = -20000 if id_plateforme == 670 
+replace comp_benefice2023 = -50000 if id_plateforme == 670 
+replace comp_ca2023 = 500000 if id_plateforme == 670 
+replace comp_ca2024 = 200000 if id_plateforme == 670 
+
+
+	*id_plateforme 443
+replace comp_benefice2023 = 2000000 if id_plateforme == 443 
+replace comp_benefice2024 = 3000000 if id_plateforme == 443 
+replace comp_ca2023 = 40000000 if id_plateforme == 443  
+replace comp_ca2024 = 48000000 if id_plateforme == 443  
+replace compexp_2023 = 26000000 if id_plateforme == 443  
+replace compexp_2024 = 3000000 if id_plateforme == 443  
+
 ***********************************************************************
 * 	Part 7: Save the changes made to the data		  			
 ***********************************************************************
