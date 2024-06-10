@@ -96,7 +96,7 @@ drop id_email id_candidates score matched_on correct_match dup_both dup_id_email
 drop rg_confidentialite rg_partage_donnees rg_enregistrement_coordonnees dateinscription full_dup 
 drop survey heure date ident_entreprise ident_email_1 k
 
-
+rename dig_prix dig_margins
 *save e-commerce anaylsis
 save "${master_intermediate}/ecommerce_master_inter", replace
 
