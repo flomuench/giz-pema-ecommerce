@@ -55,8 +55,8 @@ rename lprice prix
 
 {
 local indexes ///
-	 dsi dmi dtp dtai eri epi bpi dig_revenues_ecom dig_invest comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024 fte dig_empl car_carempl_div1 car_carempl_div3 mark_invest ///
-	 export_1 exp_pays clients_b2c clients_b2b
+	 dsi dmi dtp dtai eri epi bpi ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl car_carempl_div1 car_carempl_div3 ihs_mark_invest_99 ///
+	 export_1 exp_pays clients_b2c clients_b2b ihs_ca99_2024 ihs_dig_invest_99 dig_margins
 
 foreach var of local indexes {
 		* generate YO
@@ -153,32 +153,32 @@ esttab `attritionkey' using "el_indexattrition.tex", replace ///
 
 {
 *test for selective attrition on key outcome variables
-		* c(1): dig_revenues_ecom
-eststo att4,r: areg dig_revenues_ecom treatment##el_refus dig_revenues_ecom_y0 i.missing_bl_dig_revenues_ecom if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(1): ihs_digrev_99
+eststo att4,r: areg ihs_digrev_99 treatment##el_refus ihs_digrev_99_y0 i.missing_bl_ihs_digrev_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS?
 		
-		* c(2): dig_invest
-eststo att5,r: areg dig_invest treatment##el_refus dig_invest_y0 i.missing_bl_dig_invest if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(2): ihs_dig_invest_99
+eststo att5,r: areg ihs_dig_invest_99 treatment##el_refus ihs_dig_invest_99_y0 i.missing_bl_ihs_dig_invest_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS?
 		
-		* c(3):  comp_ca2023
-eststo att6,r: areg  comp_ca2023 treatment##el_refus comp_ca2023_y0 i.missing_bl_comp_ca2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(3):  ihs_ca99_2023
+eststo att6,r: areg  ihs_ca99_2023 treatment##el_refus ihs_ca99_2023_y0 i.missing_bl_ihs_ca99_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"		// WINS? IHS? AVERAGE?
 
 		* c(4): comp_ca2024
-eststo att7,r: areg comp_ca2024 treatment##el_refus comp_ca2024_y0 i.missing_bl_comp_ca2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+eststo att7,r: areg ihs_ca99_2024 treatment##el_refus ihs_ca99_2024_y0 i.missing_bl_ihs_ca99_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 		
-		* c(5): comp_benefice2023
-eststo att8,r: areg comp_benefice2023 treatment##el_refus comp_benefice2023_y0 i.missing_bl_comp_benefice2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(5): ihs_profit99_2023
+eststo att8,r: areg ihs_profit99_2023 treatment##el_refus ihs_profit99_2023_y0 i.missing_bl_ihs_profit99_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
-		* c(6): comp_benefice2024
-eststo att9,r: areg  comp_benefice2024 treatment##el_refus comp_benefice2024_y0 i.missing_bl_comp_benefice2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(6): ihs_profit99_2024
+eststo att9,r: areg  ihs_profit99_2024 treatment##el_refus ihs_profit99_2024_y0 i.missing_bl_ihs_profit99_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
-		* c(7): fte
-eststo att10,r: areg fte treatment##el_refus fte_y0 i.missing_bl_fte if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(7): ihs_fte_99
+eststo att10,r: areg ihs_fte_99 treatment##el_refus ihs_fte_99_y0 i.missing_bl_ihs_fte_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
 		* c(8): dig_empl
@@ -271,11 +271,11 @@ rct_regression_table dsi dtai bpi // MISSING VARS BASELINE: dmi dtp eri epi
 		* numerical outcomes
 			* financial
 				*CONSIDER REPLACING WITH WINS-IHS TRANSFORMED & AVERAGE VAR
-rct_regression_table dig_revenues_ecom // MISSING VARS BASELINE: dig_invest comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024
+rct_regression_table ihs_digrev_99 // MISSING VARS BASELINE: ihs_dig_invest_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024
 
 			* employees
 				*CONSIDER REPLACING WITH WINS-IHS TRANSFORMED & AVERAGE VAR
-rct_regression_table fte car_carempl_div1 car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
+rct_regression_table ihs_fte_99 car_carempl_div1 car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
 
 }
 
@@ -487,6 +487,8 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 				
 			* coefplot
 coefplot ///
+	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
+	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
 	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)) ///
 	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)) ///
 	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)) ///
@@ -495,41 +497,17 @@ coefplot ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`3'1 = `"Turnover 2023 (ITT)"' `3'2 = `"Turnover 2023 (TOT)"' ///
+		eqrename(`1'1 = `"Digital revenue (ITT)"' `1'2 = `"Digital revenue (TOT)"' `2'1 = `"Digital investment (ITT)"' `2'2 = `"Digital investment (TOT)"' `3'1 = `"Turnover 2023 (ITT)"' `3'2 = `"Turnover 2023 (TOT)"' ///
 		`4'1 = `"Turnover 2024 (ITT)"' `4'2 = `"Turnover 2024 (TOT)"' `5'1 = `"Profit 2023 (ITT)"' `5'2 = `"Profit 2023  (TOT)"' `6'1 = `"Profit 2024 (ITT)"' `6'2 = `"Profit 2024 (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot1, replace)
 gr export el_`generate'_cfplot1.png, replace
-
-coefplot ///
-	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
-		asequation /// name of model is used
-		swapnames /// swaps coeff & equation names after collecting result
-		levels(95) ///
-		eqrename(`1'1 = `"Digital revenue (ITT)"' `1'2 = `"Digital revenue (TOT)"') ///
-		xtitle("Treatment coefficient", size(medium)) ///
-		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
-		name(el_`generate'2_cfplot1, replace)
-gr export el_`generate'2_cfplot1.png, replace
-
-coefplot ///
-	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
-		asequation /// name of model is used
-		swapnames /// swaps coeff & equation names after collecting result
-		levels(95) ///
-		eqrename(`2'1 = `"Digital investment (ITT)"' `2'2 = `"Digital investment (TOT)"') ///
-		xtitle("Treatment coefficient", size(medium)) ///
-		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
-		name(el_`generate'3_cfplot1, replace)
-gr export el_`generate'3_cfplot1.png, replace
 		
 end
 
 	* apply program to qi outcomes
-rct_regression_finance dig_revenues_ecom dig_invest comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024, gen(finance)
+rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca99_2024 ihs_profit99_2023 ihs_profit99_2024, gen(finance)
 
 }
 
@@ -581,7 +559,7 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 				* Put all regressions into one table
 			* Top panel: ITT
 *		tokenize `varlist'
-		local regressions `1'1 `2'1 // adjust manually to number of variables 
+		local regressions `1'1 `2'1 `3'1 // adjust manually to number of variables 
 		esttab `regressions' using "rt_`generate'.tex", replace ///
 				prehead("\begin{table}[!h] \centering \\ \caption{Impact on number of employees} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{4}{c}} \hline\hline") ///
 				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
@@ -596,7 +574,7 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 				noobs
 				
 			* Bottom panel: ATT
-		local regressions `1'2 `2'2 // adjust manually to number of variables 
+		local regressions `1'2 `2'2 `3'2 // adjust manually to number of variables 
 		esttab `regressions' using "rt_`generate'.tex", append ///
 				fragment ///
 				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
@@ -614,34 +592,23 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 
 			* coefplot
 coefplot ///
-	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)), ///
+	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
+	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
+	(`3'1, pstyle(p2)) (`3'2, pstyle(p2)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`1'1 = `"Employees (ITT)"' `1'2 = `"Employees (TOT)"') ///
+		eqrename(`1'1 = `"Employees (ITT)"' `1'2 = `"Employees (TOT)"' `2'1 = `"Digital employees (ITT)"' `2'2 = `"Digital employees (TOT)"' `3'1 = `"Digital margin (ITT)"' `3'2 = `"Digital margin (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot1, replace)
 gr export el_`generate'_cfplot1.png, replace
 
-* coefplot
-coefplot ///
-	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
-		asequation /// name of model is used
-		swapnames /// swaps coeff & equation names after collecting result
-		levels(95) ///
-		eqrename(`2'1 = `"Digital employees (ITT)"' `2'2 = `"Digital employees (TOT)"') ///
-		xtitle("Treatment coefficient", size(medium)) ///
-		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
-		name(el_`generate'2_cfplot1, replace)
-gr export el_`generate'2_cfplot1.png, replace
-		
 end
 
 	* apply program to business performance outcomes
-rct_regression_fte fte dig_empl, gen(fte)
+rct_regression_fte ihs_fte_99 dig_empl dig_margins, gen(empl)
 
 }
 
@@ -739,13 +706,14 @@ coefplot ///
 	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
 	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
 	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)) ///
-	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)), ///
+	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)) ///
+	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
 		eqrename(`1'1 = `"Digital technology adoption index (ITT)"' `1'2 = `"Digital technology adoption index (TOT)"' `2'1 = `"Digital sales index (ITT)"' `2'2 = `"Digital sales index (TOT)"' `3'1 = `"Digital marketing index (ITT)"' ///
-		`3'2 = `"Digital marketing index (TOT)"' `4'1 = `"Digital employees (ITT)"' `4'2 = `"Digital employees"') ///
+		`3'2 = `"Digital marketing index (TOT)"' `4'1 = `"Digital employees (ITT)"' `4'2 = `"Digital employees (TOT)"' `5'1 = `"Digital revenue, pct (ITT)"' `5'2 = `"Digital revenue, pct (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot, replace)
@@ -753,53 +721,26 @@ coefplot ///
 gr export el_`generate'_cfplot.png, replace
 
 
-		* coefplot
-coefplot ///
-	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
-		asequation /// name of model is used
-		swapnames /// swaps coeff & equation names after collecting result
-		levels(95) ///
-		eqrename(`5'1 = `"Digital revenue, pct (ITT)"' `5'2 = `"Digital revenue, pct (TOT)"') ///
-		xtitle("Treatment coefficient", size(medium)) ///
-		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
-		name(el_`generate'2_cfplot, replace)
-	
-gr export el_`generate'2_cfplot.png, replace
-
 * coefplot
 coefplot ///
-	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)), ///
-	keep(*treatment take_up) drop(_cons) xline(0) ///
-		asequation /// name of model is used
-		swapnames /// swaps coeff & equation names after collecting result
-		levels(95) ///
-		eqrename(`6'1 = `"Digital Invest (ITT)"' `6'2 = `"Digital Invest (TOT)"') ///
-		xtitle("Treatment coefficient", size(medium)) ///
-		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
-		name(el_`generate'3_cfplot, replace)
-	
-gr export el_`generate'3_cfplot.png, replace
-
-* coefplot
-coefplot ///
+	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)) ///
 	(`7'1, pstyle(p7)) (`7'2, pstyle(p7)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`7'1 = `"Marketing Invest (ITT)"' `7'2 = `"Marketing Invest (TOT)"') ///
+		eqrename(`6'1 = `"Digital Invest (ITT)"' `6'2 = `"Digital Invest (TOT)"' `7'1 = `"Marketing Invest (ITT)"' `7'2 = `"Marketing Invest (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
-		name(el_`generate'4_cfplot, replace)
+		name(el_`generate'2_cfplot, replace)
 	
-gr export el_`generate'4_cfplot.png, replace
+gr export el_`generate'2_cfplot.png, replace
 			
 end
 
 
 	* apply program to qi outcomes
-rct_regression_dta dtai dsi dmi dig_empl dig_revenues_ecom dig_invest mark_invest, gen(dta)		
+rct_regression_dta dtai dsi dmi dig_empl ihs_digrev_99 ihs_dig_invest_99 ihs_mark_invest_99, gen(dta)		
 
 ***********************************************************************
 * 	PART 8: Endline results - regression table Export
@@ -896,7 +837,7 @@ coefplot ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`1'1 = `"Export readiness index (ITT)"' `1'2 = `"Export readiness index (TOT)"' `2'1 = `"Export performance index (ITT)"' `2'2 = `"Export performance index (TOT)"' `3'1 = `"Exports (ITT)"') ///
+		eqrename(`1'1 = `"Export readiness index (ITT)"' `1'2 = `"Export readiness index (TOT)"' `2'1 = `"Export performance index (ITT)"' `2'2 = `"Export performance index (TOT)"' `3'1 = `"Exports (ITT)"' `3'2 = `"Exports (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot, replace)
