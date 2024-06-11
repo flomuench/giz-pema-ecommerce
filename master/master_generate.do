@@ -553,6 +553,10 @@ label var eri_points "Export readiness index points"
 ***********************************************************************	
 *generate values for digital revenues
 replace dig_revenues_ecom = ((dig_revenues_ecom*0.01)*comp_ca2023) if surveyround ==3 & dig_revenues_ecom!=99
+winsor temp_dig_revenues_ecom, gen(w99_dig_revenues_ecom) p(0.01) highonly
+
+gen ihs_digrev_99 = log(w99_dig_revenues_ecom + sqrt((w99_dig_revenues_ecom*w99_dig_revenues_ecom)+1))
+lab var ihs_digrev_99 "IHS of digital revenues from ecommerce, wins.99th"
 
 *Digital investment
 winsor temp_dig_invest, gen(w99_dig_invest) p(0.01) highonly
