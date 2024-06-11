@@ -558,7 +558,7 @@ replace questions_needing_check = questions_needing_check + "Le code 666 signifi
 959	Basma wachem	
 961	Nabil ben hsin	
 */
-
+/*
 replace needs_check = 1 if surveyround == 3 & id_plateforme == 635
 replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) anwer (variable vide) / " if surveyround == 3 & id_plateforme == 635
 
@@ -633,8 +633,7 @@ replace questions_needing_checks = questions_needing_checks + "Veuillez vérifie
 
 replace needs_check = 1 if surveyround == 3 & id_plateforme == 961
 replace questions_needing_checks = questions_needing_checks + "Veuillez vérifier la position du répondant(e) Nabil ben hsin (variable vide) / " if surveyround == 3 & id_plateforme == 961
-
-
+*/
 ***********************************************************************
 * 	PART 7:  Export an excel sheet with needs_check variables  			
 ***********************************************************************
@@ -663,8 +662,7 @@ drop if el_completed < 1
 			* export excel file. manually add variables listed in questions_needing_check
 				* group variables into lists (locals) to facilitate overview
 local order_vars "id_plateforme surveyround survey_type needs_check attest commentaires_ElAmouri questions_needing_checks fte"
-local respondent_vars "`order_vars' id_ident id_ident_el new_ident_repondent_position_el"
-local accounting_vars "`respondent_vars' comp_ca2023 comp_ca2024 export_1 export_2 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
+local accounting_vars "`order_vars' comp_ca2023 comp_ca2024 export_1 export_2 compexp_2023 compexp_2024 comp_benefice2023 comp_benefice2024 mark_invest dig_invest"
 local dig_vars "`accounting_vars' dig_miseajour1 dig_miseajour2 dig_miseajour3 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_presence1 dig_presence2 dig_presence3"
 local fteoyee_vars "`dig_vars' car_carempl_div1 car_carempl_div2 car_carempl_div3 dig_empl"
 
