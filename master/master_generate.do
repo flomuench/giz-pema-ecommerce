@@ -694,7 +694,39 @@ lab var ihs_profit95_2024 "IHS of profit in 2024, wins.95th"
 *drop temporary vars		  
 drop temp_*
 
-
+* gen refus variable
+duplicates tag id_plateforme, gen(dup)
+gen el_refus = (dup < 1)
+drop dup
+replace el_refus=1 if id_plateforme== 82 	
+replace el_refus=1 if id_plateforme== 59
+replace el_refus=1 if id_plateforme== 63
+replace el_refus=1 if id_plateforme== 70
+replace el_refus=1 if id_plateforme== 98
+replace el_refus=1 if id_plateforme== 114
+replace el_refus=1 if id_plateforme== 146
+replace el_refus=1 if id_plateforme== 153
+replace el_refus=1 if id_plateforme== 176
+replace el_refus=1 if id_plateforme== 195
+replace el_refus=1 if id_plateforme== 254
+replace el_refus=1 if id_plateforme== 264
+replace el_refus=1 if id_plateforme== 290
+*replace el_refus=1 if id_plateforme== 261 TBC
+replace el_refus=1 if id_plateforme== 495
+replace el_refus=1 if id_plateforme== 586
+*replace el_refus=1 if id_plateforme== 592 TBC
+replace el_refus=1 if id_plateforme== 612
+*replace el_refus=1 if id_plateforme== 617 TBC
+replace el_refus=1 if id_plateforme== 632
+replace el_refus=1 if id_plateforme== 637
+replace el_refus=1 if id_plateforme== 643
+replace el_refus=1 if id_plateforme== 714
+replace el_refus=1 if id_plateforme== 729
+replace el_refus=1 if id_plateforme== 782
+replace el_refus=1 if id_plateforme== 791
+replace el_refus=1 if id_plateforme== 818
+replace el_refus=1 if id_plateforme== 831
+replace el_refus=1 if id_plateforme== 901
 
 ***********************************************************************
 * 	Save the changes made to the data		  			

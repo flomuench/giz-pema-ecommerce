@@ -201,10 +201,7 @@ replace n`x' = `x'/employes if n`x'!= not_know | n`x'!= refused | n`x'!= check_a
 ***********************************************************************
 * 	PART 7:  generate refusal var
 ***********************************************************************
-* gen refus variable
-duplicates tag id_plateforme, gen(dup)
-gen el_refus = (dup < 1)
-drop dup
+
 
 **********************************************************************
 * 	PART 8:  save			

@@ -634,7 +634,7 @@ putpdf pagebreak
 
     *Investissement dans les activités de marketing en ligne en 2023 et 2024
 sum dig_invest
-	stripplot dig_invest, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+	stripplot dig_invest if dig_invest!=666 & dig_invest!=777 & dig_invest!=888 & dig_invest!=999, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Investment in online marketing activities" ,size(medium) pos(12)) ///
 		ytitle("Amount invested in TND in 2023 and 2024") ///
 		name(el_dig_invest, replace)
@@ -643,7 +643,7 @@ sum dig_invest
 	putpdf image el_dig_invest.png, width(5000)
 	putpdf pagebreak
 
-	stripplot dig_invest, by(treatment) jitter(4) vertical  ///
+	stripplot dig_invest if dig_invest!=666 & dig_invest!=777 & dig_invest!=888 & dig_invest!=999, by(treatment) jitter(4) vertical  ///
 		title("Investment in online marketing activities ", size(small)) ///
 		ytitle("Amount invested in TND in 2023 and 2024") ///
 		name(el_dig_invest_treat, replace)
@@ -652,8 +652,8 @@ sum dig_invest
 	putpdf image el_dig_invest_treat.png, width(5000)
 	putpdf pagebreak
 
-twoway (kdensity dig_invest if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity dig_invest if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity dig_invest if treatment == 0 & dig_invest!=666 & dig_invest!=777 & dig_invest!=888 & dig_invest!=999, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity dig_invest if treatment == 1 & dig_invest!=666 & dig_invest!=777 & dig_invest!=888 & dig_invest!=999, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Investment in online marketing activities in 2023 and 2024", pos(12) size(medium)) ///
 	   xtitle("Amount invested in TND",size(medium)) ///
@@ -663,7 +663,7 @@ putpdf paragraph, halign(center)
 putpdf image el_dig_invest_treat_kdens.png, width(5000)
 putpdf pagebreak
 
- graph box dig_invest if dig_invest > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box dig_invest if dig_invest > 0 & dig_invest!=666 & dig_invest!=777 & dig_invest!=888 & dig_invest!=999, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Investment in online marketing activities in 2023 and 2024", pos(12) size(medium))
 gr export el_dig_invest_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -672,7 +672,7 @@ putpdf pagebreak
 
 *Investissement dans les activités de marketing hors ligne en 2023 et 2024
 sum mark_invest
-stripplot mark_invest, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot mark_invest if mark_invest!=666 & mark_invest!=777 & mark_invest!=888 & mark_invest!=999 , jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Investment in offline marketing activities in 2023 and 2024" ,size(medium) pos(12)) ///
 		ytitle("Amount invested in TND") ///
 		name(el_mark_invest, replace)
@@ -681,7 +681,7 @@ stripplot mark_invest, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf image el_mark_invest.png, width(5000)
 	putpdf pagebreak
 	
-stripplot mark_invest, by(treatment) jitter(4) vertical  ///
+stripplot mark_invest if mark_invest!=666 & mark_invest!=777 & mark_invest!=888 & mark_invest!=999, by(treatment) jitter(4) vertical  ///
 		title("Investment in offline marketing activities", size(small)) ///
 		ytitle("Amount invested in TND in 2023 and 2024") ///
 		name(el_mark_invest_treat, replace)
@@ -690,8 +690,8 @@ stripplot mark_invest, by(treatment) jitter(4) vertical  ///
 	putpdf image el_mark_invest_treat.png, width(5000)
 	putpdf pagebreak
 
-twoway (kdensity mark_invest if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity mark_invest if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity mark_invest if treatment == 0 & mark_invest!=666 & mark_invest!=777 & mark_invest!=888 & mark_invest!=999, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity mark_invest if treatment == 1 & mark_invest!=666 & mark_invest!=777 & mark_invest!=888 & mark_invest!=999, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Investment in offline marketing activities in 2023 and 2024", pos(12) size(medium)) ///
 	   xtitle("Amount invested in TND",size(medium)) ///
@@ -701,7 +701,7 @@ putpdf paragraph, halign(center)
 putpdf image el_mark_invest_treat_kdens.png, width(5000)
 putpdf pagebreak
 
- graph box mark_invest if mark_invest > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box mark_invest if mark_invest > 0 & mark_invest!=666 & mark_invest!=777 & mark_invest!=888 & mark_invest!=999, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Investment in offline marketing activities in 2023 and 2024", pos(12) size(medium))
 gr export el_mark_invest_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -998,7 +998,7 @@ graph pie, over(profit_2023_category) by(treatment) plabel(_all percent, format(
 	
     * Chiffre d'affaires total en dt en 2023 
 sum comp_ca2023
-stripplot comp_ca2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot comp_ca2023 if comp_ca2023!=666 & comp_ca2023!=888 & comp_ca2023!=999 , jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Total turnover in 2023",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_comp_ca2023, replace)
@@ -1007,7 +1007,7 @@ stripplot comp_ca2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf image el_comp_ca2023.png, width(5000)
 	putpdf pagebreak
 
-stripplot comp_ca2023, by(treatment) jitter(4) vertical  ///
+stripplot comp_ca2023 if comp_ca2023!=666 & comp_ca2023!=888 & comp_ca2023!=999, by(treatment) jitter(4) vertical  ///
 		title("Total turnover in 2023",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_comp_ca2023_treat, replace)
@@ -1016,8 +1016,8 @@ stripplot comp_ca2023, by(treatment) jitter(4) vertical  ///
 	putpdf image el_comp_ca2023_treat.png, width(5000)
 	putpdf pagebreak
 	
-twoway (kdensity comp_ca2023 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-       (kdensity comp_ca2023 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity comp_ca2023 if treatment == 0 & comp_ca2023!=666 & comp_ca2023!=888 & comp_ca2023!=999, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+       (kdensity comp_ca2023 if treatment == 1 & comp_ca2023!=666 & comp_ca2023!=888 & comp_ca2023!=999 , lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Total turnover in 2023", pos(12)) ///
 	   xtitle("Total turnover",size(medium)) ///
@@ -1027,7 +1027,7 @@ putpdf paragraph, halign(center)
 putpdf image el_comp_ca2023_kdens.png, width(5000)
 putpdf pagebreak
 	   
- graph box comp_ca2023 if comp_ca2023 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box comp_ca2023 if comp_ca2023 > 0 & comp_ca2023!=666 & comp_ca2023!=888 & comp_ca2023!=999 , over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Total turnover in 2023 in TND", pos(12))
 gr export el_comp_ca2023_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -1036,7 +1036,7 @@ putpdf pagebreak
 
     * Chiffre d'affaires total en dt en 2024 
 sum comp_ca2024
-stripplot comp_ca2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot comp_ca2024 if comp_ca2024!=666 & comp_ca2024!=888 & comp_ca2024!=999 , jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Total turnover in 2024",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_comp_ca2024, replace)
@@ -1045,7 +1045,7 @@ stripplot comp_ca2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf image el_comp_ca2024.png, width(5000)
 	putpdf pagebreak
 
-stripplot comp_ca2024, by(treatment) jitter(4) vertical ///
+stripplot comp_ca2024 if comp_ca2024!=666 & comp_ca2024!=888 & comp_ca2024!=999 , by(treatment) jitter(4) vertical ///
 		title("Total turnover in 2024",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_comp_ca2024_treat, replace)
@@ -1054,8 +1054,8 @@ stripplot comp_ca2024, by(treatment) jitter(4) vertical ///
 	putpdf image el_comp_ca2024_treat.png, width(5000)
 	putpdf pagebreak
 
-twoway (kdensity comp_ca2024 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-       (kdensity comp_ca2024 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity comp_ca2024 if treatment == 0 & comp_ca2024!=666 & comp_ca2024!=888 & comp_ca2024!=999 , lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+       (kdensity comp_ca2024 if treatment == 1 & comp_ca2024!=666 & comp_ca2024!=888 & comp_ca2024!=999 , lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Total turnover in 2024", pos(12)) ///
 	   xtitle("Total turnover",size(medium)) ///
@@ -1065,7 +1065,7 @@ putpdf paragraph, halign(center)
 putpdf image el_comp_ca2024_kdens.png, width(5000)
 putpdf pagebreak
 	   	
- graph box comp_ca2024 if comp_ca2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box comp_ca2024 if comp_ca2024 > 0 & comp_ca2024!=666 & comp_ca2024!=888 & comp_ca2024!=999, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Total turnover in 2024 in TND", pos(12))
 gr export el_comp_ca2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -1074,7 +1074,7 @@ putpdf pagebreak
 
    *Chiffre d'affaires à l’export en dt en 2023
  sum compexp_2023
-stripplot compexp_2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot compexp_2023 if compexp_2023!=666 & compexp_2023!=888 & compexp_2023!=999 , jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Export turnover in 2023",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_compexp_2023, replace)
@@ -1083,7 +1083,7 @@ stripplot compexp_2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf image el_compexp_2023.png, width(5000)
 	putpdf pagebreak
 
-stripplot compexp_2023, by(treatment) jitter(4) vertical ///
+stripplot compexp_2023 if compexp_2023!=666 & compexp_2023!=888 & compexp_2023!=999, by(treatment) jitter(4) vertical ///
 		title("Export turnover in 2023",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_compexp_2023_treat, replace)
@@ -1092,8 +1092,8 @@ stripplot compexp_2023, by(treatment) jitter(4) vertical ///
 	putpdf image el_compexp_2023_treat.png, width(5000)
 	putpdf pagebreak
 	
-twoway (kdensity compexp_2023 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-       (kdensity compexp_2023 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity compexp_2023 if treatment == 0 & compexp_2023!=666 & compexp_2023!=888 & compexp_2023!=999, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+       (kdensity compexp_2023 if treatment == 1 & compexp_2023!=666 & compexp_2023!=888 & compexp_2023!=999, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Export turnover in 2023", pos(12)) ///
 	   xtitle("Export turnover",size(medium)) ///
@@ -1103,7 +1103,7 @@ putpdf paragraph, halign(center)
 putpdf image el_compexp_2023_kdens.png, width(5000)
 putpdf pagebreak
 	
- graph box compexp_2023 if compexp_2023 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box compexp_2023 if compexp_2023 > 0 & compexp_2023!=666 & compexp_2023!=888 & compexp_2023!=999, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Export turnover in 2023 in TND", pos(12))
 gr export el_compexp_2023_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -1129,7 +1129,7 @@ graph pie, over(profit_2024_category) plabel(_all percent, format(%9.0f) size(me
 	
    *Chiffre d'affaires à l’export en dt en 2024
 sum compexp_2024
-stripplot compexp_2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot compexp_2024 if compexp_2024!=666 & compexp_2024!=888 & compexp_2024!=999, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		ytitle("Amount in TND") ///
 		title("Export turnover in 2024",size(medium) pos(12)) ///
 		name(el_compexp_2024, replace)
@@ -1138,7 +1138,7 @@ stripplot compexp_2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 	putpdf image el_compexp_2024.png, width(5000)
 	putpdf pagebreak
 	
-stripplot compexp_2024, by(treatment) jitter(4) vertical  ///
+stripplot compexp_2024 if compexp_2024!=666 & compexp_2024!=888 & compexp_2024!=999, by(treatment) jitter(4) vertical  ///
 		ytitle("Amount in TND") ///
 		title("Export turnover in 2024",size(medium) pos(12)) ///
 		name(el_compexp_2024_treat, replace)
@@ -1147,8 +1147,8 @@ stripplot compexp_2024, by(treatment) jitter(4) vertical  ///
 	putpdf image el_compexp_2024_treat.png, width(5000)
 	putpdf pagebreak
 
-twoway (kdensity compexp_2024 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity compexp_2024 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity compexp_2024 if treatment == 0 & compexp_2024!=666 & compexp_2024!=888 & compexp_2024!=999, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity compexp_2024 if treatment == 1 & compexp_2024!=666 & compexp_2024!=888 & compexp_2024!=999, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Export turnover in 2024", pos(12)) ///
 	   xtitle("Export turnover",size(medium)) ///
@@ -1158,7 +1158,7 @@ putpdf paragraph, halign(center)
 putpdf image el_compexp_2024_kdens.png, width(5000)
 putpdf pagebreak
 
-graph box compexp_2024 if compexp_2024 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+graph box compexp_2024 if compexp_2024 > 0 & compexp_2024!=666 & compexp_2024!=888 & compexp_2024!=999, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Export turnover in 2024 in TND", pos(12))
 gr export el_compexp_2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -1167,7 +1167,7 @@ putpdf pagebreak
 
  *Profit en dt en 2023
 sum comp_benefice2023
-stripplot comp_benefice2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot comp_benefice2023 if comp_benefice2023!=666 & comp_benefice2023!=888 & comp_benefice2023!=999, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		ytitle("Amount in TND") ///
 		title("Company profit in 2023",size(medium) pos(12)) ///
 		name(el_comp_benefice2023, replace)
@@ -1176,7 +1176,7 @@ stripplot comp_benefice2023, jitter(4) vertical yline(`=r(mean)', lcolor(red)) /
 	putpdf image el_compexp_2023.png, width(5000)
 	putpdf pagebreak
 
-stripplot comp_benefice2023, by(treatment) jitter(4) vertical ///
+stripplot comp_benefice2023 if comp_benefice2023!=666 & comp_benefice2023!=888 & comp_benefice2023!=999, by(treatment) jitter(4) vertical ///
 		ytitle("Amount in TND") ///
 		title("Company profit in 2023",size(medium) pos(12)) ///
 		name(el_comp_benefice2023_treat, replace)
@@ -1185,8 +1185,8 @@ stripplot comp_benefice2023, by(treatment) jitter(4) vertical ///
 	putpdf image el_comp_benefice2023_treat.png, width(5000)
 	putpdf pagebreak
 
-twoway (kdensity comp_benefice2023 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity comp_benefice2023 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity comp_benefice2023 if treatment == 0 & comp_benefice2023!=666 & comp_benefice2023!=888 & comp_benefice2023!=999, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity comp_benefice2023 if treatment == 1 & comp_benefice2023!=666 & comp_benefice2023!=888 & comp_benefice2023!=999, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Company profit in 2023", pos(12)) ///
 	   xtitle("Company profit",size(medium)) ///
@@ -1197,7 +1197,7 @@ putpdf image el_comp_benefice2023_kdens.png, width(5000)
 putpdf pagebreak
 
 
- graph box comp_benefice2023, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box comp_benefice2023 if comp_benefice2023!=666 & comp_benefice2023!=888 & comp_benefice2023!=999, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Company profit in 2023 in TND", pos(12))
 gr export el_comp_benefice2023_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
@@ -1206,7 +1206,7 @@ putpdf pagebreak
 
  *Profit en dt en 2024
 sum comp_benefice2024
-stripplot comp_benefice2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+stripplot comp_benefice2024 if comp_benefice2024!=666 & comp_benefice2024!=888 & comp_benefice2024!=999 , jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		title("Company profit in 2024",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_comp_benefice2024, replace)
@@ -1215,7 +1215,7 @@ stripplot comp_benefice2024, jitter(4) vertical yline(`=r(mean)', lcolor(red)) /
 	putpdf image el_compexp_2024.png, width(5000)
 	putpdf pagebreak
 	
-stripplot comp_benefice2024, by(treatment) jitter(4) vertical  ///
+stripplot comp_benefice2024 if comp_benefice2024!=666 & comp_benefice2024!=888 & comp_benefice2024!=999 , by(treatment) jitter(4) vertical  ///
 		title("Company profit in 2024",size(medium) pos(12)) ///
 		ytitle("Amount in TND") ///
 		name(el_comp_benefice2024_treat, replace)
@@ -1224,8 +1224,8 @@ stripplot comp_benefice2024, by(treatment) jitter(4) vertical  ///
 	putpdf image el_comp_benefice2024_treat.png, width(5000)
 	putpdf pagebreak
 
-twoway (kdensity comp_benefice2024 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity comp_benefice2024 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+twoway (kdensity comp_benefice2024 if treatment == 0 & comp_benefice2024!=666 & comp_benefice2024!=888 & comp_benefice2024!=999 , lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity comp_benefice2024 if treatment == 1 & comp_benefice2024!=666 & comp_benefice2024!=888 & comp_benefice2024!=999 , lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Company profit in 2024", pos(12)) ///
 	   xtitle("Company profit",size(medium)) ///
@@ -1235,7 +1235,7 @@ putpdf paragraph, halign(center)
 putpdf image el_comp_benefice2024_kdens.png, width(5000)
 putpdf pagebreak
 
- graph box comp_benefice2024, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box comp_benefice2024 if comp_benefice2024!=666 & comp_benefice2024!=888 & comp_benefice2024!=999 , over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Company profit in 2024 in TND", pos(12))
 gr export el_comp_benefice2024_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
