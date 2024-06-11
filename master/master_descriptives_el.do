@@ -40,6 +40,22 @@ local take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take
 putpdf paragraph,  font("Courier", 20)
 putpdf text ("Section 2: The company"), bold
 {
+*Number of validated
+graph bar (count) attest if surveyround==3, over(treatment) blabel(total, format(%9.0fc)) ///
+	title("Number of companies that have validated their answers", pos(12)) note("Date: `c(current_date)'") ///
+	ytitle("Number of entries")
+graph export valide.png, width(5000) replace
+putpdf paragraph, halign(center)
+putpdf image valide.png, width(5000)
+putpdf pagebreak
+
+graph bar (sum) el_refus if surveyround==1, over(treatment) blabel(total, format(%9.0fc)) ///
+	title("Number of companies that refused to answer the survey", pos(12)) note("Date: `c(current_date)'") ///
+	ytitle("Number of entries")
+graph export refus.png, width(5000) replace
+putpdf paragraph, halign(center)
+putpdf image refus.png, width(5000)
+putpdf pagebreak
 
 graph hbar take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber if treatment == 1 & surveyround==1, ///
     title("Average take-up for each activity", pos(12)) ///
