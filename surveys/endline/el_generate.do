@@ -159,6 +159,10 @@ label define Surveytype 1 "Phone" 0 "En ligne"
 ***********************************************************************
 * 	PART 5:  Transform categorical variables into continuous variables
 ***********************************************************************
+replace comp_benefice2023=comp_benefice2023*(-1) if profit_2023_category==0
+
+replace comp_benefice2024=comp_benefice2024*(-1) if profit_2024_category==0
+
 replace comp_benefice2023 = -5000 if profit_2023_category_perte==1
 replace comp_benefice2023 = -55000 if profit_2023_category_perte==2
 replace comp_benefice2023 = -300000 if profit_2023_category_perte==3
