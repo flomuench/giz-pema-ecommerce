@@ -125,7 +125,7 @@ putpdf pagebreak
 }
     * Number of female employees
  	foreach x of local take_up{	
- graph box car_carempl_div1 if car_carempl_div1 > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
+ graph box fte_femmes if fte_femmes > 0 & surveyround == 3, over(`x') blabel(total, format(%9.2fc)) ///
 	title("Number of female employees", pos(12))
 gr export el_car_carempl_div1_box_`x'.png, replace
 putpdf paragraph, halign(center) 
@@ -134,9 +134,9 @@ putpdf pagebreak
 }
 
 	foreach x of local take_up{
-twoway (kdensity car_carempl_div1 if treatment == 0 & surveyround == 3, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity car_carempl_div1 if treatment == 1 & `x'==0 & surveyround == 3, lcolor(red) lpattern(dash) legend(label(2 "Absent"))) ///
-	   (kdensity car_carempl_div1 if treatment == 1 & `x'==1 & surveyround == 3, lcolor(orange) lpattern(dash) legend(label(2 "Present"))), ///
+twoway (kdensity fte_femmes if treatment == 0 & surveyround == 3, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity fte_femmes if treatment == 1 & `x'==0 & surveyround == 3, lcolor(red) lpattern(dash) legend(label(2 "Absent"))) ///
+	   (kdensity fte_femmes if treatment == 1 & `x'==1 & surveyround == 3, lcolor(orange) lpattern(dash) legend(label(2 "Present"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Absent" 3 "Present")) ///
 	   title("Number of female employees", pos(12)) ///
 	   xtitle("Number of female employees",size(medium)) ///
@@ -157,9 +157,9 @@ putpdf pagebreak
 }
 
 	foreach x of local take_up{
-twoway (kdensity car_carempl_div2 if treatment == 0 & surveyround == 3, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity car_carempl_div2 if treatment == 1 & `x'==0 & surveyround == 3, lcolor(red) lpattern(dash) legend(label(2 "Absent"))) ///
-	   (kdensity car_carempl_div2 if treatment == 1 & `x'==1 & surveyround == 3, lcolor(orange) lpattern(dash) legend(label(2 "Present"))), ///
+twoway (kdensity fte_femmes if treatment == 0 & surveyround == 3, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity fte_femmes if treatment == 1 & `x'==0 & surveyround == 3, lcolor(red) lpattern(dash) legend(label(2 "Absent"))) ///
+	   (kdensity fte_femmes if treatment == 1 & `x'==1 & surveyround == 3, lcolor(orange) lpattern(dash) legend(label(2 "Present"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Absent" 3 "Present")) ///
 	   title("Number of female employees", pos(12)) ///
 	   xtitle("Number of female employees",size(medium)) ///
@@ -184,8 +184,8 @@ twoway (kdensity car_carempl_div3 if treatment == 0 & surveyround == 3, lcolor(b
 	   (kdensity car_carempl_div3 if treatment == 1 & `x'==0 & surveyround == 3, lcolor(red) lpattern(dash) legend(label(2 "Absent"))) ///
 	   (kdensity car_carempl_div3 if treatment == 1 & `x'==1 & surveyround == 3, lcolor(orange) lpattern(dash) legend(label(2 "Present"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Absent" 3 "Present")) ///
-	   title("Number of female employees", pos(12)) ///
-	   xtitle("Number of female employees",size(medium)) ///
+	   title("Number of young employees", pos(12)) ///
+	   xtitle("Number of young employees",size(medium)) ///
 	   ytitle("Densitiy", size(medium))
 gr export el_car_carempl_div3_treat_kdens_`x'.png, width(5000) replace
 putpdf paragraph, halign(center) 
