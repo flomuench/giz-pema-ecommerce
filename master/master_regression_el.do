@@ -55,8 +55,9 @@ rename lprice prix
 
 {
 local indexes ///
-	 dsi dmi dtp dtai eri epi bpi ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl car_carempl_div1 car_carempl_div3 ihs_mark_invest_99 ///
-	 export_1 exp_pays clients_b2c clients_b2b ihs_ca99_2024 ihs_dig_invest_99 dig_margins
+	 dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
+	 export_1 exp_pays clients_b2c clients_b2b ihs_ca99_2024 ihs_dig_invest_99 dig_margins exp_dig ihs_dig_empl_99 dig_rev_extmargin dig_invest_extmargin profit_2023_pos profit_2024_pos ///
+	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5
 
 foreach var of local indexes {
 		* generate YO
@@ -73,6 +74,109 @@ foreach var of local indexes {
 	drop miss_bl_`var'
 	}
 }
+
+***********************************************************************
+* 	PART 0.3:  balance table
+***********************************************************************
+* endline per take_up
+{
+	* baseline
+		* concern: F-test significant at baseline
+				* major outcome variables, untransformed
+			*Digital sales
+local dsi "dig_margins dig_revenues_ecom"
+	
+			*Digital marketing 
+local dmi "dig_empl dig_invest mark_invest"
+	
+			*Export performance
+local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
+			
+			*Business performance
+local bpi "fte fte_femmes car_carempl_div2 comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024"
+
+local all_index_untransformed `dsi' `dmi' `epi' `bpi'
+				
+					* F-test
+iebaltab `all_index_untransformed' if surveyround == 3 & treatment == 1, ///
+	grpvar(take_up) vce(robust) format(%12.2fc) replace ///
+	ftest rowvarlabels ///
+	savetex(el_takeup_baltab_bl_unadj)
+
+				* major outcome variables, transformed
+*Digital sales
+local dsi "dig_margins ihs_digrev_99"
+	
+			*Digital marketing 
+local dmi "w99_dig_empl w99_dig_invest w99_mark_invest"
+	
+			*Export performance
+local epi "w99_compexp2023 w99_compexp2024 export_1 export_2 exp_pays clients_b2c w99_clients_b2b exp_dig"			
+			
+			*Business performance
+local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 w99_comp_benefice2023 w99_comp_benefice2024"
+
+local all_index_transformed `dsi' `dmi' `epi' `bpi'
+
+iebaltab `all_index_transformed' if surveyround == 3 & treatment == 1, ///
+	grpvar(take_up) vce(robust) format(%15.2fc) replace ///
+	ftest rowvarlabels  ///
+	savetex(el_takeup_baltab_bl_adj)
+
+}
+
+* endline per treatment
+{
+	* baseline
+		* concern: F-test significant at baseline
+				* major outcome variables, untransformed
+			*Digital sales
+local dsi "dig_margins dig_revenues_ecom"
+	
+			*Digital marketing 
+local dmi "dig_empl dig_invest mark_invest"
+	
+			*Export performance
+local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
+			
+			*Business performance
+local bpi "fte fte_femmes car_carempl_div2 comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024"
+
+local all_index_untransformed `dsi' `dmi' `epi' `bpi'
+				
+					* F-test
+iebaltab `all_index_untransformed' if surveyround == 3, ///
+	grpvar(treatment) vce(robust) format(%12.2fc) replace ///
+	ftest rowvarlabels ///
+	savetex(el_treatment_baltab_bl_unadj)
+
+				* major outcome variables, transformed
+*Digital sales
+local dsi "dig_margins ihs_digrev_99"
+	
+			*Digital marketing 
+local dmi "w99_dig_empl w99_dig_invest w99_mark_invest"
+	
+			*Export performance
+local epi "w99_compexp2023 w99_compexp2024 export_1 export_2 exp_pays clients_b2c w99_clients_b2b exp_dig"			
+			
+			*Business performance
+local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 w99_comp_benefice2023 w99_comp_benefice2024"
+
+local all_index_transformed `dsi' `dmi' `epi' `bpi'
+
+iebaltab `all_index_transformed' if surveyround == 3, ///
+	grpvar(take_up) vce(robust) format(%15.2fc) replace ///
+	ftest rowvarlabels  ///
+	savetex(el_treatment_baltab_bl_unadj)
+
+}
+
+	 
+iebaltab fte ihs_exports95_2020 ihs_ca95_2020 ihs_w95_dig_rev20 ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
+comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz  dig_marketing_index facebook_likes ///
+  expprep if surveyround==1, grpvar(take_up) rowvarlabels format(%15.2fc) vce(robust) ftest savetex(bl_take_up_baltab_adj) replace
+			 
 
 ***********************************************************************
 * 	PART 1: Attrition
@@ -134,14 +238,18 @@ estadd local strata "Yes"		// consider replacing with quantile transformed profi
 eststo att9,r: areg  epi treatment##el_refus epi_y0 i.missing_bl_epi if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
-		* c(7): bpi
-eststo att10,r: areg  bpi treatment##el_refus bpi_y0 i.missing_bl_bpi if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(7): bpi_2023
+eststo att10,r: areg  bpi_2023 treatment##el_refus bpi_2023_y0 i.missing_bl_bpi_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 
-local attrition att4 att5 att6 att7 att8 att9 att10
+		* c(8): bpi_2024
+eststo att11,r: areg  bpi_2024 treatment##el_refus bpi_2024_y0 i.missing_bl_bpi_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"
+
+local attrition att4 att5 att6 att7 att8 att9 att10 att11
 esttab `attritionkey' using "el_indexattrition.tex", replace ///
 	title("Attrition: Indexes") ///
-	mtitles("Digital sales index" "Digital marketing index" "Digital technology Perception" "Digital technology adoption index" "Export readiness index" "Export performance index" "Business performance index") ///
+	mtitles("Digital sales index" "Digital marketing index" "Digital technology Perception" "Digital technology adoption index" "Export readiness index" "Export performance index" "Business performance index 2023" "Business performance index 2024" ) ///
 	label ///
 	b(3) ///
 	se(3) ///
@@ -181,8 +289,8 @@ estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 eststo att10,r: areg ihs_fte_99 treatment##el_refus ihs_fte_99_y0 i.missing_bl_ihs_fte_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
-		* c(8): dig_empl
-eststo att11,r: areg dig_empl treatment##el_refus dig_empl_y0 i.missing_bl_dig_empl if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(8): ihs_dig_empl_99
+eststo att11,r: areg ihs_dig_empl_99 treatment##el_refus ihs_dig_empl_99_y0 i.missing_bl_ihs_dig_empl_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 		
 local attrition att4 att5 att6 att7 att8 att9 att10 att11
@@ -265,7 +373,7 @@ end
 	* generate regression table for
 		* z-scores	
 			* QI index variables
-rct_regression_table dsi dtai bpi // MISSING VARS BASELINE: dmi dtp eri epi
+rct_regression_table dsi dtai bpi_2023 bpi_2024 // MISSING VARS BASELINE: dmi dtp eri epi
 			
 
 		* numerical outcomes
@@ -275,7 +383,7 @@ rct_regression_table ihs_digrev_99 // MISSING VARS BASELINE: ihs_dig_invest_99 i
 
 			* employees
 				*CONSIDER REPLACING WITH WINS-IHS TRANSFORMED & AVERAGE VAR
-rct_regression_table ihs_fte_99 car_carempl_div1 car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
+rct_regression_table ihs_fte_99 fte_femmes car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
 
 }
 
@@ -376,14 +484,15 @@ coefplot ///
 	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)) ///
 	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)) ///
 	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)) ///
-	(`7'1, pstyle(p7)) (`7'2, pstyle(p7)), ///
+	(`7'1, pstyle(p7)) (`7'2, pstyle(p7)) ///
+	(`8'1, pstyle(p8)) (`8'2, pstyle(p8)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
 		eqrename(`1'1 = `"Digital sales index (ITT)"' `1'2 = `"Digital sales index (TOT)"' `2'1 = `"Digital marketing index (ITT)"' `2'2 = `"Digital marketing index (TOT)"' `3'1 = `"Digital technology Perception (ITT)"' ///
 		`3'2 = `"Digital technology Perception (TOT)"' `4'1 = `"Digital technology adoption index (ITT)"' `4'2 = `"Digital technology adoption index"' `5'1 = `"Export readiness index (ITT)"' `5'2 = `"Export readiness index (TOT)"' ///
-		`6'1 = `"Export performance index (ITT)"' `6'2 = `"Export performance index (TOT)"' `7'1 = `"Business performance index (ITT)"' `7'2 = `"Business performance index (TOT)"') ///
+		`6'1 = `"Export performance index (ITT)"' `6'2 = `"Export performance index (TOT)"' `7'1 = `"Business performance index 2023 (ITT)"' `7'2 = `"Business performance index 2023 (TOT)"' `8'1 = `"Business performance index 2024 (ITT)"' `8'2 = `"Business performance index 2024 (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot, replace)
@@ -394,7 +503,7 @@ end
 
 
 	* apply program to qi outcomes
-rct_regression_index dsi dmi dtp dtai eri epi bpi, gen(index)
+rct_regression_index dsi dmi dtp dtai eri epi bpi_2023 bpi_2024, gen(index)
 
 }			
 
@@ -503,11 +612,25 @@ coefplot ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot1, replace)
 gr export el_`generate'_cfplot1.png, replace
+
+* coefplot
+coefplot ///
+	(`7'1, pstyle(p1)) (`7'2, pstyle(p1)) ///
+	(`8'1, pstyle(p2)) (`8'2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) ///
+		eqrename(`7'1 = `"Profit 2023 > 0 (ITT)"' `7'2 = `"Profit 2023 > 0 (TOT)"' `8'1 = `"Profit 2024 > 0 (ITT)"' `8'2 = `"Profit 2024 > 0 (TOT)"') ///
+		xtitle("Treatment coefficient", size(medium)) ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		name(el_`generate'2_cfplot1, replace)
+gr export el_`generate'2_cfplot1.png, replace
 		
 end
 
 	* apply program to qi outcomes
-rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca99_2024 ihs_profit99_2023 ihs_profit99_2024, gen(finance)
+rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca99_2024 ihs_profit99_2023 ihs_profit99_2024 profit_2023_pos profit_2024_pos, gen(finance)
 
 }
 
@@ -594,12 +717,14 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 coefplot ///
 	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
 	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
-	(`3'1, pstyle(p2)) (`3'2, pstyle(p2)), ///
+	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)) ///
+	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)) ///
+	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`1'1 = `"Employees (ITT)"' `1'2 = `"Employees (TOT)"' `2'1 = `"Digital employees (ITT)"' `2'2 = `"Digital employees (TOT)"' `3'1 = `"Digital margin (ITT)"' `3'2 = `"Digital margin (TOT)"') ///
+		eqrename(`1'1 = `"Employees (ITT)"' `1'2 = `"Employees (TOT)"' `2'1 = `"Female Employees (ITT)"' `2'2 = `"Female Employees (TOT)"' `3'1 = `"Young Employees (ITT)"' `3'2 = `"Young Employees (TOT)"' `4'1 = `"Digital employees (ITT)"' `4'2 = `"Digital employees (TOT)"' `5'1 = `"Digital margin (ITT)"' `5'2 = `"Digital margin (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot1, replace)
@@ -608,7 +733,7 @@ gr export el_`generate'_cfplot1.png, replace
 end
 
 	* apply program to business performance outcomes
-rct_regression_fte ihs_fte_99 dig_empl dig_margins, gen(empl)
+rct_regression_fte ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 ihs_dig_empl_99 dig_margins, gen(empl)
 
 }
 
@@ -740,7 +865,7 @@ end
 
 
 	* apply program to qi outcomes
-rct_regression_dta dtai dsi dmi dig_empl ihs_digrev_99 ihs_dig_invest_99 ihs_mark_invest_99, gen(dta)		
+rct_regression_dta dtai dsi dmi ihs_dig_empl_99 ihs_digrev_99 ihs_dig_invest_99 ihs_mark_invest_99, gen(dta)		
 
 ***********************************************************************
 * 	PART 8: Endline results - regression table Export
@@ -798,7 +923,7 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 
 		* Put all regressions into one table
 			* Top panel: ATE
-		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // adjust manually to number of variables 
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 `7'1 // adjust manually to number of variables 
 		esttab `regressions' using "rt_`generate'.tex", replace ///
 				prehead("\begin{table}[!h] \centering \\ \caption{Impact on export} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{7}{c}} \hline\hline") ///
 				posthead("\hline \\ \multicolumn{6}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
@@ -813,7 +938,7 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 				noobs
 				
 				* Bottom panel: ITT
-		local regressions `1'2 `2'2 `3'2 `4'2 `5'2 `6'2 // adjust manually to number of variables 
+		local regressions `1'2 `2'2 `3'2 `4'2 `5'2 `6'2 `7'2 // adjust manually to number of variables 
 		esttab `regressions' using "rt_`generate'.tex", append ///
 				fragment ///
 				posthead("\hline \\ \multicolumn{6}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
@@ -832,12 +957,13 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 coefplot ///
 	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
 	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
-	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)), ///
+	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)) ///
+	(`7'1, pstyle(p7)) (`7'2, pstyle(p7)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`1'1 = `"Export readiness index (ITT)"' `1'2 = `"Export readiness index (TOT)"' `2'1 = `"Export performance index (ITT)"' `2'2 = `"Export performance index (TOT)"' `3'1 = `"Exports (ITT)"' `3'2 = `"Exports (TOT)"') ///
+		eqrename(`1'1 = `"Export readiness index (ITT)"' `1'2 = `"Export readiness index (TOT)"' `2'1 = `"Export performance index (ITT)"' `2'2 = `"Export performance index (TOT)"' `3'1 = `"Exports (ITT)"' `3'2 = `"Exports (TOT)"' `7'1 = `"Digitally Exports (ITT)"' `7'2 = `"Digitally Exports (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot, replace)
@@ -860,22 +986,160 @@ gr export el_`generate'2_cfplot.png, replace
 
 * coefplot
 coefplot ///
-	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)) ///
-	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)), ///
+	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`5'1 = `"Clients B2C (ITT)"' `5'2 = `"Clients B2C (TOT)"' `6'1 = `"Clients B2B (ITT)"' `6'2 = `"Clients B2B (TOT)"') ///
+		eqrename(`5'1 = `"Clients B2C (ITT)"' `5'2 = `"Clients B2C (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'3_cfplot, replace)
 	
 gr export el_`generate'3_cfplot.png, replace
+
+* coefplot
+coefplot ///
+	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) ///
+		eqrename( `6'1 = `"IHS Clients B2B 99th wins. (ITT)"' `6'2 = `"IHS Clients B2B 99th wins. (TOT)"') ///
+		xtitle("Treatment coefficient", size(medium)) ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		name(el_`generate'4_cfplot, replace)
+	
+gr export el_`generate'4_cfplot.png, replace
 			
 			
 end
 
 
 	* apply program to qi outcomes
-rct_regression_exp eri epi export_1 exp_pays clients_b2c clients_b2b, gen(exp)
+rct_regression_exp eri epi export_1 exp_pays clients_b2c ihs_clients_b2b_99 exp_dig, gen(exp)
+
+***********************************************************************
+* 	PART 9: Endline results - regression digital marketing outcomes
+***********************************************************************
+
+capture program drop rct_regression_dmo // enables re-running
+program rct_regression_dmo
+	version 15							// define Stata version 15 used
+	syntax varlist(min=1 numeric), GENerate(string)
+		foreach var in `varlist' {		// do following for all variables in varlist seperately	
+			
+			* ITT: ancova plus stratification dummies
+			eststo `var'1: reg `var' i.treatment c.`var'_y0 i.missing_bl_`var' i.strata if surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+
+			* ATT, IV		
+			eststo `var'2: ivreg2 `var' c.`var'_y0 i.missing_bl_`var' i.strata (take_up = i.treatment) if surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `var' if treatment == 0 & surveyround == 3
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+
+		}
+	
+	* change logic from "to same thing to each variable" (loop) to "use all variables at the same time" (program)
+		* tokenize to use all variables at the same time
+tokenize `varlist'
+
+/*
+		* Correct for MHT - FWER
+rwolf2 ///
+	(reg `1' treatment `1'_y0 i.missing_bl_`1' i.strata if surveyround==3, cluster(id_plateforme)) ///
+	(ivreg2 `1' `1'_y0 i.missing_bl_`1' i.strata (take_up = treatment) if surveyround==3, cluster(id_plateforme)) ///
+	(reg `2' treatment `2'_y0 i.missing_bl_`2' i.strata if surveyround==3, cluster(id_plateforme)) ///
+	(ivreg2 `2' `2'_y0 i.missing_bl_`2' i.strata (take_up = treatment) if surveyround==3, cluster(id_plateforme)) ///
+	(reg `3' treatment `3'_y0 i.missing_bl_`3' i.strata if surveyround==3, cluster(id_plateforme)) ///
+	(ivreg2 `3' `3'_y0 i.missing_bl_`3' i.strata (take_up = treatment) if surveyround==3, cluster(id_plateforme)) ///
+	(reg `4' treatment `4'_y0 i.missing_bl_`4' i.strata if surveyround==3, cluster(id_plateforme)) ///
+	(ivreg2 `4' `4'_y0 i.missing_bl_`4' i.strata (take_up = treatment) if surveyround==3, cluster(id_plateforme)) ///
+	(reg `5' treatment `5'_y0 i.missing_bl_`5' i.strata if surveyround==3, cluster(id_plateforme)) ///
+	(ivreg2 `5' `5'_y0 i.missing_bl_`5' i.strata (take_up = treatment) if surveyround==3, cluster(id_plateforme)) ///
+	(reg `6' treatment `6'_y0 i.missing_bl_`3' i.strata if surveyround==3, cluster(id_plateforme)) ///
+	(ivreg2 `6' `6'_y0 i.missing_bl_`6' i.strata (take_up = treatment) if surveyround==3, cluster(id_plateforme)), ///
+	indepvars(treatment, take_up, treatment, take_up, treatment, take_up, treatment, take_up, treatment, take_up, treatment, take_up) ///
+	seed(110723) reps(30) usevalid strata(strata)
+
+		* save ci(fmt(2)) rw-p-values in a seperate table for manual insertion in latex document
+esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
+*/
+
+		* Put all regressions into one table
+			* Top panel: ATE
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 `7'1 `8'1 // adjust manually to number of variables 
+		esttab `regressions' using "rt_`generate'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Impact on Digital marketing outcomes} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{7}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{6}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) ci(fmt(2)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+		local regressions `1'2 `2'2 `3'2 `4'2 `5'2 `6'2 `7'2 `8'2 // adjust manually to number of variables 
+		esttab `regressions' using "rt_`generate'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{6}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) ci(fmt(2)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{8}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception, knowledge, and use of z-score indices calculated following Kling et al. (2007). QI investment and quality defects are winsorized at the 98th percentile. Few quality defects is dummy equal to 1 if firms report one or less percent of defective products in the last month,  and zero otherwise. QI investment is measured in units of Tunisian dinar. Units were chosen based on the highest R-square as described in Aihounton and Henningsen (2020). Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`1'1, pstyle(p1)) (`1'2, pstyle(p1)) ///
+	(`2'1, pstyle(p2)) (`2'2, pstyle(p2)) ///
+	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)) ///
+	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)) ///
+	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)) ///
+	(`9'1, pstyle(p9)) (`9'2, pstyle(p9)) ///
+	(`10'1, pstyle(p10)) (`10'2, pstyle(p10)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) ///
+		eqrename(`1'1 = `"Email online marketing (ITT)"' `1'2 = `"Email online marketing (TOT)"' `2'1 = `"SEO/SEA online marketing (ITT)"' `2'2 = `"SEO/SEA online marketing (TOT)"' `3'1 = `"Free social media marketing (ITT)"' `3'2 = `"Free social media marketing (TOT)"' `4'1 = `"Paid social media marketing (ITT)"' `4'2 = `"Paid social media marketing (TOT)"' `5'1 = `"Other online marketing (ITT)"' `5'2 = `"Other online marketing (TOT)"' `9'1 = `"Digital Revenue > 0 (ITT)"' `9'2 = `"Digital Revenue > 0 (TOT)"' `10'1 = `"Digital Invest > 0 (ITT)"' `10'2 = `"Digital Invest > 0 (TOT)"') ///
+		xtitle("Treatment coefficient", size(medium)) ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		name(el_`generate'_cfplot, replace)
+		
+gr export el_`generate'_cfplot.png, replace
+
+* coefplot
+coefplot ///
+	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)) ///
+	(`7'1, pstyle(p7)) (`7'2, pstyle(p7)) ///
+	(`8'1, pstyle(p8)) (`8'2, pstyle(p8)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) ///
+		eqrename(`6'1 = `"Digital employees (ITT)"' `6'2 = `"Digital employees (TOT)"' `7'1 = `"Digital Invest (ITT)"' `7'2 = `"Digital Invest (TOT)"' `8'1 = `"Marketing Invest (ITT)"' `8'2 = `"Marketing Invest (TOT)"') ///
+		xtitle("Treatment coefficient", size(medium)) ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		name(el_`generate'2_cfplot, replace)
+gr export el_`generate'2_cfplot.png, replace
+
+end
+	* apply program to qi outcomes
+rct_regression_dmo mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 ihs_dig_empl_99 ihs_dig_invest_99 ihs_mark_invest_99 dig_rev_extmargin dig_invest_extmargin, gen(dmo)

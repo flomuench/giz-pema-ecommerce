@@ -238,8 +238,8 @@ putpdf image el_fte_box_his.png, width(5000)
 putpdf pagebreak
 
     * Number of female employees
-sum car_carempl_div1
-stripplot car_carempl_div1, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
+sum fte_femmes
+stripplot fte_femmes, jitter(4) vertical yline(`=r(mean)', lcolor(red)) ///
 		ytitle("Number of female employees") ///
 		title("Number of female employees" ,size(medium) pos(12)) ///
 		name(el_car_carempl_div1, replace)
@@ -248,7 +248,7 @@ stripplot car_carempl_div1, jitter(4) vertical yline(`=r(mean)', lcolor(red)) //
 	putpdf image el_car_carempl_div1.png, width(5000)
 	putpdf pagebreak
 	
-stripplot car_carempl_div1, by(treatment) jitter(4) vertical  ///
+stripplot fte_femmes, by(treatment) jitter(4) vertical  ///
 		ytitle("Number of female employees") ///
 		title("Number of female employees" ,size(medium) pos(12)) ///
 		name(el_car_carempl_div1_treat, replace)
@@ -257,8 +257,8 @@ stripplot car_carempl_div1, by(treatment) jitter(4) vertical  ///
 	putpdf image el_car_carempl_div1_treat.png, width(5000)
 	putpdf pagebreak
 
-	twoway (kdensity car_carempl_div1 if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
-	   (kdensity car_carempl_div1 if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
+	twoway (kdensity fte_femmes if treatment == 0, lcolor(blue) lpattern(solid) legend(label(1 "Control"))) ///
+	   (kdensity fte_femmes if treatment == 1, lcolor(red) lpattern(dash) legend(label(2 "Treatment"))), ///
        legend(symxsize(small) order(1 "Control" 2 "Treatment")) ///
 	   title("Number of female employees", pos(12)) ///
 	   xtitle("Number of employees",size(medium)) ///
@@ -268,15 +268,15 @@ putpdf paragraph, halign(center)
 putpdf image el_car_carempl_div1_treat_kdens.png, width(5000)
 putpdf pagebreak
 
- graph box car_carempl_div1 if car_carempl_div1 > 0, over(treatment) blabel(total, format(%9.2fc)) ///
+ graph box fte_femmes if fte_femmes > 0, over(treatment) blabel(total, format(%9.2fc)) ///
 	title("Number of female employees", pos(12))
 gr export el_car_carempl_div1_box.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_car_carempl_div1_box.png, width(5000)
 putpdf pagebreak
 
-sum car_carempl_div1,d
-histogram car_carempl_div1, width(1) frequency addlabels xlabel(0(25)200, nogrid) discrete ///
+sum fte_femmes,d
+histogram fte_femmes, width(1) frequency addlabels xlabel(0(25)200, nogrid) discrete ///
 	xline(`r(mean)', lpattern(1)) xline(`r(p50)', lpattern(dash)) ///
 	title ("Number of female employees" ,size(medium) pos(12)) ///
 	ytitle("No. of firms") ///

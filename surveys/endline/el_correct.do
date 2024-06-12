@@ -366,7 +366,7 @@ replace comp_benefice2024 = 5000 if id_plateforme == 547
 	
 	*id_plateforme 398
 replace fte = 1000 if id_plateforme == 398 
-replace car_carempl_div1 = 800 if id_plateforme == 398 
+replace fte_femmes = 800 if id_plateforme == 398 
 replace car_carempl_div2 = 500 if id_plateforme == 398 
 replace car_carempl_div3 = 200 if id_plateforme == 398 
 
