@@ -486,6 +486,10 @@ foreach var of local all_index {
     replace temp_`var' = 0 if `var' == 888 
     replace temp_`var' = 0 if `var' == 777 
     replace temp_`var' = 0 if `var' == 666 
+	replace temp_`var' = 0 if `var' == -999 // added - since we transformed profit into negative in endline
+    replace temp_`var' = 0 if `var' == -888 
+    replace temp_`var' = 0 if `var' == -777 
+    replace temp_`var' = 0 if `var' == -666 
 }
 
 		* calcuate the z-score for each variable
@@ -556,10 +560,20 @@ label var eri_points "Export readiness index points"
 ***********************************************************************	
 *generate values for digital revenues
 replace dig_revenues_ecom = ((dig_revenues_ecom*0.01)*comp_ca2023) if surveyround ==3 & dig_revenues_ecom!=99
+
 winsor temp_dig_revenues_ecom, gen(w99_dig_revenues_ecom) p(0.01) highonly
+winsor temp_dig_revenues_ecom, gen(w97_dig_revenues_ecom) p(0.03) highonly
+winsor temp_dig_revenues_ecom, gen(w95_dig_revenues_ecom) p(0.05) highonly
+
 
 gen ihs_digrev_99 = log(w99_dig_revenues_ecom + sqrt((w99_dig_revenues_ecom*w99_dig_revenues_ecom)+1))
 lab var ihs_digrev_99 "IHS of digital revenues from ecommerce, wins.99th"
+
+gen ihs_digrev_97 = log(w97_dig_revenues_ecom + sqrt((w97_dig_revenues_ecom*w97_dig_revenues_ecom)+1))
+lab var ihs_digrev_97 "IHS of digital revenues from ecommerce, wins.97th"
+
+gen ihs_digrev_95 = log(w95_dig_revenues_ecom + sqrt((w95_dig_revenues_ecom*w95_dig_revenues_ecom)+1))
+lab var ihs_digrev_95 "IHS of digital revenues from ecommerce, wins.95th"
 
 *Digital investment
 winsor temp_dig_invest, gen(w99_dig_invest) p(0.01) highonly
@@ -632,6 +646,19 @@ gen ihs_clients_b2b_97 = log(w97_clients_b2b + sqrt((w97_clients_b2b*w97_clients
 lab var ihs_clients_b2b_97 "IHS of number of international companies, wins.97th"
 gen ihs_clients_b2b_95 = log(w95_clients_b2b + sqrt((w95_clients_b2b*w95_clients_b2b)+1))
 lab var ihs_clients_b2b_95 "IHS of number of international companies, wins.95th"
+
+*dig_empl
+winsor dig_empl if surveyround==3, gen(w99_dig_empl) p(0.01)
+winsor dig_empl if surveyround==3, gen(w97_dig_empl) p(0.03) 
+winsor dig_empl if surveyround==3, gen(w95_dig_empl) p(0.05) 
+
+gen ihs_dig_empl_99 = log(w99_dig_empl + sqrt((w99_dig_empl*w99_dig_empl)+1))
+lab var ihs_dig_empl_99 "IHS of number of digital employees, wins.99th"
+gen ihs_dig_empl_97 = log(w97_dig_empl + sqrt((w97_dig_empl*w97_dig_empl)+1))
+lab var ihs_dig_empl_97 "IHS of number of digital employees, wins.97th"
+gen ihs_dig_empl_95 = log(w95_dig_empl + sqrt((w95_dig_empl*w95_dig_empl)+1))
+lab var ihs_dig_empl_95 "IHS of number of digital employees, wins.95th"
+
 
 /*clients_b2c
 winsor clients_b2c if surveyround==3, gen(w99_clients_b2c) p(0.01) 
@@ -759,6 +786,29 @@ replace el_refus=1 if id_plateforme== 818
 replace el_refus=1 if id_plateforme== 831
 replace el_refus=1 if id_plateforme== 901
 
+*dummy variables for dig_rev & dig_invest (extensive margins)
+	*dig_rev
+gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0
+replace dig_rev_extmargin = 0 if dig_revenues_ecom == 0
+ 
+lab var dig_rev_extmargin "Digital revenue > 0"
+
+*dig_invest
+gen dig_invest_extmargin = 1 if dig_invest > 0
+replace dig_invest_extmargin = 0 if dig_invest == 0
+
+lab var dig_invest_extmargin "Digital invest > 0"
+
+	*profit2023 positive
+gen profit_2023_pos = 1 if comp_benefice2023 >= 0
+replace profit_2023_pos = 0 if comp_benefice2023 < 0
+
+lab var profit_2023_pos "Profit 2023 > 0"
+	*profit2024 possible
+gen profit_2024_pos = 1 if comp_benefice2024 >= 0
+replace profit_2024_pos = 0 if comp_benefice2024 < 0
+
+lab var profit_2024_pos "Profit 2024 > 0"
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************

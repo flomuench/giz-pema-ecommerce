@@ -75,7 +75,9 @@ lab var inno_produit "Number good or service innovation"
 lab var clients "Client type: B2B, B2C or both"
 
 lab var fte "Number of employees"
-lab var car_carempl_div1 "Number of femmes employees"
+*for master merge
+rename car_carempl_div1 fte_femmes
+lab var fte_femmes "Number of femmes employees"
 lab var car_carempl_div2 "Number of young employees (less than 36 yo)"
 lab var car_carempl_div3 "Number of young employees (less than 24 yo)"
 
@@ -235,7 +237,7 @@ label values profit_2023_category profit_2024_category profit_loss
 * 	PART 6: 	Change format of variable  			
 ***********************************************************************
 * Change format of variable
-recast int fte car_carempl_div1 car_carempl_div2 car_carempl_div3 
+recast int fte fte_femmes car_carempl_div2 car_carempl_div3 
 
 ***********************************************************************
 * 	PART 7: Removing trail and leading spaces from string variables 			
