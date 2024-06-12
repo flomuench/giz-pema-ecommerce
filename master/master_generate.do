@@ -482,9 +482,10 @@ local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi'
 * IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
 foreach var of local all_index {
     gen temp_`var' = `var'
-    replace temp_`var' = 0 if `var' == -999 // don't know transformed to zeros
-    replace temp_`var' = 0 if `var' == -888 
-    replace temp_`var' = 0 if `var' == -777 
+    replace temp_`var' = 0 if `var' == 999 // don't know transformed to zeros
+    replace temp_`var' = 0 if `var' == 888 
+    replace temp_`var' = 0 if `var' == 777 
+    replace temp_`var' = 0 if `var' == 666 
 }
 
 		* calcuate the z-score for each variable
@@ -513,7 +514,8 @@ egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez tem
 egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_clients_b2cz temp_clients_b2bz temp_exp_digz)			
 			
 			*Business performance index
-egen bpi = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
+egen bpi_2023 = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
+egen bpi_2024 = rowmean(temp_ftez temp_comp_ca2024z temp_comp_benefice2024z)
 
 		* labeling
 label var dsi "Digital sales index -Z Score"
@@ -522,7 +524,8 @@ label var dtp "Digital technology Perception index -Z Score"
 label var dtai "Digital technology adoption index -Z Score"
 label var eri "Export readiness index -Z Score"
 label var epi "Export performance index -Z Score"
-label var bpi "Business performance index- Z-score"
+label var bpi_2023 "Business performance index- Z-score in 2023"
+label var bpi_2024 "Business performance index- Z-score in 2024"
 
 
 	* create total points per index dimension
@@ -594,10 +597,34 @@ lab var ihs_fte_97 "IHS of full time employees, wins.97th"
 gen ihs_fte_95 = log(w95_fte + sqrt((w95_fte*w95_fte)+1))
 lab var ihs_fte_95 "IHS of full time employees, wins.95th"
 
-/*clients_b2b
-winsor clients_b2b, gen(w99_clients_b2b) p(0.01)
-winsor clients_b2b, gen(w97_clients_b2b) p(0.03) 
-winsor clients_b2b, gen(w95_clients_b2b) p(0.05) 
+*Female employees
+winsor fte_femmes, gen(w99_fte_femmes) p(0.01) highonly
+winsor fte_femmes, gen(w97_fte_femmes) p(0.03) highonly
+winsor fte_femmes, gen(w95_fte_femmes) p(0.05) highonly
+
+gen ihs_fte_femmes_99 = log(w99_fte_femmes + sqrt((w99_fte_femmes*w99_fte_femmes)+1))
+lab var ihs_fte_femmes_99 "IHS of female employees, wins.99th"
+gen ihs_fte_femmes_97 = log(w97_fte_femmes + sqrt((w97_fte_femmes*w97_fte_femmes)+1))
+lab var ihs_fte_femmes_97 "IHS of female employees, wins.97th"
+gen ihs_fte_femmes_95 = log(w95_fte_femmes + sqrt((w95_fte_femmes*w95_fte_femmes)+1))
+lab var ihs_fte_femmes_95 "IHS of female employees, wins.95th"
+
+*Young employees
+winsor car_carempl_div2 if surveyround ==3, gen(w99_fte_young) p(0.01) highonly
+winsor car_carempl_div2 if surveyround ==3, gen(w97_fte_young) p(0.03) highonly
+winsor car_carempl_div2 if surveyround ==3, gen(w95_fte_young) p(0.05) highonly
+
+gen ihs_fte_young_99 = log(w99_fte_young + sqrt((w99_fte_young*w99_fte_young)+1))
+lab var ihs_fte_young_99 "IHS of young employees, wins.99th"
+gen ihs_fte_young_97 = log(w97_fte_young + sqrt((w97_fte_young*w97_fte_young)+1))
+lab var ihs_fte_young_97 "IHS of young employees, wins.97th"
+gen ihs_fte_young_95 = log(w95_fte_young + sqrt((w95_fte_young*w95_fte_young)+1))
+lab var ihs_fte_young_95 "IHS of young employees, wins.95th"
+
+*clients_b2b
+winsor clients_b2b if surveyround==3, gen(w99_clients_b2b) p(0.01)
+winsor clients_b2b if surveyround==3, gen(w97_clients_b2b) p(0.03) 
+winsor clients_b2b if surveyround==3, gen(w95_clients_b2b) p(0.05) 
 
 gen ihs_clients_b2b_99 = log(w99_clients_b2b + sqrt((w99_clients_b2b*w99_clients_b2b)+1))
 lab var ihs_clients_b2b_99 "IHS of number of international companies, wins.99th"
@@ -606,10 +633,10 @@ lab var ihs_clients_b2b_97 "IHS of number of international companies, wins.97th"
 gen ihs_clients_b2b_95 = log(w95_clients_b2b + sqrt((w95_clients_b2b*w95_clients_b2b)+1))
 lab var ihs_clients_b2b_95 "IHS of number of international companies, wins.95th"
 
-*clients_b2c
-winsor clients_b2c, gen(w99_clients_b2c) p(0.01) 
-winsor clients_b2c, gen(w97_clients_b2c) p(0.03) 
-winsor clients_b2c, gen(w95_clients_b2c) p(0.05) 
+/*clients_b2c
+winsor clients_b2c if surveyround==3, gen(w99_clients_b2c) p(0.01) 
+winsor clients_b2c if surveyround==3, gen(w97_clients_b2c) p(0.03) 
+winsor clients_b2c if surveyround==3, gen(w95_clients_b2c) p(0.05) 
 
 gen ihs_clients_b2c_99 = log(w99_clients_b2c + sqrt((w99_clients_b2c*w99_clients_b2c)+1))
 lab var ihs_clients_b2c_99 "IHS of number of international orders, wins.99th"
