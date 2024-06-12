@@ -146,6 +146,8 @@ lab var dig_con6_bl "Correct answers to knowledge question on Google Analaytics"
 ***********************************************************************
 *PART 3. Financial indicators
 ***********************************************************************	
+
+
 *regenerate winsorized IHS exports after slight modification of underlying variable
 *(assuming zero exports for firms that had missing value and declared to have not exported prior to 2021)
 winsor compexp_2020, gen(w99_compexp2020) p(0.01) highonly
@@ -721,6 +723,51 @@ gen ihs_profit97_2024 = log(w97_comp_benefice2024 + sqrt((w97_comp_benefice2024*
 lab var ihs_profit97_2024 "IHS of profit in 2024, wins.97th"
 gen ihs_profit95_2024 = log(w95_comp_benefice2024 + sqrt((w95_comp_benefice2024*w95_comp_benefice2024)+1))
 lab var ihs_profit95_2024 "IHS of profit in 2024, wins.95th"
+
+*Cost variable
+* Generating a cost variable
+*gen cost_2020 = temp_comp_ca2020 - temp_comp_benefice2020 if surveyround ==1
+*lab var cost_2020 "Total costs in 2020 in TND"
+
+gen cost_2023 = temp_comp_ca2023 - temp_comp_benefice2023 if surveyround ==3
+lab var cost_2023 "Total costs in 2023 in TND"
+
+gen cost_2024 = temp_comp_ca2024 - temp_comp_benefice2024 if surveyround ==3
+lab var cost_2024 "Total costs in 2024 in TND"
+
+*winsor cost_2020, gen(w99_cost_2020) p(0.01) highonly
+*winsor cost_2020, gen(w97_cost_2020) p(0.03) highonly
+*winsor cost_2020, gen(w95_cost_2020) p(0.05) highonly
+
+*gen ihs_cost99_2020 = log(w99_cost_2020 + sqrt((w99_cost_2020*w99_cost_2020)+1))
+*lab var ihs_cost99_2020 "IHS of total costs in 2020, wins.99th"
+*gen ihs_cost97_2020 = log(w97_cost_2020 + sqrt((w97_cost_2020*w97_cost_2020)+1))
+*lab var ihs_cost97_2020 "IHS of total costs in 2020, wins.97th"
+*gen ihs_cost95_2020 = log(w95_cost_2020 + sqrt((w95_cost_2020*w95_cost_2020)+1))
+*lab var ihs_cost95_2020 "IHS of total costs in 2020, wins.95th"
+
+winsor cost_2023, gen(w99_cost_2023) p(0.01) highonly
+winsor cost_2023, gen(w97_cost_2023) p(0.03) highonly
+winsor cost_2023, gen(w95_cost_2023) p(0.05) highonly
+
+gen ihs_cost99_2023 = log(w99_cost_2023 + sqrt((w99_cost_2023*w99_cost_2023)+1))
+lab var ihs_cost99_2023 "IHS of total costs in 2023, wins.99th"
+gen ihs_cost97_2023 = log(w97_cost_2023 + sqrt((w97_cost_2023*w97_cost_2023)+1))
+lab var ihs_cost97_2023 "IHS of total costs in 2023, wins.97th"
+gen ihs_cost95_2023 = log(w95_cost_2023 + sqrt((w95_cost_2023*w95_cost_2023)+1))
+lab var ihs_cost95_2023 "IHS of total costs in 2023, wins.95th"
+
+winsor cost_2024, gen(w99_cost_2024) p(0.01) highonly
+winsor cost_2024, gen(w97_cost_2024) p(0.03) highonly
+winsor cost_2024, gen(w95_cost_2024) p(0.05) highonly
+
+gen ihs_cost99_2024 = log(w99_cost_2024 + sqrt((w99_cost_2024*w99_cost_2024)+1))
+lab var ihs_cost99_2024 "IHS of total costs in 2024, wins.99th"
+gen ihs_cost97_2024 = log(w97_cost_2024 + sqrt((w97_cost_2024*w97_cost_2024)+1))
+lab var ihs_cost97_2024 "IHS of total costs in 2024, wins.97th"
+gen ihs_cost95_2024 = log(w95_cost_2024 + sqrt((w95_cost_2024*w95_cost_2024)+1))
+lab var ihs_cost95_2024 "IHS of total costs in 2024, wins.95th"
+
 
 *drop temporary vars		  
 drop temp_*

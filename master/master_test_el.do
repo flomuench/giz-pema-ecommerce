@@ -496,6 +496,50 @@ replace questions_needing_check = "" if id_plateforme == 398 & surveyround == 3
 replace needs_check = 0 if id_plateforme == 443 & surveyround == 3   // ElAmouri rechecked the call
 replace questions_needing_check = "" if id_plateforme == 443 & surveyround == 3
 
+replace needs_check = 0 if id_plateforme == 58 & surveyround == 3   // ElAmouri called the company
+replace questions_needing_check = "" if id_plateforme == 58 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 78 & surveyround == 3   // ElAmouri called the company
+replace questions_needing_check = "" if id_plateforme == 78 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 95 & surveyround == 3   // ElAmouri called the company and the firm refused to give the accounting part
+replace questions_needing_check = "" if id_plateforme == 95 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 105 & surveyround == 3   // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 105 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 148 & surveyround == 3   // ElAmouri called the company
+replace questions_needing_check = "" if id_plateforme == 148 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 271 & surveyround == 3   // ElAmouri called the company
+replace questions_needing_check = "" if id_plateforme == 271 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 356 & surveyround == 3   // ElAmouri called the company and the firm refused to give the accounting part
+replace questions_needing_check = "" if id_plateforme == 356 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 365 & surveyround == 3   // ElAmouri called the company and zero for the turnover
+replace questions_needing_check = "" if id_plateforme == 365 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 373 & surveyround == 3   // ElAmouri called the company and refused to answer
+replace questions_needing_check = "" if id_plateforme == 373 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 392 & surveyround == 3   // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 392 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 405 & surveyround == 3   // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 405 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 527 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 527 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 695 & surveyround == 3 // ElAmouri rechecked the call
+replace questions_needing_check = "" if id_plateforme == 695 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 899 & surveyround == 3 // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 899 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 959 & surveyround == 3 // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 959 & surveyround == 3
 
 *extra cases (ElAmouri correction not enough)
 
@@ -505,17 +549,9 @@ replace questions_needing_check = questions_needing_check + "Profit plus grand q
 replace needs_check = 1 if id_plateforme == 724 & surveyround == 3
 replace questions_needing_check = questions_needing_check + "Pourquoi il/elle a donné(e) des chiffres s'ils sont confidentiels ? / "  if id_plateforme == 724 & surveyround == 3
 
-replace needs_check = 1 if id_plateforme == 365 & surveyround == 3
-replace questions_needing_check = questions_needing_check + "L'entreprise refuse de donner les chiffres d'affaires ou c'est 0 ? / "  if id_plateforme == 365 & surveyround == 3
-
 replace needs_check = 1 if id_plateforme == 151 & surveyround == 3
 replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 151 & surveyround == 3
 
-replace needs_check = 1 if id_plateforme == 527 & surveyround == 3
-replace questions_needing_check = "Même avec la correction, benefices reste plus élevés que CA 2024." if id_plateforme == 527 & surveyround == 3
-
-replace needs_check = 1 if id_plateforme == 95 & surveyround == 3
-replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 95 & surveyround == 3
 ***********************************************************************
 * 	PART 6:  Manually add tests for respondant position		
 ***********************************************************************
