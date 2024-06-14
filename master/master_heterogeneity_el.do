@@ -312,8 +312,9 @@ end
 
 {
 local ys ///
-	dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_97 ihs_ca97_2023 comp_ca2024 ihs_profit97_2023 ihs_profit97_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
-	 export_1 exp_pays clients_b2c clients_b2b ihs_ca97_2024 ihs_dig_invest_97 ihs_dig_empl_99 profit_2023_pos profit_2024_pos dig_rev_extmargin dig_invest_extmargin ihs_fte_femmes_99 ihs_fte_young_99 w97_dig_empl 
+	dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
+	export_1 exp_pays clients_b2c clients_b2b ihs_ca99_2024 ihs_dig_invest_99 ihs_dig_empl_99 profit_2023_pos profit_2024_pos dig_rev_extmargin dig_invest_extmargin ihs_fte_femmes_99 ihs_fte_young_99 w99_dig_empl  ///
+	ihs_cost99_2023 ihs_cost99_2024
 foreach var of local ys {
 		* generate YO
 	bys id_plateforme (surveyround): gen `var'_first = `var'[_n == 1]		 // filter out baseline value
@@ -974,7 +975,7 @@ gr export el_het_sector1_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_digrev_97"
+local outcome "ihs_digrev_99"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -1053,7 +1054,7 @@ gr export el_het_sector1_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_profit99_2023"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -1132,7 +1133,7 @@ gr export el_het_sector1_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2024"
+local outcome "ihs_profit99_2024"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -1211,7 +1212,7 @@ gr export el_het_sector1_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2023"
+local outcome "ihs_ca99_2023"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -1290,7 +1291,7 @@ gr export el_het_sector1_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2024"
+local outcome "ihs_ca99_2024"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -1368,10 +1369,166 @@ gr export el_het_sector1_`outcome'.png, replace
 
 }
 
+{
+local outcome "ihs_cost99_2023"
+local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
 
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2023 by product/service} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("Product" "Service", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("Product" "Service", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"Product (ITT)"' `outcome'_p2 = `"Product (TOT)"' `outcome'_s1 = `"Service (ITT)"' `outcome'_s2 = `"Service (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2023") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_sector1_`outcome', replace)
+gr export el_het_sector1_`outcome'.png, replace
+
+}
 
 {
-local outcome "ihs_dig_invest_97"
+local outcome "ihs_cost99_2024"
+local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2023 by product/service} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("Product" "Service", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("Product" "Service", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"Product (ITT)"' `outcome'_p2 = `"Product (TOT)"' `outcome'_s1 = `"Service (ITT)"' `outcome'_s2 = `"Service (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2024") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_sector1_`outcome', replace)
+gr export el_het_sector1_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_dig_invest_99"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -1450,7 +1607,7 @@ gr export el_het_sector1_`outcome'.png, replace
 }
 
 {
-local outcome "w97_dig_empl"
+local outcome "w99_dig_empl"
 local conditions "inlist(sector,1,2,3,4) !inlist(sector,1,2,3,4)"
 local sectors "p s"
 foreach cond of local conditions {
@@ -2014,7 +2171,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "w97_dig_empl"
+local outcome "w99_dig_empl"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2174,7 +2331,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_dig_invest_97"
+local outcome "ihs_dig_invest_99"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2254,7 +2411,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2023"
+local outcome "ihs_ca99_2023"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2334,7 +2491,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2024"
+local outcome "ihs_ca99_2024"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2414,7 +2571,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_profit99_2023"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -2494,7 +2651,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_profit99_2023"
 local conditions "clients==1 clients==2 clients==3"
 local groups "c b cb"
 foreach cond of local conditions {
@@ -3227,7 +3384,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "w97_dig_empl"
+local outcome "w99_dig_empl"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3307,7 +3464,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_digrev_97"
+local outcome "ihs_digrev_99"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3387,7 +3544,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_dig_invest_97"
+local outcome "ihs_dig_invest_99"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3467,7 +3624,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2023"
+local outcome "ihs_ca99_2023"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3547,7 +3704,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2024"
+local outcome "ihs_ca99_2024"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3627,7 +3784,166 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_cost99_2023"
+local conditions "el_size==1 el_size==2 el_size==3"
+local groups "s m l"
+foreach cond of local conditions {
+		gettoken group groups : groups
+			eststo `outcome'_`group'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_s1 `outcome'_s2 `outcome'_m1 `outcome'_m2 `outcome'_l1 `outcome'_l2  
+esttab `regressions' using "rt_hetero_size_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2023 by size} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("Small" "Medium" "Large", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_s1 `outcome'_s2 `outcome'_m1 `outcome'_m2 `outcome'_l1 `outcome'_l2
+		esttab `regressions' using "rt_hetero_size_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("Small" "Medium" "Large", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_s1, pstyle(p1)) (`outcome'_s2, pstyle(p1)) ///
+	(`outcome'_m1, pstyle(p2)) (`outcome'_m2, pstyle(p2)) ///
+	(`outcome'_l1, pstyle(p3)) (`outcome'_l2, pstyle(p3)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_s1 = `"Small (ITT)"' `outcome'_s2 = `"Small (TOT)"' `outcome'_m1 = `"Medium (ITT)"' `outcome'_m2 = `"Medium (TOT)"' `outcome'_l1 = `"Large (ITT)"' `outcome'_l2 = `"Large (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2023") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_size_`outcome', replace)
+gr export el_het_size_`outcome'.png, replace
+
+}
+{
+local outcome "ihs_cost99_2024"
+local conditions "el_size==1 el_size==2 el_size==3"
+local groups "s m l"
+foreach cond of local conditions {
+		gettoken group groups : groups
+			eststo `outcome'_`group'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_s1 `outcome'_s2 `outcome'_m1 `outcome'_m2 `outcome'_l1 `outcome'_l2  
+esttab `regressions' using "rt_hetero_size_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2024 by size} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("Small" "Medium" "Large", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_s1 `outcome'_s2 `outcome'_m1 `outcome'_m2 `outcome'_l1 `outcome'_l2
+		esttab `regressions' using "rt_hetero_size_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("Small" "Medium" "Large", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_s1, pstyle(p1)) (`outcome'_s2, pstyle(p1)) ///
+	(`outcome'_m1, pstyle(p2)) (`outcome'_m2, pstyle(p2)) ///
+	(`outcome'_l1, pstyle(p3)) (`outcome'_l2, pstyle(p3)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_s1 = `"Small (ITT)"' `outcome'_s2 = `"Small (TOT)"' `outcome'_m1 = `"Medium (ITT)"' `outcome'_m2 = `"Medium (TOT)"' `outcome'_l1 = `"Large (ITT)"' `outcome'_l2 = `"Large (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2024") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_size_`outcome', replace)
+gr export el_het_size_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_profit99_2023"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -3707,7 +4023,7 @@ gr export el_het_size_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2024"
+local outcome "ihs_profit99_2024"
 local conditions "el_size==1 el_size==2 el_size==3"
 local groups "s m l"
 foreach cond of local conditions {
@@ -4425,7 +4741,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_digrev_97"
+local outcome "ihs_digrev_99"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -4504,7 +4820,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_profit99_2023"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -4583,7 +4899,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2024"
+local outcome "ihs_profit99_2024"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -4662,7 +4978,165 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2023"
+local outcome "ihs_cost99_2023"
+local conditions "clients==2 clients==3"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_model_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2023 by entreprise model} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("B2B" "B2B & B2C", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_model_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("B2B" "B2B & B2C", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"B2B (ITT)"' `outcome'_p2 = `"B2B (TOT)"' `outcome'_s1 = `"B2B & B2C (ITT)"' `outcome'_s2 = `"B2B & B2C (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2023") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_model_`outcome', replace)
+gr export el_het_model_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_cost99_2024"
+local conditions "clients==2 clients==3"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_model_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2024 by entreprise model} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("B2B" "B2B & B2C", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_model_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("B2B" "B2B & B2C", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"B2B (ITT)"' `outcome'_p2 = `"B2B (TOT)"' `outcome'_s1 = `"B2B & B2C (ITT)"' `outcome'_s2 = `"B2B & B2C (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2024") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_model_`outcome', replace)
+gr export el_het_model_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_ca99_2023"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -4741,7 +5215,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2024"
+local outcome "ihs_ca99_2024"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -4822,7 +5296,7 @@ gr export el_het_model_`outcome'.png, replace
 
 
 {
-local outcome "ihs_dig_invest_97"
+local outcome "ihs_dig_invest_99"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -4901,7 +5375,7 @@ gr export el_het_model_`outcome'.png, replace
 }
 
 {
-local outcome "w97_dig_empl"
+local outcome "w99_dig_empl"
 local conditions "clients==2 clients==3"
 local sectors "p s"
 foreach cond of local conditions {
@@ -5618,7 +6092,7 @@ gr export el_het_margin_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_digrev_97"
+local outcome "ihs_digrev_99"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -5697,7 +6171,7 @@ gr export el_het_margin_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_profit99_2023"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -5776,7 +6250,7 @@ gr export el_het_margin_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2024"
+local outcome "ihs_profit99_2024"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -5855,7 +6329,165 @@ gr export el_het_margin_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2023"
+local outcome "ihs_cost99_2023"
+local conditions "dig_margins==0 dig_margins==1"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_margin_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2023 by digital margin} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("Higher margin" "Not higher margin", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_margin_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("Higher margin" "Not higher margin", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"Higher margin (ITT)"' `outcome'_p2 = `"Higher margin (TOT)"' `outcome'_s1 = `"Not higher margin (ITT)"' `outcome'_s2 = `"Not higher margin (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2023") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_margin_`outcome', replace)
+gr export el_het_margin_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_cost99_2024"
+local conditions "dig_margins==0 dig_margins==1"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_margin_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2024 by digital margin} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("Higher margin" "Not higher margin", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_margin_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("Higher margin" "Not higher margin", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"Higher margin (ITT)"' `outcome'_p2 = `"Higher margin (TOT)"' `outcome'_s1 = `"Not higher margin (ITT)"' `outcome'_s2 = `"Not higher margin (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2024") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_margin_`outcome', replace)
+gr export el_het_margin_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_ca99_2023"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -5934,7 +6566,7 @@ gr export el_het_margin_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2024"
+local outcome "ihs_ca99_2024"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -6015,7 +6647,7 @@ gr export el_het_margin_`outcome'.png, replace
 
 
 {
-local outcome "ihs_dig_invest_97"
+local outcome "ihs_dig_invest_99"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -6094,7 +6726,7 @@ gr export el_het_margin_`outcome'.png, replace
 }
 
 {
-local outcome "w97_dig_empl"
+local outcome "w99_dig_empl"
 local conditions "dig_margins==0 dig_margins==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -6811,7 +7443,7 @@ gr export el_het_digexp_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_digrev_97"
+local outcome "ihs_digrev_99"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -6890,7 +7522,7 @@ gr export el_het_digexp_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2023"
+local outcome "ihs_profit99_2023"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -6969,7 +7601,7 @@ gr export el_het_digexp_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_profit97_2024"
+local outcome "ihs_profit99_2024"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -7048,7 +7680,165 @@ gr export el_het_digexp_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2023"
+local outcome "ihs_cost99_2023"
+local conditions "exp_dig==0 exp_dig==1"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_digexp_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2023 by digital export} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("No export via digital" "Export via digital", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_digexp_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("No export via digital" "Export via digital", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"No export via digital (ITT)"' `outcome'_p2 = `"No export via digital (TOT)"' `outcome'_s1 = `"Export via digital (ITT)"' `outcome'_s2 = `"Export via digital (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2023") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_digexp_`outcome', replace)
+gr export el_het_digexp_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_cost99_2024"
+local conditions "exp_dig==0 exp_dig==1"
+local sectors "p s"
+foreach cond of local conditions {
+		gettoken sector sectors : sectors
+			eststo `outcome'_`sector'1: reg `outcome' i.treatment c.`outcome'_y0 i.missing_bl_`outcome' i.strata if `cond' & surveyround==3, cluster(id_plateforme)
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,2]
+
+			* ATT, IV		
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==3, cluster(id_plateforme) first
+			estadd local bl_control "Yes"
+			estadd local strata "Yes"
+			matrix b = r(table)			// access p-values for mht
+			scalar `outcome'p1 = b[4,1]
+			
+			* calculate control group mean
+				* take mean at endline to control for time trends
+sum `outcome' if treatment == 0 & surveyround == 3 & `cond'
+estadd scalar control_mean = r(mean)
+estadd scalar control_sd = r(sd)
+}
+
+
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+esttab `regressions' using "rt_hetero_digexp_`outcome'.tex", replace ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Treatment effect on costs 2024 by digital export} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabular}{l*{5}{c}} \hline\hline") ///
+				posthead("\hline \\ \multicolumn{3}{c}{\textbf{Panel A: Intention-to-treat (ITT)}} \\\\[-1ex]") ///
+				fragment ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				mlabels(, depvars) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				mgroups("No export via digital" "Export via digital", ///
+				pattern(1 1 1)) ///
+				collabels(none) ///	do not use statistics names below models
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				noobs
+				
+				* Bottom panel: ITT
+	local regressions `outcome'_p1 `outcome'_p2 `outcome'_s1 `outcome'_s2
+		esttab `regressions' using "rt_hetero_digexp_`outcome'.tex", append ///
+				fragment ///
+				posthead("\hline \\ \multicolumn{7}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
+				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) rw) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				drop(_cons *.strata ?.missing_bl_* *_y0) ///
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mgroups("No export via digital" "Export via digital", ///
+				pattern(1 1 1)) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\hline") ///
+				postfoot("\hline\hline\hline \\ \multicolumn{3}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% Notes: Each specification includes controls for randomization strata, baseline outcome, and a missing baseline dummy. QI perception is a z-score indices calculated following Kling et al. (2007). Small corresponds to firms with less or 10 employees, medium more than 10 and less or 40 employees, and large to more than 40 at baseline. Panel A reports ANCOVA estimates as defined in Mckenzie and Bruhn (2011). Panel B documents IV estimates, instrumenting take-up with treatment assignment. Clustered standard errors by firms in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level. P-values and adjusted p-values for multiple hypotheses testing using the Romano-Wolf correction procedure (Clarke et al., 2020) with 999 bootstrap replications are reported below the standard errors.% \\ }} \\ \end{tabular} \\ \end{adjustbox} \\ \end{table}") // when inserting table in overleaf/latex, requires adding space after %
+				
+			* coefplot
+coefplot ///
+	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
+	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
+		asequation /// name of model is used
+		swapnames /// swaps coeff & equation names after collecting result
+		levels(95) /// 95th percentile is null-effect, although tight
+		eqrename(`outcome'_p1 = `"No export via digital (ITT)"' `outcome'_p2 = `"No export via digital (TOT)"' `outcome'_s1 = `"Export via digital (ITT)"' `outcome'_s2 = `"Export via digital (TOT)"') ///
+		ytitle("", size(medium)) ///
+		xtitle("Costs 2024") ///
+		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
+		note("Confidence interval at the 95th percentile.", span size(small)) /// 95th only holds for lare firms
+		name(el_het_digexp_`outcome', replace)
+gr export el_het_digexp_`outcome'.png, replace
+
+}
+
+{
+local outcome "ihs_ca99_2023"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -7127,7 +7917,7 @@ gr export el_het_digexp_`outcome'.png, replace
 }
 
 {
-local outcome "ihs_ca97_2024"
+local outcome "ihs_ca99_2024"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -7208,7 +7998,7 @@ gr export el_het_digexp_`outcome'.png, replace
 
 
 {
-local outcome "ihs_dig_invest_97"
+local outcome "ihs_dig_invest_99"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {
@@ -7287,7 +8077,7 @@ gr export el_het_digexp_`outcome'.png, replace
 }
 
 {
-local outcome "w97_dig_empl"
+local outcome "w99_dig_empl"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
 foreach cond of local conditions {

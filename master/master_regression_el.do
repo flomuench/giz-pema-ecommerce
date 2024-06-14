@@ -57,7 +57,7 @@ rename lprice prix
 local indexes ///
 	 dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
 	 export_1 exp_pays clients_b2c clients_b2b ihs_ca99_2024 ihs_dig_invest_99 dig_margins exp_dig ihs_dig_empl_99 dig_rev_extmargin dig_invest_extmargin profit_2023_pos profit_2024_pos ///
-	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5
+	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 cost_2023 cost_2024 ihs_cost99_2023 ihs_cost99_2024
 
 foreach var of local indexes {
 		* generate YO
@@ -93,7 +93,7 @@ local dmi "dig_empl dig_invest mark_invest"
 local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
 			
 			*Business performance
-local bpi "fte fte_femmes car_carempl_div2 comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024"
+local bpi "fte fte_femmes car_carempl_div2 comp_ca2023 comp_ca2024 cost_2023 cost_2024 comp_benefice2023 comp_benefice2024"
 
 local all_index_untransformed `dsi' `dmi' `epi' `bpi'
 				
@@ -114,7 +114,7 @@ local dmi "w99_dig_empl w99_dig_invest w99_mark_invest"
 local epi "w99_compexp2023 w99_compexp2024 export_1 export_2 exp_pays clients_b2c w99_clients_b2b exp_dig"			
 			
 			*Business performance
-local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 w99_comp_benefice2023 w99_comp_benefice2024"
+local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 ihs_cost99_2023 ihs_cost99_2024 w99_comp_benefice2023 w99_comp_benefice2024"
 
 local all_index_transformed `dsi' `dmi' `epi' `bpi'
 
@@ -140,7 +140,7 @@ local dmi "dig_empl dig_invest mark_invest"
 local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
 			
 			*Business performance
-local bpi "fte fte_femmes car_carempl_div2 comp_ca2023 comp_ca2024 comp_benefice2023 comp_benefice2024"
+local bpi "fte fte_femmes car_carempl_div2 comp_ca2023 comp_ca2024 cost_2023 cost_2024 comp_benefice2023 comp_benefice2024"
 
 local all_index_untransformed `dsi' `dmi' `epi' `bpi'
 				
@@ -161,7 +161,7 @@ local dmi "w99_dig_empl w99_dig_invest w99_mark_invest"
 local epi "w99_compexp2023 w99_compexp2024 export_1 export_2 exp_pays clients_b2c w99_clients_b2b exp_dig"			
 			
 			*Business performance
-local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 w99_comp_benefice2023 w99_comp_benefice2024"
+local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 ihs_cost99_2023 ihs_cost99_2024 w99_comp_benefice2023 w99_comp_benefice2024"
 
 local all_index_transformed `dsi' `dmi' `epi' `bpi'
 
@@ -292,11 +292,19 @@ estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 		* c(8): ihs_dig_empl_99
 eststo att11,r: areg ihs_dig_empl_99 treatment##el_refus ihs_dig_empl_99_y0 i.missing_bl_ihs_dig_empl_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
+
+		* c(9): ihs_dig_empl_99
+eststo att12,r: areg ihs_cost99_2023 treatment##el_refus ihs_cost99_2023_y0 i.missing_bl_ihs_cost99_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"	// WINS? IHS? AVERAGE?
+
+		* c(8): ihs_dig_empl_99
+eststo att13,r: areg ihs_cost99_2024  treatment##el_refus ihs_cost99_2024_y0 i.missing_bl_ihs_cost99_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 		
-local attrition att4 att5 att6 att7 att8 att9 att10 att11
+local attrition att4 att5 att6 att7 att8 att9 att10 att11 att12 att13
 esttab `attritionkey' using "el_keyattrition.tex", replace ///
 	title("Attrition: Key outcomes") ///
-	mtitles("Digital revenue" "Digital investment" "Turnover 2023" "Turnover 2024" "Profit 2023" "Profit 2024" "Employees" "Digital employees") ///
+	mtitles("Digital revenue" "Digital investment" "Turnover 2023" "Turnover 2024" "Profit 2023" "Profit 2024" "Employees" "Digital employees" "Costs 2023" "Costs 2024") ///
 	label ///
 	b(3) ///
 	se(3) ///
@@ -601,13 +609,15 @@ coefplot ///
 	(`3'1, pstyle(p3)) (`3'2, pstyle(p3)) ///
 	(`4'1, pstyle(p4)) (`4'2, pstyle(p4)) ///
 	(`5'1, pstyle(p5)) (`5'2, pstyle(p5)) ///
-	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)), ///
+	(`6'1, pstyle(p6)) (`6'2, pstyle(p6)) ///
+	(`7'1, pstyle(p7)) (`7'2, pstyle(p7)) ///
+	(`8'1, pstyle(p8)) (`8'2, pstyle(p8)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
 		eqrename(`1'1 = `"Digital revenue (ITT)"' `1'2 = `"Digital revenue (TOT)"' `2'1 = `"Digital investment (ITT)"' `2'2 = `"Digital investment (TOT)"' `3'1 = `"Turnover 2023 (ITT)"' `3'2 = `"Turnover 2023 (TOT)"' ///
-		`4'1 = `"Turnover 2024 (ITT)"' `4'2 = `"Turnover 2024 (TOT)"' `5'1 = `"Profit 2023 (ITT)"' `5'2 = `"Profit 2023  (TOT)"' `6'1 = `"Profit 2024 (ITT)"' `6'2 = `"Profit 2024 (TOT)"') ///
+		`4'1 = `"Turnover 2024 (ITT)"' `4'2 = `"Turnover 2024 (TOT)"' `5'1 = `"Costs 2023 (ITT)"' `5'2 = `"Costs 2023  (TOT)"' `6'1 = `"Costs 2024 (ITT)"' `6'2 = `"Costs 2024 (TOT)"' `7'1 = `"Profit 2023 (ITT)"' `7'2 = `"Profit 2023  (TOT)"' `8'1 = `"Profit 2024 (ITT)"' `8'2 = `"Profit 2024 (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'_cfplot1, replace)
@@ -615,13 +625,13 @@ gr export el_`generate'_cfplot1.png, replace
 
 * coefplot
 coefplot ///
-	(`7'1, pstyle(p1)) (`7'2, pstyle(p1)) ///
-	(`8'1, pstyle(p2)) (`8'2, pstyle(p2)), ///
+	(`9'1, pstyle(p1)) (`9'2, pstyle(p1)) ///
+	(`10'1, pstyle(p2)) (`10'2, pstyle(p2)), ///
 	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) ///
-		eqrename(`7'1 = `"Profit 2023 > 0 (ITT)"' `7'2 = `"Profit 2023 > 0 (TOT)"' `8'1 = `"Profit 2024 > 0 (ITT)"' `8'2 = `"Profit 2024 > 0 (TOT)"') ///
+		eqrename(`9'1 = `"Profit 2023 > 0 (ITT)"' `9'2 = `"Profit 2023 > 0 (TOT)"' `10'1 = `"Profit 2024 > 0 (ITT)"' `10'2 = `"Profit 2024 > 0 (TOT)"') ///
 		xtitle("Treatment coefficient", size(medium)) ///
 		leg(off) xsize(4.5) /// xsize controls aspect ratio, makes graph wider & reduces its height
 		name(el_`generate'2_cfplot1, replace)
@@ -630,7 +640,7 @@ gr export el_`generate'2_cfplot1.png, replace
 end
 
 	* apply program to qi outcomes
-rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca99_2024 ihs_profit99_2023 ihs_profit99_2024 profit_2023_pos profit_2024_pos, gen(finance)
+rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca99_2024 ihs_cost99_2023 ihs_cost99_2024 ihs_profit99_2023 ihs_profit99_2024 profit_2023_pos profit_2024_pos, gen(finance)
 
 }
 
