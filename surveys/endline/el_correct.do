@@ -461,6 +461,16 @@ replace comp_ca2024 = 48000000 if id_plateforme == 443
 replace compexp_2023 = 26000000 if id_plateforme == 443  
 replace compexp_2024 = 3000000 if id_plateforme == 443  
 
+	*id_plateforme 549
+replace mark_online2 = 0 if id_plateforme == 549
+replace mark_online4 = 0 if id_plateforme == 549
+replace comp_benefice2023 = -300000 if id_plateforme == 549
+replace comp_benefice2024 = -60000 if id_plateforme == 549
+
+	*id_plateforme 896 
+replace comp_ca2023 = 134000 if id_plateforme == 896
+replace comp_ca2024 = 67000 if id_plateforme == 896
+
 ***********************************************************************
 * 	Part 7: Save the changes made to the data		  			
 ***********************************************************************
