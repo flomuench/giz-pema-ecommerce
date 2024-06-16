@@ -48,7 +48,7 @@ lab var questions_needing_checks "questions to be checked by El Amouri"
 	PART 2.1: Firm and product questions
 ----------------------------------------------------------------------*/	
 	*any sub employee category more than the category itself
-local empl_vars "car_carempl_div1 car_carempl_div2 car_carempl_div3"
+local empl_vars "fte_femmes car_carempl_div2 car_carempl_div3"
 
 foreach var of local empl_vars {
 	replace needs_check = 1 if `var' > fte & surveyround == 3
@@ -541,10 +541,13 @@ replace questions_needing_check = "" if id_plateforme == 899 & surveyround == 3
 replace needs_check = 0 if id_plateforme == 959 & surveyround == 3 // ElAmouri called the company 
 replace questions_needing_check = "" if id_plateforme == 959 & surveyround == 3
 
-*extra cases (ElAmouri correction not enough)
+replace needs_check = 0 if id_plateforme == 549 & surveyround == 3 // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 549 & surveyround == 3
 
-replace needs_check = 1 if id_plateforme == 896 & surveyround == 3
-replace questions_needing_check = questions_needing_check + "Profit plus grand que chiffre d'affaire qui est declaré 0 / " if id_plateforme == 896 & surveyround == 3
+replace needs_check = 0 if id_plateforme == 896 & surveyround == 3 // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 896 & surveyround == 3
+
+*extra cases (ElAmouri correction not enough)
 
 replace needs_check = 1 if id_plateforme == 724 & surveyround == 3
 replace questions_needing_check = questions_needing_check + "Pourquoi il/elle a donné(e) des chiffres s'ils sont confidentiels ? / "  if id_plateforme == 724 & surveyround == 3
