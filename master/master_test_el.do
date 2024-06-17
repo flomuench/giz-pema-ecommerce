@@ -547,13 +547,16 @@ replace questions_needing_check = "" if id_plateforme == 549 & surveyround == 3
 replace needs_check = 0 if id_plateforme == 896 & surveyround == 3 // ElAmouri called the company 
 replace questions_needing_check = "" if id_plateforme == 896 & surveyround == 3
 
+replace needs_check = 0 if id_plateforme == 151 & surveyround == 3 // ElAmouri called the company 
+replace questions_needing_check = "" if id_plateforme == 151 & surveyround == 3
+
+replace needs_check = 0 if id_plateforme == 635 & surveyround == 3 //  les 2 responsables en voyage et l'entreprise a des  problèmes avec l'administration fiscale
+replace questions_needing_check = "" if id_plateforme == 635 & surveyround == 3
+
 *extra cases (ElAmouri correction not enough)
 
 replace needs_check = 1 if id_plateforme == 724 & surveyround == 3
-replace questions_needing_check = questions_needing_check + "Pourquoi il/elle a donné(e) des chiffres s'ils sont confidentiels ? / "  if id_plateforme == 724 & surveyround == 3
-
-replace needs_check = 1 if id_plateforme == 151 & surveyround == 3
-replace questions_needing_check = questions_needing_check + "Le code 666 signifie qu'il faut rappeler la comptabilité, une réécoute n'est pas suffisante / "  if id_plateforme == 151 & surveyround == 3
+replace questions_needing_check = "Pourquoi il/elle a donné(e) des chiffres s'ils sont confidentiels ? / "  if id_plateforme == 724 & surveyround == 3
 
 ***********************************************************************
 * 	PART 6:  Manually add tests for respondant position		
