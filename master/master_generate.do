@@ -484,14 +484,14 @@ local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi'
 * IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
 foreach var of local all_index {
     gen temp_`var' = `var'
-    replace temp_`var' = 0 if `var' == 999 // don't know transformed to zeros
-    replace temp_`var' = 0 if `var' == 888 
-    replace temp_`var' = 0 if `var' == 777 
-    replace temp_`var' = 0 if `var' == 666 
-	replace temp_`var' = 0 if `var' == -999 // added - since we transformed profit into negative in endline
-    replace temp_`var' = 0 if `var' == -888 
-    replace temp_`var' = 0 if `var' == -777 
-    replace temp_`var' = 0 if `var' == -666 
+    replace temp_`var' = . if `var' == 999 // don't know transformed to zeros
+    replace temp_`var' = . if `var' == 888 
+    replace temp_`var' = . if `var' == 777 
+    replace temp_`var' = . if `var' == 666 
+	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace temp_`var' = . if `var' == -888 
+    replace temp_`var' = . if `var' == -777 
+    replace temp_`var' = . if `var' == -666 
 }
 
 		* calcuate the z-score for each variable
