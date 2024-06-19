@@ -87,7 +87,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -139,7 +139,7 @@ esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -168,7 +168,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -220,7 +220,7 @@ esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -248,7 +248,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -300,7 +300,7 @@ esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -328,7 +328,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -380,7 +380,7 @@ esttab `regressions' using "rt_hetero_sector1_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -421,7 +421,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -473,7 +473,7 @@ esttab `regressions' using "rt_hetero_sector2_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -501,7 +501,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -553,7 +553,7 @@ esttab `regressions' using "rt_hetero_sector2_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -581,7 +581,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -633,7 +633,7 @@ esttab `regressions' using "rt_hetero_sector2_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -661,7 +661,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`sector'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -713,7 +713,7 @@ esttab `regressions' using "rt_hetero_sector2_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_p1, pstyle(p1)) (`outcome'_p2, pstyle(p1)) ///
 	(`outcome'_s1, pstyle(p2)) (`outcome'_s2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -756,7 +756,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -809,7 +809,7 @@ coefplot ///
 	(`outcome'_s1, pstyle(p1)) (`outcome'_s2, pstyle(p1)) ///
 	(`outcome'_m1, pstyle(p2)) (`outcome'_m2, pstyle(p2)) ///
 	(`outcome'_l1, pstyle(p3)) (`outcome'_l2, pstyle(p3)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -839,7 +839,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -892,7 +892,7 @@ coefplot ///
 	(`outcome'_s1, pstyle(p1)) (`outcome'_s2, pstyle(p1)) ///
 	(`outcome'_m1, pstyle(p2)) (`outcome'_m2, pstyle(p2)) ///
 	(`outcome'_l1, pstyle(p3)) (`outcome'_l2, pstyle(p3)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -920,7 +920,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -973,7 +973,7 @@ coefplot ///
 	(`outcome'_s1, pstyle(p1)) (`outcome'_s2, pstyle(p1)) ///
 	(`outcome'_m1, pstyle(p2)) (`outcome'_m2, pstyle(p2)) ///
 	(`outcome'_l1, pstyle(p3)) (`outcome'_l2, pstyle(p3)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -1001,7 +1001,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1054,7 +1054,7 @@ coefplot ///
 	(`outcome'_s1, pstyle(p1)) (`outcome'_s2, pstyle(p1)) ///
 	(`outcome'_m1, pstyle(p2)) (`outcome'_m2, pstyle(p2)) ///
 	(`outcome'_l1, pstyle(p3)) (`outcome'_l2, pstyle(p3)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -1093,7 +1093,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1145,7 +1145,7 @@ esttab `regressions' using "rt_hetero_model_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -1174,7 +1174,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1226,7 +1226,7 @@ esttab `regressions' using "rt_hetero_model_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -1254,7 +1254,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1306,7 +1306,7 @@ esttab `regressions' using "rt_hetero_model_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -1335,7 +1335,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1387,7 +1387,7 @@ esttab `regressions' using "rt_hetero_model_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -1422,7 +1422,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1474,7 +1474,7 @@ esttab `regressions' using "rt_hetero_method_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -1503,7 +1503,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1555,7 +1555,7 @@ esttab `regressions' using "rt_hetero_method_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -1584,7 +1584,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1636,7 +1636,7 @@ esttab `regressions' using "rt_hetero_method_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -1774,7 +1774,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1826,7 +1826,7 @@ esttab `regressions' using "rt_hetero_median_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -1854,7 +1854,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1906,7 +1906,7 @@ esttab `regressions' using "rt_hetero_median_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
@@ -1935,7 +1935,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -1987,7 +1987,7 @@ esttab `regressions' using "rt_hetero_median_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(95) /// 95th percentile is null-effect, although tight
@@ -2016,7 +2016,7 @@ foreach cond of local conditions {
 			scalar `outcome'p1 = b[4,2]
 
 			* ATT, IV		
-			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up_for = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
+			eststo `outcome'_`group'2: ivreg2 `outcome' c.`outcome'_y0 i.missing_bl_`outcome' i.strata (take_up = i.treatment) if `cond' & surveyround==2, cluster(id_plateforme) first
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			matrix b = r(table)			// access p-values for mht
@@ -2068,7 +2068,7 @@ esttab `regressions' using "rt_hetero_median_`outcome'.tex", replace ///
 coefplot ///
 	(`outcome'_o1, pstyle(p1)) (`outcome'_o2, pstyle(p1)) ///
 	(`outcome'_b1, pstyle(p2)) (`outcome'_b2, pstyle(p2)), ///
-	keep(*treatment take_up_for) drop(_cons) xline(0) ///
+	keep(*treatment take_up) drop(_cons) xline(0) ///
 		asequation /// name of model is used
 		swapnames /// swaps coeff & equation names after collecting result
 		levels(90) /// 95th percentile is null-effect, although tight
