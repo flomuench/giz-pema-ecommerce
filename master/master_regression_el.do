@@ -56,19 +56,19 @@ rename lprice prix
 {
 local indexes ///
 	 dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
-	 export_1 exp_pays clients_b2c clients_b2b ihs_ca99_2024 ihs_dig_invest_99 dig_margins exp_dig ihs_dig_empl_99 dig_rev_extmargin dig_invest_extmargin profit_2023_pos profit_2024_pos ///
-	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 cost_2023 cost_2024 ihs_cost99_2023 ihs_cost99_2024
+	 export_1 exp_pays clients_b2c clients_b2b ihs_ca97_2024 ihs_dig_invest_99 dig_margins exp_dig ihs_dig_empl_99 dig_rev_extmargin dig_invest_extmargin profit_2023_pos profit_2024_pos ///
+	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 cost_2023 cost_2024 ihs_cost97_2023 ihs_cost97_2024 ihs_clients_b2c_97
 
 foreach var of local indexes {
 		* generate YO
 	bys id_plateforme (surveyround): gen `var'_first = `var'[_n == 1]		 // filter out baseline value
 	egen `var'_y0 = min(`var'_first), by(id_plateforme)					 // create variable = bl value for all three surveyrounds by id_plateforme
-	replace `var'_y0 = 0 if inlist(`var'_y0, ., -777, -888, -999)		// replace this variable = zero if missing
+	replace `var'_y0 = 0 if inlist(`var'_y0, ., -777, -888, -999, 666, 777, 888, 999)		// replace this variable = zero if missing
 	drop `var'_first													// clean up
 	lab var `var'_y0 "Y0 `var'"
 		* generate missing baseline dummy
 	gen miss_bl_`var' = 0 if surveyround == 1											// gen dummy for baseline
-	replace miss_bl_`var' = 1 if surveyround == 1 & inlist(`var',., -777, -888, -999)	// replace dummy 1 if variable missing at bl
+	replace miss_bl_`var' = 1 if surveyround == 1 & inlist(`var',., -777, -888, -999, 666, 777, 888, 999)	// replace dummy 1 if variable missing at bl
 	egen missing_bl_`var' = min(miss_bl_`var'), by(id_plateforme)									// expand dummy to ml, el
 	lab var missing_bl_`var' "YO missing, `var'"
 	drop miss_bl_`var'
@@ -111,10 +111,10 @@ local dsi "dig_margins ihs_digrev_99"
 local dmi "w99_dig_empl w99_dig_invest w99_mark_invest"
 	
 			*Export performance
-local epi "w99_compexp2023 w99_compexp2024 export_1 export_2 exp_pays clients_b2c w99_clients_b2b exp_dig"			
+local epi "ihs_exports99_2023 ihs_exports97_2024 export_1 export_2 exp_pays ihs_clients_b2c_97 ihs_clients_b2b_99 exp_dig"			
 			
 			*Business performance
-local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 ihs_cost99_2023 ihs_cost99_2024 w99_comp_benefice2023 w99_comp_benefice2024"
+local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 ihs_ca97_2024 ihs_cost97_2023 ihs_cost97_2024 w99_comp_benefice2023 w99_comp_benefice2024"
 
 local all_index_transformed `dsi' `dmi' `epi' `bpi'
 
@@ -158,10 +158,10 @@ local dsi "dig_margins ihs_digrev_99"
 local dmi "w99_dig_empl w99_dig_invest w99_mark_invest"
 	
 			*Export performance
-local epi "w99_compexp2023 w99_compexp2024 export_1 export_2 exp_pays clients_b2c w99_clients_b2b exp_dig"			
+local epi "ihs_exports99_2023 ihs_exports97_2024 export_1 export_2 exp_pays ihs_clients_b2c_97 ihs_clients_b2b_99 exp_dig"			
 			
 			*Business performance
-local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 w99_comp_ca2024 ihs_cost99_2023 ihs_cost99_2024 w99_comp_benefice2023 w99_comp_benefice2024"
+local bpi "ihs_fte_99 ihs_fte_femmes_99 ihs_fte_young_99 w99_comp_ca2023 ihs_ca97_2024 ihs_cost97_2023 ihs_cost97_2024 w99_comp_benefice2023 w99_comp_benefice2024"
 
 local all_index_transformed `dsi' `dmi' `epi' `bpi'
 
@@ -274,7 +274,7 @@ eststo att6,r: areg  ihs_ca99_2023 treatment##el_refus ihs_ca99_2023_y0 i.missin
 estadd local strata "Yes"		// WINS? IHS? AVERAGE?
 
 		* c(4): comp_ca2024
-eststo att7,r: areg ihs_ca99_2024 treatment##el_refus ihs_ca99_2024_y0 i.missing_bl_ihs_ca99_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+eststo att7,r: areg ihs_ca97_2024 treatment##el_refus ihs_ca97_2024_y0 i.missing_bl_ihs_ca97_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 		
 		* c(5): ihs_profit99_2023
@@ -294,11 +294,11 @@ eststo att11,r: areg ihs_dig_empl_99 treatment##el_refus ihs_dig_empl_99_y0 i.mi
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
 		* c(9): ihs_dig_empl_99
-eststo att12,r: areg ihs_cost99_2023 treatment##el_refus ihs_cost99_2023_y0 i.missing_bl_ihs_cost99_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
+eststo att12,r: areg ihs_cost97_2023 treatment##el_refus ihs_cost97_2023_y0 i.missing_bl_ihs_cost97_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
 		* c(8): ihs_dig_empl_99
-eststo att13,r: areg ihs_cost99_2024  treatment##el_refus ihs_cost99_2024_y0 i.missing_bl_ihs_cost99_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+eststo att13,r: areg ihs_cost97_2024  treatment##el_refus ihs_cost97_2024_y0 i.missing_bl_ihs_cost97_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 		
 local attrition att4 att5 att6 att7 att8 att9 att10 att11 att12 att13
@@ -640,7 +640,7 @@ gr export el_`generate'2_cfplot1.png, replace
 end
 
 	* apply program to qi outcomes
-rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca99_2024 ihs_cost99_2023 ihs_cost99_2024 ihs_profit99_2023 ihs_profit99_2024 profit_2023_pos profit_2024_pos, gen(finance)
+rct_regression_finance ihs_digrev_99 ihs_dig_invest_99 ihs_ca99_2023 ihs_ca97_2024 ihs_cost97_2023 ihs_cost97_2024 ihs_profit99_2023 ihs_profit99_2024 profit_2023_pos profit_2024_pos, gen(finance)
 
 }
 
@@ -1027,7 +1027,7 @@ end
 
 
 	* apply program to qi outcomes
-rct_regression_exp eri epi export_1 exp_pays clients_b2c ihs_clients_b2b_99 exp_dig, gen(exp)
+rct_regression_exp eri epi export_1 exp_pays ihs_clients_b2c_97 ihs_clients_b2b_99 exp_dig, gen(exp)
 
 ***********************************************************************
 * 	PART 9: Endline results - regression digital marketing outcomes
