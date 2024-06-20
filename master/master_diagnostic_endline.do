@@ -45,8 +45,39 @@ lab var ecom_dig "Percentage of all e-commerce digitalisation practices"
 lab var avg_ecom_dig "Average percentage of all e-commerce digitalisation practices"
 lab var sectoral_avg_ecom_dig "Sectoral average percentage of all e-commerce digitalisation practices"
 
+*Second, digital sales index
+egen dsi_raw= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_margins web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3) if surveyround ==3
+g dsi_dig = (dsi_raw/19)*100 if surveyround ==3
+egen avg_dsi_dig = mean(dsi_dig) if surveyround ==3
+egen sectoral_avg_dsi_dig = mean(dsi_dig) if surveyround ==3, by(sector)
 
-* Second, export preparedness practices: 
+lab var dsi_raw "(Raw) sum of digital sales practices"
+lab var dsi_dig "Percentage of digital sales practices"
+lab var avg_dsi_dig "Average percentage of all digital sales practices"
+lab var sectoral_avg_dsi_dig "Sectoral average percentage of all digital sales practices"
+
+*Thridly, digital marketing index
+egen dmi_raw= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5) if surveyround ==3
+g dmi_dig = (dmi_raw/5)*100 if surveyround ==3
+egen avg_dmi_dig = mean(dmi_dig) if surveyround ==3
+egen sectoral_avg_dmi_dig = mean(dmi_dig) if surveyround ==3, by(sector)
+
+lab var dmi_raw "(Raw) sum of digital marketing practices"
+lab var dmi_dig "Percentage of digital marketing practices"
+lab var avg_dmi_dig "Average percentage of all digital marketing practices"
+lab var sectoral_avg_dmi_dig "Sectoral average percentage of all digital marketing practices"
+
+*Fourthly, share of digital investment
+gen dig_share = (dig_invest/(dig_invest+mark_invest))*100 if surveyround ==3
+egen avg_dig_share = mean(dig_share) if surveyround ==3
+egen sectoral_avg_dig_share = mean(dig_share) if surveyround ==3, by(sector)
+
+lab var dig_share "Share of digital marketing investment of all marketing investment"
+lab var avg_ecom_dig "Average percentage of digital marketing investment of all marketing investment"
+lab var sectoral_avg_ecom_dig "Sectoral average percentage of digital marketing investment of all marketing investment"
+
+
+* Fifthly, export preparedness practices 
 egen eri_raw = rowtotal(exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach) if surveyround ==3
 g expprep_diag = (eri_raw/5)*100 if surveyround ==3
 egen avg_expprep_diag = mean(expprep_diag) if surveyround ==3
@@ -57,38 +88,118 @@ lab var expprep_diag "Percentage of all export preparadness practices"
 lab var avg_expprep_diag "Average percentage of all export preparadness practices"
 lab var sectoral_avg_expprep_diag "Sectoral average percentage of all export preparadness practices"
 
+*Sixthly, number of export countries
+egen avg_exp_pays_diag = mean(exp_pays) if surveyround ==3
+egen sectoral_avg_exp_pays_diag = mean(exp_pays) if surveyround ==3, by(sector)
+
+lab var avg_exp_pays_diag "Average of number of export countries"
+lab var sectoral_avg_exp_pays_diag "Sectoral average of number of export countries"
+
+*Seventhly, employer productivity
+gen productivity_2023 = (comp_ca2023/fte) if surveyround ==3
+egen avg_productivity_2023_diag = mean(productivity_2023) if surveyround ==3
+egen sectoral_productivity_2023_diag = mean(productivity_2023) if surveyround ==3, by(sector)
+ 
+lab var productivity_2023 "Company productivity: total turnover over total number of full-time employees" 
+lab var avg_productivity_2023_diag "Average employee productivity"
+lab var sectoral_productivity_2023_diag "Sectoral average employee productivity"
+
+ 
+ 
+			* Une visualisation par page
+			* Aggranding la taille des visualiations
+			* Rajouter des sections: 1) Performance Digital 2) Préparation et performance à l'export 3) Perfomance générale
 
 /* --------------------------------------------------------------------
 	PART 1.3: Create deciles for each diagnostic score
 ----------------------------------------------------------------------*/
+sort dsi_dig
+xtile dsi_dig_decile = dsi_dig if surveyround ==3, n(10)
+lab var dsi_dig_decile "Deciles for digital sales practices"
+
+sort dmi_dig
+xtile dmi_dig_decile = dmi_dig if surveyround ==3, n(10)
+lab var dmi_dig_decile "Deciles for digital marketing practices"
+
+sort dig_share
+xtile dig_share_decile = dig_share if surveyround ==3, n(10)
+lab var dig_share_decile "Deciles for share of digital marketing investment"
+
 sort ecom_dig
 xtile ecom_decile = ecom_dig if surveyround ==3, n(10)
+lab var ecom_decile "Deciles for e-commerce/digitalisation score"
 
 sort expprep_diag
 xtile expprep_decile = expprep_diag if surveyround ==3, n(10)
-
-lab var ecom_decile "Deciles for e-commerce/digitalisation score"
 lab var expprep_decile "Deciles for export preparadness score"
 
+sort exp_pays
+xtile exp_pays_decile = exp_pays if surveyround ==3, n(10)
+lab var exp_pays_decile "Deciles for export countries"
+
+sort productivity_2023
+xtile productivity_2023_decile = productivity_2023 if surveyround ==3, n(10)
+lab var productivity_2023_decile "Deciles for productivity"
 
 	* Now create statements based on the deciles to be used in the text below 
+*1) Performance Digitale
+gen dsi_raw_text = " "
+replace dsi_raw_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig_decile>=9
+replace dsi_raw_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig>=71.05264 & dsi_dig < 77.63158
+replace dsi_raw_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig>=48.82272 & dsi_dig<71.05264
+replace dsi_raw_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques commerce électronique et de ventes digitales." if dsi_dig<48.82272 & dsi_dig>27.63158
+replace dsi_raw_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig<=27.63158 &  dsi_dig>10.52632
+replace dsi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig_decile<=1 
+
+gen dmi_raw_text = " "
+replace dmi_raw_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig_decile>=9
+replace dmi_raw_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig>=60  & dmi_dig < 80
+replace dmi_raw_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de marketing digital." if dmi_dig>=45.26316 & dmi_dig<60
+replace dmi_raw_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de marketing digital." if dmi_dig<45.26316 & dmi_dig>40
+replace dmi_raw_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig<40 &  dmi_dig>=20 
+replace dmi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig_decile<1 
 
 gen ecom_dig_text = " "
-replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile>9
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile>=9
 replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>= 67.70834 & ecom_decile<10
 replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<67.70834 & ecom_dig>47.96402
-replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=47.96402
-replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=27.08333
-replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=9.375
+replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=47.96402 & ecom_dig > 27.08333
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=27.08333 & ecom_dig > 9.375
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile<=1
 
+gen dig_share_text = " "
+replace dig_share_text = "Votre entreprise est classée dans les 10 % supérieurs en termes de proportion d'investissement dans le marketing digital." if dig_share_decile>=9
+replace dig_share_text = "Votre entreprise est classée dans les 25 % supérieurs en termes de proportion d'investissement dans le marketing digital." if dig_share>=50   & dig_share < 100
+replace dig_share_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de proportion d'investissement dans le marketing digital." if dig_share>= 36.62001 & dig_share<50 
+replace dig_share_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de proportion d'investissement dans le marketing digital." if dig_share< 36.62001 & dig_share>=3.600465
+replace dig_share_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de proportion d'investissement dans le marketing digital." if dig_share<3.600465 &  dig_share> 0
+replace dig_share_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de proportion d'investissement dans le marketing digital." if dig_share_decile<=1 
+
+*2) Préparation et performance à l'export
 gen expprep_text = " "
 replace expprep_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation." if expprep_diag>=100
 replace expprep_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation." if expprep_diag>=80 & expprep_diag < 100
 replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag>=52.42424 & expprep_diag<80
 replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_diag<52.42424 & expprep_diag>40
 replace expprep_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=40 &  expprep_diag>20
-replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=20
+replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=20 
 
+gen exp_pays_text = " "
+replace exp_pays_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de nombre de destinations pour l'export." if exp_pays_decile >=9
+replace exp_pays_text = "Votre entreprise se situe dans les 25 % supérieurs en termes de nombre de destinations pour l'export." if exp_pays>=7 & exp_pays < 16
+replace exp_pays_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de nombre de destinations pour l'export." if exp_pays<=5 & exp_pays>7 
+replace exp_pays_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de nombre de destinations pour l'export." if exp_pays<5 & exp_pays>2
+replace exp_pays_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de nombre de destinations pour l'export." if exp_pays<=2 &  exp_pays>1
+replace exp_pays_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de pays d'export." if exp_pays<=1 
+
+*3) Perfomance générale
+gen productivity_2023_text = " "
+replace productivity_2023_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de productivité par employé." if productivity_2023_decile >=9
+replace productivity_2023_text = "Votre entreprise se situe dans les 25 % supérieurs en termes de productivité par employé." if productivity_2023>=100000 & productivity_2023 < 251473.9
+replace productivity_2023_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de productivité par employé." if productivity_2023>=107454.9 & productivity_2023<251473.9
+replace productivity_2023_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de productivité par employé." if productivity_2023<107454.9 & productivity_2023>177.6
+replace productivity_2023_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de productivité par employé." if productivity_2023<=177.6 &  productivity_2023>12.10909
+replace productivity_2023_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de productivité par employé." if productivity_2023_decile <=1 
 
 ***********************************************************************
 * 	PART 2:  	make a loop to automate document creation			  *
@@ -130,11 +241,70 @@ quietly{
 		putdocx text ("		  adoptées par l'ensemble des entreprises interrogées."), bold linebreak
 		putdocx text ("		- La troisième (gris) correspond au pourcentage moyen de pratiques"), bold linebreak
 		putdocx text ("		  adoptées par l'ensemble des entreprises interrogées dans votre secteur."), bold linebreak
+		putdocx pagebreak
+		putdocx paragraph,  font("Arial", 12)
+		putdocx text ("Section 1: La performance digitale de l'entreprise"), bold
 
+		graph    hbar dsi_dig avg_dsi_dig sectoral_avg_dsi_dig if id_plateforme==`x', ///
+				subtitle ("Pourcentage des activités adoptées") ///
+				title ("Commerce electronique et ventes digitales") ///
+				ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
+				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+				bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export dsi_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+
+		putdocx image dsi_score_test_`x'.png, height (12 cm)
+
+		preserve
+		keep if id_plateforme==`x'
+		putdocx paragraph
+		putdocx text ("`=dsi_raw_text[_n]'"), linebreak
+
+		graph hbar dmi_dig avg_dmi_dig sectoral_avg_dmi_dig  if id_plateforme==`x', ///
+		subtitle ("Pourcentage des activités adoptées") ///
+		title ("Activités en marketing digital") ///
+		ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
+		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+		bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export dmi_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+
+		putdocx image dmi_score_test_`x'.png, height (12 cm)
+		
+		*preserve
+		keep if id_plateforme==`x'
+		putdocx paragraph
+		putdocx text ("`=dmi_raw_text[_n]'"), linebreak
+
+		graph hbar dig_share avg_dig_share sectoral_avg_dig_share  if id_plateforme==`x', ///
+		subtitle ("Part de l'investissement du marketing digital dans l'investissement marketing") ///
+		title ("Proportion de l'investissement du marketing digital en 2023") ///
+		ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
+		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+		bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export dig_share_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+
+		putdocx image dig_share_score_test_`x'.png, height (12 cm)
+
+		*preserve
+		keep if id_plateforme==`x'
+		putdocx paragraph
+		putdocx text ("`=dig_share_text[_n]'"), linebreak
 
 
 		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', ///
-				subtitle ("Pourcentage de activités  adoptées") ///
+				subtitle ("Pourcentage des activités  adoptées") ///
 				title ("Commerce electronique et marketing numerique") ///
 				ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
@@ -145,17 +315,20 @@ quietly{
 		gr export dig_score_test_`x'.png, replace
 		putdocx paragraph, halign(center) 
 
-		putdocx image dig_score_test_`x'.png, height (6 cm)
+		putdocx image dig_score_test_`x'.png, height (12 cm)
 
-		preserve
+		*preserve
 
 		keep if id_plateforme==`x'
-
 		putdocx paragraph
 		putdocx text ("`=ecom_dig_text[_n]'"), linebreak
+		
+		putdocx pagebreak
+		putdocx paragraph,  font("Arial", 12)
+		putdocx text ("Section 2: Préparation et performance à l'export de l'entreprise"), bold
 
 		graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_plateforme==`x', ///
-				subtitle ("Pourcentage de activités  adoptées") ///
+				subtitle ("Pourcentage de activités adoptées") ///
 				title ("Preparation des exportations") ///
 				ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
@@ -165,10 +338,49 @@ quietly{
 				
 		gr export exp_score_test_`x'.png, replace
 		putdocx paragraph, halign(center) 
-		putdocx image exp_score_test_`x'.png, height (6 cm)
+		putdocx image exp_score_test_`x'.png, height (10 cm)
+		
+		*preserve
+		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=expprep_text[_n]'"), linebreak
 
+		graph hbar exp_pays avg_exp_pays_diag sectoral_avg_exp_pays_diag if id_plateforme==`x', ///
+				title ("Nombre de pays d'export") ///
+				ytitle("Nombre de pays") legend (pos (inside) /// 
+				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+				bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export exp_pays_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+		putdocx image exp_pays_score_test_`x'.png, height (10 cm)
+		*preserve
+		keep if id_plateforme==`x'
+		putdocx paragraph
+		putdocx text ("`=exp_pays_text[_n]'"), linebreak
+		
+		putdocx pagebreak
+		putdocx paragraph,  font("Arial", 12)
+		putdocx text ("Section 3: La perfomance générale de l'entreprise"), bold
+
+		graph hbar productivity_2023 avg_productivity_2023_diag sectoral_productivity_2023_diag if id_plateforme==`x', ///
+				title ("Productivité de l'entreprise") ///
+				subtitle ("Chiffre d'affaires total sur le nombre total de salariés à temps plein") ///
+				ytitle("Productivité") legend (pos (inside) /// 
+				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+				bar (3 ,fc("112 113 115") lc("112 113 115")) 
+				
+		gr export productivity_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+		putdocx image productivity_score_test_`x'.png, height (10 cm)
+		*preserve
+		keep if id_plateforme==`x'
+		putdocx paragraph
+		putdocx text ("`=productivity_2023_text[_n]'"), linebreak
 
 		putdocx paragraph
 		putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
