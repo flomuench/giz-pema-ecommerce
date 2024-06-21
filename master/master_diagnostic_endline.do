@@ -251,7 +251,7 @@ quietly{
 		putdocx text ("Nous réitérons nos remerciements pour votre participation et vos réponses pour le dernier diagnostic, à l’issue duquel, nous avons pu établir ce diagnostic.")
 		 
 		putdocx paragraph
-		putdocx text ("Ce diagnostic prend la forme de trois scores: un score de digitalisation (regroupant les questions relatives au marketing digital et à la présence en ligne), un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…) et un score sur la productivité de votre entreprise.")
+		putdocx text ("Ce diagnostic prend la forme de plusieurs scores: un score de digitalisation (regroupant les questions relatives au marketing digital et à la présence en ligne), l'investissement dans le digital, un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…), les pays d'exports et un score sur la productivité de votre entreprise.")
 		putdocx paragraph
 		putdocx paragraph
 		putdocx text ("Ces scores ont été établis sur la base des réponses de plus de 200 entreprises ayant répondu aux différentes vagues de diagnostic.")
@@ -270,7 +270,7 @@ quietly{
 		putdocx text ("Section 1: La performance digitale de l'entreprise"), bold
 
 		putdocx paragraph
-		putdocx text ("Le score du commerce éléctronique et ventes digitales a été contruit sur la présence sur les différents canaux de commerce éléctronique et leur mise à jour, la possibilité de pouvoir payer en ligne et les différentes manières d'utilisation du site web et des reseaux sociaux"), linebreak
+		putdocx text ("Le score du commerce éléctronique et ventes digitales a été construit sur la présence sur les différents canaux de commerce éléctronique et leur mise à jour, la possibilité de pouvoir payer en ligne et les différentes manières d'utilisation du site web et des reseaux sociaux"), linebreak
 		putdocx paragraph
 		
 		graph    hbar dsi_dig avg_dsi_dig sectoral_avg_dsi_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
@@ -295,7 +295,7 @@ quietly{
 		
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("Le score des activités de marketing digital a été contruit sur la 5 pratiques de marketing numérique : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
+		putdocx text ("Le score des activités de marketing digital a été construit sur la 5 pratiques de marketing numérique : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
 		putdocx paragraph
 		
 		graph hbar dmi_dig avg_dmi_dig sectoral_avg_dmi_dig  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
@@ -368,7 +368,7 @@ quietly{
 		putdocx text ("Section 2: Préparation et performance à l'export de l'entreprise"), bold
 
 		putdocx paragraph
-		putdocx text ("Le score de  préparation et performance à l'export a été contruit sur la la base de la participation à des expositions/ foires commerciales internationales, l'expression d'intérérêt d'un acheteur potentiel, l'identification de partenaires commerciaux à l'étranger, la certification des produits selon des normes de qualité internationales et l'investissement d'une structure de vente."), linebreak
+		putdocx text ("Le score de  préparation et performance à l'export a été construit sur la la base de la participation à des expositions/ foires commerciales internationales, l'expression d'intérérêt d'un acheteur potentiel, l'identification de partenaires commerciaux à l'étranger, la certification des produits selon des normes de qualité internationales et l'investissement d'une structure de vente."), linebreak
 		putdocx paragraph
 		
 
