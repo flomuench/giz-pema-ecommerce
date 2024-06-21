@@ -144,62 +144,60 @@ lab var productivity_2023_decile "Deciles for productivity"
 	* Now create statements based on the deciles to be used in the text below 
 *1) Performance Digitale
 gen dsi_raw_text = " "
-replace dsi_raw_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig_decile>=9
-replace dsi_raw_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig>=71.05264 & dsi_dig < 77.63158
-replace dsi_raw_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig>=48.82272 & dsi_dig<71.05264
-replace dsi_raw_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques commerce électronique et de ventes digitales." if dsi_dig<48.82272 & dsi_dig>27.63158
-replace dsi_raw_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig<=27.63158 &  dsi_dig>10.52632
-replace dsi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig_decile<=1 
+replace dsi_raw_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig > 77.63158 & surveyround ==3
+replace dsi_raw_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig>= 71.05264 & dsi_dig < 77.63158 & surveyround ==3
+replace dsi_raw_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig>=48.82272 & dsi_dig<71.05264 & surveyround ==3
+replace dsi_raw_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques commerce électronique et de ventes digitales." if dsi_dig<48.82272 & dsi_dig>27.63158 & surveyround ==3
+replace dsi_raw_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig<=27.63158 &  dsi_dig>10.52632  & surveyround ==3
+replace dsi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de ventes digitales." if dsi_dig<=10.52632 | dmi_dig==0 | dmi_dig_decile < 1 & surveyround ==3
 
 gen dmi_raw_text = " "
-replace dmi_raw_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig_decile>=9
-replace dmi_raw_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig>=60  & dmi_dig < 80
-replace dmi_raw_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de marketing digital." if dmi_dig>=45.26316 & dmi_dig<60
-replace dmi_raw_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de marketing digital." if dmi_dig<45.26316 & dmi_dig>40
-replace dmi_raw_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig<40 &  dmi_dig>=20 
-replace dmi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig_decile<1 
+replace dmi_raw_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig>= 80 & surveyround ==3
+replace dmi_raw_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig>=60  & dmi_dig < 80 & surveyround ==3
+replace dmi_raw_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de marketing digital." if dmi_dig>=45.26316 & dmi_dig<60 & surveyround ==3
+replace dmi_raw_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de marketing digital." if dmi_dig>20 & dmi_dig<45.26316  & surveyround ==3
+replace dmi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de marketing digital." if dmi_dig<=20 | dmi_dig==0 & surveyround ==3
 
 gen ecom_dig_text = " "
-replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile>=9
-replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>= 67.70834 & ecom_decile<10
-replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<67.70834 & ecom_dig>47.96402
-replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=47.96402 & ecom_dig > 27.08333
-replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=27.08333 & ecom_dig > 9.375
-replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_decile<=1
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>=75 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig>= 67.70834 & ecom_dig<75 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<67.70834 & ecom_dig>=48.08114 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<48.08114 & ecom_dig > 27.08333 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<=27.08333 & ecom_dig > 9.375 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique." if ecom_dig<= 9.375 | ecom_dig==0 & surveyround ==3
 
 gen dig_share_text = " "
-replace dig_share_text = "Votre entreprise est classée dans les 10 % supérieurs en termes de proportion d'investissement dans le marketing digital." if dig_share_decile>=9
-replace dig_share_text = "Votre entreprise est classée dans les 25 % supérieurs en termes de proportion d'investissement dans le marketing digital." if dig_share>=50   & dig_share < 100
-replace dig_share_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de proportion d'investissement dans le marketing digital." if dig_share>= 36.62001 & dig_share<50 
-replace dig_share_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de proportion d'investissement dans le marketing digital." if dig_share< 36.62001 & dig_share>=3.600465
-replace dig_share_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de proportion d'investissement dans le marketing digital." if dig_share<3.600465 &  dig_share> 0
-replace dig_share_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de proportion d'investissement dans le marketing digital." if dig_share_decile<=1 
+replace dig_share_text = "Votre entreprise est classée dans les 10 % supérieurs en termes de proportion d'investissement dans le marketing digital." if dig_share>=100 & surveyround ==3
+replace dig_share_text = "Votre entreprise est classée dans les 25 % supérieurs en termes de proportion d'investissement dans le marketing digital." if dig_share>=50   & dig_share < 100 & surveyround ==3
+replace dig_share_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de proportion d'investissement dans le marketing digital." if dig_share>= 36.62001 & dig_share<50  & surveyround ==3
+replace dig_share_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de proportion d'investissement dans le marketing digital." if dig_share< 36.62001 & dig_share>=3.600465 & surveyround ==3
+replace dig_share_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de proportion d'investissement dans le marketing digital." if dig_share<3.600465 &  dig_share> 0 & surveyround ==3
+replace dig_share_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de proportion d'investissement dans le marketing digital." if dig_share==0  & surveyround ==3
 
 *2) Préparation et performance à l'export
 gen expprep_text = " "
-replace expprep_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation." if expprep_diag>=100
-replace expprep_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation." if expprep_diag>=80 & expprep_diag < 100
-replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag>=52.42424 & expprep_diag<80
-replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_diag<52.42424 & expprep_diag>40
-replace expprep_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=40 &  expprep_diag>20
-replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=20 
+replace expprep_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation." if expprep_diag>=100 & surveyround ==3
+replace expprep_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation." if expprep_diag>=80 & expprep_diag < 100 & surveyround ==3
+replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag>= 52.33083 & expprep_diag<80 & surveyround ==3
+replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques preparation à l'exportation." if expprep_diag< 52.33083 & expprep_diag>40 & surveyround ==3
+replace expprep_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=40 &  expprep_diag>20 & surveyround ==3
+replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation." if expprep_diag<=20 | expprep_diag==0  & surveyround ==3
 
 gen exp_pays_text = " "
-replace exp_pays_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de nombre de destinations pour l'export." if exp_pays_decile >=9
-replace exp_pays_text = "Votre entreprise se situe dans les 25 % supérieurs en termes de nombre de destinations pour l'export." if exp_pays>=7 & exp_pays < 16
-replace exp_pays_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de nombre de destinations pour l'export." if exp_pays<=5 & exp_pays>7 
-replace exp_pays_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de nombre de destinations pour l'export." if exp_pays<5 & exp_pays>2
-replace exp_pays_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de nombre de destinations pour l'export." if exp_pays<=2 &  exp_pays>1
-replace exp_pays_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de pays d'export." if exp_pays<=1 
+replace exp_pays_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de nombre de destinations pour l'export." if exp_pays_decile >=9 & surveyround ==3
+replace exp_pays_text = "Votre entreprise se situe dans les 25 % supérieurs en termes de nombre de destinations pour l'export." if exp_pays>=7 & exp_pays < 16 & surveyround ==3
+replace exp_pays_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de nombre de destinations pour l'export." if exp_pays<=5 & exp_pays>7  & surveyround ==3
+replace exp_pays_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de nombre de destinations pour l'export." if exp_pays<5 & exp_pays>2 & surveyround ==3
+replace exp_pays_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de nombre de destinations pour l'export." if exp_pays<=2 &  exp_pays>1 & surveyround ==3
+replace exp_pays_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de pays d'export." if exp_pays<=1 | exp_pays==0 & surveyround ==3
 
 *3) Perfomance générale
 gen productivity_2023_text = " "
-replace productivity_2023_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de productivité par employé." if productivity_2023_decile >=9
-replace productivity_2023_text = "Votre entreprise se situe dans les 25 % supérieurs en termes de productivité par employé." if productivity_2023>=100000 & productivity_2023 < 251473.9
-replace productivity_2023_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de productivité par employé." if productivity_2023>=107454.9 & productivity_2023<251473.9
-replace productivity_2023_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de productivité par employé." if productivity_2023<107454.9 & productivity_2023>177.6
-replace productivity_2023_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de productivité par employé." if productivity_2023<=177.6 &  productivity_2023>12.10909
-replace productivity_2023_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de productivité par employé." if productivity_2023_decile <=1 
+replace productivity_2023_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de productivité par employé." if productivity_2023>= 251473.9 & surveyround ==3
+replace productivity_2023_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de productivité par employé." if productivity_2023>=107454.9 & productivity_2023<100000 & surveyround ==3
+replace productivity_2023_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de productivité par employé." if productivity_2023<107454.9 & productivity_2023>177.6 & surveyround ==3
+replace productivity_2023_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de productivité par employé." if productivity_2023 <= 177.6 &  productivity_2023>12.10909 & surveyround ==3
+replace productivity_2023_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de productivité par employé." if productivity_2023 <= 12.109091 | (productivity_2023 == 0 & surveyround == 3)
 
 ***********************************************************************
 * 	PART 2:  	make a loop to automate document creation			  *
@@ -231,7 +229,10 @@ quietly{
 		putdocx text ("Nous réitérons nos remerciements pour votre participation et vos réponses pour le dernier diagnostic, à l’issue duquel, nous avons pu établir ce diagnostic.")
 		 
 		putdocx paragraph
-		putdocx text ("Ce diagnostic prend la forme de deux scores: un score de digitalisation (regroupant les questions relatives au marketing digital et à la présence en ligne) et un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…).")
+		putdocx text ("Ce diagnostic prend la forme de trois scores: un score de digitalisation (regroupant les questions relatives au marketing digital et à la présence en ligne), un score de préparation à l’export (établi grâce aux questions sur l’analyse de vos marchés cibles, la certification de vos produits ou services…) et un score sur la productivité de votre entreprise.")
+		putdocx paragraph
+		putdocx paragraph
+		putdocx text ("Ces scores ont été établis sur la base des réponses de plus de 200 entreprises ayant répondu aux différentes vagues de diagnostic.")
 		putdocx paragraph
 		putdocx text ("Ci-dessous  vous trouverez deux graphiques avec trois barres chacun:"), linebreak
 		putdocx paragraph
@@ -245,9 +246,13 @@ quietly{
 		putdocx paragraph,  font("Arial", 12)
 		putdocx text ("Section 1: La performance digitale de l'entreprise"), bold
 
+		putdocx paragraph
+		putdocx text ("Le score du commerce éléctronique et ventes digitales a été contruit sur la présence sur les différents canaux de commerce éléctronique et leur mise à jour, la possibilité de pouvoir payer en ligne et les différentes manières d'utilisation du site web et des reseaux sociaux"), linebreak
+		putdocx paragraph
+		
 		graph    hbar dsi_dig avg_dsi_dig sectoral_avg_dsi_dig if id_plateforme==`x', ///
 				subtitle ("Pourcentage des activités adoptées") ///
-				title ("Commerce electronique et ventes digitales") ///
+				title ("Commerce éléctronique et ventes digitales") ///
 				ysc(r(0 100)) ylab(0(10)100) ytitle("%") legend (pos (12) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
@@ -263,7 +268,13 @@ quietly{
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=dsi_raw_text[_n]'"), linebreak
-
+		restore
+		
+		putdocx pagebreak
+		putdocx paragraph
+		putdocx text ("Le score des activités de marketing digital a été contruit sur la 5 pratiques de marketing numérique : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
+		putdocx paragraph
+		
 		graph hbar dmi_dig avg_dmi_dig sectoral_avg_dmi_dig  if id_plateforme==`x', ///
 		subtitle ("Pourcentage des activités adoptées") ///
 		title ("Activités en marketing digital") ///
@@ -278,11 +289,12 @@ quietly{
 
 		putdocx image dmi_score_test_`x'.png, height (12 cm)
 		
-		*preserve
+		preserve
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=dmi_raw_text[_n]'"), linebreak
-
+		restore
+		
 		graph hbar dig_share avg_dig_share sectoral_avg_dig_share  if id_plateforme==`x', ///
 		subtitle ("Part de l'investissement du marketing digital dans l'investissement marketing") ///
 		title ("Proportion de l'investissement du marketing digital en 2023") ///
@@ -297,11 +309,16 @@ quietly{
 
 		putdocx image dig_share_score_test_`x'.png, height (12 cm)
 
-		*preserve
+		preserve
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=dig_share_text[_n]'"), linebreak
-
+		restore
+		
+		putdocx pagebreak
+		putdocx paragraph
+		putdocx text ("Le score de commerce electronique et marketing numerique est un score aggrégé du score des activités de marketing digital et du score du commerce éléctronique."), linebreak
+		putdocx paragraph
 
 		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', ///
 				subtitle ("Pourcentage des activités  adoptées") ///
@@ -317,15 +334,20 @@ quietly{
 
 		putdocx image dig_score_test_`x'.png, height (12 cm)
 
-		*preserve
-
+		preserve
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=ecom_dig_text[_n]'"), linebreak
+		restore 
 		
 		putdocx pagebreak
 		putdocx paragraph,  font("Arial", 12)
 		putdocx text ("Section 2: Préparation et performance à l'export de l'entreprise"), bold
+
+		putdocx paragraph
+		putdocx text ("Le score de  préparation et performance à l'export a été contruit sur la la base de la participation à des expositions/ foires commerciales internationales, l'expression d'intérérêt d'un acheteur potentiel, l'identification de partenaires commerciaux à l'étranger, la certification des produits selon des normes de qualité internationales et l'investissement d'une structure de vente."), linebreak
+		putdocx paragraph
+		
 
 		graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_plateforme==`x', ///
 				subtitle ("Pourcentage de activités adoptées") ///
@@ -340,11 +362,12 @@ quietly{
 		putdocx paragraph, halign(center) 
 		putdocx image exp_score_test_`x'.png, height (10 cm)
 		
-		*preserve
+		preserve
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=expprep_text[_n]'"), linebreak
-
+		restore 
+		
 		graph hbar exp_pays avg_exp_pays_diag sectoral_avg_exp_pays_diag if id_plateforme==`x', ///
 				title ("Nombre de pays d'export") ///
 				ytitle("Nombre de pays") legend (pos (inside) /// 
@@ -356,10 +379,12 @@ quietly{
 		gr export exp_pays_score_test_`x'.png, replace
 		putdocx paragraph, halign(center) 
 		putdocx image exp_pays_score_test_`x'.png, height (10 cm)
-		*preserve
+		
+		preserve
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=exp_pays_text[_n]'"), linebreak
+		restore
 		
 		putdocx pagebreak
 		putdocx paragraph,  font("Arial", 12)
@@ -377,11 +402,13 @@ quietly{
 		gr export productivity_score_test_`x'.png, replace
 		putdocx paragraph, halign(center) 
 		putdocx image productivity_score_test_`x'.png, height (10 cm)
-		*preserve
+		
+		preserve
 		keep if id_plateforme==`x'
 		putdocx paragraph
 		putdocx text ("`=productivity_2023_text[_n]'"), linebreak
-
+		
+		
 		putdocx paragraph
 		putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
 		putdocx paragraph
