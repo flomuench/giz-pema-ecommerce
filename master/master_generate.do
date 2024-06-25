@@ -486,10 +486,10 @@ label value ssa_aggregate yesno1
 
 	* Put all variables used to calculate indices into a local
 			*Digital sales index
-local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_margins dig_revenues_ecom web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
+local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
 			
 			*Digital marketing index
-local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl dig_invest mark_invest"
+local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl"
 			
 			*Digital Technology Perception
 local dtp "investecom_benefit1 investecom_benefit2"
@@ -527,10 +527,10 @@ foreach var of local all_index {
 
 	* calculate the index value: average of zscores
 			*Digital sales index
-egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z temp_dig_marginsz temp_dig_revenues_ecomz temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z  temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
 
 			*Digital marketing index
-egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z temp_dig_emplz temp_dig_investz temp_mark_investz)
+egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z)
 			
 			*Digital Technology Perception
 egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
@@ -562,7 +562,7 @@ label var bpi_2024 "Business performance index- Z-score in 2024"
 	* create total points per index dimension
 			
 			*Digital sales index
-egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 dig_margins web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing // total 19 points
+egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing // total 19 points
 			
 			*Digital marketing index
 egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5), missing // total 5 points
