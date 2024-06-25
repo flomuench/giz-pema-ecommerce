@@ -489,7 +489,7 @@ label value ssa_aggregate yesno1
 local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
 			
 			*Digital marketing index
-local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_empl"
+local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
 			
 			*Digital Technology Perception
 local dtp "investecom_benefit1 investecom_benefit2"
@@ -504,12 +504,14 @@ local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clie
 			*Business performance index
 local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
 
-local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi'
+			*Investment variables
+local invest "dig_margins dig_revenues_ecom  dig_empl dig_invest mark_invest"
+local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi' `invest'
 
 * IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
 foreach var of local all_index {
     gen temp_`var' = `var'
-    replace temp_`var' = . if `var' == 999 // don't know transformed to zeros
+    replace temp_`var' = . if `var' == 999 // don't know transformed to missing values
     replace temp_`var' = . if `var' == 888 
     replace temp_`var' = . if `var' == 777 
     replace temp_`var' = . if `var' == 666 
