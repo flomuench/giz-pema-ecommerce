@@ -243,7 +243,7 @@ putpdf pagebreak
 }
 	*More benefits with online selling
 
-graph pie if surveyround == 3, over (dig_prix) by(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+graph pie if surveyround == 3, over (dig_margins) by(treatment) plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
    bgcolor(white) legend(pos(6)) ///
    title("Higher margins with online sales" ,size(medium) pos(12))
    gr export el_dig_prix_pie_treat.png, width(5000) replace
@@ -252,7 +252,7 @@ graph pie if surveyround == 3, over (dig_prix) by(treatment) plabel(_all percent
 	putpdf pagebreak
 	
 	 	foreach x of local take_up{
-graph pie if surveyround == 3, over(dig_prix) by(`x') plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
+graph pie if surveyround == 3, over(dig_margins) by(`x') plabel(_all percent, format(%9.0f) size(medium)) graphregion(fcolor(none) lcolor(none)) ///
    bgcolor(white) legend(pos(6)) ///
    title("Higher margins with online sales", pos(12))
    gr export el_dig_prix_pie_`x'.png, replace
@@ -479,7 +479,7 @@ putpdf paragraph, halign(center)
 putpdf image el_total_turnover.png
 putpdf pagebreak
 
-betterbar w99_comp_ca2024 w99_comp_ca2023 w99_comp_ca2020 if surveyround !=2, over(treatment) barlab ci ///     
+betterbar w99_comp_ca2023 w99_comp_ca2020 if surveyround !=2, over(treatment) barlab ci ///     
 	title("Total turnover in dt, ihs transformed win. 99th", pos(12))
 gr export el_ihs_ca99.png, replace
 putpdf paragraph, halign(center) 
@@ -555,7 +555,7 @@ putpdf paragraph, halign(center)
 putpdf image el_total_export_turnover.png
 putpdf pagebreak
 
-betterbar ihs_exports99_2024 ihs_exports99_2023 ihs_exports99_2020 if surveyround !=2, over(treatment) barlab ci ///     
+betterbar ihs_exports99_2023 ihs_exports99_2020 if surveyround !=2, over(treatment) barlab ci ///     
 	title("Export turnover in dt, ihs transformed win. 99th", pos(12))
 gr export el_ihs_exports99.png, replace
 putpdf paragraph, halign(center) 
@@ -1009,12 +1009,12 @@ putpdf pagebreak
 }
 
 gr tw ///
-	(kdensity bpi if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram bpi if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity bpi if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram bpi if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	(kdensity bpi_2023 if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2023 if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity bpi_2023 if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2023 if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
 	, ///
-	title("{bf:Endline Distribution of Business performance index}") ///
+	title("{bf:Endline Distribution of Business performance index in 2023}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
 	xtitle("Business performance index") ///
 	ytitle("Number of observations", axis(1)) ///
@@ -1023,22 +1023,22 @@ gr tw ///
                order(1 "Treatment group" ///
 					 2 "Control group") ///
                c(1) pos(6) ring(6)) ///
-	name(bpi_el_treat, replace)
-graph export bpi_el_treat.png, replace
+	name(bpi_2023_el_treat, replace)
+graph export bpi_2023_el_treat.png, replace
 putpdf paragraph, halign(center) 
-putpdf image bpi_el_treat.png
+putpdf image bpi_2023_el_treat.png
 putpdf pagebreak
 
 	foreach x of local take_up{	
 gr tw ///
-	(kdensity bpi if treatment == 1 & `x' == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
-	(histogram bpi if treatment == 1 & `x' == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
-	(kdensity bpi if treatment == 1 & `x' == 0 & surveyround == 3, lp(l) lc(green) yaxis(2) bw(0.4)) ///
-	(histogram bpi if treatment == 1 & `x' == 0 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(green)) ///
-	(kdensity bpi if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
-	(histogram bpi if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	(kdensity bpi_2023 if treatment == 1 & `x' == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2023 if treatment == 1 & `x' == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity bpi_2023 if treatment == 1 & `x' == 0 & surveyround == 3, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2023 if treatment == 1 & `x' == 0 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity bpi_2023 if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2023 if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
 	, ///
-	title("{bf:Endline Distribution of Business performance index}") ///
+	title("{bf:Endline Distribution of Business performance index in 2023}") ///
 	subtitle("{it:Index calculated based on z-score method}") ///
 	xtitle("Business performance index") ///
 	ytitle("Number of observations", axis(1)) ///
@@ -1048,13 +1048,59 @@ gr tw ///
                      2 "Treatment group, absent" ///
 					 3 "Control group") ///
                c(1) pos(6) ring(6)) ///
-	name(bpi_el_`x', replace)
-graph export bpi_el_`x'.png, replace
+	name(bpi_2023_el_`x', replace)
+graph export bpi_2023_el_`x'.png, replace
 putpdf paragraph, halign(center) 
-putpdf image bpi_el_`x'.png
+putpdf image bpi_2023_el_`x'.png
 putpdf pagebreak
 }
 
+gr tw ///
+	(kdensity bpi_2024 if treatment == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2024 if treatment == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity bpi_2024 if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2024 if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Business performance index in 2024}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Business performance index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(2) symxsize(small) ///
+               order(1 "Treatment group" ///
+					 2 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(bpi_2024_el_treat, replace)
+graph export bpi_2024_el_treat.png, replace
+putpdf paragraph, halign(center) 
+putpdf image bpi_2024_el_treat.png
+putpdf pagebreak
+
+	foreach x of local take_up{	
+gr tw ///
+	(kdensity bpi_2024 if treatment == 1 & `x' == 1 & surveyround == 3, lp(l) lc(maroon) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2024 if treatment == 1 & `x' == 1 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(maroon)) ///
+	(kdensity bpi_2024 if treatment == 1 & `x' == 0 & surveyround == 3, lp(l) lc(green) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2024 if treatment == 1 & `x' == 0 & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(green)) ///
+	(kdensity bpi_2024 if treatment == 0  & surveyround == 3, lp(l) lc(navy) yaxis(2) bw(0.4)) ///
+	(histogram bpi_2024 if treatment == 0  & surveyround == 3, freq w(.1) recast(scatter) msize(small) mc(navy)) ///
+	, ///
+	title("{bf:Endline Distribution of Business performance index in 2024}") ///
+	subtitle("{it:Index calculated based on z-score method}") ///
+	xtitle("Business performance index") ///
+	ytitle("Number of observations", axis(1)) ///
+	ytitle("Densitiy", axis(2)) ///
+	legend(rows(3) symxsize(small) ///
+               order(1 "Treatment group, participated" ///
+                     2 "Treatment group, absent" ///
+					 3 "Control group") ///
+               c(1) pos(6) ring(6)) ///
+	name(bpi_2024_el_`x', replace)
+graph export bpi_2024_el_`x'.png, replace
+putpdf paragraph, halign(center) 
+putpdf image bpi_2024_el_`x'.png
+putpdf pagebreak
+}
  }
 
 putpdf save "endline_statistics", replace
