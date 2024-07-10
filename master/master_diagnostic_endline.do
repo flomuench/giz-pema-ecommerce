@@ -256,7 +256,7 @@ quietly{
 		putdocx text ("		- Un score en commerce éléctronique et ventes digitales "), linebreak
 		putdocx text ("		- Un score en marketing digital"), linebreak
 		putdocx text ("		- La proportion de l'investissement du marketing digital en 2023"), linebreak
-		putdocx text ("     - Un score en commerce electronique et marketing numerique"), linebreak
+		putdocx text ("     - Un score agregé en e-commerce et marketing numerique"), linebreak
 		putdocx text ("		- Un score de préparation à l’export "), linebreak
 		putdocx text ("		- Les pays d'exports "), linebreak
 		putdocx text ("     - Un score sur la productivité de votre entreprise"), linebreak
@@ -279,7 +279,7 @@ quietly{
 		graph    hbar dsi_dig avg_dsi_dig sectoral_avg_dsi_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
 				title ("Score en commerce éléctronique et ventes digitales") ///
-				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités adoptées") legend (region(lstyle(none)) rows(1) pos(12) /// 
+				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités adoptées") legend (region(lstyle(none)) rows(3) pos(12) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -294,6 +294,7 @@ quietly{
 		putdocx text ("`=dsi_raw_text[_n]'"), linebreak
 		restore
 		
+		putdocx paragraph
 		putdocx text ("Le score du commerce éléctronique et ventes digitales a été construit sur la base de:"), linebreak
 		putdocx text ("		- la présence sur les différents canaux de commerce éléctronique "), linebreak
 		putdocx text ("		  (site web, réseaux sociaux et marketplace) et leur mise à jour."), linebreak
@@ -309,7 +310,7 @@ quietly{
 		graph hbar dmi_dig avg_dmi_dig sectoral_avg_dmi_dig  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 		note ("Taille de l'échantillon: 133 entreprises") ///
 		title ("Score en marketing digital") ///
-		ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités adoptées") legend (region(lstyle(none)) rows(1) pos (12) /// 
+		ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités adoptées") legend (region(lstyle(none)) rows(3) pos (12) /// 
 		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -335,7 +336,7 @@ quietly{
 		graph hbar dig_share avg_dig_share sectoral_avg_dig_share  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 		note ("Taille de l'échantillon: 133 entreprises") ///
 		title ("Proportion de l'investissement du marketing digital en 2023") ///
-		ysc(r(0 100)) ylab(0(10)100) ytitle("Part de l'investissement du marketing digital dans l'investissement marketing") legend (region(lstyle(none)) rows(1) pos (12) /// 
+		ysc(r(0 100)) ylab(0(10)100) ytitle("Part de l'investissement du marketing digital dans l'investissement marketing") legend (region(lstyle(none)) rows(3) pos (12) /// 
 		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -352,12 +353,12 @@ quietly{
 
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("Score en commerce electronique et marketing numerique"), bold
+		putdocx text ("Score en e-commerce et marketing numerique"), bold
 	
 		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
 				title ("Score en commerce electronique et marketing numerique") ///
-				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités  adoptées") legend (region(lstyle(none)) rows(1) pos (12) /// 
+				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités  adoptées") legend (region(lstyle(none)) rows(3) pos (12) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -373,7 +374,7 @@ quietly{
 
 		restore 
 		putdocx paragraph
-		putdocx text ("Le score de commerce electronique et marketing numerique est un score aggrégé du score des activités de marketing digital et du score du commerce éléctronique."), linebreak
+		putdocx text ("Le score d'e-commerce et marketing numerique est un score aggrégé du score des activités de marketing digital et du score du commerce éléctronique."), linebreak
 		putdocx paragraph
 		
 		putdocx pagebreak
@@ -385,7 +386,7 @@ quietly{
 		graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
 				title ("Score pour la preparation des exportations") ///
-				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités  adoptées") legend (region(lstyle(none)) rows(1) pos (inside) /// 
+				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités  adoptées") legend (region(lstyle(none)) rows(3) pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -417,7 +418,7 @@ quietly{
 		graph hbar exp_pays avg_exp_pays_diag sectoral_avg_exp_pays_diag if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 110 entreprises") ///
 				title ("Nombre de pays d'export") ///
-				ytitle("Nombre de pays") legend (region(lstyle(none)) rows(1) pos (inside) /// 
+				ytitle("Nombre de pays") legend (region(lstyle(none)) rows(3) pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -442,7 +443,7 @@ quietly{
 				title ("Productivité de l'entreprise") ///
 				subtitle ("Chiffre d'affaires total sur le nombre total de salariés à temps plein") ///
 				note ("Taille de l'échantillon: 110 entreprises") ///
-				ytitle("Productivité") legend (region(lstyle(none)) rows(1) pos (inside) /// 
+				ytitle("Productivité") legend (region(lstyle(none)) rows(3) pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
