@@ -25,6 +25,9 @@
 	* import data
 use "${master_final}/ecommerce_master_final", clear
 
+drop if surveyround == 1
+drop if surveyround == 2
+
 **********************************************************************
 * 	PART 1:  Final adaptation for diagnostics to be sent to firms 
 * (agreed on 05.05.2022)
@@ -206,7 +209,7 @@ replace expprep_text = "Vous n’avez pas répondu à cette question et ainsi no
 gen exp_pays_text = " "
 replace exp_pays_text = "Votre entreprise se situe dans les 10 % supérieurs en termes de nombre de destinations pour l'export. Votre positionnement dans les 10 % supérieurs témoigne d'une grande diversification des pays auxquels vous exportez et confirme votre présence à l'international." if exp_pays_decile >=9 & surveyround ==3 
 replace exp_pays_text = "Votre entreprise se situe dans les 25 % supérieurs en termes de nombre de destinations pour l'export. Ce score démontre d'une importante diversification en termes de destination d'export: vous commencez à établir une présence à l'international diversifiée." if exp_pays>=7 & exp_pays < 16 & surveyround ==3
-replace exp_pays_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de nombre de destinations pour l'export. Ce score indique que vous avez débuté à diversifier vos destinations d'export et à établir une présence sur la scène internationale." if exp_pays<=5 & exp_pays>7  & surveyround ==3
+replace exp_pays_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes de nombre de destinations pour l'export. Ce score indique que vous avez débuté à diversifier vos destinations d'export et à établir une présence sur la scène internationale." if exp_pays<= 5 & exp_pays>7  & surveyround ==3
 replace exp_pays_text = "Votre entreprise se situe juste en dessous de la moyenne en termes de nombre de destinations pour l'export. Ce score suggère qu'il reste des progrès à faire pour améliorer la diversification de votre présence à l'international." if exp_pays<5 & exp_pays>2 & surveyround ==3
 replace exp_pays_text = "Votre entreprise est classée dans les 25 % inférieurs en termes de nombre de destinations pour l'export. Ce score indique que vous avez opté pour peu de diversification pour les pays d'export: vous pouvez augmenter le nombre de destinations d'export afin de rester compétitif." if exp_pays<=2 &  exp_pays>1 & surveyround ==3
 replace exp_pays_text = "Votre entreprise est classée dans les 10 % inférieurs en termes de pays d'export. Ce score indique que vous avez opté pour peu voir pas du tout de diversification pour les pays d'export: nous vous recommandons d'augmenter le nombre de destinations d'export afin de rester compétitif par rapport aux autres entreprises." if exp_pays<=1 | exp_pays==0 & surveyround ==3
@@ -252,33 +255,32 @@ quietly{
 		 
 		putdocx paragraph
 		putdocx text ("Ce diagnostic prend la forme de plusieurs scores:")
-		putdocx paragraph
-		putdocx text ("		- Un score en commerce éléctronique et ventes digitales "), linebreak
-		putdocx text ("		- Un score en marketing digital"), linebreak
-		putdocx text ("		- La proportion de l'investissement du marketing digital en 2023"), linebreak
-		putdocx text ("     - Un score agregé en e-commerce et marketing numerique"), linebreak
-		putdocx text ("		- Un score de préparation à l’export "), linebreak
-		putdocx text ("		- Les pays d'exports "), linebreak
-		putdocx text ("     - Un score sur la productivité de votre entreprise"), linebreak
+		putdocx paragraph, indent(left, 2cm)
+		putdocx text ("- Un score en commerce éléctronique et ventes digitales "), linebreak
+		putdocx text ("- Un score en marketing digital"), linebreak
+		putdocx text ("- La proportion de l'investissement du marketing digital en 2023"), linebreak
+		putdocx text ("- Un score agregé en e-commerce et marketing numerique"), linebreak
+		putdocx text ("- Un score de préparation à l’export "), linebreak
+		putdocx text ("- Les pays d'exports "), linebreak 
+		putdocx text ("- Un score sur la productivité de votre entreprise"), linebreak
 		putdocx paragraph
 		putdocx text ("Ci-dessous  vous trouverez deux graphiques avec trois barres chacun:"), linebreak
-		putdocx paragraph
-		putdocx text ("		- La première (rouge) correspond au pourcentage de pratiques adoptées"), bold linebreak
-		putdocx text ("		  par votre entreprise."), bold linebreak
-		putdocx text ("		- La deuxième (orange) correspond au pourcentage moyen de pratiques"), bold linebreak
-		putdocx text ("		  adoptées par l'ensemble des entreprises interrogées."), bold linebreak
-		putdocx text ("		- La troisième (gris) correspond au pourcentage moyen de pratiques"), bold linebreak
-		putdocx text ("		  adoptées par l'ensemble des entreprises interrogées dans votre secteur."), bold linebreak
+		putdocx paragraph, indent(left, 2cm)
+		putdocx text ("- La première (rouge) correspond au pourcentage de pratiques adoptées"), linebreak
+		putdocx text ("par votre entreprise."), linebreak
+		putdocx text ("- La deuxième (orange) correspond au pourcentage moyen de pratiques"), linebreak
+		putdocx text ("adoptées par l'ensemble des entreprises interrogées."), linebreak
+		putdocx text ("- La troisième (gris) correspond au pourcentage moyen de pratiques"), linebreak
+		putdocx text ("adoptées par l'ensemble des entreprises interrogées dans votre secteur."), linebreak
 		
 		putdocx pagebreak
 		putdocx paragraph,  font("Arial", 12)
-		putdocx text ("Section 1: La performance digitale de l'entreprise"), bold
+		putdocx text ("Section 1: La performance digitale de l'entreprise"), bold font("Arial", 18)
 		putdocx paragraph
-		putdocx text ("Score en commerce éléctronique et ventes digitales"), bold
+		putdocx text ("1.1 Score en commerce éléctronique et ventes digitales"), bold font("Arial", 16)
 
 		graph    hbar dsi_dig avg_dsi_dig sectoral_avg_dsi_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
-				note ("Taille de l'échantillon: 133 entreprises") ///
-				title ("Score en commerce éléctronique et ventes digitales") ///
+				note ("Taille de l'échantillon: 133 entreprises") /// *title ("Score en commerce éléctronique et ventes digitales") ///
 				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités adoptées") legend (region(lstyle(none)) rows(3) pos(12) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
@@ -294,22 +296,20 @@ quietly{
 		putdocx text ("`=dsi_raw_text[_n]'"), linebreak
 		restore
 		
-		putdocx paragraph
+		putdocx paragraph,
 		putdocx text ("Le score du commerce éléctronique et ventes digitales a été construit sur la base de:"), linebreak
 		putdocx text ("		- la présence sur les différents canaux de commerce éléctronique "), linebreak
 		putdocx text ("		  (site web, réseaux sociaux et marketplace) et leur mise à jour."), linebreak
 		putdocx text ("		- La possibilité de pouvoir payer en ligne"), linebreak
 		putdocx text ("		- Les différentes manières d'utilisation du site web et des reseaux sociaux:"), linebreak
-		putdocx text ("		   la description de l'entreprise et de ses biens et services,"), linebreak
-		putdocx text ("        suivre le comportement des clients, promouvoir une image de marque..."), linebreak
+		putdocx text ("		la description de l'entreprise et de ses biens et services,"), linebreak
+		putdocx text ("		suivre le comportement des clients, promouvoir une image de marque..."), linebreak
 		
-		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("Score en marketing digital"), bold
+		putdocx text ("1.2 Score en marketing digital"), bold  font("Arial", 16)
 	
 		graph hbar dmi_dig avg_dmi_dig sectoral_avg_dmi_dig  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
-		note ("Taille de l'échantillon: 133 entreprises") ///
-		title ("Score en marketing digital") ///
+		note ("Taille de l'échantillon: 133 entreprises") ///  *title ("Score en marketing digital") ///
 		ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités adoptées") legend (region(lstyle(none)) rows(3) pos (12) /// 
 		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
@@ -326,16 +326,15 @@ quietly{
 		restore
 		
 		putdocx paragraph
-		putdocx text ("Le score des activités de marketing digital a été construit sur la 5 pratiques de marketing numérique : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
+		putdocx text ("Le score des activités de marketing digital a été construit sur les 5 pratiques de marketing numérique : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
 		putdocx paragraph
 		
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("Part de l'investissement du marketing digital dans l'investissement marketing"), bold
+		putdocx text ("1.3 Part de l'investissement du marketing digital dans l'investissement marketing"), bold  font("Arial", 16)
 	
 		graph hbar dig_share avg_dig_share sectoral_avg_dig_share  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
-		note ("Taille de l'échantillon: 133 entreprises") ///
-		title ("Proportion de l'investissement du marketing digital en 2023") ///
+		note ("Taille de l'échantillon: 133 entreprises") /// 		*title ("Proportion de l'investissement du marketing digital en 2023") ///
 		ysc(r(0 100)) ylab(0(10)100) ytitle("Part de l'investissement du marketing digital dans l'investissement marketing") legend (region(lstyle(none)) rows(3) pos (12) /// 
 		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
@@ -353,11 +352,10 @@ quietly{
 
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("Score en e-commerce et marketing numerique"), bold
+		putdocx text ("1.4 Score en e-commerce et marketing numerique"), bold font("Arial", 16)
 	
 		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
-				title ("Score en commerce electronique et marketing numerique") ///
 				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités  adoptées") legend (region(lstyle(none)) rows(3) pos (12) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
@@ -378,15 +376,14 @@ quietly{
 		putdocx paragraph
 		
 		putdocx pagebreak
-		putdocx paragraph,  font("Arial", 12)
-		putdocx text ("Section 2: Préparation et performance à l'export de l'entreprise"), bold
+		putdocx paragraph,  font("Arial", 12) 
+		putdocx text ("Section 2: Performance à l'export de l'entreprise"), bold font("Arial", 18)
 		putdocx paragraph
-		putdocx text ("Score de la préparation et performance à l'export"), bold
+		putdocx text ("2.1 Préparation à l'export"), bold font("Arial", 16)
 	
 		graph hbar expprep_diag avg_expprep_diag sectoral_avg_expprep_diag if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
-				title ("Score pour la preparation des exportations") ///
-				ysc(r(0 100)) ylab(0(10)100) ytitle("Pourcentage des activités  adoptées") legend (region(lstyle(none)) rows(3) pos (inside) /// 
+				ysc(r(0 100)) ylab(0(10)100) ytitle("Score de préparation à l'export") legend (region(lstyle(none)) rows(3) pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
 				bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
@@ -413,11 +410,10 @@ quietly{
 
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("Nombre de pays d'export"), bold
+		putdocx text ("2.2 Nombre de pays d'export"), bold font("Arial", 16)
 
 		graph hbar exp_pays avg_exp_pays_diag sectoral_avg_exp_pays_diag if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 110 entreprises") ///
-				title ("Nombre de pays d'export") ///
 				ytitle("Nombre de pays") legend (region(lstyle(none)) rows(3) pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
 				bar (1 ,fc("208 33 36") lc("208 33 36")) ///
@@ -435,13 +431,10 @@ quietly{
 		
 		putdocx pagebreak
 		putdocx paragraph,  font("Arial", 12)
-		putdocx text ("Section 3: La perfomance générale de l'entreprise"), bold
-		putdocx paragraph
-		putdocx text ("Productivité de l'entreprise"), bold
+		putdocx text ("Section 3: Productivité de l'entreprise"), bold font("Arial", 18)
 		
 		graph hbar productivity_2023 avg_productivity_2023_diag sectoral_productivity_2023_diag if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
-				title ("Productivité de l'entreprise") ///
-				subtitle ("Chiffre d'affaires total sur le nombre total de salariés à temps plein") ///
+				subtitle ("Productivité: Chiffre d'affaires total / salariés à temps plein") ///
 				note ("Taille de l'échantillon: 110 entreprises") ///
 				ytitle("Productivité") legend (region(lstyle(none)) rows(3) pos (inside) /// 
 				lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
