@@ -200,10 +200,10 @@ replace dig_share_text = "Vous n’avez pas répondu à cette question et ainsi 
 gen expprep_text = " "
 replace expprep_text = "Votre entreprise se situe dans les 10 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation. Votre positionnement dans les 10 % supérieurs témoigne de votre leadership et de votre engagement exemplaire dans l'adoption des pratiques de préparation à l'exportation." if expprep_diag>=100 & surveyround ==3 
 replace expprep_text = "Votre entreprise se situe dans les 25 % supérieurs en termes d'adoption de pratiques de préparation à l'exportation. Ce score démontre votre avancée significative et votre investissement efficace dans les pratiques de préparation à l'exportation." if expprep_diag>=80 & expprep_diag < 100 & surveyround ==3
-replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de preparation à l'exportation. Ce score indique que vous avez adopté une bonne partie des pratiques de préparation à l'exportation, reflétant ainsi votre compétitivité et votre engagement dans ce domaine." if expprep_diag>= 52.33083 & expprep_diag<80 & surveyround ==3
-replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques preparation à l'exportation. Ce score montre que votre entreprise a encore des opportunités d'amélioration en matière d'adoption des pratiques de préparation à l'exportation." if expprep_diag< 52.33083 & expprep_diag>40 & surveyround ==3
-replace expprep_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation. Ce score suggère qu'il reste des progrès à faire pour améliorer votre adoption des pratiques de preparation à l'exportation." if expprep_diag<=40 &  expprep_diag>20 & surveyround ==3
-replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de preparation à l'exportation. Ce score indique que vous avez adopté très peu de pratiques de preparation à l'exportation et montre une grande opportunité d'optimisation et de mise en œuvre des pratiques de preparation à l'exportation pour rester compétitif." if expprep_diag<=20 | expprep_diag==0  & surveyround ==3
+replace expprep_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de préparation à l'exportation. Ce score indique que vous avez adopté une bonne partie des pratiques de préparation à l'exportation, reflétant ainsi votre compétitivité et votre engagement dans ce domaine." if expprep_diag>= 52.33083 & expprep_diag<80 & surveyround ==3
+replace expprep_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques préparation à l'exportation. Ce score montre que votre entreprise a encore des opportunités d'amélioration en matière d'adoption des pratiques de préparation à l'exportation." if expprep_diag< 52.33083 & expprep_diag>40 & surveyround ==3
+replace expprep_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de préparation à l'exportation. Ce score suggère qu'il reste des progrès à faire pour améliorer votre adoption des pratiques de préparation à l'exportation." if expprep_diag<=40 &  expprep_diag>20 & surveyround ==3
+replace expprep_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de préparation à l'exportation. Ce score indique que vous avez adopté très peu de pratiques de préparation à l'exportation et montre une grande opportunité d'optimisation et de mise en œuvre des pratiques de préparation à l'exportation pour rester compétitif." if expprep_diag<=20 | expprep_diag==0  & surveyround ==3
 replace expprep_text = "Vous n’avez pas répondu à cette question et ainsi nous ne pouvons pas calculer un score pour vous" if expprep_diag==.
 
 gen exp_pays_text = " "
@@ -256,10 +256,10 @@ quietly{
 		putdocx paragraph
 		putdocx text ("Ce diagnostic prend la forme de plusieurs scores:")
 		putdocx paragraph, indent(left, 2cm)
-		putdocx text ("- Un score en commerce éléctronique et ventes digitales "), linebreak
+		putdocx text ("- Un score en commerce électronique et ventes digitales "), linebreak
 		putdocx text ("- Un score en marketing digital"), linebreak
 		putdocx text ("- La proportion de l'investissement du marketing digital en 2023"), linebreak
-		putdocx text ("- Un score agregé en e-commerce et marketing numerique"), linebreak
+		putdocx text ("- Un score agrégé en e-commerce et marketing numérique"), linebreak
 		putdocx text ("- Un score de préparation à l’export "), linebreak
 		putdocx text ("- Les pays d'exports "), linebreak 
 		putdocx text ("- Un score sur la productivité de votre entreprise"), linebreak
@@ -277,7 +277,7 @@ quietly{
 		putdocx paragraph,  font("Arial", 12)
 		putdocx text ("Section 1: La performance digitale de l'entreprise"), bold font("Arial", 18)
 		putdocx paragraph
-		putdocx text ("1.1 Score en commerce éléctronique et ventes digitales"), bold font("Arial", 16)
+		putdocx text ("1.1 Score en commerce électronique et ventes digitales"), bold font("Arial", 16)
 
 		graph    hbar dsi_dig avg_dsi_dig sectoral_avg_dsi_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") /// *title ("Score en commerce éléctronique et ventes digitales") ///
@@ -297,11 +297,11 @@ quietly{
 		restore
 		
 		putdocx paragraph,
-		putdocx text ("Le score du commerce éléctronique et ventes digitales a été construit sur la base de:"), linebreak
-		putdocx text ("		- la présence sur les différents canaux de commerce éléctronique "), linebreak
+		putdocx text ("Le score du commerce électronique et ventes digitales a été construit sur la base de:"), linebreak
+		putdocx text ("		- La présence sur les différents canaux de commerce électronique "), linebreak
 		putdocx text ("		  (site web, réseaux sociaux et marketplace) et leur mise à jour."), linebreak
 		putdocx text ("		- La possibilité de pouvoir payer en ligne"), linebreak
-		putdocx text ("		- Les différentes manières d'utilisation du site web et des reseaux sociaux:"), linebreak
+		putdocx text ("		- Les différentes manières d'utilisation du site web et des réseaux sociaux:"), linebreak
 		putdocx text ("		la description de l'entreprise et de ses biens et services,"), linebreak
 		putdocx text ("		suivre le comportement des clients, promouvoir une image de marque..."), linebreak
 		
@@ -352,7 +352,7 @@ quietly{
 
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("1.4 Score en e-commerce et marketing numerique"), bold font("Arial", 16)
+		putdocx text ("1.4 Score en e-commerce et marketing numérique"), bold font("Arial", 16)
 	
 		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
@@ -372,7 +372,7 @@ quietly{
 
 		restore 
 		putdocx paragraph
-		putdocx text ("Le score d'e-commerce et marketing numerique est un score aggrégé du score des activités de marketing digital et du score du commerce éléctronique."), linebreak
+		putdocx text ("Le score d'e-commerce et marketing numérique est un score agrégé du score des activités de marketing digital et du score du commerce électronique."), linebreak
 		putdocx paragraph
 		
 		putdocx pagebreak
@@ -401,11 +401,11 @@ quietly{
 		putdocx paragraph
 		putdocx text ("Le score de la préparation et performance à l'export a été construit sur la base de:"), linebreak
 		putdocx paragraph
-		putdocx text ("		- la participation à des expositions/ foires commerciales internationales"), linebreak
-		putdocx text ("		- l'expression d'intérérêt d'un acheteur potentiel"), linebreak
-		putdocx text ("		- l'identification de partenaires commerciaux à l'étranger"), linebreak
-		putdocx text ("		- la certification des produits selon des normes de qualité internationales"), linebreak
-		putdocx text ("		- l'investissement dans une structure de vente"), linebreak
+		putdocx text ("		- La participation à des expositions/ foires commerciales internationales"), linebreak
+		putdocx text ("		- L'expression d'intérêt d'un acheteur potentiel"), linebreak
+		putdocx text ("		- L'identification de partenaires commerciaux à l'étranger"), linebreak
+		putdocx text ("		- La certification des produits selon des normes de qualité internationales"), linebreak
+		putdocx text ("		- L'investissement dans une structure de vente"), linebreak
 		putdocx paragraph
 
 		putdocx pagebreak
@@ -452,7 +452,7 @@ quietly{
 		putdocx text ("`=productivity_2023_text[_n]'"), linebreak
 
 		putdocx paragraph
-		putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
+		putdocx text ("Nous espérons que ces scores vous permettront de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
 		putdocx paragraph
 		putdocx text ("Cordialement,"), linebreak 
 		putdocx paragraph
@@ -531,7 +531,7 @@ putdocx text ("`=expprep_text[58]'"), linebreak
 
 
 putdocx paragraph
-putdocx text ("Nous espérons que ces scores vous permettrons de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
+putdocx text ("Nous espérons que ces scores vous permettront de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
 putdocx paragraph
 putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing numérique et votre commerce électronique ?"), bold linebreak 
 putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du diagnostic en novembre 2022 et 2023."), linebreak 
