@@ -36,6 +36,33 @@ save "${master_pii}/ecommerce_master_contact", replace
 preserve
 import excel "${master_pii}/web_information.xlsx", sheet("all") firstrow clear 
 drop if id_plateforme==.
+
+*fix new websites link as per Kais research
+replace link_web = "https://larosedetunis.com" if id_plateforme == 58
+replace link_web = "https://siele.com.tn" if id_plateforme == 105
+replace link_web = "https://www.othmanidattes.com" if id_plateforme == 212
+replace link_web = "https://metaphoreline.com" if id_plateforme == 265
+replace link_web = "https://solutions-iot.sfmtechnologies.com" if id_plateforme == 261
+replace link_web = "https://oilyssa.com" if id_plateforme == 354
+replace link_web = "https://para-afrik.com" if id_plateforme == 356
+replace link_web = "www.logidas.com" if id_plateforme == 524
+replace link_web = "https://benmoussadattes.com" if id_plateforme == 597
+replace link_web = "https://yassinechaker.com" if id_plateforme == 629
+replace link_web = "https://water-eng.com.tn" if id_plateforme == 657
+replace link_web = "https://ideekor.tn" if id_plateforme == 743
+replace link_web = "https://www.cofigestint.com" if id_plateforme == 803
+replace link_web = "https://thefoodquality.com" if id_plateforme == 846
+replace link_web = "https://www.bellamine-industries.com" if id_plateforme == 925
+replace link_web = "https://latiriconsulting.com" if id_plateforme == 927
+
+*add websites that are lacking from master (_merge==1)
+replace link_web = "www.emp.tn/index.php/en/" if id_plateforme == 271
+replace link_web = "www.amecap.tn/fr/" if id_plateforme == 457
+replace link_web = "bio-zelfen.com" if id_plateforme == 505
+replace link_web = "clevory.com" if id_plateforme == 598
+replace link_web = "www.groupebismuth.com/etel" if id_plateforme == 681
+replace link_web = "azaiez-dattes.com.tn" if id_plateforme == 91
+
 save "${master_pii}/web_information", replace
 restore
 merge 1:1 id_plateforme using "${master_pii}/web_information"

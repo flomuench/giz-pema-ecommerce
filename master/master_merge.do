@@ -140,7 +140,8 @@ label var take_up_heber "Purchase of website access"
 
 drop _merge
 }
+
 ***********************************************************************
-* 	PART 5: save finale analysis data set as raw
+* 	PART 4: save finale analysis data set as raw
 ***********************************************************************
 save "${master_raw}/ecommerce_master_raw.dta", replace

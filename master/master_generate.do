@@ -45,6 +45,13 @@ local take_up take_up2 take_up_for_per take_up_for take_up_for1 take_up_for2 tak
 foreach var of local take_up{
 bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
 }
+*take up 4/5 workshops
+gen take_up4 = 0
+replace take_up4 = 1 if take_up_for1== 1 & take_up_for2== 1 & take_up_for3== 1 & take_up_for4== 1
+
+*take up 5/5 workshops
+gen take_up5 = 0
+replace take_up5 = 1 if take_up_for1== 1 & take_up_for2== 1 & take_up_for3== 1 & take_up_for4== 1 & take_up_for5== 1
 
 *replace take_up2=0 if take_up2==. 
 
@@ -67,6 +74,23 @@ lab var take_up "Presence in 3/5 workshops & 1 digital activity (Web/Social medi
 
 replace take_up = 1 if take_up_for == 1 & take_up_web_sm == 1
 
+*3/5 workshops & sm
+gen take_up_wsm = 0
+replace take_up_wsm = 1 if take_up_for == 1 & take_up_sm == 1
+
+lab var take_up_wsm "Presence in 3/5 workshops & social media activity"
+
+*3/5 workshops & website
+gen take_up_wws = 0
+replace take_up_wws = 1 if take_up_for == 1 & take_up_website == 1
+
+lab var take_up_wws "Presence in 3/5 workshops & web site activity"
+
+
+*gen take_up_full
+gen take_up_full = 0
+replace take_up_full = 1 if (take_up_seo == 1 & take_up_smo == 1 & take_up_smads == 1 &  take_up_website == 1)
+lab var take_up_full "Participated in each activity"
 /*create simplified training group variable (tunis vs. non-tunis)
 gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
@@ -263,7 +287,7 @@ gen dig_presence_weightedz= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_prese
 if dig_presence_score==1
 replace dig_presence_weightedz=0.7*max_presence +0.3*min_presencez ///
 if dig_presence_score>0.65 & dig_presence_score<0.67 
-replace dig_presence_weightedz=max_presence if dig_presence_score>0.32 & dig_presence_score<0.34
+replace dig_presence_weightedz=max_presencez if dig_presence_score>0.32 & dig_presence_score<0.34
 
 	*add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
 replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
@@ -883,6 +907,29 @@ gen profit_2024_pos = 1 if comp_benefice2024 >= 0
 replace profit_2024_pos = 0 if comp_benefice2024 < 0
 
 lab var profit_2024_pos "Profit 2024 > 0"
+
+***********************************************************************
+* 	PART 10: export excel for semrush analysis
+***********************************************************************
+{
+preserve
+	keep if surveyround == 1
+	merge 1:1 id_plateforme using "${master_pii}/web_information", keepusing(link_web)
+		* Remove "http://", "https://", "www.", and "error codes"
+	replace link_web ="" if link_web == "-666" | link_web == "-777" | link_web == "-888" | link_web == "-888"
+	replace link_web = subinstr(link_web, "http://", "", .)
+	replace link_web = subinstr(link_web, "https://", "", .)
+	replace link_web = subinstr(link_web, "www.", "", .)
+	replace link_web = trim(link_web)
+	replace link_web = subinstr(link_web, " ", "", .)
+	
+	drop _merge
+	keep id_plateforme link_web treatment take_up strata
+	save "${master_pii}/semrush.dta", replace
+	export excel using "${master_pii}/semrush.xlsx", firstrow(variables) replace
+restore
+	
+}
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
