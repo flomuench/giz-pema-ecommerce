@@ -154,7 +154,7 @@ if (0) do "${master_github}/master_test_ml.do"
 /*--------------------------------------------------------------------
 	PART 3.7: Test coherence between survey rounds / questions endline
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_test_el.do"
+if (0) do "${master_github}/master_test_el.do"
 
 ***********************************************************************
 * 	PART 4: 	Run final analysis
@@ -186,11 +186,11 @@ if (0) do "${master_github}/master_heterogeneity_ml.do"
 /* --------------------------------------------------------------------
 	PART 4.6: Endline regression
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_regression_el.do"
+if (0) do "${master_github}/master_regression_el.do"
 /* --------------------------------------------------------------------
 	PART 4.6: Endline heterogeneity
 ----------------------------------------------------------------------*/
-if (1) do "${master_github}/master_heterogeneity_el.do"
+if (0) do "${master_github}/master_heterogeneity_el.do"
 ***********************************************************************
 * 	PART 5:		Build coordinates map
 ***********************************************************************
