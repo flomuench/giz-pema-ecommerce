@@ -886,13 +886,16 @@ replace el_refus=1 if id_plateforme== 901
 
 *dummy variables for dig_rev & dig_invest (extensive margins)
 	*dig_rev
-gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0
+gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0 & dig_revenues_ecom != .
+replace dig_rev_extmargin = . if dig_revenues_ecom == .
 replace dig_rev_extmargin = 0 if dig_revenues_ecom == 0
+
  
 lab var dig_rev_extmargin "Digital revenue > 0"
 
 *dig_invest
 gen dig_invest_extmargin = 1 if dig_invest > 0
+replace dig_invest_extmargin = . if dig_invest == .
 replace dig_invest_extmargin = 0 if dig_invest == 0
 
 lab var dig_invest_extmargin "Digital invest > 0"
