@@ -58,6 +58,10 @@ replace dig_marketing_num19_aucu=1 if ustrregexm(dig_marketing_num110, "dig_mark
 gen dig_marketing_num19_nsp=0
 replace dig_marketing_num19_nsp=1 if ustrregexm(dig_marketing_num110, "-999")
 
+foreach var of varlist dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm dig_marketing_num19_socm_pay dig_marketing_num19_autre dig_marketing_num19_aucu dig_marketing_num19_nsp{
+replace `var' =. if dig_marketing_num110=="" 
+}
+
 drop dig_marketing_num110
 
 gen dig_con1_moyen_paie1= 0
@@ -81,6 +85,10 @@ replace dig_con1_moyen_paie6=-1 if ustrregexm(dig_moyen_paie, "-999")
 gen dig_con1_ml = dig_con1_moyen_paie1 + dig_con1_moyen_paie3 + dig_con1_moyen_paie2 + dig_con1_moyen_paie4 + dig_con1_moyen_paie5 + dig_con1_moyen_paie6
 lab var dig_con1_ml "Correct answers to knowledge question on means of payment" 
 
+foreach var of varlist dig_con1_moyen_paie1 dig_con1_moyen_paie2 dig_con1_moyen_paie3 dig_con1_moyen_paie4 dig_con1_moyen_paie5 dig_con1_moyen_paie6 {
+replace `var' =. if dig_moyen_paie=="" 
+}
+ 
 drop dig_moyen_paie
 
 gen dig_con2_contenu1 = 0 														  
@@ -101,6 +109,10 @@ replace dig_con2_contenu5=-1 if ustrregexm(dig_contenu, "-999")
 gen dig_con2_ml = dig_con2_contenu1 + dig_con2_contenu3 +dig_con2_contenu2 +dig_con2_contenu4 +dig_con2_contenu5
 lab var dig_con2_ml "Correct answers to knowledge question on digital content" 
 
+foreach var of varlist dig_con2_contenu1 dig_con2_contenu2 dig_con2_contenu3 dig_con2_contenu4 dig_con2_contenu5 {
+replace `var' =. if dig_contenu=="" 
+}
+
 drop dig_contenu
 
 gen dig_con3_google_analytics1 = 0
@@ -120,6 +132,10 @@ replace dig_con3_google_analytics5=-1 if ustrregexm(dig_google_analytics, "-999"
 
 gen dig_con3_ml = dig_con3_google_analytics1 + dig_con3_google_analytics2 + dig_con3_google_analytics3 + dig_con3_google_analytics4 + dig_con3_google_analytics5
 lab var dig_con3_ml "Correct answers to knowledge question on google analytics" 
+
+foreach var of varlist dig_con3_google_analytics1 dig_con3_google_analytics2 dig_con3_google_analytics3 dig_con3_google_analytics4 dig_con3_google_analytics5 {
+replace `var' =. if dig_google_analytics=="" 
+}
 
 drop dig_google_analytics
 
@@ -142,6 +158,11 @@ gen dig_con4_ml = dig_con4_taux_eng1 + dig_con4_taux_eng2 + dig_con4_taux_eng3+ 
 lab var dig_con4_ml "Correct answers to knowledge question on engagement rate" 
 
 replace dig_con4_ml=0 if dig_con4_ml> 0 & dig_con4_ml< 0.1
+
+foreach var of varlist dig_con4_taux_eng1 dig_con4_taux_eng2 dig_con4_taux_eng3 dig_con4_taux_eng4 dig_con4_taux_eng5 {
+replace `var' =. if dig_taux_eng=="" 
+}
+
 drop dig_taux_eng
 
 gen dig_con5_techniques_seo1 = 0
@@ -162,6 +183,9 @@ replace dig_con5_techniques_seo5=-1 if ustrregexm(dig_techniques_seo, "-999")
 gen dig_con5_ml = dig_con5_techniques_seo1 + dig_con5_techniques_seo2 + dig_con5_techniques_seo3 + dig_con5_techniques_seo4+ dig_con5_techniques_seo5
 lab var dig_con5_ml "Correct answers to knowledge question on SEO" 
 
+foreach var of varlist dig_con5_techniques_seo1 dig_con5_techniques_seo2 dig_con5_techniques_seo3 dig_con5_techniques_seo4 dig_con5_techniques_seo5 {
+replace `var' =. if dig_techniques_seo=="" 
+}
 drop dig_techniques_seo
 
 ***********************************************************************

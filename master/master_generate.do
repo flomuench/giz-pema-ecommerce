@@ -91,6 +91,13 @@ lab var take_up_wws "Presence in 3/5 workshops & web site activity"
 gen take_up_full = 0
 replace take_up_full = 1 if (take_up_seo == 1 & take_up_smo == 1 & take_up_smads == 1 &  take_up_website == 1)
 lab var take_up_full "Participated in each activity"
+
+gen take_up_partial = 0
+replace take_up_partial = 1 if (take_up_seo == 1 | take_up_smo == 1 | take_up_smads == 1 |  take_up_website == 1)
+lab var take_up_partial "Participated in at least one activity"
+lab def take_up_par 1 "participated" 0 "absent"	
+lab values take_up_partial take_up_par
+
 /*create simplified training group variable (tunis vs. non-tunis)
 gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
