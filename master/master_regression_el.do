@@ -55,7 +55,7 @@ rename lprice prix
 
 {
 local indexes ///
-	 dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
+	 dig_presence_index dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
 	 export_1 exp_pays clients_b2c clients_b2b ihs_ca97_2024 ihs_dig_invest_99 dig_margins exp_dig ihs_dig_empl_99 dig_rev_extmargin dig_invest_extmargin profit_2023_pos profit_2024_pos ///
 	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 cost_2023 cost_2024 ihs_cost97_2023 ihs_cost97_2024 ihs_clients_b2c_97
 
@@ -186,21 +186,17 @@ comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz
 {
 	* is there differential attrition between treatment and control group?
 		* column (1): at endline
-eststo att1, r: areg el_refus i.treatment if surveyround == 3, absorb(strata) cluster(id_plateforme)
+eststo att1, r: areg el_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
 		* column (2): at midline
-eststo att2, r: areg ml_refus i.treatment if surveyround == 2, absorb(strata) cluster(id_plateforme)
+eststo att2, r: areg ml_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 
-		* column (3): at baseline
-eststo att3, r: areg bl_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"
-
-local attrition att1 att2 att3
+local attrition att1 att2
 esttab `attrition' using "el_attrition.tex", replace ///
 	title("Attrition: Total") ///
-	mtitles("EL" "ML" "BL") ///
+	mtitles("BL" "ML") ///
 	label ///
 	b(3) ///
 	se(3) ///
@@ -211,110 +207,91 @@ esttab `attrition' using "el_attrition.tex", replace ///
 		
 }
 
-*test for selective attrition on key outcome variables (indexes)
+*test for selective attrition on key outcome variables (measured at baseline)
       
 {
-		* c(1): dsi
-eststo att4,r: areg  dsi treatment##el_refus dsi_y0 i.missing_bl_dsi if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(1): dig_marketing_index
+eststo att4,r: areg   dig_marketing_index treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
 		* c(2): dmi
-eststo att5,r: areg  dmi treatment##el_refus dmi_y0 i.missing_bl_dmi if surveyround==3, absorb(strata) cluster(id_plateforme)
+eststo att5,r: areg  dig_presence_index treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
-		* c(3): dtp
-eststo att6,r: areg  dtp treatment##el_refus dtp_y0 i.missing_bl_dtp if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(3): dsi
+eststo att6,r: areg  dsi treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"	
 
 		* c(4): dtai
-eststo att7,r: areg  dtai treatment##el_refus dtai_y0 i.missing_bl_dtai if surveyround==3, absorb(strata) cluster(id_plateforme)
+eststo att7,r: areg  dtai treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
-		* c(5): eri
-eststo att8,r: areg  eri treatment##el_refus eri_y0 i.missing_bl_eri if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(5): ihs_digrev_95
+eststo att8,r: areg  ihs_digrev_95 treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"		// consider replacing with quantile transformed profits instead
 
-		* c(6): epi
-eststo att9,r: areg  epi treatment##el_refus epi_y0 i.missing_bl_epi if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(6): ihs_ca95_2020
+eststo att9,r: areg  ihs_ca95_2020 treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
-		* c(7): bpi_2023
-eststo att10,r: areg  bpi_2023 treatment##el_refus bpi_2023_y0 i.missing_bl_bpi_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(7): ihs_fte_95
+eststo att10,r: areg  ihs_fte_95 treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 
-		* c(8): bpi_2024
-eststo att11,r: areg  bpi_2024 treatment##el_refus bpi_2024_y0 i.missing_bl_bpi_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
+		* c(8): ever_exported
+eststo att11,r: areg  ever_exported treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 
 local attrition att4 att5 att6 att7 att8 att9 att10 att11
-esttab `attritionkey' using "el_indexattrition.tex", replace ///
-	title("Attrition: Indexes") ///
-	mtitles("Digital sales index" "Digital marketing index" "Digital technology Perception" "Digital technology adoption index" "Export readiness index" "Export performance index" "Business performance index 2023" "Business performance index 2024" ) ///
+esttab `attritionkey' using "el_blattrition.tex", replace ///
+	title("Attrition: Baseline outcomes") ///
+	mtitles("Endline attrition" "Midline attrition" "Digital marketing index" "Digital presence index" "Digital sales index" "Digital technology adoption index" "Digital revenues" "Total revenues" "Employees" "Ever exported" ) ///
 	label ///
 	b(3) ///
 	se(3) ///
 	star(* 0.1 ** 0.05 *** 0.01) ///
 	nobaselevels ///
 	scalars("strata Strata controls") ///
-	addnotes("Notes: All Columns consider only endline response behaviour."  "All standard errors are Hubert-White robust standord errors clustered at the firm level." "Indexes are z-score as defined in Kling et al. 2007.")
+	addnotes("Notes: All Columns consider only endline response behaviour."  "All standard errors are Huber-White robust standord errors clustered at the firm level." "Indexes are z-score as defined in Kling et al. 2007.")
 }
-
+}
+*Regress midline outcomes on attrition dummies
 {
-*test for selective attrition on key outcome variables
-		* c(1): ihs_digrev_99
-eststo att4,r: areg ihs_digrev_99 treatment##el_refus ihs_digrev_99_y0 i.missing_bl_ihs_digrev_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS?
+		* c(1): dig_marketing_index
+eststo ml_att4,r: areg   dig_marketing_index treatment##el_refus if surveyround==2, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"
 		
-		* c(2): ihs_dig_invest_99
-eststo att5,r: areg ihs_dig_invest_99 treatment##el_refus ihs_dig_invest_99_y0 i.missing_bl_ihs_dig_invest_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS?
+		* c(2): dmi
+eststo ml_att5,r: areg  dig_presence_index treatment##el_refus if surveyround==2, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"
 		
-		* c(3):  ihs_ca99_2023
-eststo att6,r: areg  ihs_ca99_2023 treatment##el_refus ihs_ca99_2023_y0 i.missing_bl_ihs_ca99_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"		// WINS? IHS? AVERAGE?
+		* c(3): dsi
+eststo ml_att6,r: areg  dsi treatment##el_refus if surveyround==2, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"	
 
-		* c(4): comp_ca2024
-eststo att7,r: areg ihs_ca97_2024 treatment##el_refus ihs_ca97_2024_y0 i.missing_bl_ihs_ca97_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
+		* c(4): dtai
+eststo ml_att7,r: areg  dtai treatment##el_refus if surveyround==2, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"
 		
-		* c(5): ihs_profit99_2023
-eststo att8,r: areg ihs_profit99_2023 treatment##el_refus ihs_profit99_2023_y0 i.missing_bl_ihs_profit99_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
+		* c(7): ihs_fte_95
+eststo ml_att10,r: areg  ihs_fte_95 treatment##el_refus if surveyround==2, absorb(strata) cluster(id_plateforme)
+estadd local strata "Yes"
 
-		* c(6): ihs_profit99_2024
-eststo att9,r: areg  ihs_profit99_2024 treatment##el_refus ihs_profit99_2024_y0 i.missing_bl_ihs_profit99_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
 
-		* c(7): ihs_fte_99
-eststo att10,r: areg ihs_fte_99 treatment##el_refus ihs_fte_99_y0 i.missing_bl_ihs_fte_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
-
-		* c(8): ihs_dig_empl_99
-eststo att11,r: areg ihs_dig_empl_99 treatment##el_refus ihs_dig_empl_99_y0 i.missing_bl_ihs_dig_empl_99 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
-
-		* c(9): ihs_dig_empl_99
-eststo att12,r: areg ihs_cost97_2023 treatment##el_refus ihs_cost97_2023_y0 i.missing_bl_ihs_cost97_2023 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
-
-		* c(8): ihs_dig_empl_99
-eststo att13,r: areg ihs_cost97_2024  treatment##el_refus ihs_cost97_2024_y0 i.missing_bl_ihs_cost97_2024 if surveyround==3, absorb(strata) cluster(id_plateforme)
-estadd local strata "Yes"	// WINS? IHS? AVERAGE?
-		
-local attrition att4 att5 att6 att7 att8 att9 att10 att11 att12 att13
-esttab `attritionkey' using "el_keyattrition.tex", replace ///
-	title("Attrition: Key outcomes") ///
-	mtitles("Digital revenue" "Digital investment" "Turnover 2023" "Turnover 2024" "Profit 2023" "Profit 2024" "Employees" "Digital employees" "Costs 2023" "Costs 2024") ///
+local ml_attrition ml_att4 ml_att5 ml_att6 ml_att7 ml_att10 
+esttab `ml_attrition' using "el_attrition_ml_outcomes.tex", replace ///
+	title("Endline attrition: Midline outcomes") ///
+	mtitles("Digital marketing index" "Digital presence index" "Digital sales index" "Digital technology adoption index" "Employees" ) ///
 	label ///
 	b(3) ///
 	se(3) ///
 	star(* 0.1 ** 0.05 *** 0.01) ///
 	nobaselevels ///
 	scalars("strata Strata controls") ///
-	addnotes("Notes: All Columns consider only endline response behaviour."  "All standard errors are Hubert-White robust standord errors clustered at the firm level." "Indexes are z-score as defined in Kling et al. 2007.")
-}	
-
+	addnotes("Notes: All Columns consider only endline response behaviour."  "All standard errors are Huber-White robust standord errors clustered at the firm level." "Indexes are z-score as defined in Kling et al. 2007.")
 }
+
+
 ***********************************************************************
 * 	PART 2: Write a program that generates generic regression table	
 ***********************************************************************
@@ -395,6 +372,87 @@ rct_regression_table ihs_fte_99 fte_femmes car_carempl_div3  // MISSING VARS BAS
 
 }
 
+
+
+***********************************************************************
+* 	PART 2: Write a program that generates generic regression table	
+***********************************************************************
+{
+capture program drop rct_regression_table // enables re-running
+program rct_regression_table
+	version 15								// define Stata version 15 used
+	syntax varlist(min=1 numeric)		// input is variable list, minimum 1 numeric variable. * enables any options.
+	foreach var in `varlist' {			// do following for all variables in varlist seperately
+			* ATE, ancova	
+					* no significant baseline differences
+		reg `var' i.treatment if surveyround == 1, vce(hc3)
+					
+					* pure mean comparison at endline
+		eststo `var'1, r: reg `var' i.treatment if surveyround == 3, vce(hc3)
+		estadd local bl_control "No"
+		estadd local strata "No"
+
+					* ancova without stratification dummies
+		eststo `var'2, r: reg `var' i.treatment `var'_y0 i.missing_bl_`var' if surveyround == 3, cluster(id_plateforme)
+		estadd local bl_control "Yes"
+		estadd local strata "No"
+
+					* ancova plus stratification dummies
+		eststo `var'3, r: reg `var' i.treatment `var'_y0 i.missing_bl_`var' i.strata if surveyround == 3, cluster(id_plateforme)
+		estadd local bl_control "Yes"
+		estadd local strata "Yes"
+		estimates store `var'_ate
+
+					* DiD
+		eststo `var'4, r: xtreg `var' i.treatment##i.surveyround `var'_y0 i.missing_bl_`var' i.strata, cluster(id_plateforme)
+		estadd local bl_control "Yes"
+		estadd local strata "Yes"
+
+					* ATT, IV		
+		eststo `var'5, r: ivreg2 `var' `var'_y0 i.missing_bl_`var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+		estadd local bl_control "Yes"
+		estadd local strata "Yes"
+		estimates store `var'_att
+			
+			* Put all regressions into one table
+		local regressions `var'1 `var'2 `var'3 `var'4 `var'5
+		esttab `regressions' using "rt_`var'.tex", replace ///
+			mtitles("Mean comparison" "Ancova" "Ancova" "DiD" "ATT") ///
+			label ///
+			b(3) ///
+			se(3) ///
+			drop(*.strata ?.missing_bl_* *_y0) ///
+			star(* 0.1 ** 0.05 *** 0.01) ///
+			nobaselevels ///
+			scalars("strata Strata controls" "`var'_y0 Y0 control") ///
+			addnotes("Column (1) presents estimates for a simple mean comparison between treatment and control group at mid_plateformeline."  "Column (2) presents an ANCOVA specification without strata controls." "Column (3) presents an ANCOVA specification with strata controls." "Column (4) provid_plateformees estimates from a difference-in-difference specification." "Column (5) estimates are based on 2SLS instrumental variable estimation where treatment assignment is the instrument for treatment participation." "All standard errors are clustered at the firm level to account for multiple observations per firm." "Missing values in baseline outcome variable are replaced with zeros." "A dummy variable, which equals one if the variable is missing and zero otherwise, is added.")
+			
+	}
+	
+end
+}
+
+***********************************************************************
+* 	PART 3: Endline results - regression table for each variable	
+***********************************************************************
+
+{
+	* generate regression table for
+		* z-scores	
+			* QI index variables
+rct_regression_table dsi dtai bpi_2023 bpi_2024 // MISSING VARS BASELINE: dmi dtp eri epi
+			
+
+		* numerical outcomes
+			* financial
+				*CONSIDER REPLACING WITH WINS-IHS TRANSFORMED & AVERAGE VAR
+rct_regression_table ihs_digrev_99 // MISSING VARS BASELINE: ihs_dig_invest_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024
+
+			* employees
+				*CONSIDER REPLACING WITH WINS-IHS TRANSFORMED & AVERAGE VAR
+rct_regression_table ihs_fte_99 fte_femmes car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
+
+}
 ***********************************************************************
 * 	PART 4: Endline results - regression table index outcomes
 ***********************************************************************
