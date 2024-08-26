@@ -69,10 +69,10 @@ rename empl fte
 * definer des nouvelles labels pour des nouvelles variables
 
 lab var id_plateforme "L'indentité unique de la platforme"
-lab var firmname_change "le nouveau nom de l'entreprise"
-lab var id_ident2 "identifcation de la nouvelle personne"
-lab var repondant_midline "le nom de du répondant"
-lab var position_rep_midline "la fonction du répondant dans l'entreprise"
+*lab var firmname_change "le nouveau nom de l'entreprise"
+*lab var id_ident2 "identifcation de la nouvelle personne"
+*lab var repondant_midline "le nom de du répondant"
+*lab var position_rep_midline "la fonction du répondant dans l'entreprise"
 
 lab var dig_presence1 "présence sur un site web"
 lab var dig_presence2 "présence sur les réseaux sociaux"
@@ -141,7 +141,7 @@ lab var ssa_action3 "engagement d'un financement externe pour les coûts prélim
 lab var ssa_action4 "investissement dans la structure de vente sur un marché cible en Afrique Sub-Saharienne"
 lab var ssa_action5 "introduction d'un système de facilitation des échanges, innovation numérique"
 
-lab var tel_supl1 "numéro de téléphone supplémentaire"
+*lab var tel_supl1 "numéro de téléphone supplémentaire"
 
 
 ***********************************************************************

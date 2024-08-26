@@ -32,7 +32,7 @@ putpdf text ("Date: `c(current_date)'"), bold linebreak
 
 putpdf paragraph, halign(center) 
 
-local take_up take_up_for take_up_std take_up_seo take_up_smo take_up_smads take_up_website take_up_heber
+local take_up take_up_partial
 
 ***********************************************************************
 * 	PART 2: The company

@@ -45,6 +45,10 @@ replace dig_presence2_sm5 =1 if ustrregexm(dig_presence2_sm, "5")
   
 gen dig_presence2_sm6 =0
 replace dig_presence2_sm6 =1 if ustrregexm(dig_presence2_sm, "6") 
+
+foreach var of varlist dig_presence2_sm1 dig_presence2_sm2 dig_presence2_sm3 dig_presence2_sm4 dig_presence2_sm5 dig_presence2_sm6 {
+replace `var' =. if dig_presence2_sm=="" 
+}
  
 drop dig_presence2_sm
 
@@ -84,6 +88,10 @@ replace dig_presence3_plateform7 =1 if ustrregexm(dig_presence3_plateform, "7")
 gen dig_presence3_plateform8 =0
 replace dig_presence3_plateform8 =1 if ustrregexm(dig_presence3_plateform, "8") 
 
+foreach var of varlist dig_presence3_plateform1 dig_presence3_plateform2 dig_presence3_plateform3 dig_presence3_plateform4 dig_presence3_plateform5 dig_presence3_plateform6 dig_presence3_plateform7 dig_presence3_plateform8 {
+replace `var' =. if dig_presence3_plateform=="" 
+}
+
 drop dig_presence3_plateform
 
 lab var dig_presence3_plateform1 "Little Jneina "
@@ -108,6 +116,10 @@ replace export_2 =1 if ustrregexm(export, "2")
 gen export_3 =0
 replace export_3 =1 if ustrregexm(export, "3") 
 
+foreach var of varlist export_1 export_2 export_3{
+replace `var' =. if export=="" 
+}
+
 drop export
 
 label var export_1 "Direct export"
@@ -130,6 +142,10 @@ replace export_44 =1 if ustrregexm(export_4, "4")
 gen export_45 =0
 replace export_45 =1 if ustrregexm(export_4, "5") 
 
+foreach var of varlist export_41 export_42 export_43 export_44 export_45{
+replace `var' =. if export_4=="" 
+}
+ 
 drop export_4
 
 label var export_41 "Not profitable"
