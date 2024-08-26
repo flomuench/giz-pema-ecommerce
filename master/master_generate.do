@@ -909,6 +909,13 @@ replace profit_2024_pos = 0 if comp_benefice2024 < 0
 lab var profit_2024_pos "Profit 2024 > 0"
 
 ***********************************************************************
+* 	Part 9: Final check to convert all remaining refusal codes to missing
+***********************************************************************
+ds, has(type numeric)
+foreach var of varlist `r(varlist)' {
+    replace `var' = . if inlist(`var', 666, -666, 777, -777, 888, -888)
+}
+***********************************************************************
 * 	PART 10: export excel for semrush analysis
 ***********************************************************************
 {
