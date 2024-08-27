@@ -6894,6 +6894,7 @@ gr export el_het_margin_`outcome'.png, replace
 * 	PART 7: Exporting through digital presence
 ***********************************************************************
 {
+	
 {
 local outcome "ihs_ca99_2020sr"
 local conditions "exp_dig==0 exp_dig==1"
@@ -6973,6 +6974,7 @@ gr export el_het_digexp_`outcome'.png, replace
 
 }	
 
+{
 local outcome "dtai"
 local conditions "exp_dig==0 exp_dig==1"
 local sectors "p s"
@@ -8397,6 +8399,7 @@ coefplot ///
 gr export el_het_digexp_`outcome'.png, replace
 
 }
+
 }
 
 ***********************************************************************

@@ -154,7 +154,14 @@ label var export_43 "Too complicated"
 label var export_44 "Requires too much investment"
 label var export_45 "Other"
 
+*** exported based on export sales
+gen exported_2024 = (compexp_2024 > 0)
+replace exported_2024 = . if compexp_2024 == .
+lab var exported_2024 "Export sales 2024 > 0"
 
+gen exported= (compexp_2023 > 0)
+replace exported = . if compexp_2023 == .
+lab var exported "Export sales 2023 > 0"
 ***********************************************************************
 * 	PART 2:  Generate variables for companies who answered on phone	
 ***********************************************************************

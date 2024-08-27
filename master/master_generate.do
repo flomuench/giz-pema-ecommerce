@@ -292,7 +292,7 @@ gen mid_presencez = webindexz+social_media_indexz+platform_indexz-max_presencez-
 
 gen dig_presence_weightedz= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
 if dig_presence_score==1
-replace dig_presence_weightedz=0.7*max_presence +0.3*min_presencez ///
+replace dig_presence_weightedz=0.7*max_presencez +0.3*min_presencez ///
 if dig_presence_score>0.65 & dig_presence_score<0.67 
 replace dig_presence_weightedz=max_presencez if dig_presence_score>0.32 & dig_presence_score<0.34
 
@@ -426,7 +426,7 @@ ihstrans w_`var'
 ihstrans insta_subs
 
 lab var ihs_w_facebook_likes "no. of FB likes, winsorized 99th and IHS transformed"
-lab var ihs_w_facebook_sub "no. of FB followers, winsorized 99th and IHS transformed"
+lab var ihs_w_facebook_subs "no. of FB followers, winsorized 99th and IHS transformed"
 lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
 lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
 
