@@ -1104,3 +1104,107 @@ putpdf pagebreak
  }
 
 putpdf save "endline_statistics", replace
+
+
+* Step 1: Calculate the sum of export variables by treatment
+* Step 1: Save the labels using globals instead of locals
+global label_export_41 : variable label export_41
+global label_export_42 : variable label export_42
+global label_export_43 : variable label export_43
+global label_export_44 : variable label export_44
+global label_export_45 : variable label export_45
+
+* Step 2: Calculate the sum of each export variable by treatment
+preserve
+collapse (sum) export_41 export_42 export_43 export_44 export_45 if surveyround==3, by(treatment)
+
+* Step 3: Restore the labels
+label variable export_41 "$label_export_41"
+label variable export_42 "$label_export_42"
+label variable export_43 "$label_export_43"
+label variable export_44 "$label_export_44"
+label variable export_45 "$label_export_45"
+
+* Step 4: Create the horizontal bar chart with labels in the legend
+graph hbar export_41 export_42 export_43 export_44 export_45, ///
+    over(treatment) ///
+    title("Reasons for non-exporting") ///
+    ylabel(0 "Treatment 0" 1 "Treatment 1") ///
+    bar(1, lcolor(navy)) bar(2, lcolor(maroon)) ///
+    legend(label(1 "$label_export_41") label(2 "$label_export_42") ///
+           label(3 "$label_export_43") label(4 "$label_export_44") ///
+           label(5 "$label_export_45")) ///
+    blabel(bar, size(small))
+graph export export_reasons.png, replace
+restore
+
+****************DIGITAL BARRIERS***************************************
+*dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7
+* Step 1: Save the labels using globals instead of locals
+global label_dig_barr1 : variable label dig_barr1
+global label_dig_barr2 : variable label dig_barr2
+global label_dig_barr3 : variable label dig_barr3
+global label_dig_barr4 : variable label dig_barr4
+global label_dig_barr5 : variable label dig_barr5
+global label_dig_barr6 : variable label dig_barr6
+global label_dig_barr7 : variable label dig_barr7
+
+preserve
+* Step 2: Calculate the sum of each export variable by treatment
+collapse (sum) dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7 if surveyround==3, by(treatment)
+
+* Step 3: Restore the labels
+label variable dig_barr1 "$label_dig_barr1"
+label variable dig_barr2 "$label_dig_barr2"
+label variable dig_barr3 "$label_dig_barr3"
+label variable dig_barr4 "$label_dig_barr4"
+label variable dig_barr5 "$label_dig_barr5"
+label variable dig_barr6 "$label_dig_barr6"
+label variable dig_barr7 "$label_dig_barr7"
+
+* Step 4: Create the horizontal bar chart with labels in the legend
+graph hbar dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7, ///
+    over(treatment) ///
+    title("Reasons for not being present online") ///
+    bar(1, lcolor(navy)) bar(2, lcolor(maroon)) ///
+    legend(label(1 "$label_dig_barr1") label(2 "$label_dig_barr2") ///
+           label(3 "$label_dig_barr3") label(4 "$label_dig_barr4") ///
+           label(5 "$label_dig_barr5") label(6 "$label_dig_barr6") label(7 "$label_dig_barr7")) ///
+    blabel(bar, size(small))
+graph export dig_barriers.png, replace
+restore
+****************DIGITAL perception***************************************
+
+global label_dig_perception1 : variable label dig_perception1
+global label_dig_perception2 : variable label dig_perception2
+global label_dig_perception3 : variable label dig_perception3
+global label_dig_perception4 : variable label dig_perception4
+global label_dig_perception5 : variable label dig_perception5
+
+* Step 2: Calculate the sum of each export variable by treatment
+preserve
+collapse (mean) dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5 if surveyround==2, by(treatment)
+
+* Step 3: Restore the labels
+label variable dig_perception1 "$label_dig_perception1"
+label variable dig_perception2 "$label_dig_perception2"
+label variable dig_perception3 "$label_dig_perception3"
+label variable dig_perception4 "$label_dig_perception4"
+label variable dig_perception5 "$label_dig_perception5"
+
+* Step 4: Create the horizontal bar chart with labels in the legend
+graph hbar dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5, ///
+    over(treatment) ///
+    title("Midline: How difficult is it to implement these tasks? (5 very difficult, 1 very easy)", size(small)) ///
+    bar(1, lcolor(navy)) bar(2, lcolor(maroon)) ///
+    legend(label(1 "Improving search position") label(2 "Analyse visitor data in social media") ///
+           label(3 "Utilise paid ads") label(4 "Sell products on marketplaces") ///
+           label(5 "Export more due to online")) ///
+    blabel(bar, size(small) format(%4.1f)) ///
+    graphregion(margin(3 5 3 5)) ///
+    plotregion(margin(5 10 5 10))
+
+graph export dig_perception.png, replace
+
+
+restore
