@@ -45,6 +45,8 @@ ssc install coefplot, replace
 ssc install mipolate, replace
 ssc install wyoung, replace
 ssc install catplot, replace
+ssc install mipolate, replace
+ssc install dtable, replace
 */
 }
 ***********************************************************************

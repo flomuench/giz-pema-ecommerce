@@ -919,6 +919,57 @@ replace profit_2024_pos = 0 if comp_benefice2024 < 0
 lab var profit_2024_pos "Profit 2024 > 0"
 
 ***********************************************************************
+* 	PART 10:   generate survey-to-survey growth rates
+***********************************************************************
+
+*generate uniform variable names for accounting variable to do growth rates
+
+gen ca =. 
+replace ca = comp_ca2020 if surveyround == 1
+replace ca = comp_ca2023 if surveyround == 2
+replace ca = comp_ca2024 if surveyround == 3
+lab var ca "Chiffre d'Affaire"
+
+gen ca_exp =. 
+replace ca = compexp_2020 if surveyround == 1
+replace ca = compexp_2023 if surveyround == 2
+replace ca = compexp_2024 if surveyround == 3
+lab var ca_exp "Chiffre d'Affaire export"
+
+gen profit =. 
+replace ca = comp_benefice2020 if surveyround == 1
+replace ca = comp_benefice2023 if surveyround == 2
+replace ca = comp_benefice2024 if surveyround == 3
+lab var ca_exp "Profits"
+ 
+*female employes is called car_carempl_div1 in surveys 1 and 2 but fte_femmes in the third and car_carempl_div2 is car_carempl_dive2 during baseline
+
+replace car_carempl_div1=fte_femmes if surveyround==3
+replace car_carempl_div2=car_carempl_dive2 if surveyround==1
+replace exported= exporter2020 if surveyround==1
+replace exp_pays=exp_pays_21 if surveyround==1
+
+	* accounting variables
+sort id_plateforme surveyround
+local acccounting_vars "ca ca_exp profit fte car_carempl_div1 car_carempl_div2"
+foreach var of local acccounting_vars {
+		bys id_plateforme: g `var'_rel_growth = D.`var'/L.`var'
+			bys id_plateforme: replace `var'_rel_growth = . if `var' == -999 | `var' == -888
+		bys id_plateforme: g `var'_abs_growth = D.`var' if `var' != -999 | `var' != -888
+			bys id_plateforme: replace `var'_abs_growth = . if `var' == -999 | `var' == -888
+
+}
+
+
+/*
+use links to understand the code syntax for creating the accounting variables' growth rates:
+- https://www.stata.com/statalist/archive/2008-10/msg00661.html
+- https://www.stata.com/support/faqs/statistics/time-series-operators/
+
+*/
+
+
+***********************************************************************
 * 	Part 9: Final check to convert all remaining refusal codes to missing
 ***********************************************************************
 ds, has(type numeric)
