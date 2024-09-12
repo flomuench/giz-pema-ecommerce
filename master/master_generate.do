@@ -922,25 +922,28 @@ lab var profit_2024_pos "Profit 2024 > 0"
 * 	PART 10:   generate survey-to-survey growth rates
 ***********************************************************************
 
-*generate uniform variable names for accounting variable to do growth rates
+*generate uniform variable names for accounting variable to do growth rates, between 2023 and 2024 values choose larger one
 
 gen ca =. 
 replace ca = comp_ca2020 if surveyround == 1
-replace ca = comp_ca2023 if surveyround == 2
-replace ca = comp_ca2024 if surveyround == 3
+replace ca = comp_ca2023 if surveyround == 3 & !missing(comp_ca2023) 
+replace ca = comp_ca2024 if surveyround == 3 & !missing(comp_ca2024) & missing(comp_ca2023)
+replace ca = max(comp_ca2023, comp_ca2024) if surveyround == 3 & !missing(comp_ca2024) & !missing(comp_ca2023)
 lab var ca "Chiffre d'Affaire"
 
 gen ca_exp =. 
-replace ca = compexp_2020 if surveyround == 1
-replace ca = compexp_2023 if surveyround == 2
-replace ca = compexp_2024 if surveyround == 3
+replace ca_exp = compexp_2020 if surveyround == 1
+replace ca_exp = compexp_2023 if surveyround == 3 & !missing(compexp_2023) 
+replace ca_exp = compexp_2024 if surveyround == 3 & !missing(compexp_2024) & missing(compexp_2023)
+replace ca_exp = max(compexp_2023, compexp_2024) if surveyround == 3 & !missing(compexp_2024) & !missing(compexp_2023)
 lab var ca_exp "Chiffre d'Affaire export"
 
 gen profit =. 
-replace ca = comp_benefice2020 if surveyround == 1
-replace ca = comp_benefice2023 if surveyround == 2
-replace ca = comp_benefice2024 if surveyround == 3
-lab var ca_exp "Profits"
+replace profit = comp_benefice2020 if surveyround == 1
+replace profit = comp_benefice2023 if surveyround == 3 & !missing(comp_benefice2023) 
+replace profit = comp_benefice2024 if surveyround == 3 & !missing(comp_benefice2024) & missing(comp_benefice2023)
+replace profit = max(comp_benefice2023, comp_benefice2024) if surveyround == 3 & !missing(comp_benefice2024) & !missing(comp_benefice2023)
+lab var profit "Profits"
  
 *female employes is called car_carempl_div1 in surveys 1 and 2 but fte_femmes in the third and car_carempl_div2 is car_carempl_dive2 during baseline
 
@@ -949,15 +952,40 @@ replace car_carempl_div2=car_carempl_dive2 if surveyround==1
 replace exported= exporter2020 if surveyround==1
 replace exp_pays=exp_pays_21 if surveyround==1
 
-	* accounting variables
-sort id_plateforme surveyround
-local acccounting_vars "ca ca_exp profit fte car_carempl_div1 car_carempl_div2"
-foreach var of local acccounting_vars {
-		bys id_plateforme: g `var'_rel_growth = D.`var'/L.`var'
-			bys id_plateforme: replace `var'_rel_growth = . if `var' == -999 | `var' == -888
-		bys id_plateforme: g `var'_abs_growth = D.`var' if `var' != -999 | `var' != -888
-			bys id_plateforme: replace `var'_abs_growth = . if `var' == -999 | `var' == -888
 
+***********************************************************************
+* 	Part 9: Final check to convert all remaining refusal codes to missing
+***********************************************************************
+ds, has(type numeric)
+foreach var of varlist `r(varlist)' {
+    replace `var' = . if inlist(`var', 666, -666, 777, -777, 888, -888,8888,999,-999)
+}
+
+***********************************************************************
+* 	Part 9: Create growth variabe
+***********************************************************************
+// First, make sure the data is sorted by id_plateforme and surveyround
+sort id_plateforme surveyround
+
+// Loop over your variables to calculate growth rates
+foreach var of varlist ca ca_exp profit fte car_carempl_div1 car_carempl_div2 {
+    
+    // Calculate the value for surveyround == 1 and surveyround == 3
+    bys id_plateforme (surveyround): gen `var'_1 = `var' if surveyround == 1
+    bys id_plateforme (surveyround): gen `var'_3 = `var' if surveyround == 3
+
+    // Forward fill the values for surveyround == 1 and surveyround == 3 across all rows for each id
+    bys id_plateforme: egen `var'_1_filled = max(`var'_1)
+    bys id_plateforme: egen `var'_3_filled = max(`var'_3)
+
+    // Calculate relative growth rate: (value in survey 3 / value in survey 1) - 1, but only for surveyround == 3
+    gen `var'_rel_growth = (`var'_3_filled / `var'_1_filled) - 1 if surveyround == 3 & `var'_1_filled != . & `var'_3_filled != .
+
+    // Calculate absolute growth: value in survey 3 - value in survey 1, but only for surveyround == 3
+    gen `var'_abs_growth = `var'_3_filled - `var'_1_filled if surveyround == 3 & `var'_1_filled != . & `var'_3_filled != .
+
+    // Clean up intermediate variables
+    drop `var'_1 `var'_3
 }
 
 
@@ -968,14 +996,6 @@ use links to understand the code syntax for creating the accounting variables' g
 
 */
 
-
-***********************************************************************
-* 	Part 9: Final check to convert all remaining refusal codes to missing
-***********************************************************************
-ds, has(type numeric)
-foreach var of varlist `r(varlist)' {
-    replace `var' = . if inlist(`var', 666, -666, 777, -777, 888, -888)
-}
 ***********************************************************************
 * 	PART 10: export excel for semrush analysis
 ***********************************************************************

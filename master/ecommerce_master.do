@@ -35,6 +35,7 @@ set scheme plotplain
 /*ssc install blindschemes, replace
 ssc install groups, replace
 ssc install ihstrans, replace
+ssc install winsor, replaec
 ssc install winsor2, replace
 ssc install scheme-burd, replace
 ssc install ranktest
@@ -66,6 +67,11 @@ if "`c(username)'" == "ASUS" {
 
 		global gdrive = "G:/Meine Ablage"
 	}
+	
+if "`c(username)'" == "wb603971" { 
+
+		global gdrive = "C:/Users/wb603971/Documents"
+	}	
 
 		if c(os) == "Windows" {
 	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
