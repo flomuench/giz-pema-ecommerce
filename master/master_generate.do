@@ -498,18 +498,7 @@ lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
 label define status1 0 "Control" 1 "T-not present" 2"T-present"
 label value status status1
 
-***********************************************************************
-*PART 7: Create an aggregate measure for ssa for treatment firms
-***********************************************************************	
-gen ssa_aggregate = 0
-replace ssa_aggregate =1 if ssa_action1 == 1 & surveyround==2 
-replace ssa_aggregate =1 if ssa_action2 == 1 & surveyround==2
-replace ssa_aggregate =1 if ssa_action3 == 1 & surveyround==2
-replace ssa_aggregate =1 if ssa_action4 == 1 & surveyround==2
-replace ssa_aggregate =1 if ssa_action5 == 1 & surveyround==2
-lab var ssa_aggregate "The company responded yes to at least one of the ssa_actions improvements"
-label define yesno1 0 "no" 1 "yes" 
-label value ssa_aggregate yesno1
+
 
 ***********************************************************************
 *PART 8: Creation of index for the endline
@@ -952,6 +941,24 @@ replace car_carempl_div2=car_carempl_dive2 if surveyround==1
 replace exported= exporter2020 if surveyround==1
 replace exp_pays=exp_pays_21 if surveyround==1
 
+replace ssa_action1 = exp_pra_ach if surveyround==3
+replace ssa_action2 = exp_pra_sci if surveyround==3
+replace ssa_action4 = exp_pra_vent if surveyround==3
+replace ssa_action4 = exp_pra_foire if surveyround==3
+replace ssa_action5 = 1 if surveyround==3 & inno_produit>0 & inno_produit!=.
+
+***********************************************************************
+*PART 7: Create an aggregate measure for ssa for treatment firms
+***********************************************************************	
+gen ssa_aggregate = .
+replace ssa_aggregate =1 if ssa_action1 == 1 
+replace ssa_aggregate =1 if ssa_action2 == 1 
+replace ssa_aggregate =1 if ssa_action3 == 1  
+replace ssa_aggregate =1 if ssa_action4 == 1 
+replace ssa_aggregate =1 if ssa_action5 == 1 
+lab var ssa_aggregate "The company responded yes to at least one of the ssa_actions improvements"
+label define yesno1 0 "no" 1 "yes" 
+label value ssa_aggregate yesno1
 
 ***********************************************************************
 * 	Part 9: Final check to convert all remaining refusal codes to missing
@@ -967,7 +974,7 @@ foreach var of varlist `r(varlist)' {
 // First, make sure the data is sorted by id_plateforme and surveyround
 sort id_plateforme surveyround
 
-// Loop over your variables to calculate growth rates
+// Loop 1: Growth rates between baseline and endline 
 foreach var of varlist ca ca_exp profit fte car_carempl_div1 car_carempl_div2 {
     
     // Calculate the value for surveyround == 1 and surveyround == 3
@@ -989,6 +996,30 @@ foreach var of varlist ca ca_exp profit fte car_carempl_div1 car_carempl_div2 {
 }
 
 
+// Loop 1: Growth rates between midline and endline for GIZ indicator (ssa_action)
+* only absolute rates because binary variables
+foreach var of varlist ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 {
+    
+    // Calculate the value for surveyround == 1 and surveyround == 3
+    bys id_plateforme (surveyround): gen `var'_2 = `var' if surveyround == 2
+    bys id_plateforme (surveyround): gen `var'_3 = `var' if surveyround == 3
+
+    // Forward fill the values for surveyround == 1 and surveyround == 3 across all rows for each id
+    bys id_plateforme: egen `var'_2_filled = max(`var'_2)
+    bys id_plateforme: egen `var'_3_filled = max(`var'_3)
+
+    // Calculate absolute growth: value in survey 3 - value in survey 1, but only for surveyround == 3
+    gen `var'_abs_growth = `var'_3_filled - `var'_2_filled if surveyround == 3  & `var'_3_filled != .
+
+    // Clean up intermediate variables
+    drop `var'_2 `var'_3
+}
+
+*Replace Negative values with missing (firms that reported yes in midline but no in endline) to simplify improve count
+foreach var of varlist ssa_action1_abs_growth ssa_action2_abs_growth ssa_action3_abs_growth ssa_action4_abs_growth ssa_action5_abs_growth {
+    
+replace `var' = . if `var' ==-1
+}
 /*
 use links to understand the code syntax for creating the accounting variables' growth rates:
 - https://www.stata.com/statalist/archive/2008-10/msg00661.html

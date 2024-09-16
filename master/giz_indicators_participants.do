@@ -8,7 +8,7 @@ set graphics on
 cd "${master_gdrive}/output/giz_el_simplified"
 
 * Subset data for participants only
-keep if treatment==1
+keep if treatment==1 & take_up==1
 
 * Start Word Document
 putdocx clear
@@ -16,10 +16,10 @@ putdocx begin
 
 * Title
 putdocx paragraph, style(Title)
-putdocx text ("GIZ-CEPEX: E-commerce and digital marketing: All firms assigned to treatment group (117)")
+putdocx text ("GIZ-CEPEX: E-commerce and digital marketing: All participants (66)")
 
 putdocx textblock begin
-The following statistics are based on online and telephone responses to a baseline (before start of the activity) and endline (2-year after the project start) survey among all the 117  firms that took part in at least 3 out of 5 workshop and 1 digital activity (Web/Social Media).Note that a full stop (.) indicates that the question was not asked in a specific survey wave.Further note that results pertain to all among the 66 firms that responded to a specific question in the respective surveyround. This includes also firms that dropped-out late in the project.
+The following statistics are based on online and telephone responses to a baseline (before start of the activity) and endline (2-year after the project start) survey among all the 66  firms that took part in at least 3 out of 5 workshop and 1 digital activity (Web/Social Media).Note that a full stop (.) indicates that the question was not asked in a specific survey wave.Further note that results pertain to all among the 66 firms that responded to a specific question in the respective surveyround. This includes also firms that dropped-out late in the project.
 
 putdocx textblock end
 
@@ -67,7 +67,7 @@ local sum_improved = r(sum)
  
  putdocx paragraph
 
-putdocx text ("Overall, 49 out of the 117 firms that were part of the treatment group, report an improvement between midline and endline survey in at least one of the 5 export practices measured and displayed in the table above")
+putdocx text ("Overall, 34 out of the 66 firms that participated, report an improvement between midline and endline survey in at least one of the 5 export practices measured and displayed in the table above")
 
 
 ***********************************************************************
@@ -113,7 +113,7 @@ putdocx paragraph, style(Heading1)
 putdocx text ("Export Performance Indicators - Export sales, export countries, clients & orders")
 putdocx textblock begin
 This section presents the key export performance indicators. 
-The variable "exported" is either "yes" or "no" and expresses the share of exporters All other numbers present the mean per surveyround across all among the 117 firms assigned to treatment group. Important the values are not the growth rate, hence for number of exports countries the absolute growth is 4.53-3= 1.53 more countries on average per firm or 51% increase. Share of exporters stayed the same. 
+The variable "exported" is either "yes" or "no" and expresses the share of exporters All other numbers present the mean per surveyround across all among the 66 firms that responded to the specific question in the respective surveyround. Important the values are not the growth rate, hence for number of exports countries the absolute growth is 4.53-3= 1.53 more countries on average per firm or 51% increase. Share of exporters stayed the same. 
 putdocx textblock end
 
 * Label variables
@@ -132,4 +132,4 @@ dtable, by(surveyround,nototal) ///
 putdocx collect
 
 * Save the Word document
-putdocx save giz_indicators_treatment, replace
+putdocx save giz_indicators_participants, replace
