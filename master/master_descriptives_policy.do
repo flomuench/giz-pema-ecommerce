@@ -32,14 +32,14 @@ label values take_up_control take_up_control_lbl
 lab var dig_con5_ml "Google Ads"
 lab var dig_con4_ml "Recherche organique"
 lab var dig_con3_ml "Announce payantes"
-lab var dig_con2_ml "Contenu digitale"
+lab var dig_con2_ml "Contenu digital"
 lab var knowledge_index "Connaissance globale"
 
 lab var exported "Proportion des exporteurs"
 lab var ihs_ca95_2024 "Chiffre d'affaire 2024"
 lab var ihs_ca95_2023 "Chiffre d'affaire 2023"
-lab var ihs_profit95_2023 "Benefice 2023"
-lab var ihs_profit95_2024 "Benefice 2024"
+lab var ihs_profit95_2023 "Bénefice 2023"
+lab var ihs_profit95_2024 "Bénefice 2024"
 lab var  w95_fte_young  "Employés jeunes"
 lab var  eri  "Préparation à l'exportation"
 lab var  dsi  "Practiques de vente numérique"
@@ -56,7 +56,7 @@ gen share_profit_2024 = profit_2024_pos*100
 
 lab var  share_profit_2023  "% avec benefice >0  en 2023"
 lab var  share_profit_2024  "% avec benefice >0  en 2024"
-lab var  fte_femmes  "Employés feminines"
+lab var  fte_femmes  "Employées femmes"
 lab var  fte  "Employés"
 
 ***********************************************************************
@@ -76,7 +76,7 @@ gr export knowledge_ml.png, replace
 *Digital Marketing and e-commerce practices (NO financials)
 betterbar dsi dmi dtp dtai dig_marketing_index if surveyround == 3, ///
     over(take_up_control) barlab ci /// 
-    title("Practiques de marketing numérique", size(small)) ///
+    title("Pratiques de marketing numérique", size(small)) ///
     xtitle("", size(small)) ///
     ytitle("", size(small)) ///
     legend(size(small)) ///
