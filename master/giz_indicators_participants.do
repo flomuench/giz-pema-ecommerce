@@ -31,18 +31,7 @@ The first table displays the number of firms among the 117 treatment group firms
 putdocx textblock end
 
 * Label variables
-lab var ssa_action1 "Buyer expression of interest"
-lab var ssa_action2 "Identification commercial partner"
-lab var ssa_action3 "External export finance"
-lab var ssa_action4 "Investment in sales structure abroad"
-lab var ssa_action5 "Digital transaction system"
-label define surveyround 1 "Baseline" 2 "Mid-line" 3"Endline" 
-label values surveyround surveyround
 
-* Generate 'any export action' variable
-egen ssa_any = rowmax(ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5)
-lab var ssa_any "Any of the above"
-lab values ssa_any yesno
 
 
 
@@ -60,15 +49,51 @@ dtable, by(surveyround,nototal) ///
 * export(ssa.docx, replace)
 putdocx collect
 
-egen ssa_improved = rowmax(ssa_action1_abs_growth ssa_action2_abs_growth ssa_action3_abs_growth ssa_action4_abs_growth ssa_action5_abs_growth)
+*All second surveyround
+summarize ssa_any if surveyround==2, meanonly
+local sum_ssa_ml = r(sum)
+di `sum_ssa_ml'
 
-summarize ssa_improved, meanonly
-local sum_improved = r(sum)
+*improvers third surveyround
+summarize ssa_any_abs_growth if surveyround==3, meanonly
+local sum_ssa_improved = r(sum) 
+ di `sum_ssa_improved'
+local sum_total = `sum_ssa_ml' + `sum_ssa_improved'
+
  
- putdocx paragraph
+* Female second surveyround
+gen sum_ssa_ml_female = (ssa_any == 1 & rg_gender_pdg == 1 & surveyround==2)
+summarize sum_ssa_ml_female, meanonly
+local sum_ssa_ml_female = r(sum)
+di `sum_ssa_ml_female'
 
-putdocx text ("Overall, 34 out of the 66 firms that participated, report an improvement between midline and endline survey in at least one of the 5 export practices measured and displayed in the table above")
+*improvers female  third surveyround
+summarize ssa_any_abs_growth if surveyround==3  & rg_gender_pdg == 1, meanonly
+local sum_ssa_improved_female = r(sum)
+di `sum_ssa_improved_female'
+local sum_female= `sum_ssa_ml_female' + `sum_ssa_improved_female'
 
+
+putdocx paragraph
+
+putdocx text ("How many out of the 66 participating firms report an improvement in the different categories?")
+* Create tables
+dtable, by(surveyround,nototal) /// 
+    factor(ssa_action1_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action2_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action3_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action4_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action5_abs_growth, statistics(fvfrequency fvproportion)) /// 
+	factor(ssa_any_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    sformat("(%s)" fvproportion) /// 
+    nformat(%9.0g  fvfrequency) /// 
+    nformat(%9.2fc fvproportion)
+* export(ssa.docx, replace)
+putdocx collect
+
+putdocx paragraph
+
+putdocx text ("Overall, `sum_total'  (`sum_female' female-led) out of the 69 firms that participated, report an improvement either at midline or endline survey (or in both, but no overlaps) in at least one of the 5 export practices measured and displayed in the table above")
 
 ***********************************************************************
 * 	PART 3: KPIs (CA, CA exp, profit, employees)
@@ -81,19 +106,6 @@ The average annual PERCENT growth rate or percent change is calculated by subtra
 The average annual ABSOLUTE growth rate is simply calculated by subtracting performance during baseline (2020) from its endline value (2023 or 2024 which ever larger). For example, the value -2,305,268 is read as a twenty-five thousand Tunisian Dinar average decrease in total sales between baseline and endline. Whenever average ABSOLUTE growth (in TND) is negative and average RELATIVE growth (in%) is positive, it means that the largest firms had negative sales which reduces the absolute term. 
 putdocx textblock end
 
-* Label variables
-lab var ca_rel_growth "Total sales (% growth)"
-lab var ca_abs_growth "Total sales (abs. growth)"
-lab var ca_exp_rel_growth "Export sales (% growth)"
-lab var ca_exp_abs_growth "Export sales (abs. growth)"
-lab var profit_rel_growth "Profits (% growth)"
-lab var profit_abs_growth "Profits (abs. growth)"
-lab var fte_rel_growth "Employees (% growth)"
-lab var fte_abs_growth "Employees (abs. growth)"
-lab var car_carempl_div1_rel_growth "Female Employees (% growth)"
-lab var car_carempl_div1_abs_growth "Female Employees (abs. growth)"
-lab var car_carempl_div2_rel_growth "Young Employees (% growth)"
-lab var car_carempl_div2_abs_growth "Young Employees (abs. growth)"
 
 * Generate tables for KPIs
 dtable, by(surveyround,nototal) ///

@@ -39,12 +39,6 @@ lab var ssa_action5 "Digital transaction system"
 label define surveyround 1 "Baseline" 2 "Mid-line" 3"Endline" 
 label values surveyround surveyround
 
-* Generate 'any export action' variable
-egen ssa_any = rowmax(ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5)
-lab var ssa_any "Any of the above"
-lab values ssa_any yesno
-
-
 
 * Create tables
 dtable, by(surveyround,nototal) /// 
@@ -60,15 +54,52 @@ dtable, by(surveyround,nototal) ///
 * export(ssa.docx, replace)
 putdocx collect
 
-egen ssa_improved = rowmax(ssa_action1_abs_growth ssa_action2_abs_growth ssa_action3_abs_growth ssa_action4_abs_growth ssa_action5_abs_growth)
 
-summarize ssa_improved, meanonly
-local sum_improved = r(sum)
+*All second surveyround
+summarize ssa_any if surveyround==2, meanonly
+local sum_ssa_ml = r(sum)
+di `sum_ssa_ml'
+
+*improvers third surveyround
+summarize ssa_any_abs_growth if surveyround==3, meanonly
+local sum_ssa_improved = r(sum) 
+ di `sum_ssa_improved'
+local sum_total = `sum_ssa_ml' + `sum_ssa_improved'
+
  
+* Female second surveyround
+gen sum_ssa_ml_female = (ssa_any == 1 & rg_gender_pdg == 1 & surveyround==2)
+summarize sum_ssa_ml_female, meanonly
+local sum_ssa_ml_female = r(sum)
+di `sum_ssa_ml_female'
+
+*improvers female  third surveyround
+summarize ssa_any_abs_growth if surveyround==3  & rg_gender_pdg == 1, meanonly
+local sum_ssa_improved_female = r(sum)
+di `sum_ssa_improved_female'
+local sum_female= `sum_ssa_ml_female' + `sum_ssa_improved_female'
+
  putdocx paragraph
 
-putdocx text ("Overall, 49 out of the 117 firms that were part of the treatment group, report an improvement between midline and endline survey in at least one of the 5 export practices measured and displayed in the table above")
+putdocx text ("Overall, `sum_total'  (`sum_female' female-led) out of the 117 firms  that were part of the treatment group, report an improvement at midline or endline survey (or both, but no overlap) in at least one of the 5 export practices measured and displayed in the table above")
 
+
+putdocx paragraph
+
+putdocx text ("How many out of the 117 treatment firms report an improvement in the different categories?")
+* Create tables
+dtable, by(surveyround,nototal) /// 
+    factor(ssa_action1_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action2_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action3_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action4_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    factor(ssa_action5_abs_growth, statistics(fvfrequency fvproportion)) /// 
+	factor(ssa_any_abs_growth, statistics(fvfrequency fvproportion)) /// 
+    sformat("(%s)" fvproportion) /// 
+    nformat(%9.0g  fvfrequency) /// 
+    nformat(%9.2fc fvproportion)
+* export(ssa.docx, replace)
+putdocx collect
 
 ***********************************************************************
 * 	PART 3: KPIs (CA, CA exp, profit, employees)

@@ -943,8 +943,8 @@ replace exp_pays=exp_pays_21 if surveyround==1
 
 replace ssa_action1 = exp_pra_ach if surveyround==3
 replace ssa_action2 = exp_pra_sci if surveyround==3
+replace ssa_action3 = exp_pra_foire if surveyround==3
 replace ssa_action4 = exp_pra_vent if surveyround==3
-replace ssa_action4 = exp_pra_foire if surveyround==3
 replace ssa_action5 = 1 if surveyround==3 & inno_produit>0 & inno_produit!=.
 
 ***********************************************************************
@@ -996,9 +996,14 @@ foreach var of varlist ca ca_exp profit fte car_carempl_div1 car_carempl_div2 {
 }
 
 
+* Generate 'any export action' variable
+egen ssa_any = rowmax(ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5)
+lab var ssa_any "Any of the above"
+label value ssa_any yesno1
+
 // Loop 1: Growth rates between midline and endline for GIZ indicator (ssa_action)
 * only absolute rates because binary variables
-foreach var of varlist ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 {
+foreach var of varlist ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 ssa_any {
     
     // Calculate the value for surveyround == 1 and surveyround == 3
     bys id_plateforme (surveyround): gen `var'_2 = `var' if surveyround == 2
@@ -1016,7 +1021,7 @@ foreach var of varlist ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_actio
 }
 
 *Replace Negative values with missing (firms that reported yes in midline but no in endline) to simplify improve count
-foreach var of varlist ssa_action1_abs_growth ssa_action2_abs_growth ssa_action3_abs_growth ssa_action4_abs_growth ssa_action5_abs_growth {
+foreach var of varlist ssa_action1_abs_growth ssa_action2_abs_growth ssa_action3_abs_growth ssa_action4_abs_growth ssa_action5_abs_growth ssa_any_abs_growth {
     
 replace `var' = . if `var' ==-1
 }
@@ -1026,6 +1031,39 @@ use links to understand the code syntax for creating the accounting variables' g
 - https://www.stata.com/support/faqs/statistics/time-series-operators/
 
 */
+
+
+lab var ca_rel_growth "Total sales (% growth)"
+lab var ca_abs_growth "Total sales (abs. growth)"
+lab var ca_exp_rel_growth "Export sales (% growth)"
+lab var ca_exp_abs_growth "Export sales (abs. growth)"
+lab var profit_rel_growth "Profits (% growth)"
+lab var profit_abs_growth "Profits (abs. growth)"
+lab var fte_rel_growth "Employees (% growth)"
+lab var fte_abs_growth "Employees (abs. growth)"
+lab var car_carempl_div1_rel_growth "Female Employees (% growth)"
+lab var car_carempl_div1_abs_growth "Female Employees (abs. growth)"
+lab var car_carempl_div2_rel_growth "Young Employees (% growth)"
+lab var car_carempl_div2_abs_growth "Young Employees (abs. growth)"
+
+lab var ssa_action1_abs_growth "Change in Buyer expression of interest"
+lab var ssa_action2_abs_growth "Change in Identification commercial partner"
+lab var ssa_action3_abs_growth "Change in External export finance"
+lab var ssa_action4_abs_growth "Change in Investment in sales structure abroad"
+lab var ssa_action5_abs_growth "Change in Digital transaction system"
+label define surveyround_lab 1 "Baseline" 2 "Mid-line" 3"Endline" 
+label values surveyround surveyround_lab
+
+
+label define yesno2 0 "no improvement" 1 "improvement"
+
+* Label variables
+label values ssa_action1_abs_growth yesno2
+label values ssa_action2_abs_growth yesno2
+label values ssa_action3_abs_growth yesno2
+label values ssa_action4_abs_growth yesno2
+label values ssa_action5_abs_growth yesno2
+label values ssa_any_abs_growth yesno2
 
 ***********************************************************************
 * 	PART 10: export excel for semrush analysis
