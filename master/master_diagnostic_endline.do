@@ -179,12 +179,12 @@ replace dmi_raw_text = "Votre entreprise est classée dans les 10 % inférieurs 
 replace dmi_raw_text = "Vous n’avez pas répondu à cette question et ainsi nous ne pouvons pas calculer un score pour vous" if dmi_dig==.
 
 gen ecom_dig_text = " "
-replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique.Votre positionnement dans les 10 % supérieurs témoigne de votre leadership et de votre engagement exemplaire dans l'adoption des pratiques de commerce électronique et de marketing numérique." if ecom_dig>=75 & surveyround ==3 
-replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique. Ce score démontre votre avancée significative et votre investissement efficace dans les pratiques de commerce électronique et de marketing numérique." if ecom_dig>= 67.70834 & ecom_dig<75 & surveyround ==3
-replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique. Ce score indique que vous avez adopté une bonne partie des pratiques de commerce électronique et de marketing numérique, reflétant ainsi votre compétitivité et votre engagement dans ce domaine." if ecom_dig<67.70834 & ecom_dig>=48.08114 & surveyround ==3
-replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing numérique. Ce score suggère qu'il reste des progrès à faire pour améliorer votre adoption des pratiques de commerce électronique et de marketing numérique." if ecom_dig<48.08114 & ecom_dig > 27.08333 & surveyround ==3
-replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique. Ce score suggère qu'il reste des progrès à faire pour améliorer votre adoption des pratiques de commerce électronique et de marketing numérique." if ecom_dig<=27.08333 & ecom_dig > 9.375 & surveyround ==3
-replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing numérique.Ce score indique que vous avez adopté très peu de pratiques de commerce électronique et de marketing numérique et montre une grande opportunité d'optimisation et de mise en œuvre des pratiques de commerce électronique et de marketing numérique pour rester compétitif." if ecom_dig<= 9.375 | ecom_dig==0 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing digital.Votre positionnement dans les 10 % supérieurs témoigne de votre leadership et de votre engagement exemplaire dans l'adoption des pratiques de commerce électronique et de marketing digital." if ecom_dig>=75 & surveyround ==3 
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % supérieurs en termes d'adoption de pratiques de commerce électronique et de marketing digital. Ce score démontre votre avancée significative et votre investissement efficace dans les pratiques de commerce électronique et de marketing digital." if ecom_dig>= 67.70834 & ecom_dig<75 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise se situe juste au-dessus de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing digital. Ce score indique que vous avez adopté une bonne partie des pratiques de commerce électronique et de marketing digital, reflétant ainsi votre compétitivité et votre engagement dans ce domaine." if ecom_dig<67.70834 & ecom_dig>=48.08114 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise se situe juste en dessous de la moyenne en termes d'adoption de pratiques de commerce électronique et de marketing digital. Ce score suggère qu'il reste des progrès à faire pour améliorer votre adoption des pratiques de commerce électronique et de marketing digital." if ecom_dig<48.08114 & ecom_dig > 27.08333 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise est classée dans les 25 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing digital. Ce score suggère qu'il reste des progrès à faire pour améliorer votre adoption des pratiques de commerce électronique et de marketing digital." if ecom_dig<=27.08333 & ecom_dig > 9.375 & surveyround ==3
+replace ecom_dig_text = "Votre entreprise est classée dans les 10 % inférieurs en termes d'adoption de pratiques de commerce électronique et de marketing digital.Ce score indique que vous avez adopté très peu de pratiques de commerce électronique et de marketing digital et montre une grande opportunité d'optimisation et de mise en œuvre des pratiques de commerce électronique et de marketing digital pour rester compétitif." if ecom_dig<= 9.375 | ecom_dig==0 & surveyround ==3
 replace ecom_dig_text = "Vous n’avez pas répondu à cette question et ainsi nous ne pouvons pas calculer un score pour vous" if ecom_dig==.
 
 gen dig_share_text = " "
@@ -259,7 +259,7 @@ quietly{
 		putdocx text ("- Un score en commerce électronique et ventes digitales "), linebreak
 		putdocx text ("- Un score en marketing digital"), linebreak
 		putdocx text ("- La proportion de l'investissement du marketing digital en 2023"), linebreak
-		putdocx text ("- Un score agrégé en e-commerce et marketing numérique"), linebreak
+		putdocx text ("- Un score agrégé en e-commerce et marketing digital"), linebreak
 		putdocx text ("- Un score de préparation à l’export "), linebreak
 		putdocx text ("- Les pays d'exports "), linebreak 
 		putdocx text ("- Un score sur la productivité de votre entreprise"), linebreak
@@ -326,33 +326,12 @@ quietly{
 		restore
 		
 		putdocx paragraph
-		putdocx text ("Le score des activités de marketing digital a été construit sur les 5 pratiques de marketing numérique : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
+		putdocx text ("Le score des activités de marketing digital a été construit sur l'utilisation des ces 5 pratiques de marketing digital : E-mailing & Newsletters, SEA & SEO, Marketing gratuit sur les réseaux sociaux, Marketing payant sur les réseaux sociaux ou d'autres activités."), linebreak
 		putdocx paragraph
 		
 		putdocx pagebreak
 		putdocx paragraph
-		putdocx text ("1.3 Part de l'investissement du marketing digital dans l'investissement marketing"), bold  font("Arial", 16)
-	
-		graph hbar dig_share avg_dig_share sectoral_avg_dig_share  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
-		note ("Taille de l'échantillon: 133 entreprises") /// 		*title ("Proportion de l'investissement du marketing digital en 2023") ///
-		ysc(r(0 100)) ylab(0(10)100) ytitle("Part de l'investissement du marketing digital dans l'investissement marketing") legend (region(lstyle(none)) rows(3) pos (12) /// 
-		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
-		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
-		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
-		bar (3 ,fc("112 113 115") lc("112 113 115")) 			
-		gr export dig_share_score_test_`x'.png, replace
-		putdocx paragraph, halign(center) 
-		putdocx image dig_share_score_test_`x'.png, height (12 cm)
-	
-		preserve
-		keep if id_plateforme==`x'
-		putdocx paragraph
-		putdocx text ("`=dig_share_text[_n]'"), linebreak
-		restore
-
-		putdocx pagebreak
-		putdocx paragraph
-		putdocx text ("1.4 Score en e-commerce et marketing numérique"), bold font("Arial", 16)
+		putdocx text ("1.3 Score en e-commerce et marketing digital"), bold font("Arial", 16)
 	
 		graph hbar ecom_dig avg_ecom_dig sectoral_avg_ecom_dig if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
 				note ("Taille de l'échantillon: 133 entreprises") ///
@@ -372,9 +351,31 @@ quietly{
 
 		restore 
 		putdocx paragraph
-		putdocx text ("Le score d'e-commerce et marketing numérique est un score agrégé du score des activités de marketing digital et du score du commerce électronique."), linebreak
+		putdocx text ("Le score d'e-commerce et marketing digital est un score agrégé du score des activités de marketing digital et du score du commerce électronique."), linebreak
 		putdocx paragraph
 		
+		putdocx pagebreak
+		putdocx paragraph
+		putdocx text ("1.4 Part de l'investissement du marketing digital dans l'investissement marketing"), bold  font("Arial", 16)
+	
+		graph hbar dig_share avg_dig_share sectoral_avg_dig_share  if id_plateforme==`x', blabel(total, format(%9.0fc)) ///
+		note ("Taille de l'échantillon: 133 entreprises") /// 		*title ("Proportion de l'investissement du marketing digital en 2023") ///
+		ysc(r(0 100)) ylab(0(10)100) ytitle("Part de l'investissement du marketing digital dans l'investissement marketing") legend (region(lstyle(none)) rows(3) pos (12) /// 
+		lab(1 "Votre Score") lab(2 "Moyenne totale") lab(3 "Moyenne dans votre secteur")) ///
+		bar (1 ,fc("208 33 36") lc("208 33 36")) ///
+		bar (2 ,fc("241 160 40") lc("241 160 40")) /// 
+		bar (3 ,fc("112 113 115") lc("112 113 115")) 			
+		gr export dig_share_score_test_`x'.png, replace
+		putdocx paragraph, halign(center) 
+		putdocx image dig_share_score_test_`x'.png, height (12 cm)
+	
+		preserve
+		keep if id_plateforme==`x'
+		putdocx paragraph
+		putdocx text ("`=dig_share_text[_n]'"), linebreak
+		restore
+
+
 		putdocx pagebreak
 		putdocx paragraph,  font("Arial", 12) 
 		putdocx text ("Section 2: Performance à l'export de l'entreprise"), bold font("Arial", 18)
@@ -533,7 +534,7 @@ putdocx text ("`=expprep_text[58]'"), linebreak
 putdocx paragraph
 putdocx text ("Nous espérons que ces scores vous permettront de vous situer parmi les entreprises dans votre secteur et en globale."), linebreak 
 putdocx paragraph
-putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing numérique et votre commerce électronique ?"), bold linebreak 
+putdocx text ("Vous voulez savoir quelles pratiques peuvent vous aider à améliorer encore votre marketing digital et votre commerce électronique ?"), bold linebreak 
 putdocx text ("Assurez-vous de participer aux deuxième et troisième parties du diagnostic en novembre 2022 et 2023."), linebreak 
 putdocx text ("A la fin du diagnostic complet, vous recevrez un autre rapport avec des recommandations individualisées."), linebreak
 putdocx paragraph
