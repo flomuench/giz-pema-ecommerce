@@ -26,9 +26,9 @@ set more off
 *set graphics off /* switch off to on to display graphs */
 capture program drop zscore /* drops the program programname */
 qui cap log c
-set scheme burd
-set scheme cleanplots
-set scheme plotplain
+*set scheme burd
+*set scheme cleanplots
+*set scheme plotplain
 
 	* install packages
 
@@ -72,6 +72,11 @@ if "`c(username)'" == "wb603971" {
 
 		global gdrive = "C:/Users/wb603971/Documents"
 	}	
+	
+if "`c(username)'" == "fmuench" { 
+
+		global gdrive = "C:/Users/fmuench/Documents"
+	}
 
 		if c(os) == "Windows" {
 	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"

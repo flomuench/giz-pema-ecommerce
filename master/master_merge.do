@@ -60,6 +60,7 @@ drop _merge
 save "${master_raw}/ecommerce_master_raw", replace
 
 }
+
 ***********************************************************************
 * 	PART 2: append midline and endline to create panel data set
 ***********************************************************************
@@ -89,9 +90,15 @@ xtset id_plateforme surveyround, delta(1)
 tsfill, full
 		* check: 472 ros after (2*236)
 
-	* append with endline (uncomment once we have endline data)
+	* append with endline
 cd "$endline_final"
-append using "${el_final}/el_final", force
+append using "${el_final}/el_final" // , force
+
+	* declare panel data & fill up missing observations
+xtset id_plateforme surveyround, delta(1)
+		* check: 441 rows before
+tsfill, full
+		* check: 708 ros after (3*236)
 
     * save
 sort id_plateforme surveyround, stable

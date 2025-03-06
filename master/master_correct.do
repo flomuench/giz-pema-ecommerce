@@ -15,6 +15,7 @@
 ***********************************************************************
 use "${master_intermediate}/ecommerce_master_inter", clear
 
+{
 /*Take-up data
 replace groupe = "Sfax 1" if id_plateforme==78
 replace groupe = "Sidi Bouzid" if id_plateforme==82
@@ -204,9 +205,12 @@ replace dig_revenues_ecom= 0 if id_plateforme== 795 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 909 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 899 & surveyround==1
 
+}
+
 ***********************************************************************
 * 	PART 2: Correction mid-line
 ***********************************************************************
+{
 	*dig_presence1 (does the company have a website?)
 *Id_plateforme 85 is not working now
 replace dig_presence1=0 if id_plateforme==85 & surveyround==2
@@ -464,6 +468,9 @@ replace dig_revenues_ecom= 50000 if id_plateforme== 875 & surveyround==2
 * Other corrections
 replace fte= 15 if id_plateforme== 767 & surveyround==2
 
+}
+
+
 ***********************************************************************
 * 	PART 3: endline data (surveyround==3)
 ***********************************************************************
@@ -626,9 +633,11 @@ replace comp_ca2024 = 48000000 if id_plateforme == 443  & surveyround == 3
 replace compexp_2023 = 26000000 if id_plateforme == 443  & surveyround == 3
 replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
 */
+
 ***********************************************************************
 * 	PART 4: Replacing missing values with zeros where applicable
 ***********************************************************************
+{
 *Definition of all variables that are being used in index calculation*
 local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per 
 
@@ -662,5 +671,23 @@ foreach var of local  finvars {
 	replace `var' = . if `var' == -1554
 }
 
+}
 
+
+
+***********************************************************************
+* 	PART 5: Drop variables that are not needed
+***********************************************************************
+drop treatment_email
+
+
+***********************************************************************
+* 	PART 5: extent treatment status to additional surveyrounds
+***********************************************************************
+bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
+
+
+***********************************************************************
+* 	PART 6: save
+***********************************************************************
 save "${master_intermediate}/ecommerce_master_inter", replace

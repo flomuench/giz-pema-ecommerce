@@ -14,14 +14,15 @@
 *	ID variable: id_platforme		  					  
 *	Requires:  	ecommerce_master_inter.dta
 *	Creates:	ecommerce_master_final.dta
-
-										  
-
+***********************************************************************
+* 	PART 1: import data
+***********************************************************************
 use "${master_intermediate}/ecommerce_master_inter", clear
 
 ***********************************************************************
 * 	PART 1: Baseline and take-up statistics
 ***********************************************************************
+{
 /*generate take up variable
 gen take_up = (present>2 & present<.), a(present)
 lab var take_up "1 if company was present in 3/5 trainings"
@@ -35,9 +36,6 @@ label value take_up2 treated
 
 * to check
 *br id_plateforme surveyround treatment present take_up take_up2
-
-*extent treatment status to additional surveyrounds
-bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
 bysort id_plateforme (surveyround): replace take_up_for_per = take_up_for_per[_n-1] if take_up_for_per == 0
 
 *replace take_up=0 if take_up==. 
@@ -103,9 +101,13 @@ gen groupe2 = 0
 replace groupe2 = 1 if groupe == "Tunis 1" |groupe == "Tunis 2"| groupe == "Tunis 3" | groupe == "Tunis 4" | groupe == "Tunis 5" | groupe == "Tunis 6"
 lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 */
+
+}
+
 ***********************************************************************
 *PART 2. Intermediate variables or change variables created in baseline
 ***********************************************************************	
+{
 *Since most firms have at most zero, one or two FTE and online orders 
 *we use a binary indicator instead of continous or share of FTE, which sometimes
 *leads to absurd, difficult to compare figures (small firms have 5/6 employees working on it, others 1/180)
@@ -172,13 +174,12 @@ replace dig_con6_bl = 0 if dig_con6_bl == 2.980e-08
 lab var dig_con6_bl "Correct answers to knowledge question on Google Analaytics" 
 
 *Additional preparatory variables required for index generation (check bl_generate)	
-
+}
 
 ***********************************************************************
 *PART 3. Financial indicators
 ***********************************************************************	
-
-
+{
 *regenerate winsorized IHS exports after slight modification of underlying variable
 *(assuming zero exports for firms that had missing value and declared to have not exported prior to 2021)
 winsor compexp_2020, gen(w99_compexp2020) p(0.01) highonly
@@ -233,9 +234,12 @@ lab var ihs_profit_2020_97 "IHS of profit in 2020, wins.97th"
 gen ihs_profit_2020_95 = log(w95_comp_benefice2020 + sqrt((w95_comp_benefice2020*w95_comp_benefice2020)+1))
 lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 
+}
+
 ***********************************************************************
 *PART 4. Index Creation
-***********************************************************************	
+***********************************************************************
+{
 *Recreate z-scores with control mean and control SD 
 *(in BL was done with overall mean/SD)
 capture program drop zscore
@@ -251,9 +255,13 @@ program define zscorecond /* opens a program called zscore */
 	gen `1'z = (`1' - r(mean))/r(sd) if `2'>0 & `2'<.
 end
 
+
+}
+
 ***********************************************************************
 *PART 4.1 E-commerce and digital marketing indices
 ***********************************************************************	
+{
 * Creation of the weighted e-commerce presence index without penalizing non-existant channels 
 	*web index
 zscorecond dig_miseajour1 dig_presence1
@@ -372,15 +380,20 @@ foreach var of local bpi {
 egen bpi_2020 = rowmean(temp_ftez temp_comp_ca2020z temp_comp_benefice2020z)
 
 drop temp_*
+
+}
+
 ***********************************************************************
 *PART 4.2. Export preparation index (z-score based, only BL and EL)
 ***********************************************************************
 *egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz) ///
  *if surveyround==1
 *label var expprep "Z-score index export preparation"
+
 ***********************************************************************
 *PART 4.3. Create alternative non-normalized -index (in %of maximum points possible)
 ***********************************************************************	
+{
 *knowledge
 drop raw_knowledge
 egen raw_knowledge_bl = rowtotal(dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl ) if surveyround==1
@@ -413,9 +426,12 @@ egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_s
 replace dig_logistic_share = dig_logistic_share/ 2
 lab var dig_logistic_share "Logistics score in %"
 
+}
+
 ***********************************************************************
 *PART 4.4. Additional indicators from social media baseline stocktaking
 ***********************************************************************	
+{
 *Winsorizing and IHS transformation of likes and followers data
 local sm_data facebook_likes facebook_subs facebook_reviews
 foreach var of local sm_data{
@@ -430,7 +446,7 @@ lab var ihs_w_facebook_subs "no. of FB followers, winsorized 99th and IHS transf
 lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
 lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
 
-
+}
 
 ***********************************************************************
 *PART 5 Variables required for survey checks
@@ -444,6 +460,7 @@ lab var needs_check" if larger than 0, this rows needs to be checked"
 ***********************************************************************
 *PART 6 Create empty rows of attrited firms
 ***********************************************************************	
+{
 *xtset id_plateforme surveyround
 *tsfill, full
 
@@ -498,12 +515,12 @@ lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
 label define status1 0 "Control" 1 "T-not present" 2"T-present"
 label value status status1
 
-
+}
 
 ***********************************************************************
 *PART 8: Creation of index for the endline
 ***********************************************************************	
-
+{
 	* Put all variables used to calculate indices into a local
 			*Digital sales index
 local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
@@ -602,11 +619,12 @@ label var dmi_points "Digital marketing index points"
 label var dtai_points "Digital technology adoption index points"
 label var eri_points "Export readiness index points"
 
-
+}
 
 ***********************************************************************
 *PART 9: Transform enline variables
 ***********************************************************************	
+{
 *generate values for digital revenues
 replace dig_revenues_ecom = ((dig_revenues_ecom*0.01)*comp_ca2023) if surveyround ==3 & dig_revenues_ecom!=99
 
@@ -841,11 +859,17 @@ gen ihs_cost97_2024 = log(w97_cost_2024 + sqrt((w97_cost_2024*w97_cost_2024)+1))
 lab var ihs_cost97_2024 "IHS of total costs in 2024, wins.97th"
 gen ihs_cost95_2024 = log(w95_cost_2024 + sqrt((w95_cost_2024*w95_cost_2024)+1))
 lab var ihs_cost95_2024 "IHS of total costs in 2024, wins.95th"
+}
 
 
 *drop temporary vars		  
 drop temp_*
 
+
+***********************************************************************
+*PART 10: Survey Attrition
+***********************************************************************	
+{
 * gen refus variable
 duplicates tag id_plateforme, gen(dup)
 gen el_refus = (dup < 1)
@@ -880,6 +904,12 @@ replace el_refus=1 if id_plateforme== 818
 replace el_refus=1 if id_plateforme== 831
 replace el_refus=1 if id_plateforme== 901
 
+}
+
+***********************************************************************
+* PART 11: Create dummy variables
+***********************************************************************	
+{
 *dummy variables for dig_rev & dig_invest (extensive margins)
 	*dig_rev
 gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0 & dig_revenues_ecom != .
@@ -906,11 +936,12 @@ gen profit_2024_pos = 1 if comp_benefice2024 >= 0
 replace profit_2024_pos = 0 if comp_benefice2024 < 0
 
 lab var profit_2024_pos "Profit 2024 > 0"
+}
 
 ***********************************************************************
-* 	PART 10:   generate survey-to-survey growth rates
+* 	PART 12:   generate survey-to-survey growth rates
 ***********************************************************************
-
+{
 *generate uniform variable names for accounting variable to do growth rates, between 2023 and 2024 values choose larger one
 
 gen ca =. 
@@ -947,8 +978,10 @@ replace ssa_action3 = exp_pra_foire if surveyround==3
 replace ssa_action4 = exp_pra_vent if surveyround==3
 replace ssa_action5 = 1 if surveyround==3 & inno_produit>0 & inno_produit!=.
 
+}
+
 ***********************************************************************
-*PART 7: Create an aggregate measure for ssa for treatment firms
+*PART 13: Create an aggregate measure for ssa for treatment firms
 ***********************************************************************	
 gen ssa_aggregate = .
 replace ssa_aggregate =1 if ssa_action1 == 1 
@@ -961,7 +994,7 @@ label define yesno1 0 "no" 1 "yes"
 label value ssa_aggregate yesno1
 
 ***********************************************************************
-* 	Part 9: Final check to convert all remaining refusal codes to missing
+* 	Part 14: Final check to convert all remaining refusal codes to missing
 ***********************************************************************
 ds, has(type numeric)
 foreach var of varlist `r(varlist)' {
@@ -969,8 +1002,9 @@ foreach var of varlist `r(varlist)' {
 }
 
 ***********************************************************************
-* 	Part 9: Create growth variabe
+* 	Part 15: Create growth variabe
 ***********************************************************************
+{
 // First, make sure the data is sorted by id_plateforme and surveyround
 sort id_plateforme surveyround
 
@@ -1065,8 +1099,11 @@ label values ssa_action4_abs_growth yesno2
 label values ssa_action5_abs_growth yesno2
 label values ssa_any_abs_growth yesno2
 
+
+}
+
 ***********************************************************************
-* 	PART 10: export excel for semrush analysis
+* 	PART 16: export excel for semrush analysis
 ***********************************************************************
 {
 preserve

@@ -21,6 +21,7 @@ use "${master_raw}/ecommerce_master_raw", clear
 ***********************************************************************
 * 	PART 1:    clean merged analysis file (midline)
 ***********************************************************************
+{
 *remove leading and trailing white space
 {
 ds, has(type string) 
@@ -30,7 +31,13 @@ replace `x' = stritrim(strtrim(`x'))
 }
 }
 
-*Put correct labels 
+
+}
+
+
+***********************************************************************
+* 	PART 2:    Put correct labels 
+***********************************************************************
 	* treatment status
 *replace treatment="0" if treatment== "Control"
 *replace treatment="1" if treatment== "Treatment"
@@ -40,7 +47,7 @@ lab def treatment_status 0 "Control" 1 "Treatment"
 lab values treatment treatment_status
 
 	* surveyround
-lab def surveys 1 "baseline" 2 "midline"
+lab def surveys 1 "baseline" 2 "midline" 3 "endline"
 lab values surveyround surveys
 
 label define yesno 0 "no" 1 "yes" -999 "Don't know", replace
