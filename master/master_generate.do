@@ -239,6 +239,21 @@ lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 ***********************************************************************
 *PART 4. Index Creation
 ***********************************************************************
+
+* Variables that are being used in index calculation
+
+local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
+local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
+
+local knowledge "`knowledge_bl knowledge_ml'"
+
+local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin"
+local expprep "expprep_cible expprep_norme expprep_demande expprep_responsable_bin"
+local dig_presence "dig_presence1 dig_presence2 dig_presence3"
+local dig_perception_ml "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
+
+
+
 {
 *Recreate z-scores with control mean and control SD 
 *(in BL was done with overall mean/SD)
@@ -267,7 +282,7 @@ end
 zscorecond dig_miseajour1 dig_presence1
 zscorecond dig_description1 dig_presence1
 zscorecond dig_payment1 dig_presence1
-egen webindexz = rowmean (dig_miseajour1z dig_description1z dig_payment1z)
+egen webindexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
 lab var webindexz "Z-score index of web presence"
 
 *alternative method: first summing up raw poitns and then taking zscore
@@ -281,7 +296,7 @@ zscorecond dig_miseajour2 dig_presence2
 zscorecond dig_description2 dig_presence2
 zscorecond dig_payment2 dig_presence2
 
-egen social_media_indexz = rowmean (dig_miseajour2z dig_description2z dig_payment2z)
+egen social_media_indexz = rowmean(dig_miseajour2z dig_description2z dig_payment2z)
 lab var social_media_indexz "Z-score index of social media presence"
 
 	*platform index
@@ -356,7 +371,7 @@ lab var dig_marketing_index "Z-score index onquantity and quality of digital mar
 *BPI_2020
 local bpi "fte comp_ca2020 comp_benefice2020"
 
-* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
+* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to MVs
 foreach var of local bpi {
     gen temp_`var' = `var'
     replace temp_`var' = . if `var' == 999 // don't know transformed to zeros
