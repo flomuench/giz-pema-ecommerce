@@ -112,16 +112,19 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 *we use a binary indicator instead of continous or share of FTE, which sometimes
 *leads to absurd, difficult to compare figures (small firms have 5/6 employees working on it, others 1/180)
 
-gen dig_service_responsable_bin = 0
-replace dig_service_responsable_bin= 1 if dig_service_responsable>0 & dig_service_responsable<.
+gen dig_service_responsable_bin = .
+	replace dig_service_responsable_bin = 0 if dig_service_responsable == 0
+	replace dig_service_responsable_bin = 1 if dig_service_responsable>0 & dig_service_responsable<.
 lab var dig_service_responsable_bin "Firms has digital marketing employee (1) or not(0)"
 
-gen dig_marketing_respons_bin = 0
-replace dig_marketing_respons_bin = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
+gen dig_marketing_respons_bin = .
+	replace dig_marketing_respons_bin = 0 if dig_marketing_respons == 0
+	replace dig_marketing_respons_bin = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
 lab var dig_service_responsable_bin "Firms has employee dealing with online orders"
 
-gen expprep_responsable_bin = 0
-replace expprep_responsable_bin =1 if expprep_responsable>0 & expprep_responsable_bin<.
+gen expprep_responsable_bin = .
+	replace expprep_responsable_bin = 0 if expprep_responsable == 0
+	replace expprep_responsable_bin = 1 if expprep_responsable>0 & expprep_responsable_bin<.
 lab var expprep_responsable_bin "Firm has employee dealing with exports"
 
 *generate sector dummies as ordinal/categorical variable has no meaning
@@ -152,7 +155,7 @@ replace exporter2020=1 if compexp_2020 >0 & compexp_2020<.
 replace exporter2020=0 if compexp_2020 == 0 
 lab var exporter2020 "dummy if company exported in the year 2020"
 
-gen ever_exported=0
+gen ever_exported=. 
 replace ever_exported=1 if compexp_2020>0 & compexp_2020<. 
 replace ever_exported=1 if exp_avant21==1
 replace ever_exported=1 if export2021=="oui" | export2020=="oui" | export2019 =="oui" | export2018=="oui" |export2017=="oui"
@@ -242,15 +245,36 @@ lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 
 * Variables that are being used in index calculation
 
+	* E-commerce Knowledge
+
 local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
 local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
 
 local knowledge "`knowledge_bl knowledge_ml'"
 
-local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin"
+	* E-commerce Perception
+local dig_perception_ml "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
+
+	* E-commerce visibility
+local visibility "dig_presence1 dig_presence2 dig_presence3"
+
+	* E-commerce payment
+local payment "dig_payment1 dig_payment2 dig_payment3"
+
+	* E-commerce use
+		* Website
+local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts"
+
+		* Social media
+local sm_use "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_brand sm_use_com"
+
+	* Digital marketing
+local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
+
+
+	* Export Preperation
 local expprep "expprep_cible expprep_norme expprep_demande expprep_responsable_bin"
 local dig_presence "dig_presence1 dig_presence2 dig_presence3"
-local dig_perception_ml "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
 
 
 
@@ -475,6 +499,7 @@ lab var needs_check" if larger than 0, this rows needs to be checked"
 ***********************************************************************
 *PART 6 Create empty rows of attrited firms
 ***********************************************************************	
+/*
 {
 *xtset id_plateforme surveyround
 *tsfill, full
@@ -531,6 +556,7 @@ label define status1 0 "Control" 1 "T-not present" 2"T-present"
 label value status status1
 
 }
+*/
 
 ***********************************************************************
 *PART 8: Creation of index for the endline
