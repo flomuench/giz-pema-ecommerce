@@ -187,17 +187,17 @@ comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz
 {
 	* is there differential attrition between treatment and control group?
 		* column (1): at endline
-eststo att1, r: areg el_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
+eststo att1, r: areg attrited i.treatment if surveyround == 3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
 		* column (2): at midline
-eststo att2, r: areg ml_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
+eststo att2, r: areg attrited i.treatment if surveyround == 2, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 
 local attrition att1 att2
 esttab `attrition' using "el_attrition.tex", replace ///
 	title("Attrition: Total") ///
-	mtitles("BL" "ML") ///
+	mtitles("EL" "ML") ///
 	label ///
 	b(3) ///
 	se(3) ///
@@ -210,6 +210,7 @@ esttab `attrition' using "el_attrition.tex", replace ///
 
 *test for selective attrition on key outcome variables (measured at baseline)
       
+**# Bookmark #1
 {
 		* c(1): dig_marketing_index
 eststo att4,r: areg   dig_marketing_index treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
@@ -436,7 +437,6 @@ end
 ***********************************************************************
 * 	PART 3: Endline results - regression table for each variable	
 ***********************************************************************
-
 {
 	* generate regression table for
 		* z-scores	
@@ -454,6 +454,7 @@ rct_regression_table ihs_digrev_99 // MISSING VARS BASELINE: ihs_dig_invest_99 i
 rct_regression_table ihs_fte_99 fte_femmes car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
 
 }
+
 ***********************************************************************
 * 	PART 4: Endline results - regression table index outcomes
 ***********************************************************************

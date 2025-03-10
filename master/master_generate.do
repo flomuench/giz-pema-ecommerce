@@ -109,23 +109,23 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 ***********************************************************************	
 {
 *Since most firms have at most zero, one or two FTE and online orders 
-*we use a binary indicator instead of continous or share of FTE, which sometimes
+*we use a dummyary indicator instead of continous or share of FTE, which sometimes
 *leads to absurd, difficult to compare figures (small firms have 5/6 employees working on it, others 1/180)
 
-gen dig_service_responsable_bin = .
-	replace dig_service_responsable_bin = 0 if dig_service_responsable == 0
-	replace dig_service_responsable_bin = 1 if dig_service_responsable>0 & dig_service_responsable<.
-lab var dig_service_responsable_bin "Firms has digital marketing employee (1) or not(0)"
+gen dig_empl_dummy = .
+	replace dig_empl_dummy = 0 if dig_empl == 0
+	replace dig_empl_dummy = 1 if dig_empl>0 & dig_empl<.
+lab var dig_empl_dummy "Firms has digital marketing employee (1) or not(0)"
 
-gen dig_marketing_respons_bin = .
-	replace dig_marketing_respons_bin = 0 if dig_marketing_respons == 0
-	replace dig_marketing_respons_bin = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
-lab var dig_service_responsable_bin "Firms has employee dealing with online orders"
+gen dig_marketing_respons_dummy = .
+	replace dig_marketing_respons_dummy = 0 if dig_marketing_respons == 0
+	replace dig_marketing_respons_dummy = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
+lab var dig_service_responsable_dummy "Firms has employee dealing with online orders"
 
-gen expprep_responsable_bin = .
-	replace expprep_responsable_bin = 0 if expprep_responsable == 0
-	replace expprep_responsable_bin = 1 if expprep_responsable>0 & expprep_responsable_bin<.
-lab var expprep_responsable_bin "Firm has employee dealing with exports"
+gen expprep_responsable_dummy = .
+	replace expprep_responsable_dummy = 0 if expprep_responsable == 0
+	replace expprep_responsable_dummy = 1 if expprep_responsable>0 & expprep_responsable_dummy<.
+lab var expprep_responsable_dummy "Firm has employee dealing with exports"
 
 *generate sector dummies as ordinal/categorical variable has no meaning
 gen agri=0
@@ -242,11 +242,10 @@ lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 ***********************************************************************
 *PART 4. Index Creation
 ***********************************************************************
-
+{
 * Variables that are being used in index calculation
 
 	* E-commerce Knowledge
-
 local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
 local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
 
@@ -269,11 +268,11 @@ local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_cata
 local sm_use "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_brand sm_use_com"
 
 	* Digital marketing
-local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
+local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
 
 
 	* Export Preperation
-local expprep "expprep_cible expprep_norme expprep_demande expprep_responsable_bin"
+local expprep "expprep_cible expprep_norme expprep_demande expprep_responsable_dummy"
 local dig_presence "dig_presence1 dig_presence2 dig_presence3"
 
 
@@ -297,6 +296,8 @@ end
 
 }
 
+}
+
 ***********************************************************************
 *PART 4.1 E-commerce and digital marketing indices
 ***********************************************************************	
@@ -306,13 +307,14 @@ end
 zscorecond dig_miseajour1 dig_presence1
 zscorecond dig_description1 dig_presence1
 zscorecond dig_payment1 dig_presence1
-egen webindexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
-lab var webindexz "Z-score index of web presence"
+egen wedummydexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
+lab var wedummydexz "Z-score index of web presence"
+
 
 *alternative method: first summing up raw poitns and then taking zscore
-/*egen webindex1 = rowtotal (dig_miseajour1 dig_description1 dig_payment1) ///
+/*egen wedummydex1 = rowtotal (dig_miseajour1 dig_description1 dig_payment1) ///
  if dig_presence1>0 & dig_presence1<.
-zscore webindex1
+zscore wedummydex1
 */
 
 	*social media index
@@ -333,9 +335,9 @@ dig_payment3z dig_presence3_exscorez)
 lab var platform_indexz "Z-score index of platform presence"
 
 	*CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
-egen max_presencez = rowmax(webindexz social_media_indexz platform_indexz)
-egen min_presencez = rowmin(webindexz social_media_indexz platform_indexz)
-gen mid_presencez = webindexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
+egen max_presencez = rowmax(wedummydexz social_media_indexz platform_indexz)
+egen min_presencez = rowmin(wedummydexz social_media_indexz platform_indexz)
+gen mid_presencez = wedummydexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
 
 gen dig_presence_weightedz= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
 if dig_presence_score==1
@@ -347,50 +349,62 @@ replace dig_presence_weightedz=max_presencez if dig_presence_score>0.32 & dig_pr
 replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
 label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
 
-*other indices
+	* E-Commerce knowledge
 local knowledge_bl dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl 
-local knowledge_ml dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml 
-local dig_marketing_index dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
-		dig_marketing_score dig_service_satisfaction dig_service_responsable_bin dig_marketing_respons_bin 
-local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_bin
-local dig_presence dig_presence1 dig_presence2 dig_presence3
-local dig_perception_ml dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5
+local knowledge_ml dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
 
-foreach z in dig_presence knowledge_bl knowledge_ml dig_marketing_index dig_perception_ml expprep exportcomes {
+	* E-commerce use
+		* Website
+local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts"
+
+		* Social media
+
+	* Digital Marketing
+local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
+		dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy"
+
+	* Export readiness
+local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_dummy
+
+	* E-commerce presence/visibility
+local dig_presence dig_presence1 dig_presence2 dig_presence3
+
+	* E-commerce perception
+local dig_perception dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5
+
+		* Generate the z-score variables
+foreach z in dig_presence knowledge_bl knowledge_ml dig_marketing_index dig_perception expprep exportcomes {
 	foreach x of local `z'  {
 			zscore `x' 
 		}
 }	
 
 
-*Calculate the index value: average of zscores 
-egen knowledge_index_bl = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz) ///
-					if surveyround==1
+		* Generate the index value: average of zscores 
+			* Knowledge index
+egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz dig_con1_mlz dig_con2_mlz dig_con3_mlz dig_con4_mlz dig_con5_mlz)
+lab var knowledge_index "E-commerce knowledge"				
 
-egen knowledge_index_ml = rowmean(dig_con1_mlz dig_con2_mlz dig_con3_mlz dig_con4_mlz dig_con5_mlz) ///
-					if surveyround==2
+			* Perception index
+egen perception = rowmean(dig_perception1z dig_perception2z dig_perception3z dig_perception4z dig_perception5z)
+lab var perception "E-commerce perception"
 
-*join both knowledge indices under one variable
-gen knowledge_index= . 
-replace knowledge_index=knowledge_index_bl if surveyround==1
-replace knowledge_index=knowledge_index_ml if surveyround==2					
-drop knowledge_index_bl knowledge_index_ml
-lab var knowledge_index "Z-score index for e-commerce/dig.marketing knowledge"				
+			* Presence index
+egen presence = rowmean(dig_presence1z dig_presence2z dig_presence3z) 
+lab var presence "E-commerce visibility"
 
-egen perception_index_ml = rowmean(dig_perception1z dig_perception2z dig_perception3z dig_perception4z dig_perception5z) ///
-					if surveyround==2
+			* Social 
 
-
-
-egen dig_presence_index = rowmean(dig_presence1 dig_presence2 dig_presence3) 
-
-lab var dig_presence_index "Z-score index for digital presence (extensive margin)"
+egen dig_marketing_index = rowmean(dig_marketing_lienz dig_marketing_ind1z ///
+		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_dummyz ///
+		dig_marketing_respons_dummyz)
+lab var dig_marketing_index "Digital Marketing"
 
 
-egen dig_marketing_index = rowmean (dig_marketing_lienz dig_marketing_ind1z ///
-		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_binz ///
-		dig_marketing_respons_binz)
-lab var dig_marketing_index "Z-score index onquantity and quality of digital marketing activities"
+			* Website use
+			
+			* Social media use
+			
 
 *BPI_2020
 local bpi "fte comp_ca2020 comp_benefice2020"
@@ -425,7 +439,7 @@ drop temp_*
 ***********************************************************************
 *PART 4.2. Export preparation index (z-score based, only BL and EL)
 ***********************************************************************
-*egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_binz) ///
+*egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_dummyz) ///
  *if surveyround==1
 *label var expprep "Z-score index export preparation"
 
@@ -456,8 +470,8 @@ replace platform_share=platform_share/4
 lab var platform_share "Platform presence score in %"
 
 egen dig_marketing_share=rowtotal(dig_marketing_lien dig_marketing_ind1 ///
-		dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_bin ///
-		dig_marketing_respons_bin)
+		dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy ///
+		dig_marketing_respons_dummy)
 replace dig_marketing_share	= dig_marketing_share/7
 lab var dig_marketing_share "Share of digital marketing practices"
 
@@ -1077,7 +1091,7 @@ lab var ssa_any "Any of the above"
 label value ssa_any yesno1
 
 // Loop 1: Growth rates between midline and endline for GIZ indicator (ssa_action)
-* only absolute rates because binary variables
+* only absolute rates because dummyary variables
 foreach var of varlist ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 ssa_any {
     
     // Calculate the value for surveyround == 1 and surveyround == 3
@@ -1152,11 +1166,11 @@ preserve
 	merge 1:1 id_plateforme using "${master_pii}/web_information", keepusing(link_web)
 		* Remove "http://", "https://", "www.", and "error codes"
 	replace link_web ="" if link_web == "-666" | link_web == "-777" | link_web == "-888" | link_web == "-888"
-	replace link_web = subinstr(link_web, "http://", "", .)
-	replace link_web = subinstr(link_web, "https://", "", .)
-	replace link_web = subinstr(link_web, "www.", "", .)
+	replace link_web = sudummystr(link_web, "http://", "", .)
+	replace link_web = sudummystr(link_web, "https://", "", .)
+	replace link_web = sudummystr(link_web, "www.", "", .)
 	replace link_web = trim(link_web)
-	replace link_web = subinstr(link_web, " ", "", .)
+	replace link_web = sudummystr(link_web, " ", "", .)
 	
 	drop _merge
 	keep id_plateforme link_web treatment take_up strata
