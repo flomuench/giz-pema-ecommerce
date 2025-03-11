@@ -190,6 +190,8 @@ replace dig_service_satisfaction=0 if id_plateforme== 541 & surveyround==1
 replace dig_service_satisfaction=1 if id_plateforme== 545 & surveyround==1
 replace dig_service_satisfaction=1 if id_plateforme== 623 & surveyround==1
 replace dig_service_satisfaction=0 if id_plateforme== 910 & surveyround==1
+
+replace dig_service_satisfaction=0 if dig_service_satisfaction == -999
 		
 	*dig_revenues_ecom (Online sales)
 replace dig_revenues_ecom= 99381 if id_plateforme== 78 & surveyround==1

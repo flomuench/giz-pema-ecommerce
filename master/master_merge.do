@@ -165,22 +165,18 @@ drop _merge
 
 
 ***********************************************************************
-* 	PART 3: merge with manual scoring of website/social media accounts at baseline & endline
+* 	PART 4: merge with manual scoring of website/social media accounts at baseline & endline
 ***********************************************************************
-preserve
-import excel using "${bl2_raw}/Webpresence answers_bl_el.xlsx", firstrow clear
-
-    * save 
-save "${master_raw}/ecommerce_master_raw", replace
-
 	* add the information collected by hand at baseline about firms websites and social media accounts
-merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
+merge 1:1 id_plateforme surveyround using "${webpresence_final}/Webpresence_answers_final.dta"
 /*
+
     Result                      Number of obs
     -----------------------------------------
     Not matched                             0
-    Matched                               236  (_merge==3)
+    Matched                               708  (_merge==3)
     -----------------------------------------
+
 */
 keep if _merge==3
 drop _merge

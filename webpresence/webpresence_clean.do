@@ -55,12 +55,12 @@ replace `x'= lower(`x')
 * 	PART 3: Drop variables    
 ***********************************************************************
 
-drop Quelestvotrenometprénom
+drop Quelestvotrenometprénom Siouiversquellesplacesdem
 
 ***********************************************************************
 * 	PART 4: Rename variables   
 ***********************************************************************
-
+{
 rename Zeitstempel submission_date
 rename Quelestlidentifiantdelapla id_plateforme
 rename Lentreprisedisposetelledun entreprise_web
@@ -78,7 +78,7 @@ rename Lecontenuestillisiblepare web_coherent
 rename Lecontenusechargetilcorrec web_quality
 rename Pouvezvousacheteroucommander web_purchase
 rename Existetildesliensversunma web_external_purchase
-rename Siouiversquellesplacesdem web_external_names
+*rename Siouiversquellesplacesdem web_external_names
 rename U entreprise_social
 rename Lapageduréseausocialindique social_logoname
 rename Lapageduréseausocialcomport social_external_website
@@ -104,10 +104,12 @@ rename Parmilesinformationsdecontac insta_contact
 rename Veuillezcollercidessousleli socials_link
 rename Veuillezcollerleliendelapa facebook_link
 
+}
+
 ***********************************************************************
 * 	PART 5: Label variables   
 ***********************************************************************
-
+{
 lab var submission_date "questionnaire submission date"
 lab var id "entreprise id"
 lab var entreprise_web "existance of a website"
@@ -125,7 +127,7 @@ lab var web_coherent "readability of the website"
 lab var web_quality "quality of the website"
 lab var web_purchase "purchasing possibility via website"
 lab var web_external_purchase "purchasing possbility via third party"
-lab var web_external_names "names of third party sellers"
+*lab var web_external_names "names of third party sellers"
 lab var entreprise_social "existance of social media"
 lab var social_logoname "logo and name in social media"
 lab var social_external_website "link to website in social media"
@@ -151,10 +153,23 @@ lab var insta_contact "contact ways in instagram description"
 lab var socials_link "link to social media account"
 lab var facebook_link "link to facebook account"
 
-***********************************************************************
-* 	PART 6: 	Label the variables values	  			
-***********************************************************************
+}
 
+
+***********************************************************************
+* 	PART 6: 	Destring variables	  			
+***********************************************************************
+replace entreprise_models = "" if entreprise_models == "pays etrangers"
+local vars "entreprise_models entreprise_partners web_externals web_quality web_purchase"
+foreach var of local vars {
+	destring `var', replace
+}
+
+
+***********************************************************************
+* 	PART 7: 	Label the variables values	  			
+***********************************************************************
+{
 	*label simple yesnos
 local yesnovariables entreprise_web web_product web_multimedia web_aboutus web_norms web_languages web_coherent web_external_purchase ///
 entreprise_social social_external_website social_photos social_description social_facebook facebook_shop social_insta insta_description insta_externals
@@ -217,6 +232,38 @@ format web_purchase %-9.0fc
 label define purchase 2 "can order and purchase" 1 "can only order" 0 "neither order nor purchase"
 label value web_purchase purchase
 
+
+}
+
+
+***********************************************************************
+* 	PART 8: 	Account for filter: replace with zero if company does not have a channel	  			
+***********************************************************************
+	* website 
+local web_vars "web_logoname web_product web_multimedia web_aboutus web_norms web_externals web_languages  web_coherent web_quality web_purchase web_external_purchase"
+foreach var of local web_vars {
+	replace `var' = 0 if entreprise_web == 0
+}
+
+	* social media
+local sm_vars "social_logoname social_external_website social_photos social_description social_facebook social_insta"
+foreach var of local sm_vars {
+	replace `var' = 0 if entreprise_social == 0
+}
+	
+	* facebook
+local fb_vars "facebook_likes facebook_subs facebook_reviews facebook_reviews_avg facebook_shop"
+foreach var of local fb_vars {
+	replace `var' = 0 if social_facebook == 0
+}
+	
+	* instagramm
+local insta_vars "insta_publications insta_subs insta_description insta_externals"
+foreach var of local insta_vars {
+	replace `var' = 0 if social_insta == 0
+}
+	
+	
 ***********************************************************************
 * 	PART 7: 	Save the data	  			
 ***********************************************************************

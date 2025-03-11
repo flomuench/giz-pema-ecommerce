@@ -20,7 +20,7 @@
 use "${master_intermediate}/ecommerce_master_inter", clear
 
 ***********************************************************************
-* 	PART 1: Baseline and take-up statistics
+* PART 1: Baseline and take-up statistics
 ***********************************************************************
 {
 /*generate take up variable
@@ -105,7 +105,7 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 }
 
 ***********************************************************************
-*PART 2. Intermediate variables or change variables created in baseline
+* PART 2. Intermediate variables or change variables created in baseline
 ***********************************************************************	
 {
 *Since most firms have at most zero, one or two FTE and online orders 
@@ -179,9 +179,12 @@ lab var dig_con6_bl "Correct answers to knowledge question on Google Analaytics"
 *Additional preparatory variables required for index generation (check bl_generate)	
 }
 
+
 ***********************************************************************
-*PART 3. Financial indicators
+* PART 3: IHS-transformation & winsorization
 ***********************************************************************	
+{
+	* pre-treatment (BL) financial values
 {
 *regenerate winsorized IHS exports after slight modification of underlying variable
 *(assuming zero exports for firms that had missing value and declared to have not exported prior to 2021)
@@ -238,447 +241,9 @@ gen ihs_profit_2020_95 = log(w95_comp_benefice2020 + sqrt((w95_comp_benefice2020
 lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 
 }
-
-***********************************************************************
-*PART 4. Index Creation
-***********************************************************************
-{
-* Variables that are being used in index calculation
-
-	* E-commerce Knowledge
-local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
-local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
-
-local knowledge "`knowledge_bl knowledge_ml'"
-
-	* E-commerce Perception
-local dig_perception_ml "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
-
-	* E-commerce visibility
-local visibility "dig_presence1 dig_presence2 dig_presence3"
-
-	* E-commerce payment
-local payment "dig_payment1 dig_payment2 dig_payment3"
-
-	* E-commerce use
-		* Website
-local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts"
-
-		* Social media
-local sm_use "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_brand sm_use_com"
-
-	* Digital marketing
-local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
-
-
-	* Export Preperation
-local expprep "expprep_cible expprep_norme expprep_demande expprep_responsable_dummy"
-local dig_presence "dig_presence1 dig_presence2 dig_presence3"
-
-
-
-{
-*Recreate z-scores with control mean and control SD 
-*(in BL was done with overall mean/SD)
-capture program drop zscore
-program define zscore /* opens a program called zscore */
-	sum `1' if treatment == 0 
-	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
-end
-
-*create program that calculate z-score conditional on value in other variable
-capture program drop zscorecond
-program define zscorecond /* opens a program called zscore */
-	sum `1' if treatment == 0 & `2'>0 & `2'<.
-	gen `1'z = (`1' - r(mean))/r(sd) if `2'>0 & `2'<.
-end
-
-
-}
-
-}
-
-***********************************************************************
-*PART 4.1 E-commerce and digital marketing indices
-***********************************************************************	
-{
-* Creation of the weighted e-commerce presence index without penalizing non-existant channels 
-	*web index
-zscorecond dig_miseajour1 dig_presence1
-zscorecond dig_description1 dig_presence1
-zscorecond dig_payment1 dig_presence1
-egen webindexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
-lab var webindexz "Z-score index of web presence"
-
-
-*alternative method: first summing up raw poitns and then taking zscore
-/*egen wedummydex1 = rowtotal (dig_miseajour1 dig_description1 dig_payment1) ///
- if dig_presence1>0 & dig_presence1<.
-zscore wedummydex1
-*/
-
-	*social media index
-zscorecond dig_miseajour2 dig_presence2
-zscorecond dig_description2 dig_presence2
-zscorecond dig_payment2 dig_presence2
-
-egen social_media_indexz = rowmean(dig_miseajour2z dig_description2z dig_payment2z)
-lab var social_media_indexz "Z-score index of social media presence"
-
-	*platform index
-zscorecond dig_miseajour3 dig_presence3
-zscorecond dig_description3 dig_presence3
-zscorecond dig_payment3 dig_presence3
-zscorecond dig_presence3_exscore dig_presence3
-egen platform_indexz = rowmean (dig_miseajour3z dig_description3z ///
-dig_payment3z dig_presence3_exscorez)
-lab var platform_indexz "Z-score index of platform presence"
-
-	*CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
-egen max_presencez = rowmax(wedummydexz social_media_indexz platform_indexz)
-egen min_presencez = rowmin(wedummydexz social_media_indexz platform_indexz)
-gen mid_presencez = wedummydexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
-
-gen dig_presence_weightedz= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
-if dig_presence_score==1
-replace dig_presence_weightedz=0.7*max_presencez +0.3*min_presencez ///
-if dig_presence_score>0.65 & dig_presence_score<0.67 
-replace dig_presence_weightedz=max_presencez if dig_presence_score>0.32 & dig_presence_score<0.34
-
-	*add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
-replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
-label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
-
-	* E-Commerce knowledge
-local knowledge_bl dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl 
-local knowledge_ml dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
-
-	* E-commerce use
-		* Website
-local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts"
-
-		* Social media
-
-	* Digital Marketing
-local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 ///
-		dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy"
-
-	* Export readiness
-local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_dummy
-
-	* E-commerce presence/visibility
-local dig_presence dig_presence1 dig_presence2 dig_presence3
-
-	* E-commerce perception
-local dig_perception dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5
-
-		* Generate the z-score variables
-foreach z in dig_presence knowledge_bl knowledge_ml dig_marketing_index dig_perception expprep exportcomes {
-	foreach x of local `z'  {
-			zscore `x' 
-		}
-}	
-
-
-		* Generate the index value: average of zscores 
-			* Knowledge index
-egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz dig_con1_mlz dig_con2_mlz dig_con3_mlz dig_con4_mlz dig_con5_mlz)
-lab var knowledge_index "E-commerce knowledge"				
-
-			* Perception index
-egen perception = rowmean(dig_perception1z dig_perception2z dig_perception3z dig_perception4z dig_perception5z)
-lab var perception "E-commerce perception"
-
-			* Presence index
-egen presence = rowmean(dig_presence1z dig_presence2z dig_presence3z) 
-lab var presence "E-commerce visibility"
-
-			* Social 
-
-egen dig_marketing_index = rowmean(dig_marketing_lienz dig_marketing_ind1z ///
-		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_dummyz ///
-		dig_marketing_respons_dummyz)
-lab var dig_marketing_index "Digital Marketing"
-
-
-			* Website use
-			
-			* Social media use
-			
-
-*BPI_2020
-local bpi "fte comp_ca2020 comp_benefice2020"
-
-* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to MVs
-foreach var of local bpi {
-    gen temp_`var' = `var'
-    replace temp_`var' = . if `var' == 999 // don't know transformed to zeros
-    replace temp_`var' = . if `var' == 888 
-    replace temp_`var' = . if `var' == 777 
-    replace temp_`var' = . if `var' == 666 
-	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
-    replace temp_`var' = . if `var' == -888 
-    replace temp_`var' = . if `var' == -777 
-    replace temp_`var' = . if `var' == -666 
-}
-
-		* calcuate the z-score for each variable
-foreach var of local bpi {
-	sum temp_`var' if treatment == 0
-	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
-}
-
-	* calculate the index value: average of zscores
-			*Digital sales index
-egen bpi_2020 = rowmean(temp_ftez temp_comp_ca2020z temp_comp_benefice2020z)
-
-drop temp_*
-
-}
-
-***********************************************************************
-*PART 4.2. Export preparation index (z-score based, only BL and EL)
-***********************************************************************
-*egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_dummyz) ///
- *if surveyround==1
-*label var expprep "Z-score index export preparation"
-
-***********************************************************************
-*PART 4.3. Create alternative non-normalized -index (in %of maximum points possible)
-***********************************************************************	
-{
-*knowledge
-drop raw_knowledge
-egen raw_knowledge_bl = rowtotal(dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl ) if surveyround==1
-egen raw_knowledge_ml = rowtotal (dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml) if surveyround==2
-gen raw_knowledge= raw_knowledge_bl if surveyround==1
-replace raw_knowledge= raw_knowledge_ml if surveyround==2
-drop raw_knowledge_bl raw_knowledge_ml
-
-lab var raw_knowledge "Knowledge score (non-normalized)"
-
-egen web_share=rowtotal(dig_miseajour1 dig_description1 dig_payment1)
-replace web_share=web_share/3
-lab var web_share "Web presence score in %"
-
-egen social_m_share=rowtotal(dig_miseajour2 dig_description2 dig_payment2)
-replace social_m_share=social_m_share/3
-lab var social_m_share "Social media presence score in %"
-
-egen platform_share=rowtotal(dig_presence3_exscore dig_miseajour3 dig_description3 dig_payment3)
-replace platform_share=platform_share/4
-lab var platform_share "Platform presence score in %"
-
-egen dig_marketing_share=rowtotal(dig_marketing_lien dig_marketing_ind1 ///
-		dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy ///
-		dig_marketing_respons_dummy)
-replace dig_marketing_share	= dig_marketing_share/7
-lab var dig_marketing_share "Share of digital marketing practices"
-
-egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_score)
-replace dig_logistic_share = dig_logistic_share/ 2
-lab var dig_logistic_share "Logistics score in %"
-
-}
-
-***********************************************************************
-*PART 4.4. Additional indicators from social media baseline stocktaking
-***********************************************************************	
-{
-*Winsorizing and IHS transformation of likes and followers data
-local sm_data facebook_likes facebook_subs facebook_reviews
-foreach var of local sm_data{
-winsor `var', gen(w_`var') p(0.01) highonly
-ihstrans w_`var'
-}
-*no winsorizing needed for this one
-ihstrans insta_subs
-
-lab var ihs_w_facebook_likes "no. of FB likes, winsorized 99th and IHS transformed"
-lab var ihs_w_facebook_subs "no. of FB followers, winsorized 99th and IHS transformed"
-lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
-lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
-
-}
-
-***********************************************************************
-*PART 5 Variables required for survey checks
-***********************************************************************	
-gen commentaires_elamouri=""
-gen needs_check=0
-gen questions_a_verifier=""
-gen commentsmsb=""
-lab var needs_check" if larger than 0, this rows needs to be checked"
-
-***********************************************************************
-*PART 6 Create empty rows of attrited firms
-***********************************************************************	
-/*
-{
-*xtset id_plateforme surveyround
-*tsfill, full
-
-*generate attrition variables for baseline, midline and endline
-gen el_attrit2 = .
-replace el_attrit2=1 if treatment ==. 
-bysort id_plateforme : mipolate el_attrit2 surveyround, gen(el_attrit) groupwise
-replace el_attrit=0 if el_attrit==.
-drop el_attrit2
-lab var el_attrit "Not present in endline"
-
-gen ml_attrit2 = .
-replace ml_attrit2=1 if treatment ==. 
-bysort id_plateforme : mipolate ml_attrit2 surveyround, gen(ml_attrit) groupwise
-replace ml_attrit=0 if ml_attrit==.
-drop ml_attrit2
-lab var ml_attrit "Not present in midline"
-
-gen bl_attrit2 = .
-replace bl_attrit2=1 if entr_bien_service ==. & surveyround==1
-bysort id_plateforme : mipolate bl_attrit2 surveyround, gen(bl_attrit) groupwise
-replace bl_attrit=0 if bl_attrit==.
-drop bl_attrit2
-lab var bl_attrit "Not present in baseline"
-
-
-/*copy treatment, attrition status and strata to empty rows
-bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
-bysort id_plateforme (surveyround): replace take_up = take_up[_n-1] if take_up == 0
-replace take_up=0 if take_up==. 
-
-bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up2 == 0
-replace take_up2=0 if take_up2==. 
-*/
-*Completing other relevant static controls
-local complet strata rg_age sector subsector rg_gender_pdg rg_gender_rep urban
-foreach var of local complet{
-bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
-}
-
-*repeat for string variables
-local strings district
-foreach var of local strings{
-bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == ""
-}
-
-*status variable for graphs
-gen status=0
-replace status=1 if treatment==1 & take_up_for==0
-replace status=2 if treatment==1 & take_up_for==1
-lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
-label define status1 0 "Control" 1 "T-not present" 2"T-present"
-label value status status1
-
-}
-*/
-
-***********************************************************************
-*PART 8: Creation of index for the endline
-***********************************************************************	
-{
-	* Put all variables used to calculate indices into a local
-			*Digital sales index
-local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
-			
-			*Digital marketing index
-local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
-			
-			*Digital Technology Perception
-local dtp "investecom_benefit1 investecom_benefit2"
 	
-			*Export practices index
-local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach"		
-			
-			*Export performance index
-local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
-			
-			
-			*Business performance index
-local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
 
-			*Investment variables
-local invest "dig_margins dig_revenues_ecom  dig_empl dig_invest mark_invest"
-local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi' `invest'
-
-* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
-foreach var of local all_index {
-    gen temp_`var' = `var'
-    replace temp_`var' = . if `var' == 999 // don't know transformed to missing values
-    replace temp_`var' = . if `var' == 888 
-    replace temp_`var' = . if `var' == 777 
-    replace temp_`var' = . if `var' == 666 
-	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
-    replace temp_`var' = . if `var' == -888 
-    replace temp_`var' = . if `var' == -777 
-    replace temp_`var' = . if `var' == -666 
-}
-
-		* calcuate the z-score for each variable
-foreach var of local all_index {
-	sum temp_`var' if treatment == 0
-	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
-}
-
-	* calculate the index value: average of zscores
-			*Digital sales index
-egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z  temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
-
-			*Digital marketing index
-egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z)
-			
-			*Digital Technology Perception
-egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
-	
-			*Digital technology adoption index
-egen dtai = rowmean(dsi dmi)		
-			
-			*Export readiness index
-egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez temp_exp_pra_ventz temp_exp_pra_achz)			
-			
-			*Export performance index
-egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_clients_b2cz temp_clients_b2bz temp_exp_digz)			
-			
-			*Business performance index
-egen bpi_2023 = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
-egen bpi_2024 = rowmean(temp_ftez temp_comp_ca2024z temp_comp_benefice2024z)
-
-		* labeling
-label var dsi "Digital sales index -Z Score"
-label var dmi "Digital marketing index -Z Score"
-label var dtp "Digital technology Perception index -Z Score"
-label var dtai "Digital technology adoption index -Z Score"
-label var eri "Export readiness index -Z Score"
-label var epi "Export performance index -Z Score"
-label var bpi_2023 "Business performance index- Z-score in 2023"
-label var bpi_2024 "Business performance index- Z-score in 2024"
-
-
-	* create total points per index dimension
-			
-			*Digital sales index
-egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing // total 19 points
-			
-			*Digital marketing index
-egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5), missing // total 5 points
-			
-			*Digital technology adoption index
-egen dtai_points = rowtotal(dsi_points dmi_points), missing // total 24 points	
-			
-			* export readiness index (eri)
-egen eri_points = rowtotal(exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach), missing // total 5 points
-
-
-		* labeling
-label var dsi_points "Digital sales index points"
-label var dmi_points "Digital marketing index points"
-label var dtai_points "Digital technology adoption index points"
-label var eri_points "Export readiness index points"
-
-}
-
-***********************************************************************
-*PART 9: Transform enline variables
-***********************************************************************	
+	*
 {
 *generate values for digital revenues
 replace dig_revenues_ecom = ((dig_revenues_ecom*0.01)*comp_ca2023) if surveyround ==3 & dig_revenues_ecom!=99
@@ -916,10 +481,197 @@ gen ihs_cost95_2024 = log(w95_cost_2024 + sqrt((w95_cost_2024*w95_cost_2024)+1))
 lab var ihs_cost95_2024 "IHS of total costs in 2024, wins.95th"
 }
 
+	* manually collected website and social media data
+{
+*Winsorizing and IHS transformation of likes and followers data
+local sm_data facebook_likes facebook_subs facebook_reviews
+foreach var of local sm_data{
+winsor `var', gen(w_`var') p(0.01) highonly
+ihstrans w_`var'
+}
 
+*no winsorizing needed for this one
+ihstrans insta_subs
+
+lab var ihs_w_facebook_likes "no. of FB likes, winsorized 99th and IHS transformed"
+lab var ihs_w_facebook_subs "no. of FB followers, winsorized 99th and IHS transformed"
+lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
+lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
+}
+
+
+}
+
+
+***********************************************************************
+* PART 4: Index Creation
+***********************************************************************
+{
+* Put all variables used to calculate indices into a local
+{
+	
+		* E-commerce knowledge index
+local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
+local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
+local knowledge "`knowledge_bl' `knowledge_ml'"
+		
+		* E-commerce adoption index
+			* Survey response data
+				* Visibility/Presence
+local presence "dig_presence1 dig_presence2 dig_presence3"
+
+				* Use: Website + Social media
+local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts dig_service_satisfaction"
+
+local sm_use "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand"
+
+local use "`website_use' `sm_use'"
+				
+				* Payment: Website + Social media + Platform
+local payment "dig_payment1 dig_payment2 dig_payment3"
+				
+				* Digital Marketing
+local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm" // dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 are excluded as they have unclear missing values for BL & ML (FM 11.03.25)
+
+			
+			* Manually collected data 
+
+			
+		* E-commerce perception
+local perception "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
+
+		
+		* Export readiness
+local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_demande expprep_responsable_dummy"		
+
+		* Business performance
+local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
+
+
+local all_indexes `knowledge' `presence' `use' `payment' `dmi' `perception' `eri' `bpi'
+}
+
+
+* Generate temporary variables, double check that data is cleaned correctly
+foreach var of local all_indexes {
+    gen temp_`var' = `var'
+    replace temp_`var' = . if `var' == 999 // don't know transformed to missing values
+    replace temp_`var' = . if `var' == 888 
+    replace temp_`var' = . if `var' == 777 
+    replace temp_`var' = . if `var' == 666 
+	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace temp_`var' = . if `var' == -888 
+    replace temp_`var' = . if `var' == -777 
+    replace temp_`var' = . if `var' == -666 
+}
+
+		* calcuate the z-score for each variable
+foreach var of local all_indexes {
+	sum temp_`var' if treatment == 0
+	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+} 		
+		
+* Generate the index value: average of zscores
+{
+		* E-commerce knowledge index
+egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz dig_con1_mlz dig_con2_mlz dig_con3_mlz dig_con4_mlz dig_con5_mlz)
+lab var knowledge_index "E-commerce knowledge"	
+		
+		* E-commerce adoption index
+			* Survey response data
+				* Visibility/Presence
+egen presence = rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z)
+lab var knowledge_index "E-commerce presence"	
+
+					
+				* Use: Website + Social media
+egen use_sm = rowmean(temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour2z)
+
+egen use_website = rowmean(temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_dig_miseajour1z)
+
+egen use = rowmean(temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+
+				* Payment: Website + Social media
+egen payment = rowmean(temp_dig_payment1z temp_dig_payment2z temp_dig_payment3z)
+lab var presence "E-commerce payment"
+
+				
+				* Digital Marketing
+egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z)
+lab var dmi "Digital Marketing"
+
+
+
+				* Adoption = visibility/presence + payment + use + digital marketing
+egen dtai = rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z  temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+lab var dmi "E-commerce adoption"
+
+				
+			* Manually collected data 
+
+			
+		* E-commerce perception
+egen perception = rowmean(dig_perception1z dig_perception2z dig_perception3z dig_perception4z dig_perception5z)
+lab var perception "E-commerce perception"
+		
+		* Export readiness
+egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez temp_exp_pra_ventz temp_exp_pra_achz)	
+		
+		* Business performance
+egen bpi_2023 = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
+egen bpi_2024 = rowmean(temp_ftez temp_comp_ca2024z temp_comp_benefice2024z)
+		
+		
+		* labeling
+label var dsi "Adoption index"
+label var dmi "Digital marketing index"
+label var dtp "Digital technology Perception index "
+label var dtai "Digital technology adoption index "
+label var eri "Export readiness index"
+label var bpi_2023 "BPI 2023"
+label var bpi_2024 "BPI 2024"
+}
+
+* Generate total points index
+{
+		* E-commerce knowledge index
+		
+		* E-commerce adoption index
+			* Survey response data
+				* Visibility/Presence
+					
+				* Use: Website + Social media
+				
+				* Payment: Website + Social media
+				
+				* Digital Marketing
+
+
+				* Adoption = visibility/presence + payment + use
+			
+			* Manually collected data 
+
+			
+		* E-commerce perception
+		
+		* Export readiness
+		
+		* Business performance
+
+	
+		* labeling
+label var dsi_points "Digital sales index points"
+label var dmi_points "Digital marketing index points"
+label var dtai_points "Digital technology adoption index points"
+label var eri_points "Export readiness index points"
+
+}
+		
 *drop temporary vars		  
 drop temp_*
 
+
+}
 
 ***********************************************************************
 *PART 10: Survey Attrition
@@ -1038,6 +790,7 @@ replace ssa_action5 = 1 if surveyround==3 & inno_produit>0 & inno_produit!=.
 ***********************************************************************
 *PART 13: Create an aggregate measure for ssa for treatment firms
 ***********************************************************************	
+{
 gen ssa_aggregate = .
 replace ssa_aggregate =1 if ssa_action1 == 1 
 replace ssa_aggregate =1 if ssa_action2 == 1 
@@ -1047,6 +800,7 @@ replace ssa_aggregate =1 if ssa_action5 == 1
 lab var ssa_aggregate "The company responded yes to at least one of the ssa_actions improvements"
 label define yesno1 0 "no" 1 "yes" 
 label value ssa_aggregate yesno1
+}
 
 ***********************************************************************
 * 	Part 14: Final check to convert all remaining refusal codes to missing
@@ -1183,3 +937,433 @@ restore
 * 	Save the changes made to the data		  			
 ***********************************************************************
 save "${master_final}/ecommerce_master_final", replace
+
+
+
+
+
+
+
+
+***********************************************************************
+* 	Code Archive:		  			
+***********************************************************************
+/*
+***********************************************************************
+*PART 6 Create empty rows of attrited firms
+***********************************************************************	
+/*
+{
+*xtset id_plateforme surveyround
+*tsfill, full
+
+*generate attrition variables for baseline, midline and endline
+gen el_attrit2 = .
+replace el_attrit2=1 if treatment ==. 
+bysort id_plateforme : mipolate el_attrit2 surveyround, gen(el_attrit) groupwise
+replace el_attrit=0 if el_attrit==.
+drop el_attrit2
+lab var el_attrit "Not present in endline"
+
+gen ml_attrit2 = .
+replace ml_attrit2=1 if treatment ==. 
+bysort id_plateforme : mipolate ml_attrit2 surveyround, gen(ml_attrit) groupwise
+replace ml_attrit=0 if ml_attrit==.
+drop ml_attrit2
+lab var ml_attrit "Not present in midline"
+
+gen bl_attrit2 = .
+replace bl_attrit2=1 if entr_bien_service ==. & surveyround==1
+bysort id_plateforme : mipolate bl_attrit2 surveyround, gen(bl_attrit) groupwise
+replace bl_attrit=0 if bl_attrit==.
+drop bl_attrit2
+lab var bl_attrit "Not present in baseline"
+
+
+/*copy treatment, attrition status and strata to empty rows
+bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
+bysort id_plateforme (surveyround): replace take_up = take_up[_n-1] if take_up == 0
+replace take_up=0 if take_up==. 
+
+bysort id_plateforme (surveyround): replace take_up2 = take_up2[_n-1] if take_up2 == 0
+replace take_up2=0 if take_up2==. 
+*/
+*Completing other relevant static controls
+local complet strata rg_age sector subsector rg_gender_pdg rg_gender_rep urban
+foreach var of local complet{
+bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == .
+}
+
+*repeat for string variables
+local strings district
+foreach var of local strings{
+bysort id_plateforme (surveyround): replace `var' = `var'[_n-1] if `var' == ""
+}
+
+*status variable for graphs
+gen status=0
+replace status=1 if treatment==1 & take_up_for==0
+replace status=2 if treatment==1 & take_up_for==1
+lab var status "0= Control, 1= T-not compliant, 2=T-compliant"
+label define status1 0 "Control" 1 "T-not present" 2"T-present"
+label value status status1
+
+}
+*/
+
+{
+* Variables that are being used in index calculation
+
+	* E-commerce Knowledge
+local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
+local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
+
+local knowledge "`knowledge_bl knowledge_ml'"
+
+	* E-commerce Perception
+local dig_perception_ml "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
+
+	* E-commerce visibility
+local visibility "dig_presence1 dig_presence2 dig_presence3"
+
+	* E-commerce payment
+local payment "dig_payment1 dig_payment2 dig_payment3"
+
+	* E-commerce use
+		* Website
+local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts"
+
+		* Social media
+local sm_use "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_brand sm_use_com"
+
+	* Digital marketing
+local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
+
+
+	* Export Preperation
+local expprep "expprep_cible expprep_norme expprep_demande expprep_responsable_dummy"
+local dig_presence "dig_presence1 dig_presence2 dig_presence3"
+
+
+
+{
+*Recreate z-scores with control mean and control SD 
+*(in BL was done with overall mean/SD)
+capture program drop zscore
+program define zscore /* opens a program called zscore */
+	sum `1' if treatment == 0 
+	gen `1'z = (`1' - r(mean))/r(sd)   /* new variable gen is called --> varnamez */
+end
+
+*create program that calculate z-score conditional on value in other variable
+capture program drop zscorecond
+program define zscorecond /* opens a program called zscore */
+	sum `1' if treatment == 0 & `2'>0 & `2'<.
+	gen `1'z = (`1' - r(mean))/r(sd) if `2'>0 & `2'<.
+end
+
+
+}
+
+}
+
+
+
+
+***********************************************************************
+*PART 4.1 E-commerce and digital marketing indices
+***********************************************************************	
+{
+* Creation of the weighted e-commerce presence index without penalizing non-existant channels 
+	*web index
+zscorecond dig_miseajour1 dig_presence1
+zscorecond dig_description1 dig_presence1
+zscorecond dig_payment1 dig_presence1
+egen webindexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
+lab var webindexz "Z-score index of web presence"
+
+
+*alternative method: first summing up raw poitns and then taking zscore
+/*egen wedummydex1 = rowtotal (dig_miseajour1 dig_description1 dig_payment1) ///
+ if dig_presence1>0 & dig_presence1<.
+zscore wedummydex1
+*/
+
+	*social media index
+zscorecond dig_miseajour2 dig_presence2
+zscorecond dig_description2 dig_presence2
+zscorecond dig_payment2 dig_presence2
+
+egen social_media_indexz = rowmean(dig_miseajour2z dig_description2z dig_payment2z)
+lab var social_media_indexz "Z-score index of social media presence"
+
+	*platform index
+zscorecond dig_miseajour3 dig_presence3
+zscorecond dig_description3 dig_presence3
+zscorecond dig_payment3 dig_presence3
+zscorecond dig_presence3_exscore dig_presence3
+egen platform_indexz = rowmean (dig_miseajour3z dig_description3z ///
+dig_payment3z dig_presence3_exscorez)
+lab var platform_indexz "Z-score index of platform presence"
+
+	*CREATE WEIGHTED INDEX THAT ALSO RECOGNIZES DIVERSITY OF CHANNELS AND existing sales
+egen max_presencez = rowmax(wedummydexz social_media_indexz platform_indexz)
+egen min_presencez = rowmin(wedummydexz social_media_indexz platform_indexz)
+gen mid_presencez = wedummydexz+social_media_indexz+platform_indexz-max_presencez-min_presencez
+
+gen dig_presence_weightedz= 0.5*max_presencez + 0.3*mid_presencez+ 0.2*min_presencez ///
+if dig_presence_score==1
+replace dig_presence_weightedz=0.7*max_presencez +0.3*min_presencez ///
+if dig_presence_score>0.65 & dig_presence_score<0.67 
+replace dig_presence_weightedz=max_presencez if dig_presence_score>0.32 & dig_presence_score<0.34
+
+	*add up 0.2 for channel diversity (0.2 max for three channels, max. 1/5 SD)
+replace dig_presence_weightedz = dig_presence_weightedz+0.2*dig_presence_score
+label var dig_presence_weightedz "Weighted e-commerce presence index (z-score)"
+
+	* E-Commerce knowledge
+local knowledge_bl dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl 
+local knowledge_ml dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
+
+	* E-commerce use
+		* Website
+local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts"
+
+		* Social media
+
+	* Digital Marketing
+local dig_marketing_index "dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy"
+
+	* Export readiness
+local expprep expprep_cible expprep_norme expprep_demande expprep_responsable_dummy
+
+	* E-commerce presence/visibility
+local dig_presence dig_presence1 dig_presence2 dig_presence3
+
+	* E-commerce perception
+local dig_perception dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5
+
+		* Generate the z-score variables
+foreach z in dig_presence knowledge_bl knowledge_ml dig_marketing_index dig_perception expprep exportcomes {
+	foreach x of local `z'  {
+			zscore `x' 
+		}
+}	
+
+
+		* Generate the index value: average of zscores 
+			* Knowledge index
+egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz dig_con1_mlz dig_con2_mlz dig_con3_mlz dig_con4_mlz dig_con5_mlz)
+lab var knowledge_index "E-commerce knowledge"				
+
+			* Perception index
+egen perception = rowmean(dig_perception1z dig_perception2z dig_perception3z dig_perception4z dig_perception5z)
+lab var perception "E-commerce perception"
+
+			* Presence index
+egen presence = rowmean(dig_presence1z dig_presence2z dig_presence3z) 
+lab var presence "E-commerce visibility"
+
+			* Social 
+
+egen dig_marketing_index = rowmean(dig_marketing_lienz dig_marketing_ind1z ///
+		dig_marketing_ind2z dig_marketing_scorez dig_service_satisfactionz dig_service_responsable_dummyz ///
+		dig_marketing_respons_dummyz)
+lab var dig_marketing_index "Digital Marketing"
+
+
+			* Website use
+			
+			* Social media use
+			
+
+*BPI_2020
+local bpi "fte comp_ca2020 comp_benefice2020"
+
+* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to MVs
+foreach var of local bpi {
+    gen temp_`var' = `var'
+    replace temp_`var' = . if `var' == 999 // don't know transformed to zeros
+    replace temp_`var' = . if `var' == 888 
+    replace temp_`var' = . if `var' == 777 
+    replace temp_`var' = . if `var' == 666 
+	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace temp_`var' = . if `var' == -888 
+    replace temp_`var' = . if `var' == -777 
+    replace temp_`var' = . if `var' == -666 
+}
+
+		* calcuate the z-score for each variable
+foreach var of local bpi {
+	sum temp_`var' if treatment == 0
+	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+}
+
+	* calculate the index value: average of zscores
+			*Digital sales index
+egen bpi_2020 = rowmean(temp_ftez temp_comp_ca2020z temp_comp_benefice2020z)
+
+drop temp_*
+
+}
+
+***********************************************************************
+*PART 4.2. Export preparation index (z-score based, only BL and EL)
+***********************************************************************
+*egen expprep = rowmean(expprep_ciblez expprep_normez expprep_demandez expprep_responsable_dummyz) ///
+ *if surveyround==1
+*label var expprep "Z-score index export preparation"
+
+***********************************************************************
+*PART 4.3. Create alternative non-normalized -index (in %of maximum points possible)
+***********************************************************************	
+{
+*knowledge
+drop raw_knowledge
+egen raw_knowledge_bl = rowtotal(dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl ) if surveyround==1
+egen raw_knowledge_ml = rowtotal (dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml) if surveyround==2
+gen raw_knowledge= raw_knowledge_bl if surveyround==1
+replace raw_knowledge= raw_knowledge_ml if surveyround==2
+drop raw_knowledge_bl raw_knowledge_ml
+
+lab var raw_knowledge "Knowledge score (non-normalized)"
+
+egen web_share=rowtotal(dig_miseajour1 dig_description1 dig_payment1)
+replace web_share=web_share/3
+lab var web_share "Web presence score in %"
+
+egen social_m_share=rowtotal(dig_miseajour2 dig_description2 dig_payment2)
+replace social_m_share=social_m_share/3
+lab var social_m_share "Social media presence score in %"
+
+egen platform_share=rowtotal(dig_presence3_exscore dig_miseajour3 dig_description3 dig_payment3)
+replace platform_share=platform_share/4
+lab var platform_share "Platform presence score in %"
+
+egen dig_marketing_share=rowtotal(dig_marketing_lien dig_marketing_ind1 ///
+		dig_marketing_ind2 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy ///
+		dig_marketing_respons_dummy)
+replace dig_marketing_share	= dig_marketing_share/7
+lab var dig_marketing_share "Share of digital marketing practices"
+
+egen dig_logistic_share=rowtotal(dig_logistique_entrepot dig_logistique_retour_score)
+replace dig_logistic_share = dig_logistic_share/ 2
+lab var dig_logistic_share "Logistics score in %"
+
+}
+
+
+***********************************************************************
+*PART 5 Variables required for survey checks
+***********************************************************************	
+{
+gen commentaires_elamouri=""
+gen needs_check=0
+gen questions_a_verifier=""
+gen commentsmsb=""
+lab var needs_check" if larger than 0, this rows needs to be checked"
+}
+
+***********************************************************************
+*PART 8: Creation of index for the endline
+***********************************************************************	
+{
+	* Put all variables used to calculate indices into a local
+			*Digital sales index
+local dsi "dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3"
+			
+			*Digital marketing index
+local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5"
+			
+			*Digital Technology Perception
+local dtp "investecom_benefit1 investecom_benefit2"
+	
+			*Export practices index
+local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach"		
+			
+			*Export performance index
+local epi "compexp_2023 compexp_2024 export_1 export_2 exp_pays clients_b2c clients_b2b exp_dig"			
+			
+			
+			*Business performance index
+local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
+
+			*Investment variables
+local invest "dig_margins dig_revenues_ecom  dig_empl dig_invest mark_invest"
+local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi' `invest'
+
+* IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
+foreach var of local all_index {
+    gen temp_`var' = `var'
+    replace temp_`var' = . if `var' == 999 // don't know transformed to missing values
+    replace temp_`var' = . if `var' == 888 
+    replace temp_`var' = . if `var' == 777 
+    replace temp_`var' = . if `var' == 666 
+	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace temp_`var' = . if `var' == -888 
+    replace temp_`var' = . if `var' == -777 
+    replace temp_`var' = . if `var' == -666 
+}
+
+		* calcuate the z-score for each variable
+foreach var of local all_index {
+	sum temp_`var' if treatment == 0
+	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+}
+
+	* calculate the index value: average of zscores
+			*Digital sales index
+egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z  temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+
+			*Digital marketing index
+egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z)
+			
+			*Digital Technology Perception
+egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
+	
+			*Digital technology adoption index
+egen dtai = rowmean(dsi dmi)		
+			
+			*Export readiness index
+egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez temp_exp_pra_ventz temp_exp_pra_achz)			
+			
+			*Export performance index
+egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_clients_b2cz temp_clients_b2bz temp_exp_digz)			
+			
+			*Business performance index
+egen bpi_2023 = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
+egen bpi_2024 = rowmean(temp_ftez temp_comp_ca2024z temp_comp_benefice2024z)
+
+		* labeling
+label var dsi "Digital sales index -Z Score"
+label var dmi "Digital marketing index -Z Score"
+label var dtp "Digital technology Perception index -Z Score"
+label var dtai "Digital technology adoption index -Z Score"
+label var eri "Export readiness index -Z Score"
+label var epi "Export performance index -Z Score"
+label var bpi_2023 "Business performance index- Z-score in 2023"
+label var bpi_2024 "Business performance index- Z-score in 2024"
+
+
+	* create total points per index dimension
+			
+			*Digital sales index
+egen dsi_points= rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing // total 19 points
+			
+			*Digital marketing index
+egen dmi_points= rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 mark_online5), missing // total 5 points
+			
+			*Digital technology adoption index
+egen dtai_points = rowtotal(dsi_points dmi_points), missing // total 24 points	
+			
+			* export readiness index (eri)
+egen eri_points = rowtotal(exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach), missing // total 5 points
+
+
+		* labeling
+label var dsi_points "Digital sales index points"
+label var dmi_points "Digital marketing index points"
+label var dtai_points "Digital technology adoption index points"
+label var eri_points "Export readiness index points"
+
+}

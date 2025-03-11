@@ -16,7 +16,7 @@
 ***********************************************************************
 * 	PART 1: 	Set standard settings & install packages			  
 ***********************************************************************
-
+{
 	* set standard settings
 version 15
 clear all
@@ -48,11 +48,12 @@ ssc install winsor
 
 	* define graph scheme for visual outputs
 set scheme plotplain
+}
 
 ***********************************************************************
 * 	PART 2: 	Prepare dynamic folder paths & globals			  	  *
 ***********************************************************************
-
+{
 		* dynamic folder path for gdrive(data,output), github(code), backup(local computer)
 		
 if "`c(username)'" == "my rog" | "`c(username)'" == "Fabian Scheifele" | "`c(username)'" == "ayoub" | "`c(username)'" == "Azra" {
@@ -72,7 +73,7 @@ if "`c(username)'" == "fmuench" {
 
 if c(os) == "Windows" {
 	global webpresence_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global webpresence_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
+	global webpresence_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/webpresence"
 	global webpresence_backup = "C:/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
 }
 
@@ -96,7 +97,8 @@ global webpresence_output = "${webpresence_gdrive}/output"
 			
 set seed 11323211
 set sortseed 11323211
-		
+}		
+
 ***********************************************************************
 
 * 	PART 3: 	Run do-files for data cleaning & survey progress
@@ -118,8 +120,3 @@ if (1) do "${webpresence_github}/webpresence_clean.do"
 	PART 3.4: Generate new variables in intermediate data
 ----------------------------------------------------------------------*/	
 if (1) do "${webpresence_github}/webpresence_generate.do"
-/* --------------------------------------------------------------------
-	PART 3.5: Create statistics on social media of SMEs	
-----------------------------------------------------------------------*/	
-if (1) do "${webpresence_github}/webpresence_statistics.do"
-/* --------------------------------------------------------------------
