@@ -22,7 +22,7 @@
 * 	PART 1: Import the data
 ***********************************************************************
 
-use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
+use "${webpresence_intermediate}/Webpresence_answers_intermediate", clear
 
 
 ***********************************************************************
@@ -157,4 +157,4 @@ replace Quelleestladatedecréationd = "3/13/2019" if Quelleestladatedecréationd
 * 	PART 7: Save the data
 ***********************************************************************
 
-save "${bl2_intermediate}/Webpresence_answers_intermediate", replace
+save "${webpresence_intermediate}/Webpresence_answers_intermediate", replace

@@ -65,26 +65,30 @@ else{
 		
 }
 
+if "`c(username)'" == "fmuench" { 
+
+		global gdrive = "C:/Users/fmuench/Documents"
+	}
 
 if c(os) == "Windows" {
-	global bl2_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global bl2_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
-	global bl2_backup = "C:/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
+	global webpresence_gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
+	global webpresence_github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
+	global webpresence_backup = "C:/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
 }
 
 else if c(os) == "MacOSX" {
-	global bl2_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
-	global bl2_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
-	global bl2_backup = "/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
+	global webpresence_gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data/2b-baseline presence enligne"
+	global webpresence_github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce/surveys/baseline online presence"
+	global webpresence_backup = "/Users/`c(username)'/Documents/baseline-presence-en-ligne-back-up"
 }		
 		
 
 		* paths within gdrive
 			* data
-global bl2_raw = "${bl2_gdrive}/raw"
-global bl2_intermediate "${bl2_gdrive}/intermediate"
-global bl2_final = "${bl2_gdrive}/final"
-global bl2_output = "${bl2_gdrive}/output"
+global webpresence_raw = "${webpresence_gdrive}/raw"
+global webpresence_intermediate "${webpresence_gdrive}/intermediate"
+global webpresence_final = "${webpresence_gdrive}/final"
+global webpresence_output = "${webpresence_gdrive}/output"
 
 
 
@@ -101,21 +105,21 @@ set sortseed 11323211
 /* --------------------------------------------------------------------
 	PART 3.1: Import & raw data
 ----------------------------------------------------------------------*/		
-if (1) do "${bl2_github}/bl2_import.do"
+if (1) do "${webpresence_github}/webpresence_import.do"
 /* --------------------------------------------------------------------
 	PART 3.2: Clean raw data & save as intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_correct.do"
+if (1) do "${webpresence_github}/webpresence_correct.do"
 /* --------------------------------------------------------------------
 	PART 3.3: Correct & save intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_clean.do"
+if (1) do "${webpresence_github}/webpresence_clean.do"
 /* --------------------------------------------------------------------
 	PART 3.4: Generate new variables in intermediate data
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_generate.do"
+if (1) do "${webpresence_github}/webpresence_generate.do"
 /* --------------------------------------------------------------------
 	PART 3.5: Create statistics on social media of SMEs	
 ----------------------------------------------------------------------*/	
-if (1) do "${bl2_github}/bl2_statistics.do"
+if (1) do "${webpresence_github}/webpresence_statistics.do"
 /* --------------------------------------------------------------------

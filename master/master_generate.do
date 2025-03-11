@@ -307,8 +307,8 @@ end
 zscorecond dig_miseajour1 dig_presence1
 zscorecond dig_description1 dig_presence1
 zscorecond dig_payment1 dig_presence1
-egen wedummydexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
-lab var wedummydexz "Z-score index of web presence"
+egen webindexz = rowmean(dig_miseajour1z dig_description1z dig_payment1z)
+lab var webindexz "Z-score index of web presence"
 
 
 *alternative method: first summing up raw poitns and then taking zscore

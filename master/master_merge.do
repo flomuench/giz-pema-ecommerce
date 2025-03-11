@@ -42,21 +42,6 @@ merge 1:1 id_plateforme using "${bl_final}/bl_final"
 keep if _merge==3 /* companies that were eligible and answered on the registration + baseline surveys */
 drop _merge
 
-    * save 
-save "${master_raw}/ecommerce_master_raw", replace
-
-	* add the information collected by hand at baseline about firms websites and social media accounts
-merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
-/*
-    Result                      Number of obs
-    -----------------------------------------
-    Not matched                             0
-    Matched                               236  (_merge==3)
-    -----------------------------------------
-*/
-keep if _merge==3
-drop _merge
-
 	* drop bl_refus (FM review 03.07.25; unclear why coded this way, manually identified 3 non respondents)
 order id_plateforme surveyround, first
 drop bl_refus
@@ -176,6 +161,30 @@ label var take_up_heber "Purchase of website access"
 
 drop _merge
 }
+
+
+
+***********************************************************************
+* 	PART 3: merge with manual scoring of website/social media accounts at baseline & endline
+***********************************************************************
+preserve
+import excel using "${bl2_raw}/Webpresence answers_bl_el.xlsx", firstrow clear
+
+    * save 
+save "${master_raw}/ecommerce_master_raw", replace
+
+	* add the information collected by hand at baseline about firms websites and social media accounts
+merge 1:1 id_plateforme using "${bl2_final}/Webpresence_answers_final"
+/*
+    Result                      Number of obs
+    -----------------------------------------
+    Not matched                             0
+    Matched                               236  (_merge==3)
+    -----------------------------------------
+*/
+keep if _merge==3
+drop _merge
+
 
 ***********************************************************************
 * 	PART 4: save finale analysis data set as raw

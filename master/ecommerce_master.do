@@ -50,6 +50,7 @@ ssc install mipolate, replace
 ssc install dtable, replace
 */
 }
+
 ***********************************************************************
 * 	PART 2: 	Prepare dynamic folder paths & globals
 ***********************************************************************
@@ -107,7 +108,9 @@ global bl_final = "${gdrive}/2-baseline/final"
 global bl_checks = "${gdrive}/2-baseline/checks"
 global bl_output = "${gdrive}/2-baseline/output"
 
-global bl2_final ="${gdrive}/2b-baseline presence enligne/final"
+global bl2_final = "${gdrive}/2b-baseline presence enligne/final"
+global bl2_raw = "${gdrive}/2b-baseline presence enligne/raw"
+
 global regis_raw = "${gdrive}/1-registration/raw"
 global regis_intermediate "${gdrive}/1-registration/intermediate"
 global regis_final = "${gdrive}/1-registration/final"

@@ -22,7 +22,7 @@
 * 	PART 1:    Import the data
 ***********************************************************************
 
-use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
+use "${webpresence_intermediate}/Webpresence_answers_intermediate", clear
 
 ***********************************************************************
 * 	PART 2:    Removing whitespace & format string and date & lower case 
@@ -49,7 +49,7 @@ replace `x'= lower(`x')
 }
 
 	*fix date
-format Zeitstempel Quandétaitlavantdernierpubl %td
+*format Zeitstempel Quandétaitlavantdernierpubl %td
 
 ***********************************************************************
 * 	PART 3: Drop variables    
@@ -221,4 +221,4 @@ label value web_purchase purchase
 * 	PART 7: 	Save the data	  			
 ***********************************************************************
 
-save "${bl2_intermediate}/Webpresence_answers_intermediate", replace
+save "${webpresence_intermediate}/Webpresence_answers_intermediate", replace
