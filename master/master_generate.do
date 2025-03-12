@@ -112,20 +112,20 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 *we use a dummyary indicator instead of continous or share of FTE, which sometimes
 *leads to absurd, difficult to compare figures (small firms have 5/6 employees working on it, others 1/180)
 
-gen dig_empl_dummy = .
-	replace dig_empl_dummy = 0 if dig_empl == 0
-	replace dig_empl_dummy = 1 if dig_empl>0 & dig_empl<.
-lab var dig_empl_dummy "Firms has digital marketing employee (1) or not(0)"
+gen dig_dummy = .
+	replace dig_dummy = 0 if dig_empl == 0
+	replace dig_dummy = 1 if dig_empl>0 & dig_empl<.
+lab var dig_dummy "Firms has digital marketing employee (1) or not(0)"
 
-gen dig_marketing_respons_dummy = .
-	replace dig_marketing_respons_dummy = 0 if dig_marketing_respons == 0
-	replace dig_marketing_respons_dummy = 1 if dig_marketing_respons>0 & dig_marketing_respons<.
-lab var dig_service_responsable_dummy "Firms has employee dealing with online orders"
+gen dig_marketing_dummy = .
+	replace dig_marketing_dummy = 0 if dig_marketing_dummy == 0
+	replace dig_marketing_dummy = 1 if dig_marketing_dummy>0 & dig_marketing_dummy<.
+lab var dig_marketing_dummy "Firms has employee dealing with online orders"
 
-gen expprep_responsable_dummy = .
-	replace expprep_responsable_dummy = 0 if expprep_responsable == 0
-	replace expprep_responsable_dummy = 1 if expprep_responsable>0 & expprep_responsable_dummy<.
-lab var expprep_responsable_dummy "Firm has employee dealing with exports"
+gen expprep_dummy = .
+	replace expprep_dummy = 0 if expprep_dummy == 0
+	replace expprep_dummy = 1 if expprep_dummy>0 & expprep_dummy<.
+lab var expprep_dummy "Firm has employee dealing with exports"
 
 *generate sector dummies as ordinal/categorical variable has no meaning
 gen agri=0
@@ -243,14 +243,14 @@ lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 }
 	
 
-	*
+	* numeric survey data
 {
 *generate values for digital revenues
 replace dig_revenues_ecom = ((dig_revenues_ecom*0.01)*comp_ca2023) if surveyround ==3 & dig_revenues_ecom!=99
 
-winsor temp_dig_revenues_ecom, gen(w99_dig_revenues_ecom) p(0.01) highonly
-winsor temp_dig_revenues_ecom, gen(w97_dig_revenues_ecom) p(0.03) highonly
-winsor temp_dig_revenues_ecom, gen(w95_dig_revenues_ecom) p(0.05) highonly
+winsor dig_revenues_ecom, gen(w99_dig_revenues_ecom) p(0.01) highonly
+winsor dig_revenues_ecom, gen(w97_dig_revenues_ecom) p(0.03) highonly
+winsor dig_revenues_ecom, gen(w95_dig_revenues_ecom) p(0.05) highonly
 
 
 gen ihs_digrev_99 = log(w99_dig_revenues_ecom + sqrt((w99_dig_revenues_ecom*w99_dig_revenues_ecom)+1))
@@ -263,9 +263,9 @@ gen ihs_digrev_95 = log(w95_dig_revenues_ecom + sqrt((w95_dig_revenues_ecom*w95_
 lab var ihs_digrev_95 "IHS of digital revenues from ecommerce, wins.95th"
 
 *Digital investment
-winsor temp_dig_invest, gen(w99_dig_invest) p(0.01) highonly
-winsor temp_dig_invest, gen(w97_dig_invest) p(0.03) highonly
-winsor temp_dig_invest, gen(w95_dig_invest) p(0.05) highonly
+winsor dig_invest, gen(w99_dig_invest) p(0.01) highonly
+winsor dig_invest, gen(w97_dig_invest) p(0.03) highonly
+winsor dig_invest, gen(w95_dig_invest) p(0.05) highonly
 
 gen ihs_dig_invest_99 = log(w99_dig_invest + sqrt((w99_dig_invest*w99_dig_invest)+1))
 lab var ihs_dig_invest_99 "IHS of digital investment, wins.99th"
@@ -275,9 +275,9 @@ gen ihs_dig_invest_95 = log(w95_dig_invest + sqrt((w95_dig_invest*w95_dig_invest
 lab var ihs_dig_invest_95 "IHS of digital investment, wins.95th"
 
 *Offine marketing investment
-winsor temp_mark_invest, gen(w99_mark_invest) p(0.01) highonly
-winsor temp_mark_invest, gen(w97_mark_invest) p(0.03) highonly
-winsor temp_mark_invest, gen(w95_mark_invest) p(0.05) highonly
+winsor mark_invest, gen(w99_mark_invest) p(0.01) highonly
+winsor mark_invest, gen(w97_mark_invest) p(0.03) highonly
+winsor mark_invest, gen(w95_mark_invest) p(0.05) highonly
 
 gen ihs_mark_invest_99 = log(w99_mark_invest + sqrt((w99_mark_invest*w99_mark_invest)+1))
 lab var ihs_mark_invest_99 "IHS of offine marketing investment, wins.99th"
@@ -287,9 +287,9 @@ gen ihs_mark_invest_95 = log(w95_mark_invest + sqrt((w95_mark_invest*w95_mark_in
 lab var ihs_mark_invest_95 "IHS of offine marketing investment, wins.95th"
 
 *Full time employees
-winsor temp_fte, gen(w99_fte) p(0.01) highonly
-winsor temp_fte, gen(w97_fte) p(0.03) highonly
-winsor temp_fte, gen(w95_fte) p(0.05) highonly
+winsor fte, gen(w99_fte) p(0.01) highonly
+winsor fte, gen(w97_fte) p(0.03) highonly
+winsor fte, gen(w95_fte) p(0.05) highonly
 
 gen ihs_fte_99 = log(w99_fte + sqrt((w99_fte*w99_fte)+1))
 lab var ihs_fte_99 "IHS of full time employees, wins.99th"
@@ -361,9 +361,9 @@ lab var ihs_clients_b2c_95 "IHS of number of international orders, wins.95th"
 
 *Total turnover variable
 	*In 2023
-winsor temp_comp_ca2023, gen(w99_comp_ca2023) p(0.01) highonly
-winsor temp_comp_ca2023, gen(w97_comp_ca2023) p(0.03) highonly
-winsor temp_comp_ca2023, gen(w95_comp_ca2023) p(0.05) highonly
+winsor comp_ca2023, gen(w99_comp_ca2023) p(0.01) highonly
+winsor comp_ca2023, gen(w97_comp_ca2023) p(0.03) highonly
+winsor comp_ca2023, gen(w95_comp_ca2023) p(0.05) highonly
 
 gen ihs_ca99_2023 = log(w99_comp_ca2023 + sqrt((w99_comp_ca2023*w99_comp_ca2023)+1))
 lab var ihs_ca99_2023 "IHS of total turnover in 2023, wins.99th"
@@ -373,9 +373,9 @@ gen ihs_ca95_2023 = log(w95_comp_ca2023 + sqrt((w95_comp_ca2023*w95_comp_ca2023)
 lab var ihs_ca95_2023 "IHS of total turnover in 2023, wins.95th"
 
 	*In 2024
-*winsor temp_comp_ca2024, gen(w99_comp_ca2024) p(0.01) highonly
-winsor temp_comp_ca2024, gen(w97_comp_ca2024) p(0.03) highonly
-winsor temp_comp_ca2024, gen(w95_comp_ca2024) p(0.05) highonly
+*winsor comp_ca2024, gen(w99_comp_ca2024) p(0.01) highonly
+winsor comp_ca2024, gen(w97_comp_ca2024) p(0.03) highonly
+winsor comp_ca2024, gen(w95_comp_ca2024) p(0.05) highonly
 
 *gen ihs_ca99_2024 = log(w99_comp_ca2024 + sqrt((w99_comp_ca2024*w99_comp_ca2024)+1))
 *lab var ihs_ca99_2024 "IHS of total turnover in 2024, wins.99th"
@@ -387,9 +387,9 @@ lab var ihs_ca95_2024 "IHS of total turnover in 2024, wins.95th"
 
 *Export turnover variable
 	*In 2023
-winsor temp_compexp_2023, gen(w99_compexp2023) p(0.01) highonly
-winsor temp_compexp_2023, gen(w97_compexp2023) p(0.03) highonly
-winsor temp_compexp_2023, gen(w95_compexp2023) p(0.05) highonly
+winsor compexp_2023, gen(w99_compexp2023) p(0.01) highonly
+winsor compexp_2023, gen(w97_compexp2023) p(0.03) highonly
+winsor compexp_2023, gen(w95_compexp2023) p(0.05) highonly
 
 gen ihs_exports99_2023 = log(w99_compexp2023 + sqrt((w99_compexp2023*w99_compexp2023)+1))
 lab var ihs_exports99_2023 "IHS of exports in 2023, wins.99th"
@@ -399,9 +399,9 @@ gen ihs_exports95_2023 = log(w95_compexp2023 + sqrt((w95_compexp2023*w95_compexp
 lab var ihs_exports95_2023 "IHS of exports in 2023, wins.95th"
 
 	*In 2024
-*winsor temp_compexp_2024, gen(w99_compexp2024) p(0.01) highonly
-winsor temp_compexp_2024, gen(w97_compexp2024) p(0.03) highonly
-winsor temp_compexp_2024, gen(w95_compexp2024) p(0.05) highonly
+winsor compexp_2024, gen(w99_compexp2024) p(0.01) highonly
+winsor compexp_2024, gen(w97_compexp2024) p(0.03) highonly
+winsor compexp_2024, gen(w95_compexp2024) p(0.05) highonly
 
 *gen ihs_exports99_2024 = log(w99_compexp2024 + sqrt((w99_compexp2024*w99_compexp2024)+1))
 *lab var ihs_exports99_2024 "IHS of exports in 2024, wins.99th"
@@ -413,9 +413,9 @@ lab var ihs_exports95_2024 "IHS of exports in 2024, wins.95th"
 	
 *Profit variable
 	*In 2023
-winsor temp_comp_benefice2023, gen(w99_comp_benefice2023) p(0.01) highonly
-winsor temp_comp_benefice2023, gen(w97_comp_benefice2023) p(0.03) highonly
-winsor temp_comp_benefice2023, gen(w95_comp_benefice2023) p(0.05) highonly
+winsor comp_benefice2023, gen(w99_comp_benefice2023) p(0.01) highonly
+winsor comp_benefice2023, gen(w97_comp_benefice2023) p(0.03) highonly
+winsor comp_benefice2023, gen(w95_comp_benefice2023) p(0.05) highonly
 
 gen ihs_profit99_2023 = log(w99_comp_benefice2023 + sqrt((w99_comp_benefice2023*w99_comp_benefice2023)+1))
 lab var ihs_profit99_2023 "IHS of profit in 2023, wins.99th"
@@ -425,9 +425,9 @@ gen ihs_profit95_2023 = log(w95_comp_benefice2023 + sqrt((w95_comp_benefice2023*
 lab var ihs_profit95_2023 "IHS of profit in 2023, wins.95th"
 
 	*In 2024
-winsor temp_comp_benefice2024, gen(w99_comp_benefice2024) p(0.01) highonly
-winsor temp_comp_benefice2024, gen(w97_comp_benefice2024) p(0.03) highonly
-winsor temp_comp_benefice2024, gen(w95_comp_benefice2024) p(0.05) highonly
+winsor comp_benefice2024, gen(w99_comp_benefice2024) p(0.01) highonly
+winsor comp_benefice2024, gen(w97_comp_benefice2024) p(0.03) highonly
+winsor comp_benefice2024, gen(w95_comp_benefice2024) p(0.05) highonly
 
 gen ihs_profit99_2024 = log(w99_comp_benefice2024 + sqrt((w99_comp_benefice2024*w99_comp_benefice2024)+1))
 lab var ihs_profit99_2024 "IHS of profit in 2024, wins.99th"
@@ -438,25 +438,25 @@ lab var ihs_profit95_2024 "IHS of profit in 2024, wins.95th"
 
 *Cost variable
 * Generating a cost variable
-*gen cost_2020 = temp_comp_ca2020 - temp_comp_benefice2020 if surveyround ==1
-*lab var cost_2020 "Total costs in 2020 in TND"
+gen cost_2020 = comp_ca2020 - comp_benefice2020 if surveyround ==1
+lab var cost_2020 "Total costs in 2020 in TND"
 
-gen cost_2023 = temp_comp_ca2023 - temp_comp_benefice2023 if surveyround ==3
+gen cost_2023 = comp_ca2023 - comp_benefice2023 if surveyround ==3
 lab var cost_2023 "Total costs in 2023 in TND"
 
-gen cost_2024 = temp_comp_ca2024 - temp_comp_benefice2024 if surveyround ==3
+gen cost_2024 = comp_ca2024 - comp_benefice2024 if surveyround ==3
 lab var cost_2024 "Total costs in 2024 in TND"
 
-*winsor cost_2020, gen(w99_cost_2020) p(0.01) highonly
-*winsor cost_2020, gen(w97_cost_2020) p(0.03) highonly
-*winsor cost_2020, gen(w95_cost_2020) p(0.05) highonly
+winsor cost_2020, gen(w99_cost_2020) p(0.01) highonly
+winsor cost_2020, gen(w97_cost_2020) p(0.03) highonly
+winsor cost_2020, gen(w95_cost_2020) p(0.05) highonly
 
-*gen ihs_cost99_2020 = log(w99_cost_2020 + sqrt((w99_cost_2020*w99_cost_2020)+1))
-*lab var ihs_cost99_2020 "IHS of total costs in 2020, wins.99th"
-*gen ihs_cost97_2020 = log(w97_cost_2020 + sqrt((w97_cost_2020*w97_cost_2020)+1))
-*lab var ihs_cost97_2020 "IHS of total costs in 2020, wins.97th"
-*gen ihs_cost95_2020 = log(w95_cost_2020 + sqrt((w95_cost_2020*w95_cost_2020)+1))
-*lab var ihs_cost95_2020 "IHS of total costs in 2020, wins.95th"
+gen ihs_cost99_2020 = log(w99_cost_2020 + sqrt((w99_cost_2020*w99_cost_2020)+1))
+lab var ihs_cost99_2020 "IHS of total costs in 2020, wins.99th"
+gen ihs_cost97_2020 = log(w97_cost_2020 + sqrt((w97_cost_2020*w97_cost_2020)+1))
+lab var ihs_cost97_2020 "IHS of total costs in 2020, wins.97th"
+gen ihs_cost95_2020 = log(w95_cost_2020 + sqrt((w95_cost_2020*w95_cost_2020)+1))
+lab var ihs_cost95_2020 "IHS of total costs in 2020, wins.95th"
 
 *winsor cost_2023, gen(w99_cost_2023) p(0.01) highonly
 winsor cost_2023, gen(w97_cost_2023) p(0.03) highonly
@@ -511,123 +511,181 @@ lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
 {
 	
 		* E-commerce knowledge index
-local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_bl"
+local knowledge_bl "dig_con1 dig_con2 dig_con3 dig_con4 dig_con5"
 local knowledge_ml "dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml"
 local knowledge "`knowledge_bl' `knowledge_ml'"
 		
 		* E-commerce adoption index
 			* Survey response data
 				* Visibility/Presence
-local presence "dig_presence1 dig_presence2 dig_presence3"
+local presence_survey "dig_presence1 dig_presence2 dig_presence3"
 
 				* Use: Website + Social media
-local website_use "dig_miseajour1 dig_description1 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_contacts dig_service_satisfaction"
+local website_use_survey "dig_miseajour1 dig_description1 web_use_catalogue web_use_engagement web_use_com web_use_contacts web_use_brand dig_service_satisfaction"
 
-local sm_use "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand"
+local sm_use_survey "dig_miseajour2 dig_description2 sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand"
 
-local use "`website_use' `sm_use'"
+local use_survey "`website_use_survey' `sm_use_survey' dig_miseajour3 dig_description3"
 				
 				* Payment: Website + Social media + Platform
-local payment "dig_payment1 dig_payment2 dig_payment3"
+local payment_survey "dig_payment1 dig_payment2 dig_payment3"
 				
 				* Digital Marketing
-local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_marketing_score dig_service_satisfaction dig_service_responsable_dummy dig_marketing_respons_dummy dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm" // dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 are excluded as they have unclear missing values for BL & ML (FM 11.03.25)
+local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_marketing_score dig_dummy dig_marketing_dummy dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm" // dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 are excluded as they have unclear missing values for BL & ML (FM 11.03.25)
 
 			
-			* Manually collected data 
+			* Manually collected data
+				* Visibility/Presence
+local presence_manual "entreprise_web entreprise_social social_facebook social_insta"
 
-			
+				* Use: Website + Social media + Insta + Facebook
+local use_manual_website "web_logoname web_product web_multimedia web_aboutus web_norms web_externals web_languages web_coherent web_quality"
+local use_manual_sm "social_logoname social_external_website social_photos social_description"
+local use_manual_facebook "facebook_likes facebook_subs facebook_reviews facebook_reviews_avg"
+local use_manual_insta "insta_publications insta_subs insta_description insta_externals"
+local use_manual "`use_manual_website' `use_manual_sm' `use_manual_facebook' `use_manual_insta'"	
+				
+				* Payment: Website + Social media + Platform
+local payment_manual "web_purchase web_external_purchase facebook_shop"
+
 		* E-commerce perception
 local perception "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
 
 		
 		* Export readiness
-local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_demande expprep_responsable_dummy"		
+local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_demande expprep_dummy"		
 
 		* Business performance
 local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
 
 
-local all_indexes `knowledge' `presence' `use' `payment' `dmi' `perception' `eri' `bpi'
+local all_indexes `knowledge' `presence_survey' `presence_manual' `use_survey' `use_manual' `payment_survey' `payment_manual' `dmi' `perception' `eri' `bpi'
 }
 
 
-* Generate temporary variables, double check that data is cleaned correctly
+	* Create temporary variable
 foreach var of local all_indexes {
-    gen temp_`var' = `var'
-    replace temp_`var' = . if `var' == 999 // don't know transformed to missing values
-    replace temp_`var' = . if `var' == 888 
-    replace temp_`var' = . if `var' == 777 
-    replace temp_`var' = . if `var' == 666 
-	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
-    replace temp_`var' = . if `var' == -888 
-    replace temp_`var' = . if `var' == -777 
-    replace temp_`var' = . if `var' == -666 
+	g t_`var' = `var'
+    replace t_`var' = . if `var' == 999 // don't know transformed to missing values
+    replace t_`var' = . if `var' == 888 
+    replace t_`var' = . if `var' == 777 
+    replace t_`var' = . if `var' == 666 
+	replace t_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace t_`var' = . if `var' == -888
+    replace t_`var' = . if `var' == -777
+    replace t_`var' = . if `var' == -666
+    replace t_`var' = . if `var' == 1234 
 }
 
-		* calcuate the z-score for each variable
+	* calculate z-score for each individual outcome
+		* write a program calculates the z-score
+			* if you re-run the code, execture before: 
+capture program drop zscore
+program define zscore /* opens a program called zscore */
+	sum `1' if treatment == 0 & surveyround == `2'
+	gen `1'z`2' = (`1' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+end
+
+
+		* create empty variable that will be replaced with z-scores
 foreach var of local all_indexes {
-	sum temp_`var' if treatment == 0
-	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
-} 		
+	g t_`var'z = .
+	
+}
+		* calculate z-score surveyround & variable specific
+levelsof surveyround, local(survey)
+foreach s of local survey {
+			* calcuate the z-score for each variable
+	foreach var of local all_indexes {
+		zscore t_`var' `s'
+		replace t_`var'z = t_`var'z`s' if surveyround == `s'
+		drop t_`var'z`s'
+	}
+}	
 		
 * Generate the index value: average of zscores
 {
 		* E-commerce knowledge index
-egen knowledge = rowmean(dig_con1z dig_con2z dig_con3z dig_con4z dig_con5z dig_con6_blz dig_con1_mlz dig_con2_mlz dig_con3_mlz dig_con4_mlz dig_con5_mlz)
-lab var knowledge_index "E-commerce knowledge"	
+drop knowledge
+egen knowledge = rowmean(t_dig_con1z t_dig_con2z t_dig_con3z t_dig_con4z t_dig_con5z t_dig_con1_mlz t_dig_con2_mlz t_dig_con3_mlz t_dig_con4_mlz t_dig_con5_mlz)
 		
 		* E-commerce adoption index
-			* Survey response data
 				* Visibility/Presence
-egen presence = rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z)
-lab var knowledge_index "E-commerce presence"	
-
+egen presence_survey = rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z)
+egen presence_manual = rowmean(t_entreprise_webz t_entreprise_socialz t_social_facebookz t_social_instaz)
 					
-				* Use: Website + Social media
-egen use_sm = rowmean(temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour2z)
+				* Use
+					* Social media
+egen use_sm_survey = rowmean(t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour2z)
 
-egen use_website = rowmean(temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_dig_miseajour1z)
+egen use_sm_manual = rowmean(t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz)
 
-egen use = rowmean(temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+					* Website
+egen use_website_survey = rowmean(t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_dig_miseajour1z)
+
+egen use_website_manual = rowmean(t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz)
+
+					* Facebook
+egen use_fb_manual = rowmean(t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz)
+
+					* Insta
+egen use_insta_manual = rowmean(t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
+
+
+egen use_survey = rowmean(t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
+
+egen use_manual = rowmean(t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
 
 				* Payment: Website + Social media
-egen payment = rowmean(temp_dig_payment1z temp_dig_payment2z temp_dig_payment3z)
-lab var presence "E-commerce payment"
+egen payment_survey = rowmean(t_dig_payment1z t_dig_payment2z t_dig_payment3z)
 
-				
+egen payment_manual = rowmean(t_dig_payment1z t_dig_payment2z t_dig_payment3z)
+		
 				* Digital Marketing
-egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z)
-lab var dmi "Digital Marketing"
-
-
+egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_mark_online5z t_dig_marketing_scorez t_dig_dummyz t_dig_marketing_dummyz t_dig_marketing_num19_seaz t_dig_marketing_num19_seoz t_dig_marketing_num19_blgz t_dig_marketing_num19_pubz t_dig_marketing_num19_mailz t_dig_marketing_num19_prtnz t_dig_marketing_num19_socmz)
 
 				* Adoption = visibility/presence + payment + use + digital marketing
-egen dtai = rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z  temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
-lab var dmi "E-commerce adoption"
+egen dtai_survey = rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z t_dig_payment2z t_dig_payment3z  t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
 
-				
-			* Manually collected data 
+egen dtai_manual = rowmean(t_entreprise_webz t_entreprise_socialz t_social_facebookz t_social_instaz t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
 
 			
 		* E-commerce perception
-egen perception = rowmean(dig_perception1z dig_perception2z dig_perception3z dig_perception4z dig_perception5z)
-lab var perception "E-commerce perception"
+egen perception = rowmean(t_dig_perception1z t_dig_perception2z t_dig_perception3z t_dig_perception4z t_dig_perception5z)
 		
 		* Export readiness
-egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez temp_exp_pra_ventz temp_exp_pra_achz)	
+egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz)	
 		
 		* Business performance
-egen bpi_2023 = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
-egen bpi_2024 = rowmean(temp_ftez temp_comp_ca2024z temp_comp_benefice2024z)
+egen bpi_2023 = rowmean(t_ftez t_comp_ca2023z t_comp_benefice2023z)
+egen bpi_2024 = rowmean(t_ftez t_comp_ca2024z t_comp_benefice2024z)
 		
 		
 		* labeling
-label var dsi "Adoption index"
-label var dmi "Digital marketing index"
-label var dtp "Digital technology Perception index "
-label var dtai "Digital technology adoption index "
-label var eri "Export readiness index"
+lab var knowledge "E-commerce knowledge"	
+lab var presence_survey "E-commerce presence"
+lab var presence_manual "E-commerce presence"
+
+lab var use_survey "E-commerce use"
+lab var use_manual "E-commerce use"
+
+lab var use_sm_survey "Social media use"
+lab var use_website_survey "Website use"
+lab var payment_survey "E-commerce payment"
+
+lab var use_sm_manual "Social media use"
+lab var use_website_manual "Website use"
+lab var use_fb_manual "Facebook use"
+lab var use_insta_manual "Instagram use"
+lab var payment_manual "E-commerce payment"
+
+lab var dmi "Digital marketing"
+label var dtai_survey "E-commerce adoption"
+label var dtai_manual "E-commerce adoption"
+
+lab var perception "E-commerce perception"
+
+label var eri "Export readiness"
 label var bpi_2023 "BPI 2023"
 label var bpi_2024 "BPI 2024"
 }
@@ -660,21 +718,21 @@ label var bpi_2024 "BPI 2024"
 
 	
 		* labeling
-label var dsi_points "Digital sales index points"
-label var dmi_points "Digital marketing index points"
-label var dtai_points "Digital technology adoption index points"
-label var eri_points "Export readiness index points"
+*label var dsi_points "Digital sales index points"
+*label var dmi_points "Digital marketing index points"
+*label var dtai_points "Digital technology adoption index points"
+*label var eri_points "Export readiness index points"
 
 }
 		
-*drop temporary vars		  
-drop temp_*
+*drop torary vars		  
+drop t_*
 
 
 }
 
 ***********************************************************************
-*PART 10: Survey Attrition
+*PART 5: Survey Attrition
 ***********************************************************************	
 {
 * gen refus variable
@@ -714,7 +772,7 @@ replace el_refus=1 if id_plateforme== 901
 }
 
 ***********************************************************************
-* PART 11: Create dummy variables
+* PART 6: Create dummy variables
 ***********************************************************************	
 {
 *dummy variables for dig_rev & dig_invest (extensive margins)
@@ -746,7 +804,7 @@ lab var profit_2024_pos "Profit 2024 > 0"
 }
 
 ***********************************************************************
-* 	PART 12:   generate survey-to-survey growth rates
+* PART 7:   generate survey-to-survey growth rates
 ***********************************************************************
 {
 *generate uniform variable names for accounting variable to do growth rates, between 2023 and 2024 values choose larger one
@@ -788,7 +846,7 @@ replace ssa_action5 = 1 if surveyround==3 & inno_produit>0 & inno_produit!=.
 }
 
 ***********************************************************************
-*PART 13: Create an aggregate measure for ssa for treatment firms
+* PART 8: Create an aggregate measure for ssa for treatment firms
 ***********************************************************************	
 {
 gen ssa_aggregate = .
@@ -803,15 +861,7 @@ label value ssa_aggregate yesno1
 }
 
 ***********************************************************************
-* 	Part 14: Final check to convert all remaining refusal codes to missing
-***********************************************************************
-ds, has(type numeric)
-foreach var of varlist `r(varlist)' {
-    replace `var' = . if inlist(`var', 666, -666, 777, -777, 888, -888,8888,999,-999)
-}
-
-***********************************************************************
-* 	Part 15: Create growth variabe
+* Part 9: Create growth variabe
 ***********************************************************************
 {
 // First, make sure the data is sorted by id_plateforme and surveyround
@@ -914,6 +964,7 @@ label values ssa_any_abs_growth yesno2
 ***********************************************************************
 * 	PART 16: export excel for semrush analysis
 ***********************************************************************
+/*
 {
 preserve
 	keep if surveyround == 1
@@ -933,6 +984,7 @@ preserve
 restore
 	
 }
+*/
 ***********************************************************************
 * 	Save the changes made to the data		  			
 ***********************************************************************
@@ -1182,28 +1234,28 @@ local bpi "fte comp_ca2020 comp_benefice2020"
 
 * IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to MVs
 foreach var of local bpi {
-    gen temp_`var' = `var'
-    replace temp_`var' = . if `var' == 999 // don't know transformed to zeros
-    replace temp_`var' = . if `var' == 888 
-    replace temp_`var' = . if `var' == 777 
-    replace temp_`var' = . if `var' == 666 
-	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
-    replace temp_`var' = . if `var' == -888 
-    replace temp_`var' = . if `var' == -777 
-    replace temp_`var' = . if `var' == -666 
+    gen t_`var' = `var'
+    replace t_`var' = . if `var' == 999 // don't know transformed to zeros
+    replace t_`var' = . if `var' == 888 
+    replace t_`var' = . if `var' == 777 
+    replace t_`var' = . if `var' == 666 
+	replace t_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace t_`var' = . if `var' == -888 
+    replace t_`var' = . if `var' == -777 
+    replace t_`var' = . if `var' == -666 
 }
 
 		* calcuate the z-score for each variable
 foreach var of local bpi {
-	sum temp_`var' if treatment == 0
-	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+	sum t_`var' if treatment == 0
+	gen t_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
 }
 
 	* calculate the index value: average of zscores
 			*Digital sales index
-egen bpi_2020 = rowmean(temp_ftez temp_comp_ca2020z temp_comp_benefice2020z)
+egen bpi_2020 = rowmean(t_ftez t_comp_ca2020z t_comp_benefice2020z)
 
-drop temp_*
+drop t_*
 
 }
 
@@ -1294,45 +1346,45 @@ local all_index `dsi' `dmi' `dtp' `eri' `epi' `bpi' `invest'
 
 * IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros
 foreach var of local all_index {
-    gen temp_`var' = `var'
-    replace temp_`var' = . if `var' == 999 // don't know transformed to missing values
-    replace temp_`var' = . if `var' == 888 
-    replace temp_`var' = . if `var' == 777 
-    replace temp_`var' = . if `var' == 666 
-	replace temp_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
-    replace temp_`var' = . if `var' == -888 
-    replace temp_`var' = . if `var' == -777 
-    replace temp_`var' = . if `var' == -666 
+    gen t_`var' = `var'
+    replace t_`var' = . if `var' == 999 // don't know transformed to missing values
+    replace t_`var' = . if `var' == 888 
+    replace t_`var' = . if `var' == 777 
+    replace t_`var' = . if `var' == 666 
+	replace t_`var' = . if `var' == -999 // added - since we transformed profit into negative in endline
+    replace t_`var' = . if `var' == -888 
+    replace t_`var' = . if `var' == -777 
+    replace t_`var' = . if `var' == -666 
 }
 
 		* calcuate the z-score for each variable
 foreach var of local all_index {
-	sum temp_`var' if treatment == 0
-	gen temp_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
+	sum t_`var' if treatment == 0
+	gen t_`var'z = (`var' - r(mean))/r(sd) /* new variable gen is called --> varnamez */
 }
 
 	* calculate the index value: average of zscores
 			*Digital sales index
-egen dsi= rowmean(temp_dig_presence1z temp_dig_presence2z temp_dig_presence3z temp_dig_payment2z temp_dig_payment3z  temp_web_use_contactsz temp_web_use_cataloguez temp_web_use_engagementz temp_web_use_comz temp_web_use_brandz temp_sm_use_contactsz temp_sm_use_cataloguez temp_sm_use_engagementz temp_sm_use_comz temp_sm_use_brandz temp_dig_miseajour1z temp_dig_miseajour2z temp_dig_miseajour3z)
+egen dsi= rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z t_dig_payment2z t_dig_payment3z  t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
 
 			*Digital marketing index
-egen dmi = rowmean(temp_mark_online1z temp_mark_online2z temp_mark_online3z temp_mark_online4z temp_mark_online5z)
+egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_mark_online5z)
 			
 			*Digital Technology Perception
-egen dtp = rowmean(temp_investecom_benefit1z temp_investecom_benefit2z)
+egen dtp = rowmean(t_investecom_benefit1z t_investecom_benefit2z)
 	
 			*Digital technology adoption index
 egen dtai = rowmean(dsi dmi)		
 			
 			*Export readiness index
-egen eri = rowmean(temp_exp_pra_foirez temp_exp_pra_sciz temp_exp_pra_normez temp_exp_pra_ventz temp_exp_pra_achz)			
+egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz)			
 			
 			*Export performance index
-egen epi = rowmean(temp_export_1z temp_export_2z temp_exp_paysz temp_clients_b2cz temp_clients_b2bz temp_exp_digz)			
+egen epi = rowmean(t_export_1z t_export_2z t_exp_paysz t_clients_b2cz t_clients_b2bz t_exp_digz)			
 			
 			*Business performance index
-egen bpi_2023 = rowmean(temp_ftez temp_comp_ca2023z temp_comp_benefice2023z)
-egen bpi_2024 = rowmean(temp_ftez temp_comp_ca2024z temp_comp_benefice2024z)
+egen bpi_2023 = rowmean(t_ftez t_comp_ca2023z t_comp_benefice2023z)
+egen bpi_2024 = rowmean(t_ftez t_comp_ca2024z t_comp_benefice2024z)
 
 		* labeling
 label var dsi "Digital sales index -Z Score"
