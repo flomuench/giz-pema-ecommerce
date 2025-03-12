@@ -20,7 +20,7 @@
 * 	PART 1: Import the data
 ***********************************************************************
 
-use "${bl2_intermediate}/Webpresence_answers_intermediate", clear
+use "${webpresence_intermediate}/Webpresence_answers_intermediate", clear
 
 ***********************************************************************
 * 	PART 2: Generate date		  			
@@ -33,7 +33,7 @@ lab var social_last_formated "formated date of last social media post"
 ***********************************************************************
 * 	PART 3: Generate multiple-choice questions		  			
 ***********************************************************************
-
+{
 	*social media accounts score
 gen linkedin = regexm(social_others, "linkedin")
 lab var linkedin "dummy variable for linkedin"
@@ -127,6 +127,8 @@ lab var facebook_creation_formated "formated date of facebook creation day"
 gen facebook_age = round((td(05sep2022)-facebook_creation_formated)/365.25,.01)
 lab var facebook_age "age of facebook account"
 
+}
+
 ***********************************************************************
 * 	PART 4: Generate date difference facebook posts		  			
 ***********************************************************************
@@ -137,11 +139,46 @@ lab var datediff "difference between last two facebook publications in days"
 gen posting_rate= 1/datediff
 lab var posting_rate "1/days between two last posts"
 
+
+***********************************************************************
+* 	PART 5: Remove duplicates		
+***********************************************************************
+duplicates tag id_plateforme, generate(dup)
+order dup, a(id_plateforme)
+
+	* two observations (duplicate) in the same surveyround
+drop if id_plateforme == 386 & facebook_creation == "9/9/2024"
+drop if id_plateforme == 453 & web_externals == 2 // identification with incoherent website link
+
+gen webpresence_not_found_el = (dup < 1)
+	
+***********************************************************************
+* 	PART 5: Generate a surveyround identifier		
+***********************************************************************
+sort submission_date, stable
+
+gen surveyround = ., a(submission_date)
+
+	replace surveyround = 1 in 1/236
+	replace surveyround = 3 in 237/452
+
+order id_plateforme surveyround submission_date, first
+
+xtset id_plateforme surveyround
+
+tsfill, full
+
+
+drop dup
+duplicates tag id_plateforme, generate(dup)
+drop dup
+
+
+
 ***********************************************************************
 * 	PART 6: 	Save the data
 ***********************************************************************
 
-save "${bl2_final}/Webpresence_answers_final", replace
+save "${webpresence_final}/Webpresence_answers_final", replace
 
 
-*hbar (Count), over(binary_var1)

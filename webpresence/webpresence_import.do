@@ -15,19 +15,19 @@
 *	ID variable: 		id_platforme  									  
 *	Requires:			Webpresence answers.xlsx
 *	Creates:			Webpresence_answers_intermediate	Webpresence_answers_raw.dta
-*	Creates:			bl2_Idwebsites.xlsv					bl2_Idwebsites.dta				
+*	Creates:			webpresence_Idwebsites.xlsv					webpresence_Idwebsites.dta				
 		
 ***********************************************************************
 * 	PART 1: import the answers from questionnaire as Excel				  										  *
 ***********************************************************************
 
-import excel "${bl2_raw}/Webpresence answers.xlsx", firstrow clear
+import excel "${webpresence_raw}/Webpresence answers_bl_el.xlsx", firstrow clear
 
 ***********************************************************************
 * 	PART 2: export raw data as dta				  										  *
 ***********************************************************************
 
-save "${bl2_raw}/Webpresence_answers_raw", replace
+save "${webpresence_raw}/Webpresence_answers_raw", replace
 
 ***********************************************************************
 * 	PART 3: remove websites and save it in separate CSV/DTA with id 			  						
@@ -43,8 +43,8 @@ drop Zeitstempel Quelestvotrenometprénom Lentreprisedisposetelledun LesiteWebin
  
 rename Quelestlidentifiantdelapla id_platforme
 rename Veuillezcollerleliendusite Website
-save "${bl2_intermediate}/bl2_IdWebsites", replace
-export excel "${bl2_intermediate}/b12_Idwebsites", replace
+save "${webpresence_intermediate}/webpresence_IdWebsites", replace
+export excel "${webpresence_intermediate}/b12_Idwebsites", replace
 restore
 drop Veuillezcollerleliendusite
 
@@ -52,4 +52,4 @@ drop Veuillezcollerleliendusite
 * 	PART 4: save the answers as dta file in intermediate folder 			  						
 ***********************************************************************
 
-save "${bl2_intermediate}/Webpresence_answers_intermediate", replace
+save "${webpresence_intermediate}/Webpresence_answers_intermediate", replace

@@ -15,6 +15,7 @@
 ***********************************************************************
 use "${master_intermediate}/ecommerce_master_inter", clear
 
+{
 /*Take-up data
 replace groupe = "Sfax 1" if id_plateforme==78
 replace groupe = "Sidi Bouzid" if id_plateforme==82
@@ -189,6 +190,8 @@ replace dig_service_satisfaction=0 if id_plateforme== 541 & surveyround==1
 replace dig_service_satisfaction=1 if id_plateforme== 545 & surveyround==1
 replace dig_service_satisfaction=1 if id_plateforme== 623 & surveyround==1
 replace dig_service_satisfaction=0 if id_plateforme== 910 & surveyround==1
+
+replace dig_service_satisfaction=0 if dig_service_satisfaction == -999
 		
 	*dig_revenues_ecom (Online sales)
 replace dig_revenues_ecom= 99381 if id_plateforme== 78 & surveyround==1
@@ -204,9 +207,12 @@ replace dig_revenues_ecom= 0 if id_plateforme== 795 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 909 & surveyround==1
 replace dig_revenues_ecom= 0 if id_plateforme== 899 & surveyround==1
 
+}
+
 ***********************************************************************
-* 	PART 2: Correction mid-line
+* 	PART 2: Correction midline
 ***********************************************************************
+{
 	*dig_presence1 (does the company have a website?)
 *Id_plateforme 85 is not working now
 replace dig_presence1=0 if id_plateforme==85 & surveyround==2
@@ -464,6 +470,9 @@ replace dig_revenues_ecom= 50000 if id_plateforme== 875 & surveyround==2
 * Other corrections
 replace fte= 15 if id_plateforme== 767 & surveyround==2
 
+}
+
+
 ***********************************************************************
 * 	PART 3: endline data (surveyround==3)
 ***********************************************************************
@@ -626,34 +635,37 @@ replace comp_ca2024 = 48000000 if id_plateforme == 443  & surveyround == 3
 replace compexp_2023 = 26000000 if id_plateforme == 443  & surveyround == 3
 replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
 */
+
+
 ***********************************************************************
-* 	PART 4: Replacing missing values with zeros where applicable
+* 	PART 4: Drop unnecesary variables
 ***********************************************************************
-*Definition of all variables that are being used in index calculation*
-local allvars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3 dig_payment1 dig_payment2 dig_payment3 dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per dig_description1 dig_description2 dig_description3 dig_mar_res_per dig_ser_res_per exp_prep_res_per 
+drop dig_presence_score treatment_email
 
-*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros 
-*because missing values or "I don't know" in practice-related variable 
-*are mostly due to the fact that the company did not get to fill out this part 
-*of the survey because they were screened out for this section 
-*or if they don't know whether they are having a particular business practice it is quite probable that they dont perform it
+***********************************************************************
+* 	PART 5: Account for filter on e-commerce tools
+***********************************************************************
+* if company does not use a specific e-commerce tool (website, social media or platform), replace linked questions with zeros
 
-
-foreach var of local  allvars {
-	replace `var' = 0 if `var' == .
-	replace `var' = 0 if `var' == -999
-	replace `var' = 0 if `var' == -888
-	replace `var' = 0 if `var' == -777
-	replace `var' = 0 if `var' == -1998
-	replace `var' = 0 if `var' == -1776 
-	replace `var' = 0 if `var' == -1554
+local vars "dig_description dig_miseajour dig_payment"
+forvalues x = 1(1)3 {
+	foreach var of local vars {
+	replace `var'`x' = 0 if dig_presence`x' == 0 & `var'`x' == .
+	}
 }
 
-*For financial data: replace "Don't know (-999) and refusal with missing value"
 
-local finvars dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5
+***********************************************************************
+* 	PART 6: Clean financial variables MVs
+***********************************************************************
+{
+local finvars dig_rev_per dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 comp_benefice2023 comp_benefice2024 comp_ca2020 comp_ca2023 comp_ca2024
 
 foreach var of local  finvars {
+	replace `var' = . if `var' ==  999
+	replace `var' = . if `var' ==  888
+	replace `var' = . if `var' ==  777
+	replace `var' = . if `var' ==  666
 	replace `var' = . if `var' == -999
 	replace `var' = . if `var' == -888
 	replace `var' = . if `var' == -777
@@ -662,5 +674,82 @@ foreach var of local  finvars {
 	replace `var' = . if `var' == -1554
 }
 
+	* specific corrections (FM 03.10.25)
+		* Export value 2020
+replace compexp_2020 = 0 if compexp_2020 == 0.4
+replace compexp_2020 = 0 if compexp_2020 == 1
 
+replace comp_ca2020 = 0 if comp_ca2020 == 1
+
+		* Percentage digital revenue
+replace dig_rev_per = . if dig_rev_per == 12
+
+
+
+{
+*Definition of all variables that are being used in index calculation*
+	* following line should be deleted or commented out cause otherwise ML & EL values wrongly replaced with 0s
+* local bl_know_vars dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con6_score 
+
+* local presence_vars dig_presence_score dig_presence3_exscore dig_miseajour1 dig_miseajour2 dig_miseajour3
+	* deleted: 
+		* dig_presence_score (simple sum of dig_presence1-3 but MV for EL, create in generate)
+	* commented out:
+		* dig_presence3_exscore ()
+	* corrected code (see part "account for filter on e-commerce tools")
+		* dig_miseajour1 dig_miseajour2 dig_miseajour3
+		* dig_payment1 dig_payment2 dig_payment3 
+
+*local marketing_vars "dig_vente dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 dig_marketing_score dig_logistique_entrepot dig_logistique_retour_score dig_service_responsable dig_service_satisfaction 
+
+
+*local expprep_cible expprep_norme expprep_demande exp_pays_avg exp_per  dig_mar_res_per dig_ser_res_per exp_prep_res_per 
+
+*IMPORTANT MODIFICATION: Missing values, Don't know, refuse or needs check answers are being transformed to zeros 
+*because missing values or "I don't know" in practice-related variable 
+*are mostly due to the fact that the company did not get to fill out this part 
+*of the survey because they were screened out for this section 
+*or if they don't know whether they are having a particular business practice it is quite probable that they dont perform it
+
+/*
+foreach var of local  allvars {
+	replace `var' = 0 if `var' == .
+	replace `var' = 0 if `var' == -999
+	replace `var' = 0 if `var' == -888
+	replace `var' = 0 if `var' == -777
+	replace `var' = 0 if `var' == -1998
+	replace `var' = 0 if `var' == -1776 
+	replace `var' = 0 if `var' == -1554
+} */
+
+*For financial data: replace "Don't know (-999) and refusal with missing value"
+
+}
+
+}
+
+***********************************************************************
+* 	PART 7: extent treatment status to additional surveyrounds
+***********************************************************************
+bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
+bysort id_plateforme (surveyround): replace strata = strata[_n-1] if strata == . 
+
+
+***********************************************************************
+* 	PART 8: harmonize digital presence weight across surveys
+***********************************************************************
+forvalues x = 1(1)3 {
+	replace dig_presence`x' = 0.33 if dig_presence`x' == 1 & surveyround == 3 
+}
+
+
+***********************************************************************
+* 	PART 9: create harmonized n of digital employees variable
+***********************************************************************
+replace dig_empl = dig_service_responsable if dig_empl == . & dig_service_responsable != .
+drop dig_service_responsable
+
+***********************************************************************
+* 	PART 7: save
+***********************************************************************
 save "${master_intermediate}/ecommerce_master_inter", replace

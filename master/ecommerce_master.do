@@ -26,9 +26,9 @@ set more off
 *set graphics off /* switch off to on to display graphs */
 capture program drop zscore /* drops the program programname */
 qui cap log c
-set scheme burd
-set scheme cleanplots
-set scheme plotplain
+*set scheme burd
+*set scheme cleanplots
+*set scheme plotplain
 
 	* install packages
 
@@ -50,6 +50,7 @@ ssc install mipolate, replace
 ssc install dtable, replace
 */
 }
+
 ***********************************************************************
 * 	PART 2: 	Prepare dynamic folder paths & globals
 ***********************************************************************
@@ -72,6 +73,11 @@ if "`c(username)'" == "wb603971" {
 
 		global gdrive = "C:/Users/wb603971/Documents"
 	}	
+	
+if "`c(username)'" == "fmuench" { 
+
+		global gdrive = "C:/Users/fmuench/Documents"
+	}
 
 		if c(os) == "Windows" {
 	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
@@ -102,7 +108,9 @@ global bl_final = "${gdrive}/2-baseline/final"
 global bl_checks = "${gdrive}/2-baseline/checks"
 global bl_output = "${gdrive}/2-baseline/output"
 
-global bl2_final ="${gdrive}/2b-baseline presence enligne/final"
+global webpresence_final = "${gdrive}/2b-baseline presence enligne/final"
+global webpresence_raw = "${gdrive}/2b-baseline presence enligne/raw"
+
 global regis_raw = "${gdrive}/1-registration/raw"
 global regis_intermediate "${gdrive}/1-registration/intermediate"
 global regis_final = "${gdrive}/1-registration/final"
@@ -133,7 +141,7 @@ set sortseed 8413195
 }	
 
 ***********************************************************************
-* 	PART 3: 	Run ecommerce do-files			  	 				  *
+* 	PART 3: 	Run ecommerce data processing do-files
 ***********************************************************************
 /*--------------------------------------------------------------------
 	PART 3.1: Merge and update pii data
@@ -199,6 +207,7 @@ if (0) do "${master_github}/master_regression_el.do"
 	PART 4.6: Endline heterogeneity
 ----------------------------------------------------------------------*/
 if (0) do "${master_github}/master_heterogeneity_el.do"
+
 ***********************************************************************
 * 	PART 5:		Build coordinates map
 ***********************************************************************

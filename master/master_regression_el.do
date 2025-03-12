@@ -183,21 +183,22 @@ comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz
 * 	PART 1: Attrition
 ***********************************************************************
 {
+{
 *test for differential total attrition
 {
 	* is there differential attrition between treatment and control group?
 		* column (1): at endline
-eststo att1, r: areg el_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
+eststo att1, r: areg attrited i.treatment if surveyround == 3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 		
 		* column (2): at midline
-eststo att2, r: areg ml_refus i.treatment if surveyround == 1, absorb(strata) cluster(id_plateforme)
+eststo att2, r: areg attrited i.treatment if surveyround == 2, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
 
 local attrition att1 att2
 esttab `attrition' using "el_attrition.tex", replace ///
 	title("Attrition: Total") ///
-	mtitles("BL" "ML") ///
+	mtitles("EL" "ML") ///
 	label ///
 	b(3) ///
 	se(3) ///
@@ -210,6 +211,7 @@ esttab `attrition' using "el_attrition.tex", replace ///
 
 *test for selective attrition on key outcome variables (measured at baseline)
       
+**# Bookmark #1
 {
 		* c(1): dig_marketing_index
 eststo att4,r: areg   dig_marketing_index treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
@@ -292,6 +294,51 @@ esttab `ml_attrition' using "el_attrition_ml_outcomes.tex", replace ///
 	addnotes("Notes: All Columns consider only endline response behaviour."  "All standard errors are Huber-White robust standord errors clustered at the firm level." "Indexes are z-score as defined in Kling et al. 2007.")
 }
 
+}
+
+
+***********************************************************************
+* 	PART 2: Regressions for paper tables
+***********************************************************************
+{
+* Table 1: Variables: E-commerce knowledge	E-commerce adoption	E-commerce perception	E-commerce sales	E-commerce employees
+
+* view variables to check if consistent
+br id_plateforme surveyround attrited knowledge dtai_survey dtai_manual dig_empl perception dig_revenues_ecom treatment strata
+
+	* to check: 1) add bl_missing dummy, 2) review perception & e-commerce sales variables
+reg knowledge i.treatment L1.knowledge i.strata if surveyround == 2, cluster(id_plateforme) 
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+* reg perception i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_empl i.treatment L2.dig_empl i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_revenues_ecom i.treatment L2.dig_revenues_ecom i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_invest i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+
+
+* Table 2: Variables: Online visibility	Online payment	Website use	Social media use	Digital Marketing use
+reg presence_survey i.treatment L2.presence_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg presence_manual i.treatment L2.presence_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg payment_survey i.treatment L2.payment_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg payment_manual i.treatment L2.payment_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_survey i.treatment L2.use_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_manual i.treatment L2.use_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_website_survey i.treatment L2.use_website_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_website_manual i.treatment L2.use_website_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_sm_survey i.treatment L2.use_sm_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_sm_manual i.treatment L2.use_sm_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_fb_manual i.treatment L2.use_fb_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_insta_manual i.treatment L2.use_insta_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg use_insta_manual i.treatment L2.use_insta_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dmi i.treatment L2.dmi i.strata if surveyround == 3, cluster(id_plateforme) 
+
+
+* Table 3: E-commere technology perception
+reg perception i.treatment i.strata if surveyround == 2, cluster(id_plateforme) 
+reg investcom_benefit1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+
+
+}
 
 ***********************************************************************
 * 	PART 2: Write a program that generates generic regression table	
@@ -436,7 +483,6 @@ end
 ***********************************************************************
 * 	PART 3: Endline results - regression table for each variable	
 ***********************************************************************
-
 {
 	* generate regression table for
 		* z-scores	
@@ -454,6 +500,7 @@ rct_regression_table ihs_digrev_99 // MISSING VARS BASELINE: ihs_dig_invest_99 i
 rct_regression_table ihs_fte_99 fte_femmes car_carempl_div3  // MISSING VARS BASELINE: dig_empl car_carempl_div2
 
 }
+
 ***********************************************************************
 * 	PART 4: Endline results - regression table index outcomes
 ***********************************************************************
