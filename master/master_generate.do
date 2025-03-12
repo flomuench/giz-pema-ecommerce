@@ -639,7 +639,7 @@ egen use_manual = rowmean(t_social_logonamez t_social_external_websitez t_social
 				* Payment: Website + Social media
 egen payment_survey = rowmean(t_dig_payment1z t_dig_payment2z t_dig_payment3z)
 
-egen payment_manual = rowmean(t_dig_payment1z t_dig_payment2z t_dig_payment3z)
+egen payment_manual = rowmean(t_web_purchasez t_web_external_purchasez t_facebook_shopz)   
 		
 				* Digital Marketing
 egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_mark_online5z t_dig_marketing_scorez t_dig_dummyz t_dig_marketing_dummyz t_dig_marketing_num19_seaz t_dig_marketing_num19_seoz t_dig_marketing_num19_blgz t_dig_marketing_num19_pubz t_dig_marketing_num19_mailz t_dig_marketing_num19_prtnz t_dig_marketing_num19_socmz)

@@ -210,7 +210,7 @@ replace dig_revenues_ecom= 0 if id_plateforme== 899 & surveyround==1
 }
 
 ***********************************************************************
-* 	PART 2: Correction mid-line
+* 	PART 2: Correction midline
 ***********************************************************************
 {
 	*dig_presence1 (does the company have a website?)
@@ -658,6 +658,7 @@ forvalues x = 1(1)3 {
 ***********************************************************************
 * 	PART 6: Clean financial variables MVs
 ***********************************************************************
+{
 local finvars dig_rev_per dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 comp_benefice2023 comp_benefice2024 comp_ca2020 comp_ca2023 comp_ca2024
 
 foreach var of local  finvars {
@@ -725,12 +726,13 @@ foreach var of local  allvars {
 
 }
 
-
+}
 
 ***********************************************************************
 * 	PART 7: extent treatment status to additional surveyrounds
 ***********************************************************************
 bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
+bysort id_plateforme (surveyround): replace strata = strata[_n-1] if strata == . 
 
 
 ***********************************************************************
