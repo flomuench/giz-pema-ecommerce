@@ -47,7 +47,6 @@ lab def treatment_status 0 "Control" 1 "Treatment"
 lab values treatment treatment_status
 
 	* surveyround
-lab drop surveyround_lab
 lab def surveys 1 "baseline" 2 "midline" 3 "endline"
 lab values surveyround surveys
 

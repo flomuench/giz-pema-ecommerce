@@ -50,17 +50,41 @@ rename lprice prix
 */
 
 ***********************************************************************
-* 	PART 0.2:  set the stage - generate export & business performance z-scores
+* 	PART 0.2:  set the stage - generate missing baseline dummy
 ***********************************************************************
 
 {
+
+local tech_adop_indexes "knowledge dtai_manual dtai_survey" 
+
+local tech_adop_subindexes "presence_manual presence_survey payment_manual payment_survey use_manual use_survey use_website_manual use_website_survey use_sm_manual use_sm_survey use_fb_manual use_insta_manual dmi"
+
+local tech_perf "dig_empl dig_revenues_ecom ihs_digrevenue w95_dig_rev20 w97_dig_rev20 w99_dig_rev20 w99_dig_revenues_ecom w97_dig_revenues_ecom w95_dig_revenues_ecom ihs_digrev_99 ihs_digrev_97 ihs_digrev_95"
+
+local tech_perc "perception investecom_benefit1 investecom_benefit2"
+	 	 
+local outcomes 
+
+foreach var of local outcomes {
+	
+	bys id_plateforme (surveyround): gen temp_miss_bl_`var' = (`var' == .) if surveyround == 1
+	
+	egen miss_bl_`var' = min(temp_miss_bl_`var'), by(id_plateforme)
+	
+	replace `var' = 0 if surveyround == 1 & miss_bl_`var' == 1
+
+	drop temp_miss_bl_`var'
+}
+
+
+/*
 local indexes ///
 	 dig_presence_index dsi dmi dtp dtai eri epi bpi_2023 bpi_2024 ihs_digrev_99 ihs_ca99_2023 comp_ca2024 ihs_profit99_2023 ihs_profit99_2024 ihs_fte_99 dig_empl fte_femmes car_carempl_div3 ihs_mark_invest_99 ///
 	 export_1 exp_pays clients_b2c clients_b2b ihs_ca97_2024 ihs_dig_invest_99 dig_margins exp_dig ihs_dig_empl_99 dig_rev_extmargin dig_invest_extmargin profit_2023_pos profit_2024_pos ///
 	 ihs_fte_femmes_99 ihs_fte_young_99 ihs_clients_b2b_99 mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 cost_2023 cost_2024 ihs_cost97_2023 ihs_cost97_2024 ihs_clients_b2c_97 ///
-	 exported exported_2024 export_41 export_42 export_43 export_44 export_45 ihs_exports97_2023 ihs_exports97_2024
-
-foreach var of local indexes {
+	 exported exported_2024 export_41 export_42 export_43 export_44 export_45 ihs_exports97_2023 ihs_exports97_2024	
+	
+foreach var of local outcomes {
 		* generate YO
 	bys id_plateforme (surveyround): gen `var'_first = `var'[_n == 1]		 // filter out baseline value
 	egen `var'_y0 = min(`var'_first), by(id_plateforme)					 // create variable = bl value for all three surveyrounds by id_plateforme
@@ -75,6 +99,7 @@ foreach var of local indexes {
 	drop miss_bl_`var'
 	}
 }
+*/
 
 ***********************************************************************
 * 	PART 0.3:  balance table

@@ -944,8 +944,7 @@ lab var ssa_action2_abs_growth "Change in Identification commercial partner"
 lab var ssa_action3_abs_growth "Change in External export finance"
 lab var ssa_action4_abs_growth "Change in Investment in sales structure abroad"
 lab var ssa_action5_abs_growth "Change in Digital transaction system"
-label define surveyround_lab 1 "Baseline" 2 "Mid-line" 3"Endline" 
-label values surveyround surveyround_lab
+
 
 
 label define yesno2 0 "no improvement" 1 "improvement"
