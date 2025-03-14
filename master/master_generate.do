@@ -105,12 +105,13 @@ lab var groupe2 "Classroom training in Tunis(1) or outside(0)"
 }
 
 ***********************************************************************
-* PART 2. Intermediate variables or change variables created in baseline
+* PART 2. Create dummy variables
 ***********************************************************************	
 {
 *Since most firms have at most zero, one or two FTE and online orders 
 *we use a dummyary indicator instead of continous or share of FTE, which sometimes
 *leads to absurd, difficult to compare figures (small firms have 5/6 employees working on it, others 1/180)
+
 
 gen dig_dummy = .
 	replace dig_dummy = 0 if dig_empl == 0
@@ -126,6 +127,34 @@ gen expprep_dummy = .
 	replace expprep_dummy = 0 if expprep_dummy == 0
 	replace expprep_dummy = 1 if expprep_dummy>0 & expprep_dummy<.
 lab var expprep_dummy "Firm has employee dealing with exports"
+
+
+
+*dummy variables for dig_rev & dig_invest (extensive margins)
+	*dig_rev
+gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0 & dig_revenues_ecom != .
+replace dig_rev_extmargin = . if dig_revenues_ecom == .
+replace dig_rev_extmargin = 0 if dig_revenues_ecom == 0
+lab var dig_rev_extmargin "Digital revenue > 0"
+
+*dig_invest
+gen dig_invest_extmargin = 1 if dig_invest > 0
+replace dig_invest_extmargin = . if dig_invest == .
+replace dig_invest_extmargin = 0 if dig_invest == 0
+lab var dig_invest_extmargin "Digital invest > 0"
+
+	*profit2023 positive
+gen profit_2023_pos = 1 if comp_benefice2023 >= 0
+replace profit_2023_pos = 0 if comp_benefice2023 < 0
+lab var profit_2023_pos "Profit 2023 > 0"
+
+
+	*profit2024 possible
+gen profit_2024_pos = 1 if comp_benefice2024 >= 0
+replace profit_2024_pos = 0 if comp_benefice2024 < 0
+lab var profit_2024_pos "Profit 2024 > 0"
+
+
 
 *generate sector dummies as ordinal/categorical variable has no meaning
 gen agri=0
@@ -220,12 +249,17 @@ lab var ihs_ca95_2020 "IHS of revenue in 2020, wins.95th"
 
 
 * digital revenues
-winsor dig_revenues_ecom, gen(w95_dig_rev20) p(0.05) highonly
-ihstrans w95_dig_rev20
-winsor dig_revenues_ecom, gen(w97_dig_rev20) p(0.03) highonly
-ihstrans w97_dig_rev20
-winsor dig_revenues_ecom, gen(w99_dig_rev20) p(0.01) highonly
-ihstrans w99_dig_rev20
+winsor dig_revenues_ecom, gen(dig_rev_w95) p(0.05) highonly
+	gen ihs_dig_rev_w95 = log(dig_rev_w95 + sqrt((dig_rev_w95*dig_rev_w95)+1))
+	lab var ihs_dig_rev_w95 "IHS of digital revenues from ecommerce, wins.99th"
+
+winsor dig_revenues_ecom, gen(dig_rev_w97) p(0.03) highonly
+	gen ihs_dig_rev_w97 = log(dig_rev_w97 + sqrt((dig_rev_w97*dig_rev_w97)+1))
+	lab var ihs_dig_rev_w97 "IHS of digital revenues from ecommerce, wins.97th"
+
+winsor dig_revenues_ecom, gen(dig_rev_w99) p(0.01) highonly
+	gen ihs_dig_rev_w99 = log(dig_rev_w99 + sqrt((dig_rev_w99*dig_rev_w99)+1))
+	lab var ihs_dig_rev_w99 "IHS of digital revenues from ecommerce, wins.99th"
 
 *re-generate total profit with additional winsors
 
@@ -245,22 +279,6 @@ lab var ihs_profit_2020_95 "IHS of profit in 2020, wins.95th"
 
 	* numeric survey data
 {
-*generate values for digital revenues
-replace dig_revenues_ecom = ((dig_revenues_ecom*0.01)*comp_ca2023) if surveyround ==3 & dig_revenues_ecom!=99
-
-winsor dig_revenues_ecom, gen(w99_dig_revenues_ecom) p(0.01) highonly
-winsor dig_revenues_ecom, gen(w97_dig_revenues_ecom) p(0.03) highonly
-winsor dig_revenues_ecom, gen(w95_dig_revenues_ecom) p(0.05) highonly
-
-
-gen ihs_digrev_99 = log(w99_dig_revenues_ecom + sqrt((w99_dig_revenues_ecom*w99_dig_revenues_ecom)+1))
-lab var ihs_digrev_99 "IHS of digital revenues from ecommerce, wins.99th"
-
-gen ihs_digrev_97 = log(w97_dig_revenues_ecom + sqrt((w97_dig_revenues_ecom*w97_dig_revenues_ecom)+1))
-lab var ihs_digrev_97 "IHS of digital revenues from ecommerce, wins.97th"
-
-gen ihs_digrev_95 = log(w95_dig_revenues_ecom + sqrt((w95_dig_revenues_ecom*w95_dig_revenues_ecom)+1))
-lab var ihs_digrev_95 "IHS of digital revenues from ecommerce, wins.95th"
 
 *Digital investment
 winsor dig_invest, gen(w99_dig_invest) p(0.01) highonly
@@ -335,9 +353,9 @@ gen ihs_clients_b2b_95 = log(w95_clients_b2b + sqrt((w95_clients_b2b*w95_clients
 lab var ihs_clients_b2b_95 "IHS of number of international companies, wins.95th"
 
 *dig_empl
-winsor dig_empl if surveyround==3, gen(w99_dig_empl) p(0.01)
-winsor dig_empl if surveyround==3, gen(w97_dig_empl) p(0.03) 
-winsor dig_empl if surveyround==3, gen(w95_dig_empl) p(0.05) 
+winsor dig_empl, gen(w99_dig_empl) p(0.01)
+winsor dig_empl, gen(w97_dig_empl) p(0.03) 
+winsor dig_empl, gen(w95_dig_empl) p(0.05) 
 
 gen ihs_dig_empl_99 = log(w99_dig_empl + sqrt((w99_dig_empl*w99_dig_empl)+1))
 lab var ihs_dig_empl_99 "IHS of number of digital employees, wins.99th"
@@ -348,9 +366,9 @@ lab var ihs_dig_empl_95 "IHS of number of digital employees, wins.95th"
 
 
 *clients_b2c
-*winsor clients_b2c if surveyround==3, gen(w99_clients_b2c) p(0.01) 
-winsor clients_b2c if surveyround==3, gen(w97_clients_b2c) p(0.03) 
-winsor clients_b2c if surveyround==3, gen(w95_clients_b2c) p(0.05) 
+*winsor clients_b2c, gen(w99_clients_b2c) p(0.01) 
+winsor clients_b2c, gen(w97_clients_b2c) p(0.03) 
+winsor clients_b2c, gen(w95_clients_b2c) p(0.05) 
 
 *gen ihs_clients_b2c_99 = log(w99_clients_b2c + sqrt((w99_clients_b2c*w99_clients_b2c)+1))
 *lab var ihs_clients_b2c_99 "IHS of number of international orders, wins.99th"
@@ -549,7 +567,7 @@ local use_manual "`use_manual_website' `use_manual_sm' `use_manual_facebook' `us
 local payment_manual "web_purchase web_external_purchase facebook_shop"
 
 		* E-commerce perception
-local perception "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5"
+local perception "dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5 dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7"
 
 		
 		* Export readiness
@@ -651,7 +669,7 @@ egen dtai_manual = rowmean(t_entreprise_webz t_entreprise_socialz t_social_faceb
 
 			
 		* E-commerce perception
-egen perception = rowmean(t_dig_perception1z t_dig_perception2z t_dig_perception3z t_dig_perception4z t_dig_perception5z)
+egen perception = rowmean(t_dig_perception1z t_dig_perception2z t_dig_perception3z t_dig_perception4z t_dig_perception5z t_dig_barr1z t_dig_barr2z t_dig_barr3z t_dig_barr4z t_dig_barr5z t_dig_barr6z t_dig_barr7z)
 		
 		* Export readiness
 egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz)	
@@ -771,40 +789,9 @@ replace el_refus=1 if id_plateforme== 901
 
 }
 
-***********************************************************************
-* PART 6: Create dummy variables
-***********************************************************************	
-{
-*dummy variables for dig_rev & dig_invest (extensive margins)
-	*dig_rev
-gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0 & dig_revenues_ecom != .
-replace dig_rev_extmargin = . if dig_revenues_ecom == .
-replace dig_rev_extmargin = 0 if dig_revenues_ecom == 0
-
- 
-lab var dig_rev_extmargin "Digital revenue > 0"
-
-*dig_invest
-gen dig_invest_extmargin = 1 if dig_invest > 0
-replace dig_invest_extmargin = . if dig_invest == .
-replace dig_invest_extmargin = 0 if dig_invest == 0
-
-lab var dig_invest_extmargin "Digital invest > 0"
-
-	*profit2023 positive
-gen profit_2023_pos = 1 if comp_benefice2023 >= 0
-replace profit_2023_pos = 0 if comp_benefice2023 < 0
-
-lab var profit_2023_pos "Profit 2023 > 0"
-	*profit2024 possible
-gen profit_2024_pos = 1 if comp_benefice2024 >= 0
-replace profit_2024_pos = 0 if comp_benefice2024 < 0
-
-lab var profit_2024_pos "Profit 2024 > 0"
-}
 
 ***********************************************************************
-* PART 7:   generate survey-to-survey growth rates
+* PART 6:   generate survey-to-survey growth rates
 ***********************************************************************
 {
 *generate uniform variable names for accounting variable to do growth rates, between 2023 and 2024 values choose larger one

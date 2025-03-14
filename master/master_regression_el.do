@@ -24,9 +24,7 @@
 ***********************************************************************
 
 use "${master_final}/ecommerce_master_final", clear
-		
-		* change directory
-cd "${master_gdrive}/output/endline_regressions"
+
 
 * xtset data to enable use of lag operator for inclusion of baseline value of Y
 xtset id_plateforme surveyround
@@ -59,23 +57,24 @@ local tech_adop_indexes "knowledge dtai_manual dtai_survey"
 
 local tech_adop_subindexes "presence_manual presence_survey payment_manual payment_survey use_manual use_survey use_website_manual use_website_survey use_sm_manual use_sm_survey use_fb_manual use_insta_manual dmi"
 
-local tech_perf "dig_empl dig_revenues_ecom ihs_digrevenue w95_dig_rev20 w97_dig_rev20 w99_dig_rev20 w99_dig_revenues_ecom w97_dig_revenues_ecom w95_dig_revenues_ecom ihs_digrev_99 ihs_digrev_97 ihs_digrev_95"
+local tech_perf "dig_empl dig_invest dig_revenues_ecom ihs_dig_rev_w95 ihs_dig_rev_w97 ihs_dig_rev_w99 ihs_dig_invest_99 ihs_dig_invest_97 ihs_dig_invest_95 ihs_dig_empl_99 ihs_dig_empl_97 ihs_dig_empl_95"
 
 local tech_perc "perception investecom_benefit1 investecom_benefit2"
 	 	 
-local outcomes 
+local outcomes "`tech_adop_indexes' `tech_adop_subindexes' `tech_perf' `tech_perc'"
 
 foreach var of local outcomes {
 	
-	bys id_plateforme (surveyround): gen temp_miss_bl_`var' = (`var' == .) if surveyround == 1
+	bys id_plateforme (surveyround): gen t_miss_bl_`var' = (`var' == .) if surveyround == 1
 	
-	egen miss_bl_`var' = min(temp_miss_bl_`var'), by(id_plateforme)
+	egen miss_bl_`var' = min(t_miss_bl_`var'), by(id_plateforme)
 	
 	replace `var' = 0 if surveyround == 1 & miss_bl_`var' == 1
 
-	drop temp_miss_bl_`var'
-}
+	drop t_miss_bl_`var'
+	}
 
+}
 
 /*
 local indexes ///
@@ -327,18 +326,163 @@ esttab `ml_attrition' using "el_attrition_ml_outcomes.tex", replace ///
 ***********************************************************************
 {
 * Table 1: Variables: E-commerce knowledge	E-commerce adoption	E-commerce perception	E-commerce sales	E-commerce employees
-
+{
 * view variables to check if consistent
 br id_plateforme surveyround attrited knowledge dtai_survey dtai_manual dig_empl perception dig_revenues_ecom treatment strata
+		* E-commerce knowledge
+reg knowledge i.treatment L1.knowledge i.miss_bl_knowledge i.strata if surveyround == 2, cluster(id_plateforme)
+reg knowledge i.take_up L1.knowledge i.miss_bl_knowledge i.strata if surveyround == 2, cluster(id_plateforme)
 
-	* to check: 1) add bl_missing dummy, 2) review perception & e-commerce sales variables
-reg knowledge i.treatment L1.knowledge i.strata if surveyround == 2, cluster(id_plateforme) 
+		* E-commerce perception
+reg perception i.treatment L1.perception i.miss_bl_perception i.strata if surveyround == 2, cluster(id_plateforme)
+reg perception i.take_up L1.perception i.miss_bl_perception i.strata if surveyround == 2, cluster(id_plateforme)
+
+reg perception i.treatment L2.perception i.miss_bl_perception i.strata if surveyround == 3, cluster(id_plateforme)
+reg perception i.take_up L2.perception i.miss_bl_perception i.strata if surveyround == 3, cluster(id_plateforme)
+
+reg dig_barr1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+reg dig_barr1 i.take_up i.strata if surveyround == 3, cluster(id_plateforme)
+
+		* E-commerce technology adoption
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dtai_survey i.take_up L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
-* reg perception i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dtai_manual i.take_up L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+
+		* E-commerce Employees
 reg dig_empl i.treatment L2.dig_empl i.strata if surveyround == 3, cluster(id_plateforme) 
-reg dig_revenues_ecom i.treatment L2.dig_revenues_ecom i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_empl i.take_up L2.dig_empl i.strata if surveyround == 3, cluster(id_plateforme) 
+
+reg dig_dummy i.treatment L2.dig_dummy i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_dummy i.take_up L2.dig_dummy i.strata if surveyround == 3, cluster(id_plateforme) 
+
+reg ihs_dig_empl_95 i.treatment L2.ihs_dig_empl_95 i.strata if surveyround == 3, cluster(id_plateforme) 
+reg ihs_dig_empl_95 i.take_up L2.ihs_dig_empl_95 i.strata if surveyround == 3, cluster(id_plateforme) 
+
+		* E-commerce revenues
+reg dig_revenues_ecom i.treatment L2.dig_revenues_ecom i.strata if surveyround == 3, cluster(id_plateforme)
+reg dig_revenues_ecom i.take_up L2.dig_revenues_ecom i.strata if surveyround == 3, cluster(id_plateforme)
+
+reg ihs_dig_rev_w95 i.treatment L2.ihs_dig_rev_w95 i.strata if surveyround == 3, cluster(id_plateforme)
+reg ihs_dig_rev_w95 i.take_up L2.ihs_dig_rev_w95 i.strata if surveyround == 3, cluster(id_plateforme)
+
+reg dig_rev_extmargin i.treatment L2.ihs_dig_rev_w95 i.strata if surveyround == 3, cluster(id_plateforme)
+reg dig_rev_extmargin i.take_up L2.ihs_dig_rev_w95 i.strata if surveyround == 3, cluster(id_plateforme)
+
+		* E-commerce investment
 reg dig_invest i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_invest i.take_up i.strata if surveyround == 3, cluster(id_plateforme) 
+
+reg ihs_dig_invest_95 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+reg ihs_dig_invest_95 i.take_up i.strata if surveyround == 3, cluster(id_plateforme) 
+
+reg dig_invest_extmargin i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dig_invest_extmargin i.take_up i.strata if surveyround == 3, cluster(id_plateforme) 
+
+}
+
+
+capture program drop table1 // enables re-running
+program table1
+version 16							// define Stata version
+	syntax varlist(min=1 numeric), GENerate(string)
+	
+		* Loop over each variable & regress on treatment & take-up
+    foreach var in `varlist' {
+
+		capture confirm variable L2.`var'
+		if _rc != 0  {
+			// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate control group mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2	
+			
+		}
+		else if `var' == knowledge {
+		
+			eststo `var'1: reg `var' i.treatment L1.`var' i.miss_bl_`var' i.strata if surveyround == 2, cluster(id_plateforme)
+			estadd local bl_control "Yes" : `var'1
+			estadd local strata "Yes" : `var'1
+
+			// ATT, IV
+			eststo `var'2: ivreg2 `var' L1.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 2, cluster(id_plateforme) first
+			estadd local bl_control "Yes" : `var'2
+			estadd local strata "Yes" : `var'2
+
+			// Calculate control group mean
+			sum `var' if treatment == 0 & surveyround == 2
+			estadd scalar control_mean = r(mean) : `var'2
+			estadd scalar control_sd = r(sd) : `var'2
+		}
+        else {
+            // ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment L2.`var' i.strata if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' L2.`var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate control group mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+        }
+    }
+
+				* Put everything into a latex table	
+tokenize `varlist'
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
+		esttab `regressions' using "${tech_output}/ecom_`generate'.tex", replace booktabs ///
+				prehead("\begin{table}[!h] \centering \\ \caption{Networks: Size and Composition} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.5cm} >{\centering\arraybackslash}m{1.5cm}} \toprule") ///
+				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+				fragment ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels("Knowledge"  "\shortstack{Adoption // Survey}" "\shortstack{Adoption // Manual}" "Employees > 0" "Investment > 0"  "Revenue > 0") /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				collabels(none) ///	do not use statistics names below models
+				label 		/// specifies EVs have label
+				drop(_cons *.strata ?.miss_bl_* L.*) ///  L.* oL.*
+				noobs
+			
+			* Bottom panel: ITT
+		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		esttab `regressions' using "${tech_output}/ecom_`generate'.tex", append booktabs ///
+				fragment ///	
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata_final bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "BL controls")) ///
+				drop(_cons *.strata ?.miss_bl_* L.*) ///  L.* `5' `6'
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\addlinespace[0.3cm] \midrule") ///
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				
+				
+end
+
+table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_extmargin, gen(tab1_paper)
+
+
+
+
 
 
 * Table 2: Variables: Online visibility	Online payment	Website use	Social media use	Digital Marketing use
