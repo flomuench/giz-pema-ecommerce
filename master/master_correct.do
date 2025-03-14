@@ -659,9 +659,10 @@ forvalues x = 1(1)3 {
 * 	PART 6: Clean financial variables MVs
 ***********************************************************************
 {
-local finvars dig_rev_per dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 comp_benefice2023 comp_benefice2024 comp_ca2020 comp_ca2023 comp_ca2024
+local finvars dig_invest dig_rev_per clients_b2c clients_b2b dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 comp_benefice2023 comp_benefice2024 comp_ca2020 comp_ca2023 comp_ca2024
 
 foreach var of local  finvars {
+	replace `var' = . if `var' ==  99
 	replace `var' = . if `var' ==  999
 	replace `var' = . if `var' ==  888
 	replace `var' = . if `var' ==  777

@@ -95,7 +95,6 @@ else if c(os) == "MacOSX" {
 global master_intermediate = "${gdrive}/6-master/intermediate"
 global master_final = "${gdrive}/6-master/final"
 global master_checks = "${gdrive}/6-master/checks"
-global master_output = "${gdrive}/6-master/output"
 global master_raw = "${gdrive}/6-master/raw"
 global master_gdrive ="${gdrive}/6-master"
 global master_pii ="${master_gdrive}/pii"
@@ -128,6 +127,12 @@ global el_checks = "${gdrive}/4-endline/checks"
 
 global map_raw = "${map}/raw"
 global map_output = "${map}/output"
+
+		* output
+global master_output = "${gdrive}/6-master/output"
+	global tech_output = "${master_output}/tech_adoption_knowledge"
+	
+
 
 * paths within github
 			* code
