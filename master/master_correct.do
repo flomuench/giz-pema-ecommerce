@@ -49,7 +49,6 @@ replace dig_con6_score = 1 if dig_con6_score >0.98 & dig_con6_score<.
 replace dig_presence_score =1 if dig_presence_score >0.98 & dig_presence_score<.
 
 *Editing variable that come from digital stocktake
-replace social_facebook=0 if social_facebook==.
 local fb_vars facebook_likes facebook_subs facebook_reviews facebook_reviews facebook_shop
 foreach var of local fb_vars {
 replace `var' = 0 if social_facebook == 0

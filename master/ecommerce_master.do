@@ -80,7 +80,7 @@ if "`c(username)'" == "fmuench" {
 	}
 
 		if c(os) == "Windows" {
-	global gdrive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+	global drive = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
 	global github = "C:/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce"
 	global backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
@@ -92,46 +92,47 @@ else if c(os) == "MacOSX" {
 	
 * paths within gdrive
 			* data
-global master_intermediate = "${gdrive}/6-master/intermediate"
-global master_final = "${gdrive}/6-master/final"
-global master_checks = "${gdrive}/6-master/checks"
-global master_raw = "${gdrive}/6-master/raw"
-global master_gdrive ="${gdrive}/6-master"
-global master_pii ="${master_gdrive}/pii"
-global implementation = "${gdrive}/9-implementation"
-global map = "${gdrive}/11-geolocation"
+global master_intermediate = "${drive}/6-master/intermediate"
+global master_final = "${drive}/6-master/final"
+global master_checks = "${drive}/6-master/checks"
+global master_raw = "${drive}/6-master/raw"
+global master_drive ="${drive}/6-master"
+global master_pii ="${master_drive}/pii"
+global implementation = "${drive}/9-implementation"
+global map = "${drive}/11-geolocation"
 
-global bl_raw = "${gdrive}/2-baseline/raw"
-global bl_intermediate "${gdrive}/2-baseline/intermediate"
-global bl_final = "${gdrive}/2-baseline/final"
-global bl_checks = "${gdrive}/2-baseline/checks"
-global bl_output = "${gdrive}/2-baseline/output"
+global bl_raw = "${drive}/2-baseline/raw"
+global bl_intermediate "${drive}/2-baseline/intermediate"
+global bl_final = "${drive}/2-baseline/final"
+global bl_checks = "${drive}/2-baseline/checks"
+global bl_output = "${drive}/2-baseline/output"
 
-global webpresence_final = "${gdrive}/2b-baseline presence enligne/final"
-global webpresence_raw = "${gdrive}/2b-baseline presence enligne/raw"
+global webpresence_final = "${drive}/2b-baseline presence enligne/final"
+global webpresence_raw = "${drive}/2b-baseline presence enligne/raw"
 
-global regis_raw = "${gdrive}/1-registration/raw"
-global regis_intermediate "${gdrive}/1-registration/intermediate"
-global regis_final = "${gdrive}/1-registration/final"
-global regis_checks = "${gdrive}/1-registration/checks"
+global regis_raw = "${drive}/1-registration/raw"
+global regis_intermediate "${drive}/1-registration/intermediate"
+global regis_final = "${drive}/1-registration/final"
+global regis_checks = "${drive}/1-registration/checks"
 
-global ml_raw = "${gdrive}/3-midline/raw"
-global ml_intermediate = "${gdrive}/3-midline/intermediate"
-global ml_final = "${gdrive}/3-midline/final"
-global ml_checks = "${gdrive}/3-midline/checks"
+global ml_raw = "${drive}/3-midline/raw"
+global ml_intermediate = "${drive}/3-midline/intermediate"
+global ml_final = "${drive}/3-midline/final"
+global ml_checks = "${drive}/3-midline/checks"
 
-global el_raw = "${gdrive}/4-endline/raw"
-global el_intermediate = "${gdrive}/4-endline/intermediate"
-global el_final = "${gdrive}/4-endline/final"
-global el_checks = "${gdrive}/4-endline/checks"
+global el_raw = "${drive}/4-endline/raw"
+global el_intermediate = "${drive}/4-endline/intermediate"
+global el_final = "${drive}/4-endline/final"
+global el_checks = "${drive}/4-endline/checks"
 
 global map_raw = "${map}/raw"
 global map_output = "${map}/output"
 
 		* output
-global master_output = "${gdrive}/6-master/output"
-	global tech_output = "${master_output}/tech_adoption_knowledge"
-	
+global output = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/output/ecommerce_experiment_paper"
+	global figures = "${output}/figures"
+	global tables = "${output}/tables"
+		global tab_tech = "${tables}/tech_adoption_knowledge"
 
 
 * paths within github
