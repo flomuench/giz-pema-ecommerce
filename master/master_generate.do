@@ -132,26 +132,44 @@ lab var expprep_dummy "Firm has employee dealing with exports"
 
 *dummy variables for dig_rev & dig_invest (extensive margins)
 	*dig_rev
-gen dig_rev_extmargin = 1 if dig_revenues_ecom > 0 & dig_revenues_ecom != .
-replace dig_rev_extmargin = . if dig_revenues_ecom == .
-replace dig_rev_extmargin = 0 if dig_revenues_ecom == 0
+gen dig_rev_extmargin = .
+	replace dig_rev_extmargin = 1 if dig_revenues_ecom > 0
+	replace dig_rev_extmargin = . if dig_revenues_ecom == .
+	replace dig_rev_extmargin = 0 if dig_revenues_ecom == 0
 lab var dig_rev_extmargin "Digital revenue > 0"
 
-*dig_invest
-gen dig_invest_extmargin = 1 if dig_invest > 0
-replace dig_invest_extmargin = . if dig_invest == .
-replace dig_invest_extmargin = 0 if dig_invest == 0
+	*dig_invest
+gen dig_invest_extmargin = .
+	replace dig_invest_extmargin = 1 if dig_invest > 0
+	replace dig_invest_extmargin = . if dig_invest == .
+	replace dig_invest_extmargin = 0 if dig_invest == 0
 lab var dig_invest_extmargin "Digital invest > 0"
 
+	* Dig_rev  dig_invest with 0s instead of . for non-attrited firms
+gen dig_invest_extmargin2 = dig_invest_extmargin
+		replace dig_invest_extmargin2 = 0 if surveyround == 3 & attrited == 0 & dig_invest_extmargin2 == .
+lab var dig_invest_extmargin2 "Digital invest > 0"
+		
+
+gen dig_rev_extmargin2 = dig_rev_extmargin
+		replace dig_rev_extmargin2 = 0 if attrited == 0 & dig_rev_extmargin == .
+lab var dig_rev_extmargin2 "Digital revenue > 0"
+
+
+
 	*profit2023 positive
-gen profit_2023_pos = 1 if comp_benefice2023 >= 0
-replace profit_2023_pos = 0 if comp_benefice2023 < 0
+gen profit_2023_pos = .
+	replace profit_2023_pos = 1 if comp_benefice2023 > 0
+	replace profit_2023_pos = . if comp_benefice2023 == .
+	replace profit_2023_pos = 0 if comp_benefice2023 <= 0
 lab var profit_2023_pos "Profit 2023 > 0"
 
 
 	*profit2024 possible
-gen profit_2024_pos = 1 if comp_benefice2024 >= 0
-replace profit_2024_pos = 0 if comp_benefice2024 < 0
+gen profit_2024_pos = .
+	replace profit_2024_pos = 1 if comp_benefice2024 > 0
+	replace profit_2024_pos = . if comp_benefice2024 == .
+	replace profit_2024_pos = 0 if comp_benefice2024 <= 0
 lab var profit_2024_pos "Profit 2024 > 0"
 
 
