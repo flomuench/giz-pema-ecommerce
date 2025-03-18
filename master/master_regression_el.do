@@ -94,6 +94,7 @@ foreach var of local outcomes {
 ***********************************************************************
 * 	PART 0.3:  balance table
 ***********************************************************************
+{
 * endline per take_up
 {
 	* baseline
@@ -192,7 +193,8 @@ iebaltab `all_index_transformed' if surveyround == 3, ///
 iebaltab fte ihs_exports95_2020 ihs_ca95_2020 ihs_w95_dig_rev20 ihs_profits compexp_2020 comp_ca2020 exp_pays_avg exporter2020 dig_revenues_ecom ///
 comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz  dig_marketing_index facebook_likes ///
   expprep if surveyround==1, grpvar(take_up) rowvarlabels format(%15.2fc) vce(robust) ftest savetex(bl_take_up_baltab_adj) replace
-			 
+
+  }
 
 ***********************************************************************
 * 	PART 1: Attrition
@@ -310,7 +312,6 @@ esttab `ml_attrition' using "el_attrition_ml_outcomes.tex", replace ///
 }
 
 }
-
 
 ***********************************************************************
 * 	PART 2: Regressions for paper tables
@@ -448,11 +449,11 @@ version 16							// define Stata version
 tokenize `varlist'
 		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
-				prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge, Technology Adoption, Performance} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.25cm} >{\centering\arraybackslash}m{1.5cm} >{\centering\arraybackslash}m{1.5cm}} \toprule") ///
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge, Technology Adoption, Performance} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}}  \toprule") ///
 				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
 				fragment ///
 				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
-				mlabels("Knowledge"  "\shortstack{Adoption \\ Survey}" "\shortstack{Adoption \\ Manual}" "Employees $> 0$" "Investment $> 0$"  "Revenue $> 0$") /// use dep vars labels as model title
+				mlabels("Knowledge"  "\shortstack{Adoption \\ Survey}" "\shortstack{Adoption \\ Manual}" "\shortstack{E-Employees\\ $> 0$}" "\shortstack{E-Investment\\ $> 0$}"  "\shortstack{E-Revenue\\ $> 0$}") /// use dep vars labels as model title
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				nobaselevels ///
 				collabels(none) ///	do not use statistics names below models
@@ -484,10 +485,111 @@ table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev
 
 
 
+* Table 2: E-commerce knowledge, Variables: dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
+	**** Write program for knowledge deep dive regression table
+capture program drop deep_eknow // enables re-running
+program deep_eknow
+version 16							// define Stata version
+	syntax varlist(min=1 numeric), GENerate(string)
+	
+		* Loop over each variable & regress on treatment & take-up
+    foreach var in `varlist' {
+
+		sum L2.`var'
+		if r(N) == 0  {
+			
+// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment i.strata if surveyround == 2, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 2, cluster(id_plateforme) first
+            estadd local bl_control "No" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate control group mean
+            sum `var' if treatment == 0 & surveyround == 2
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+			
+		}
+		
+		else if `var' == knowledge {
+		
+			eststo `var'1: reg `var' i.treatment L1.`var' i.miss_bl_`var' i.strata if surveyround == 2, cluster(id_plateforme)
+			estadd local bl_control "Yes" : `var'1
+			estadd local strata "Yes" : `var'1
+
+			// ATT, IV
+			eststo `var'2: ivreg2 `var' L1.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 2, cluster(id_plateforme) first
+			estadd local bl_control "Yes" : `var'2
+			estadd local strata "Yes" : `var'2
+
+			// Calculate control group mean
+			sum `var' if treatment == 0 & surveyround == 2
+			estadd scalar control_mean = r(mean) : `var'2
+			estadd scalar control_sd = r(sd) : `var'2
+		}
+        else {
+			// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment L1.`var' i.miss_bl_`var' i.strata if surveyround == 2, cluster(id_plateforme)
+            estadd local bl_control "Yes" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' L1.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 2, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate control group mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+
+        }
+}
+
+				* Put everything into a latex table	
+tokenize `varlist'
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge Index Deep Dive} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}}  \toprule") ///
+				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+				fragment ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels("\shortstack{Knowledge\\ Index"  "\shortstack{E-\\Payment}" "\shortstack{E-\\ Content}" "\shortstack{Google\\ Analytics}" "\shortstack{Engagement \\ Rate}"  "\shortstack{SEO \\ SEA}") /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				collabels(none) ///	do not use statistics names below models
+				label 		/// specifies EVs have label
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* oL.*
+				noobs
+			
+			* Bottom panel: ITT
+		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
+				fragment ///	
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "BL controls")) ///
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\addlinespace[0.3cm] \midrule") ///
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Knowledge is an average z-score of all other variables, calculated as defined in \citet{Anderson.2008}. All variables are measured at midline. Columns(2)-(6) present dummy variables. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				
+				
+end
+
+deep_eknow knowledge dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml, gen(deep_eknow)
 
 
 
-* Table 2: Variables: Online visibility	Online payment	Website use	Social media use	Digital Marketing use
+* Table 3: Variables: Online visibility	Online payment	Website use	Social media use	Digital Marketing use
 reg presence_survey i.treatment L2.presence_survey i.strata if surveyround == 3, cluster(id_plateforme) 
 reg presence_manual i.treatment L2.presence_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg payment_survey i.treatment L2.payment_survey i.strata if surveyround == 3, cluster(id_plateforme) 
@@ -497,11 +599,97 @@ reg use_manual i.treatment L2.use_manual i.strata if surveyround == 3, cluster(i
 reg use_website_survey i.treatment L2.use_website_survey i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_website_manual i.treatment L2.use_website_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_sm_survey i.treatment L2.use_sm_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 use_sm_survey L2.use_sm_survey i.miss_bl_use_sm_survey i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
 reg use_sm_manual i.treatment L2.use_sm_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_fb_manual i.treatment L2.use_fb_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_insta_manual i.treatment L2.use_insta_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_insta_manual i.treatment L2.use_insta_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg dmi i.treatment L2.dmi i.strata if surveyround == 3, cluster(id_plateforme) 
+
+		**** Write program for deep-dive regression table
+lab var take_up "Take-up"
+capture program drop deep_dive_tadop // enables re-running
+program deep_dive_tadop
+version 16							// define Stata version
+	syntax varlist(min=1 numeric), GENerate(string)
+	
+		* Loop over each variable & regress on treatment & take-up
+    foreach var in `varlist' {
+
+		sum L2.`var'
+		if r(N) == 0  {
+			
+// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "No" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate control group mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+			
+			}		
+        else {
+			// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment L2.`var' i.miss_bl_`var' i.strata if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "Yes" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' L2.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate control group mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+        }
+}
+
+				* Put everything into a latex table	
+tokenize `varlist'
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 `7'1 `8'1 `9'1 `10'1 `11'1 `12'1 // `7'1 `10'1  adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Deep-Dive Technology Adoption} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X}   \toprule") ///
+				posthead("\toprule \\ \multicolumn{13}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+				fragment ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels("\shortstack{Present \\ Survey}" "\shortstack{Present \\ Manual}" "\shortstack{Pay \\ Survey}" "\shortstack{Pay \\ Manual}" "\shortstack{Use \\ Survey}" "\shortstack{Use \\ Manual}" "\shortstack{Website \\ Survey}" "\shortstack{Website \\ Manual}" "\shortstack{Social \\ Media}" "\shortstack{Face-\\book}" "\shortstack{Insta-\\gram}" "\shortstack{E-\\Marketing}") /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				collabels(none) ///	do not use statistics names below models
+				label 		/// specifies EVs have label
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* oL.*
+				noobs
+			
+			* Bottom panel: ITT
+		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 `11'2 `12'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
+				fragment ///	
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{13}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\addlinespace[0.3cm] \midrule") ///
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{13}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Knowledge and adoption are average z-scores as defined in \citet{Anderson.2008}. Knowledge is measured at midline, while all other outcomes are measured at the endline. Adoption survey is based on survey responses, while adoption manual is based on manual scoring of firms websites and social media accounts. Columns(4)-(6) present dummy variables. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				
+				
+end
+
+deep_dive_tadop presence_survey presence_manual payment_survey payment_manual use_survey use_manual use_website_survey use_website_manual use_sm_manual use_fb_manual use_insta_manual dmi, gen(deep_tech)
+
 
 
 * Table 3: E-commere technology perception
