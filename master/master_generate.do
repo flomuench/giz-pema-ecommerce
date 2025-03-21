@@ -564,7 +564,7 @@ local sm_use_survey "dig_miseajour2 dig_description2 sm_use_contacts sm_use_cata
 local use_survey "`website_use_survey' `sm_use_survey' dig_miseajour3 dig_description3"
 				
 				* Payment: Website + Social media + Platform
-local payment_survey "dig_payment1 dig_payment2 dig_payment3"
+local payment_survey "dig_payment2 dig_payment3" // dig_payment1 at endline is offline payment
 				
 				* Digital Marketing
 local dmi "mark_online1 mark_online2 mark_online3 mark_online4 mark_online5 dig_marketing_score dig_dummy dig_marketing_dummy dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm" // dig_marketing_lien dig_marketing_ind1 dig_marketing_ind2 are excluded as they have unclear missing values for BL & ML (FM 11.03.25)
@@ -673,12 +673,12 @@ egen use_survey = rowmean(t_web_use_contactsz t_web_use_cataloguez t_web_use_eng
 egen use_manual = rowmean(t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
 
 				* Payment: Website + Social media
-egen payment_survey = rowmean(t_dig_payment1z t_dig_payment2z t_dig_payment3z)
+egen payment_survey = rowmean(t_dig_payment2z t_dig_payment3z) // t_dig_payment1z
 
 egen payment_manual = rowmean(t_web_purchasez t_web_external_purchasez t_facebook_shopz)   
 		
 				* Digital Marketing
-egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_mark_online5z t_dig_marketing_scorez t_dig_dummyz t_dig_marketing_dummyz t_dig_marketing_num19_seaz t_dig_marketing_num19_seoz t_dig_marketing_num19_blgz t_dig_marketing_num19_pubz t_dig_marketing_num19_mailz t_dig_marketing_num19_prtnz t_dig_marketing_num19_socmz)
+egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_dig_marketing_scorez t_dig_dummyz t_dig_marketing_dummyz t_dig_marketing_num19_seaz t_dig_marketing_num19_seoz t_dig_marketing_num19_blgz t_dig_marketing_num19_pubz t_dig_marketing_num19_mailz t_dig_marketing_num19_prtnz t_dig_marketing_num19_socmz)
 
 				* Adoption = visibility/presence + payment + use + digital marketing
 egen dtai_survey = rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z t_dig_payment2z t_dig_payment3z  t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
@@ -733,8 +733,10 @@ label var bpi_2024 "BPI 2024"
 		* E-commerce adoption index
 			* Survey response data
 				* Visibility/Presence
+egen presence_sum = rowtotal(dig_presence1 dig_presence2 dig_presence3), missing
 					
 				* Use: Website + Social media
+
 				
 				* Payment: Website + Social media
 				

@@ -332,8 +332,12 @@ reg perception i.take_up L1.perception i.miss_bl_perception i.strata if surveyro
 reg perception i.treatment L2.perception i.miss_bl_perception i.strata if surveyround == 3, cluster(id_plateforme)
 reg perception i.take_up L2.perception i.miss_bl_perception i.strata if surveyround == 3, cluster(id_plateforme)
 
-reg dig_barr1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
-reg dig_barr1 i.take_up i.strata if surveyround == 3, cluster(id_plateforme)
+reg investecom_benefit1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)  // NTE
+ivreg2 investecom_benefit1 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+
+reg investecom_benefit2 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) // NTE
+ivreg2 investecom_benefit2 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+
 
 		* E-commerce technology adoption
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme) 
@@ -592,6 +596,14 @@ deep_eknow knowledge dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
 * Table 3: Variables: Online visibility	Online payment	Website use	Social media use	Digital Marketing use
 reg presence_survey i.treatment L2.presence_survey i.strata if surveyround == 3, cluster(id_plateforme) 
 reg presence_manual i.treatment L2.presence_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+
+	reg dig_presence2 i.treatment L2.dig_presence2 i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 dig_presence2 i.strata L2.dig_presence2 (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+	
+	reg entreprise_social i.treatment L2.entreprise_social i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 entreprise_social i.strata L2.entreprise_social (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+
+
 reg payment_survey i.treatment L2.payment_survey i.strata if surveyround == 3, cluster(id_plateforme) 
 reg payment_manual i.treatment L2.payment_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_survey i.treatment L2.use_survey i.strata if surveyround == 3, cluster(id_plateforme) 
@@ -601,10 +613,42 @@ reg use_website_manual i.treatment L2.use_website_manual i.strata if surveyround
 reg use_sm_survey i.treatment L2.use_sm_survey i.strata if surveyround == 3, cluster(id_plateforme) 
 ivreg2 use_sm_survey L2.use_sm_survey i.miss_bl_use_sm_survey i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
 reg use_sm_manual i.treatment L2.use_sm_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+
+
+	reg sm_use_contacts i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 sm_use_contacts i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg sm_use_catalogue i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 sm_use_catalogue i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg sm_use_engagement i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 sm_use_engagement i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg sm_use_com i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 sm_use_com i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg sm_use_brand i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 sm_use_brand i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+    
+
 reg use_fb_manual i.treatment L2.use_fb_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_insta_manual i.treatment L2.use_insta_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg use_insta_manual i.treatment L2.use_insta_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 reg dmi i.treatment L2.dmi i.strata if surveyround == 3, cluster(id_plateforme) 
+
+	reg mark_online1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 mark_online1 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+	
+	reg mark_online2 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 mark_online2 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg mark_online3 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 mark_online3 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+	reg mark_online4 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 mark_online4 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
 
 		**** Write program for deep-dive regression table
 lab var take_up "Take-up"
@@ -692,9 +736,40 @@ deep_dive_tadop presence_survey presence_manual payment_survey payment_manual us
 
 
 
-* Table 3: E-commere technology perception
+* Table : E-commere technology perception
 reg perception i.treatment i.strata if surveyround == 2, cluster(id_plateforme) 
 reg investcom_benefit1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+
+
+* Table: ecommerce mechanisms
+reg dig_margins i.treatment i.strata if surveyround == 3, cluster(id_plateforme) // TE
+ivreg2 dig_margins i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) // TE
+
+reg dig_rev_per i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_rev_per i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+
+
+reg dig_barr1 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr1 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+reg dig_barr2 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr2 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+reg dig_barr3 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr3 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+reg dig_barr4 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr4 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+reg dig_barr5 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr5 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+reg dig_barr6 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr6 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+reg dig_barr7 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+ivreg2 dig_barr7 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)  
+
+
+* Table firm performance: sales, profits, employees, 
+
+
+
+* Table export
 
 
 }
