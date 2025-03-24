@@ -539,6 +539,7 @@ table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev
 
 
 * explorative: heterogeneity in TA effect?
+{
 foreach source in survey manual {
 	gen t_bl_dtai_`source' = dtai_`source' if surveyround == 1
 	egen bl_dtai_`source' = min(t_bl_dtai_`source'), by(id_plateforme)
@@ -562,6 +563,10 @@ ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_dta
 
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
+		
+	* small vs. large firms?
+	
+	* 
 		
 		
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
