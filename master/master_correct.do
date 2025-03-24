@@ -637,12 +637,7 @@ replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
 
 
 ***********************************************************************
-* 	PART 4: Drop unnecesary variables
-***********************************************************************
-drop dig_presence_score treatment_email
-
-***********************************************************************
-* 	PART 5: Account for filter on e-commerce tools
+* 	PART 4: Account for filter on e-commerce tools
 ***********************************************************************
 * if company does not use a specific e-commerce tool (website, social media or platform), replace linked questions with zeros
 
@@ -653,12 +648,23 @@ forvalues x = 1(1)3 {
 	}
 }
 
+local sm_vars "sm_use_contacts sm_use_catalogue sm_use_com sm_use_engagement sm_use_brand"
+foreach var of local sm_vars {
+	replace `var' = 0 if dig_presence2 == 0 & surveyround == 3 & `var' == .
+	}
+
+local web_vars "web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand"
+foreach var of local web_vars {
+	replace `var' = 0 if dig_presence1 == 0 & surveyround == 3 & `var' == .
+	}
+
+
 
 ***********************************************************************
-* 	PART 6: Clean financial variables MVs
+* 	PART 5: Clean financial variables MVs
 ***********************************************************************
 {
-local finvars dig_invest mark_invest dig_rev_per clients_b2c clients_b2b dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 comp_benefice2023 comp_benefice2024 comp_ca2020 comp_ca2023 comp_ca2024
+local finvars dig_invest mark_invest investcom_futur investcom_2021 dig_rev_per clients_b2c clients_b2b dig_revenues_ecom comp_ca2020 compexp_2020 comp_benefice2020 ssa_action1 ssa_action2 ssa_action3 ssa_action4 ssa_action5 comp_benefice2023 comp_benefice2024 comp_ca2020 comp_ca2023 comp_ca2024 car_soutien_gouvern car_pdg_educ
 
 foreach var of local  finvars {
 	replace `var' = . if `var' ==  99
@@ -666,6 +672,7 @@ foreach var of local  finvars {
 	replace `var' = . if `var' ==  888
 	replace `var' = . if `var' ==  777
 	replace `var' = . if `var' ==  666
+	replace `var' = . if `var' ==  -666
 	replace `var' = . if `var' == -999
 	replace `var' = . if `var' == -888
 	replace `var' = . if `var' == -777
@@ -729,14 +736,14 @@ foreach var of local  allvars {
 }
 
 ***********************************************************************
-* 	PART 7: extent treatment status to additional surveyrounds
+* 	PART 6: extent treatment status to additional surveyrounds
 ***********************************************************************
 bysort id_plateforme (surveyround): replace treatment = treatment[_n-1] if treatment == . 
 bysort id_plateforme (surveyround): replace strata = strata[_n-1] if strata == . 
 
 
 ***********************************************************************
-* 	PART 8: harmonize digital presence weight across surveys
+* 	PART 7: harmonize digital presence weight across surveys
 ***********************************************************************
 forvalues x = 1(1)3 {
 	replace dig_presence`x' = 0.33 if dig_presence`x' == 1 & surveyround == 3 
@@ -744,12 +751,12 @@ forvalues x = 1(1)3 {
 
 
 ***********************************************************************
-* 	PART 9: create harmonized n of digital employees variable
+* 	PART 8: create harmonized n of digital employees variable
 ***********************************************************************
 replace dig_empl = dig_service_responsable if dig_empl == . & dig_service_responsable != .
 drop dig_service_responsable
 
 ***********************************************************************
-* 	PART 7: save
+* 	PART: save
 ***********************************************************************
 save "${master_intermediate}/ecommerce_master_inter", replace

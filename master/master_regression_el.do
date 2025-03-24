@@ -36,6 +36,7 @@ set scheme s1color
 * 	PART 0.1:  set the stage - change labels for regression table output
 ***********************************************************************
 lab var take_up "Take-up = 1"
+lab val take_up presence
 
 
 ***********************************************************************
@@ -94,8 +95,53 @@ foreach var of local outcomes {
 ***********************************************************************
 * 	PART 0.3:  balance table
 ***********************************************************************
+gen uni = (car_pdg_educ == 5)
+	replace uni = . if car_pdg_educ == .
+	
+gen small_firm = (fte <= 20)
+	replace small_firm = . if fte == .
+	
+gen large_firm = (fte > 75)
+	replace large_firm = . if fte == .
+	
+gen profitable_2020 = (comp_benefice2020 > 0)
+	replace profitable_2020 = . if comp_benefice2020 == .
+	
+gen investcom_2021_pos = (investcom_2021 > 0)
+	replace investcom_2021_pos = . if investcom_2021 == .
+
+tab treatment_email, gen(treatment_email)
+forvalues x = 1(1)3 {
+	replace treatment_email`x' = . if treatment_email == .
+}
+	
 {
-* endline per take_up
+	* endline by take_up: Do any BL covariates predict take-up?
+* put variables into locals
+		* Digital Technology Adoption
+local dig_tech "knowledge dtai_manual dtai_survey presence_manual presence_survey use_website_survey use_website_manual use_sm_survey use_sm_manual use_fb_manual use_insta_manual dmi" // 
+
+local firm "w95_comp_ca2020 w95_compexp2020 exporter2020 ever_exported w95_comp_benefice2020 profitable_2020 fte small_firm large_firm rg_age fte_femmes female_share rg_gender_pdg entr_bien_service"
+
+local dig_perc "investcom_futur investcom_2021 investcom_2021_pos investcom_benefit1 investcom_benefit2 car_credit1"
+
+local car "car_adop_peer car_ecom_prive car_pdg_age car_risque car_soutien_gouvern uni treatment_email1 treatment_email2 treatment_email3" // car_pdg_educ
+
+local sector "agri artisanat commerce_int industrie service tic"
+
+local all "`dig_tech' `firm' `dig_perc' `car' `sector'"
+
+foreach fmt in tex xlsx {
+
+iebaltab `all' if surveyround == 1 & treatment == 1, ///
+	grpvar(take_up) vce(robust) format(%15.2fc) replace ///
+	rowvarlabels  ///
+	save`fmt'("${take_up}/takeup_bal_ecom_long.`fmt'")
+}
+
+* add code for table for paper?
+
+
 {
 	* baseline
 		* concern: F-test significant at baseline
@@ -341,10 +387,14 @@ ivreg2 investecom_benefit2 i.strata (take_up = i.treatment) if surveyround == 3,
 
 		* E-commerce technology adoption
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme) 
-reg dtai_survey i.take_up L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dtai_survey i.take_up L2.dtai_survey i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+ 
 
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
-reg dtai_manual i.take_up L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dtai_manual i.take_up L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
+ 
 
 		* E-commerce Employees
 reg dig_empl i.treatment L2.dig_empl miss_bl_dig_empl i.strata if surveyround == 3, cluster(id_plateforme) // NTE
@@ -488,6 +538,36 @@ table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_
 table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev_extmargin2, gen(tab1_paper_v2) // replacement with 0 instead of . for e-commerce investment & revenue (assumption: if firm said idk, put in 0)
 
 
+* explorative: heterogeneity in TA effect?
+foreach source in survey manual {
+	gen t_bl_dtai_`source' = dtai_`source' if surveyround == 1
+	egen bl_dtai_`source' = min(t_bl_dtai_`source'), by(id_plateforme)
+	sum bl_dtai_`source', d
+	gen bl_dtai_`source'_high = (bl_dtai_`source' > r(p50))
+		replace bl_dtai_`source'_high = . if bl_dtai_`source' == .
+	drop t_bl_dtai_`source'
+}
+	
+	* high vs. low BL e-commerce technology effect on TE for ecommerce technology?
+		* high
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_dtai_survey_high == 1, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_survey_high == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_dtai_manual_high == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_manual_high == 1, cluster(id_plateforme) 
+
+		* low
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_dtai_survey_high == 0, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_survey_high == 0, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
+		
+		
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
+reg dtai_manual i.take_up L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
 
 * Table 2: E-commerce knowledge, Variables: dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
 	**** Write program for knowledge deep dive regression table
@@ -594,6 +674,7 @@ deep_eknow knowledge dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
 
 
 * Table 3: Variables: Online visibility	Online payment	Website use	Social media use	Digital Marketing use
+{
 reg presence_survey i.treatment L2.presence_survey i.strata if surveyround == 3, cluster(id_plateforme) 
 reg presence_manual i.treatment L2.presence_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 
@@ -648,6 +729,8 @@ reg dmi i.treatment L2.dmi i.strata if surveyround == 3, cluster(id_plateforme)
 
 	reg mark_online4 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
 	ivreg2 mark_online4 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+}
 
 
 		**** Write program for deep-dive regression table
@@ -733,7 +816,6 @@ tokenize `varlist'
 end
 
 deep_dive_tadop presence_survey presence_manual payment_survey payment_manual use_survey use_manual use_website_survey use_website_manual use_sm_manual use_fb_manual use_insta_manual dmi, gen(deep_tech)
-
 
 
 * Table : E-commere technology perception

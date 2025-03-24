@@ -78,8 +78,8 @@ lab def presence_heber 1 "bought the website" 0 "absent"
 lab values take_up_heber presence_heber
 
 	*Label variables
-label var compexp_2020 "Total turnover in 2020"
-label var comp_ca2020 "Export turnover in 2020"
+label var compexp_2020 "Export turnover in 2020"
+label var comp_ca2020 "Total turnover in 2020"
 label var comp_benefice2020	"Company profit in 2020"
 	
 	

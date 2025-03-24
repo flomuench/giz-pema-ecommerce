@@ -175,25 +175,30 @@ lab var profit_2024_pos "Profit 2024 > 0"
 
 
 *generate sector dummies as ordinal/categorical variable has no meaning
-gen agri=0
-replace agri=1 if sector==1
-gen artisanat=0
-replace artisanat=1 if sector==2
-gen commerce_int=0
-replace commerce_int=1 if sector==3
-gen industrie=0
-replace industrie=1 if sector==4
-gen service=0
-replace service=1 if sector==5
-gen tic=0
-replace tic=1 if sector==6
+gen agri=(sector == 1)
+	replace agri=. if sector==.
 
-lab var agri "dummy for sector=1"
-lab var artisanat "dummy for sector=2"
-lab var commerce_int "dummy for sector=3"
-lab var industrie "dummy for sector=4"
-lab var service "dummy for sector=5"
-lab var tic "dummy for sector=6"
+gen artisanat=(sector==2)
+	replace artisanat=. if sector==.
+	
+gen commerce_int=(sector == 3)
+	replace commerce_int=. if sector==.
+
+gen industrie=(sector==4)
+	replace industrie=. if sector==.
+
+gen service=(sector==5)
+	replace industrie=. if sector==.
+
+gen tic=(sector==6)
+	replace industrie=. if sector==.
+
+lab var agri "agriculture"
+lab var artisanat "handicraft"
+lab var commerce_int "trader"
+lab var industrie "industry"
+lab var service "service"
+lab var tic "IT"
 
 
 *create final export status variable and delete other to avoid confusion
