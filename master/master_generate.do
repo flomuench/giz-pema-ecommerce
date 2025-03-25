@@ -157,12 +157,12 @@ lab var dig_rev_extmargin2 "Digital revenue > 0"
 
 
 
-	*profit2023 positive
-gen profit_2023_pos = .
-	replace profit_2023_pos = 1 if comp_benefice2023 > 0
-	replace profit_2023_pos = . if comp_benefice2023 == .
-	replace profit_2023_pos = 0 if comp_benefice2023 <= 0
-lab var profit_2023_pos "Profit 2023 > 0"
+	*profit positive
+gen profit_pos = .
+	replace profit_pos = 1 if profit > 0
+	replace profit_pos = . if profit == .
+	replace profit_pos = 0 if profit <= 0
+lab var profit_pos "Profit > 0"
 
 
 	*profit2024 possible
@@ -401,17 +401,17 @@ gen ihs_clients_b2c_95 = log(w95_clients_b2c + sqrt((w95_clients_b2c*w95_clients
 lab var ihs_clients_b2c_95 "IHS of number of international orders, wins.95th"
 
 *Total turnover variable
-	*In 2023
-winsor comp_ca2023, gen(w99_comp_ca2023) p(0.01) highonly
-winsor comp_ca2023, gen(w97_comp_ca2023) p(0.03) highonly
-winsor comp_ca2023, gen(w95_comp_ca2023) p(0.05) highonly
+	*In 2023, 2020
+winsor sales, gen(w99_sales) p(0.01) highonly
+winsor sales, gen(w97_sales) p(0.03) highonly
+winsor sales, gen(w95_sales) p(0.05) highonly
 
-gen ihs_ca99_2023 = log(w99_comp_ca2023 + sqrt((w99_comp_ca2023*w99_comp_ca2023)+1))
-lab var ihs_ca99_2023 "IHS of total turnover in 2023, wins.99th"
-gen ihs_ca97_2023 = log(w97_comp_ca2023 + sqrt((w97_comp_ca2023*w97_comp_ca2023)+1))
-lab var ihs_ca97_2023 "IHS of total turnover in 2023, wins.97th"
-gen ihs_ca95_2023 = log(w95_comp_ca2023 + sqrt((w95_comp_ca2023*w95_comp_ca2023)+1))
-lab var ihs_ca95_2023 "IHS of total turnover in 2023, wins.95th"
+gen w99_sales_ihs = log(w99_sales + sqrt((w99_sales*w99_sales)+1))
+lab var w99_sales_ihs "IHS total turnover, wins.99th"
+gen w97_sales_ihs = log(w97_sales + sqrt((w97_sales*w97_sales)+1))
+lab var w97_sales_ihs "IHS total turnover, wins.97th"
+gen w95_sales_ihs = log(w95_sales + sqrt((w95_sales*w95_sales)+1))
+lab var w95_sales_ihs "IHS total turnover, wins.95th"
 
 	*In 2024
 *winsor comp_ca2024, gen(w99_comp_ca2024) p(0.01) highonly
@@ -427,17 +427,17 @@ lab var ihs_ca95_2024 "IHS of total turnover in 2024, wins.95th"
 
 
 *Export turnover variable
-	*In 2023
-winsor compexp_2023, gen(w99_compexp2023) p(0.01) highonly
-winsor compexp_2023, gen(w97_compexp2023) p(0.03) highonly
-winsor compexp_2023, gen(w95_compexp2023) p(0.05) highonly
+	*In 2023, 2020
+winsor export, gen(w99_export) p(0.01) highonly
+winsor export, gen(w97_export) p(0.03) highonly
+winsor export, gen(w95_export) p(0.05) highonly
 
-gen ihs_exports99_2023 = log(w99_compexp2023 + sqrt((w99_compexp2023*w99_compexp2023)+1))
-lab var ihs_exports99_2023 "IHS of exports in 2023, wins.99th"
-gen ihs_exports97_2023 = log(w97_compexp2023 + sqrt((w97_compexp2023*w97_compexp2023)+1))
-lab var ihs_exports97_2023 "IHS of exports in 2023, wins.97th"
-gen ihs_exports95_2023 = log(w95_compexp2023 + sqrt((w95_compexp2023*w95_compexp2023)+1))
-lab var ihs_exports95_2023 "IHS of exports in 2023, wins.95th"
+gen w99_export_ihs = log(w99_export + sqrt((w99_export*w99_export)+1))
+lab var w99_export_ihs "IHS exports, wins.99th"
+gen w97_export_ihs = log(w97_export + sqrt((w97_export*w97_export)+1))
+lab var w97_export_ihs "IHS exports, wins.97th"
+gen w95_export_ihs = log(w95_export + sqrt((w95_export*w95_export)+1))
+lab var w95_export_ihs "IHS exports, wins.95th"
 
 	*In 2024
 winsor compexp_2024, gen(w99_compexp2024) p(0.01) highonly
@@ -453,22 +453,22 @@ lab var ihs_exports95_2024 "IHS of exports in 2024, wins.95th"
 
 	
 *Profit variable
-	*In 2023
-winsor comp_benefice2023, gen(w99_comp_benefice2023) p(0.01) highonly
-winsor comp_benefice2023, gen(w97_comp_benefice2023) p(0.03) highonly
-winsor comp_benefice2023, gen(w95_comp_benefice2023) p(0.05) highonly
+	*In 2023, 2020
+winsor profit, gen(w99_profit) p(0.01)
+winsor profit, gen(w97_profit) p(0.03)
+winsor profit, gen(w95_profit) p(0.05)
 
-gen ihs_profit99_2023 = log(w99_comp_benefice2023 + sqrt((w99_comp_benefice2023*w99_comp_benefice2023)+1))
-lab var ihs_profit99_2023 "IHS of profit in 2023, wins.99th"
-gen ihs_profit97_2023 = log(w97_comp_benefice2023 + sqrt((w97_comp_benefice2023*w97_comp_benefice2023)+1))
-lab var ihs_profit97_2023 "IHS of profit in 2023, wins.97th"
-gen ihs_profit95_2023 = log(w95_comp_benefice2023 + sqrt((w95_comp_benefice2023*w95_comp_benefice2023)+1))
-lab var ihs_profit95_2023 "IHS of profit in 2023, wins.95th"
+gen w99_profit_ihs = log(w99_profit + sqrt((w99_profit*w99_profit)+1))
+lab var w99_profit_ihs "IHS profit, wins.99th"
+gen w97_profit_ihs = log(w97_profit + sqrt((w97_profit*w97_profit)+1))
+lab var w97_profit_ihs "IHS profit, wins.97th"
+gen w95_profit_ihs = log(w95_profit + sqrt((w95_profit*w95_profit)+1))
+lab var w95_profit_ihs "IHS profit, wins.95th"
 
 	*In 2024
-winsor comp_benefice2024, gen(w99_comp_benefice2024) p(0.01) highonly
-winsor comp_benefice2024, gen(w97_comp_benefice2024) p(0.03) highonly
-winsor comp_benefice2024, gen(w95_comp_benefice2024) p(0.05) highonly
+winsor comp_benefice2024, gen(w99_comp_benefice2024) p(0.01)
+winsor comp_benefice2024, gen(w97_comp_benefice2024) p(0.03)
+winsor comp_benefice2024, gen(w95_comp_benefice2024) p(0.05)
 
 gen ihs_profit99_2024 = log(w99_comp_benefice2024 + sqrt((w99_comp_benefice2024*w99_comp_benefice2024)+1))
 lab var ihs_profit99_2024 "IHS of profit in 2024, wins.99th"
@@ -482,8 +482,8 @@ lab var ihs_profit95_2024 "IHS of profit in 2024, wins.95th"
 gen cost_2020 = comp_ca2020 - comp_benefice2020 if surveyround ==1
 lab var cost_2020 "Total costs in 2020 in TND"
 
-gen cost_2023 = comp_ca2023 - comp_benefice2023 if surveyround ==3
-lab var cost_2023 "Total costs in 2023 in TND"
+gen cost = sales - profit if surveyround ==3
+lab var cost "Total costs in TND"
 
 gen cost_2024 = comp_ca2024 - comp_benefice2024 if surveyround ==3
 lab var cost_2024 "Total costs in 2024 in TND"
@@ -499,16 +499,16 @@ lab var ihs_cost97_2020 "IHS of total costs in 2020, wins.97th"
 gen ihs_cost95_2020 = log(w95_cost_2020 + sqrt((w95_cost_2020*w95_cost_2020)+1))
 lab var ihs_cost95_2020 "IHS of total costs in 2020, wins.95th"
 
-*winsor cost_2023, gen(w99_cost_2023) p(0.01) highonly
-winsor cost_2023, gen(w97_cost_2023) p(0.03) highonly
-winsor cost_2023, gen(w95_cost_2023) p(0.05) highonly
+*winsor cost, gen(w99_cost) p(0.01) highonly
+winsor cost, gen(w97_cost) p(0.03) highonly
+winsor cost, gen(w95_cost) p(0.05) highonly
 
-*gen ihs_cost99_2023 = log(w99_cost_2023 + sqrt((w99_cost_2023*w99_cost_2023)+1))
-*lab var ihs_cost99_2023 "IHS of total costs in 2023, wins.99th"
-gen ihs_cost97_2023 = log(w97_cost_2023 + sqrt((w97_cost_2023*w97_cost_2023)+1))
-lab var ihs_cost97_2023 "IHS of total costs in 2023, wins.97th"
-gen ihs_cost95_2023 = log(w95_cost_2023 + sqrt((w95_cost_2023*w95_cost_2023)+1))
-lab var ihs_cost95_2023 "IHS of total costs in 2023, wins.95th"
+gen w_99_cost_ihs = log(w99_cost + sqrt((w99_cost*w99_cost)+1))
+lab var w_99_cost_ihs "IHS costs, wins.99th"
+gen w_97_cost_ihs = log(w97_cost + sqrt((w97_cost*w97_cost)+1))
+lab var w_97_cost_ihs "IHS costs, wins.97th"
+gen w_95_cost_ihs = log(w95_cost + sqrt((w95_cost*w95_cost)+1))
+lab var w_95_cost_ihs "IHS costs, wins.95th"
 
 *winsor cost_2024, gen(w99_cost_2024) p(0.01) highonly
 winsor cost_2024, gen(w97_cost_2024) p(0.03) highonly
@@ -597,7 +597,7 @@ local perception "dig_perception1 dig_perception2 dig_perception3 dig_perception
 local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_demande expprep_dummy"		
 
 		* Business performance
-local bpi "fte comp_ca2023 comp_benefice2023 comp_ca2024 comp_benefice2024"
+local bpi "fte sales profit comp_ca2024 comp_benefice2024"
 
 
 local all_indexes `knowledge' `presence_survey' `presence_manual' `use_survey' `use_manual' `payment_survey' `payment_manual' `dmi' `perception' `eri' `bpi'
@@ -698,7 +698,7 @@ egen perception = rowmean(t_dig_perception1z t_dig_perception2z t_dig_perception
 egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz)	
 		
 		* Business performance
-egen bpi_2023 = rowmean(t_ftez t_comp_ca2023z t_comp_benefice2023z)
+egen bpi_2023 = rowmean(t_ftez t_salesz t_profitz)
 egen bpi_2024 = rowmean(t_ftez t_comp_ca2024z t_comp_benefice2024z)
 		
 		
@@ -775,7 +775,7 @@ drop t_*
 }
 
 ***********************************************************************
-*PART 5: Survey Attrition
+* PART 5: Survey Attrition
 ***********************************************************************	
 {
 * gen refus variable
@@ -816,49 +816,7 @@ replace el_refus=1 if id_plateforme== 901
 
 
 ***********************************************************************
-* PART 6:   generate survey-to-survey growth rates
-***********************************************************************
-{
-*generate uniform variable names for accounting variable to do growth rates, between 2023 and 2024 values choose larger one
-
-gen ca =. 
-replace ca = comp_ca2020 if surveyround == 1
-replace ca = comp_ca2023 if surveyround == 3 & !missing(comp_ca2023) 
-replace ca = comp_ca2024 if surveyround == 3 & !missing(comp_ca2024) & missing(comp_ca2023)
-replace ca = max(comp_ca2023, comp_ca2024) if surveyround == 3 & !missing(comp_ca2024) & !missing(comp_ca2023)
-lab var ca "Chiffre d'Affaire"
-
-gen ca_exp =. 
-replace ca_exp = compexp_2020 if surveyround == 1
-replace ca_exp = compexp_2023 if surveyround == 3 & !missing(compexp_2023) 
-replace ca_exp = compexp_2024 if surveyround == 3 & !missing(compexp_2024) & missing(compexp_2023)
-replace ca_exp = max(compexp_2023, compexp_2024) if surveyround == 3 & !missing(compexp_2024) & !missing(compexp_2023)
-lab var ca_exp "Chiffre d'Affaire export"
-
-gen profit =. 
-replace profit = comp_benefice2020 if surveyround == 1
-replace profit = comp_benefice2023 if surveyround == 3 & !missing(comp_benefice2023) 
-replace profit = comp_benefice2024 if surveyround == 3 & !missing(comp_benefice2024) & missing(comp_benefice2023)
-replace profit = max(comp_benefice2023, comp_benefice2024) if surveyround == 3 & !missing(comp_benefice2024) & !missing(comp_benefice2023)
-lab var profit "Profits"
- 
-*female employes is called car_carempl_div1 in surveys 1 and 2 but fte_femmes in the third and car_carempl_div2 is car_carempl_dive2 during baseline
-
-replace car_carempl_div1=fte_femmes if surveyround==3
-replace car_carempl_div2=car_carempl_dive2 if surveyround==1
-replace exported= exporter2020 if surveyround==1
-replace exp_pays=exp_pays_21 if surveyround==1
-
-replace ssa_action1 = exp_pra_ach if surveyround==3
-replace ssa_action2 = exp_pra_sci if surveyround==3
-replace ssa_action3 = exp_pra_foire if surveyround==3
-replace ssa_action4 = exp_pra_vent if surveyround==3
-replace ssa_action5 = 1 if surveyround==3 & inno_produit>0 & inno_produit!=.
-
-}
-
-***********************************************************************
-* PART 8: Create an aggregate measure for ssa for treatment firms
+* PART 6: Create an aggregate measure for ssa for treatment firms
 ***********************************************************************	
 {
 gen ssa_aggregate = .
@@ -873,31 +831,31 @@ label value ssa_aggregate yesno1
 }
 
 ***********************************************************************
-* Part 9: Create growth variabe
+* Part 7: Create growth variabe
 ***********************************************************************
 {
 // First, make sure the data is sorted by id_plateforme and surveyround
 sort id_plateforme surveyround
 
 // Loop 1: Growth rates between baseline and endline 
-foreach var of varlist ca ca_exp profit fte car_carempl_div1 car_carempl_div2 {
+foreach var of varlist sales profit export fte car_carempl_div1 car_carempl_div2 {
     
     // Calculate the value for surveyround == 1 and surveyround == 3
-    bys id_plateforme (surveyround): gen `var'_1 = `var' if surveyround == 1
-    bys id_plateforme (surveyround): gen `var'_3 = `var' if surveyround == 3
+    bys id_plateforme (surveyround): gen `var'__1 = `var' if surveyround == 1
+    bys id_plateforme (surveyround): gen `var'__3 = `var' if surveyround == 3
 
     // Forward fill the values for surveyround == 1 and surveyround == 3 across all rows for each id
-    bys id_plateforme: egen `var'_1_filled = max(`var'_1)
-    bys id_plateforme: egen `var'_3_filled = max(`var'_3)
+    bys id_plateforme: egen `var'__1_filled = max(`var'__1)
+    bys id_plateforme: egen `var'__3_filled = max(`var'__3)
 
     // Calculate relative growth rate: (value in survey 3 / value in survey 1) - 1, but only for surveyround == 3
-    gen `var'_rel_growth = (`var'_3_filled / `var'_1_filled) - 1 if surveyround == 3 & `var'_1_filled != . & `var'_3_filled != .
+    gen `var'_rel_growth = (`var'__3_filled / `var'__1_filled) - 1 if surveyround == 3 & `var'__1_filled != . & `var'__3_filled != .
 
     // Calculate absolute growth: value in survey 3 - value in survey 1, but only for surveyround == 3
-    gen `var'_abs_growth = `var'_3_filled - `var'_1_filled if surveyround == 3 & `var'_1_filled != . & `var'_3_filled != .
+    gen `var'_abs_growth = `var'__3_filled - `var'__1_filled if surveyround == 3 & `var'__1_filled != . & `var'__3_filled != .
 
     // Clean up intermediate variables
-    drop `var'_1 `var'_3
+    drop `var'__1 `var'__3
 }
 
 
@@ -938,10 +896,10 @@ use links to understand the code syntax for creating the accounting variables' g
 */
 
 
-lab var ca_rel_growth "Total sales (% growth)"
-lab var ca_abs_growth "Total sales (abs. growth)"
-lab var ca_exp_rel_growth "Export sales (% growth)"
-lab var ca_exp_abs_growth "Export sales (abs. growth)"
+lab var sales_rel_growth "Total sales (% growth)"
+lab var sales_abs_growth "Total sales (abs. growth)"
+lab var export_rel_growth "Export sales (% growth)"
+lab var export_abs_growth "Export sales (abs. growth)"
 lab var profit_rel_growth "Profits (% growth)"
 lab var profit_abs_growth "Profits (abs. growth)"
 lab var fte_rel_growth "Employees (% growth)"

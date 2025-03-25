@@ -52,8 +52,10 @@ local tech_adop_subindexes "presence_manual presence_survey payment_manual payme
 local tech_perf "dig_empl dig_dummy dig_revenues_ecom dig_rev_extmargin ihs_dig_rev_w95 ihs_dig_rev_w97 ihs_dig_rev_w99 ihs_dig_empl_99 ihs_dig_empl_97 ihs_dig_empl_95 dig_rev_extmargin2"
 
 local tech_perc "perception investecom_benefit1 investecom_benefit2"
+
+local firm_perf "w95_sales_ihs w95_profit_ihs w95_export_ihs"
 	 	 
-local outcomes "`tech_adop_indexes' `tech_adop_subindexes' `tech_perf' `tech_perc'"
+local outcomes "`tech_adop_indexes' `tech_adop_subindexes' `tech_perf' `tech_perc' `firm_perf'"
 
 foreach var of local outcomes {
 	
@@ -95,6 +97,7 @@ foreach var of local outcomes {
 ***********************************************************************
 * 	PART 0.3:  balance table
 ***********************************************************************
+{
 gen uni = (car_pdg_educ == 5)
 	replace uni = . if car_pdg_educ == .
 	
@@ -113,6 +116,8 @@ gen investcom_2021_pos = (investcom_2021 > 0)
 tab treatment_email, gen(treatment_email)
 forvalues x = 1(1)3 {
 	replace treatment_email`x' = . if treatment_email == .
+	}
+	
 }
 	
 {
@@ -360,7 +365,7 @@ esttab `ml_attrition' using "el_attrition_ml_outcomes.tex", replace ///
 }
 
 ***********************************************************************
-* 	PART 2: Regressions for paper tables
+* 	PART 2: Technology adoption regressions
 ***********************************************************************
 {
 * Table 1: Variables: E-commerce knowledge	E-commerce adoption	E-commerce perception	E-commerce sales	E-commerce employees
@@ -538,8 +543,10 @@ table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_
 table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev_extmargin2, gen(tab1_paper_v2) // replacement with 0 instead of . for e-commerce investment & revenue (assumption: if firm said idk, put in 0)
 
 
-* explorative: heterogeneity in TA effect?
+* heterogeneity in TE on TA ?
 {
+	
+	* high vs. low BL e-commerce technology effect on TE for ecommerce technology?
 foreach source in survey manual {
 	gen t_bl_dtai_`source' = dtai_`source' if surveyround == 1
 	egen bl_dtai_`source' = min(t_bl_dtai_`source'), by(id_plateforme)
@@ -547,9 +554,8 @@ foreach source in survey manual {
 	gen bl_dtai_`source'_high = (bl_dtai_`source' > r(p50))
 		replace bl_dtai_`source'_high = . if bl_dtai_`source' == .
 	drop t_bl_dtai_`source'
-}
+	}
 	
-	* high vs. low BL e-commerce technology effect on TE for ecommerce technology?
 		* high
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_dtai_survey_high == 1, cluster(id_plateforme) 
 ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_survey_high == 1, cluster(id_plateforme) 
@@ -565,13 +571,122 @@ reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_dta
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
 		
 	* small vs. large firms?
+foreach size in small large {
+	gen t_bl_`size'_firm = `size'_firm if surveyround == 1
+	egen bl_`size'_firm = min(t_bl_`size'_firm), by(id_plateforme)
+	drop t_bl_`size'_firm
+	}
+
 	
-	* 
+	
+		* large firms
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_large_firm == 1, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_large_firm == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_large_firm == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_large_firm == 1, cluster(id_plateforme) 
+
+		* small firms
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_small_firm == 1, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_small_firm == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_small_firm == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_small_firm == 1, cluster(id_plateforme)
+
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_small_firm == 0, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_small_firm == 0, cluster(id_plateforme)
+	
+	
+	* Peers? Do entrepreneurs with more peers using ecommerce technology respond differently to T?
+sum car_adop_peer if surveyround == 1, d
+gen t_bl_peers = (car_adop_peer > r(p50))
+		replace t_bl_peers = . if car_adop_peer == .
+egen bl_peers = min(t_bl_peers), by(id_plateforme)
+drop t_bl_peers
+
+		* High peers
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_peers == 1, cluster(id_plateforme)
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_peers == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_peers == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_peers == 1, cluster(id_plateforme) 
+
+		* Low peers
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_peers == 0, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_peers == 0, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_peers == 0, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_peers == 0, cluster(id_plateforme)
+
+		
+	* Age? Does treatment effect depends on entrepreneurs age?
+sum car_pdg_age if surveyround == 1, d
+gen t_bl_age = (car_pdg_age > r(p50))
+		replace t_bl_age = . if car_pdg_age == .
+egen bl_age = min(t_bl_age), by(id_plateforme)
+drop t_bl_age
 		
 		
-reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme) 
-reg dtai_manual i.take_up L2.dtai_manual i.strata if surveyround == 3, cluster(id_plateforme)
-ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+		* Old
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_age == 1, cluster(id_plateforme)
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_age == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_age == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_age == 1, cluster(id_plateforme) 
+
+		* Young
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_age == 0, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_age == 0, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_age == 0, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_age == 0, cluster(id_plateforme)
+
+
+	* Risk-aversion
+sum car_risque if surveyround == 1, d
+gen t_bl_risque = (car_risque > r(p50))
+		replace t_bl_risque = . if car_risque == .
+egen bl_risque = min(t_bl_risque), by(id_plateforme)
+drop t_bl_risque
+
+		* Risk-averse
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_risque == 1, cluster(id_plateforme)
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_risque == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_risque == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_risque == 1, cluster(id_plateforme) 
+
+		* Less risk averse
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_risque == 0, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_risque == 0, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_risque == 0, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_risque == 0, cluster(id_plateforme)
+
+
+	* Credit constrained
+sum car_credit1 if surveyround == 1, d
+gen t_bl_credit = (car_credit1 > r(p50))
+		replace t_bl_credit = . if car_credit1 == .
+egen bl_credit = min(t_bl_credit), by(id_plateforme)
+drop t_bl_credit
+
+		* More credit constrained
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+		* Less credit constrained
+reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+
+}
 
 
 * Table 2: E-commerce knowledge, Variables: dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml
@@ -860,6 +975,20 @@ ivreg2 dig_barr7 i.strata (take_up = i.treatment) if surveyround == 3, cluster(i
 
 
 }
+
+
+
+***********************************************************************
+* 	PART 3: Firm performance regressions
+***********************************************************************
+
+* profit_2023_pos
+
+reg w95_sales_ihs i.treatment L2.w95_sales_ihs miss_bl_w95_sales_ihs i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 comp_ca2023 comp_ca2020 i.miss_bl_dig_empl i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+
+
 
 ***********************************************************************
 * 	PART 2: Write a program that generates generic regression table	

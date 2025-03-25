@@ -640,7 +640,7 @@ replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
 * 	PART 4: Account for filter on e-commerce tools
 ***********************************************************************
 * if company does not use a specific e-commerce tool (website, social media or platform), replace linked questions with zeros
-
+{
 local vars "dig_description dig_miseajour dig_payment"
 forvalues x = 1(1)3 {
 	foreach var of local vars {
@@ -657,7 +657,7 @@ local web_vars "web_use_contacts web_use_catalogue web_use_engagement web_use_co
 foreach var of local web_vars {
 	replace `var' = 0 if dig_presence1 == 0 & surveyround == 3 & `var' == .
 	}
-
+}
 
 
 ***********************************************************************
@@ -755,6 +755,25 @@ forvalues x = 1(1)3 {
 ***********************************************************************
 replace dig_empl = dig_service_responsable if dig_empl == . & dig_service_responsable != .
 drop dig_service_responsable
+
+***********************************************************************
+* 	PART 9: create harmonized financial variables across surveys
+***********************************************************************
+{
+gen sales = .
+	replace sales = comp_ca2023 if surveyround == 3
+	replace sales = comp_ca2020 if surveyround == 1
+	
+gen profit = .
+	replace profit = comp_benefice2023 if surveyround == 3
+	replace profit = comp_benefice2020 if surveyround == 1
+	
+gen export = . 
+	replace export = compexp_2023 if surveyround == 3
+	replace export = compexp_2020 if surveyround == 1
+	
+drop comp_ca2023 comp_benefice2023 compexp_2023
+}
 
 ***********************************************************************
 * 	PART: save
