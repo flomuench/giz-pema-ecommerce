@@ -637,7 +637,7 @@ replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
 
 
 ***********************************************************************
-* 	PART 4: Account for filter on e-commerce tools
+* 	PART 4: Account for survey filters
 ***********************************************************************
 * if company does not use a specific e-commerce tool (website, social media or platform), replace linked questions with zeros
 {
@@ -658,6 +658,13 @@ foreach var of local web_vars {
 	replace `var' = 0 if dig_presence1 == 0 & surveyround == 3 & `var' == .
 	}
 }
+
+
+* export 
+foreach var in exp_pays exp_dig {
+	replace `var' = 0 if export_1 == 0 & export_2 == 0 & `var' == .
+} 
+
 
 
 ***********************************************************************

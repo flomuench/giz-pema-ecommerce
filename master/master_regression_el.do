@@ -35,7 +35,7 @@ set scheme s1color
 ***********************************************************************
 * 	PART 0.1:  set the stage - change labels for regression table output
 ***********************************************************************
-lab var take_up "Take-up = 1"
+lab var take_up "Take-up"
 lab val take_up presence
 
 
@@ -234,7 +234,7 @@ comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz
 {
 *test for differential total attrition
 {
-	* is there differential attrition between treatment and control group?
+	* is there differential attrition between treatment and Control?
 		* column (1): at endline
 eststo att1, r: areg attrited i.treatment if surveyround == 3, absorb(strata) cluster(id_plateforme)
 estadd local strata "Yes"
@@ -259,7 +259,6 @@ esttab `attrition' using "el_attrition.tex", replace ///
 
 *test for selective attrition on key outcome variables (measured at baseline)
       
-**# Bookmark #1
 {
 		* c(1): dig_marketing_index
 eststo att4,r: areg   dig_marketing_index treatment##el_refus if surveyround==1, absorb(strata) cluster(id_plateforme)
@@ -442,7 +441,7 @@ version 16							// define Stata version
             estadd local bl_control "No" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate control group mean
+            // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
@@ -460,7 +459,7 @@ version 16							// define Stata version
 			estadd local bl_control "Yes" : `var'2
 			estadd local strata "Yes" : `var'2
 
-			// Calculate control group mean
+			// Calculate Control mean
 			sum `var' if treatment == 0 & surveyround == 2
 			estadd scalar control_mean = r(mean) : `var'2
 			estadd scalar control_sd = r(sd) : `var'2
@@ -476,7 +475,7 @@ version 16							// define Stata version
             estadd local bl_control "Yes" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate control group mean
+            // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
@@ -506,7 +505,7 @@ tokenize `varlist'
 				fragment ///	
 				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
 				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "BL controls")) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles
@@ -527,6 +526,7 @@ table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev
 {
 	
 	* high vs. low BL e-commerce technology effect on TE for ecommerce technology?
+{	
 foreach source in survey manual {
 	gen t_bl_dtai_`source' = dtai_`source' if surveyround == 1
 	egen bl_dtai_`source' = min(t_bl_dtai_`source'), by(id_plateforme)
@@ -549,15 +549,17 @@ ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_dta
 
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_dtai_manual_high == 0, cluster(id_plateforme) 
+
+}
+
 		
 	* small vs. large firms?
+{
 foreach size in small large {
 	gen t_bl_`size'_firm = `size'_firm if surveyround == 1
 	egen bl_`size'_firm = min(t_bl_`size'_firm), by(id_plateforme)
 	drop t_bl_`size'_firm
 	}
-
-	
 	
 		* large firms
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_large_firm == 1, cluster(id_plateforme) 
@@ -576,9 +578,10 @@ ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_sma
 
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_small_firm == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_small_firm == 0, cluster(id_plateforme)
-	
+}	
 	
 	* Peers? Do entrepreneurs with more peers using ecommerce technology respond differently to T?
+{
 sum car_adop_peer if surveyround == 1, d
 gen t_bl_peers = (car_adop_peer > r(p50))
 		replace t_bl_peers = . if car_adop_peer == .
@@ -599,8 +602,10 @@ ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_pee
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_peers == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_peers == 0, cluster(id_plateforme)
 
+}
 		
 	* Age? Does treatment effect depends on entrepreneurs age?
+{
 sum car_pdg_age if surveyround == 1, d
 gen t_bl_age = (car_pdg_age > r(p50))
 		replace t_bl_age = . if car_pdg_age == .
@@ -622,8 +627,10 @@ ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_age
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_age == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_age == 0, cluster(id_plateforme)
 
+}
 
 	* Risk-aversion
+{
 sum car_risque if surveyround == 1, d
 gen t_bl_risque = (car_risque > r(p50))
 		replace t_bl_risque = . if car_risque == .
@@ -644,8 +651,10 @@ ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_ris
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_risque == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_risque == 0, cluster(id_plateforme)
 
+}
 
 	* Credit constrained
+{
 sum car_credit1 if surveyround == 1, d
 gen t_bl_credit = (car_credit1 > r(p50))
 		replace t_bl_credit = . if car_credit1 == .
@@ -666,6 +675,8 @@ ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_cre
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
 
+* there should be two } on the next lines
+}
 }
 
 
@@ -692,7 +703,7 @@ version 16							// define Stata version
             estadd local bl_control "No" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate control group mean
+            // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 2
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
@@ -710,7 +721,7 @@ version 16							// define Stata version
 			estadd local bl_control "Yes" : `var'2
 			estadd local strata "Yes" : `var'2
 
-			// Calculate control group mean
+			// Calculate Control mean
 			sum `var' if treatment == 0 & surveyround == 2
 			estadd scalar control_mean = r(mean) : `var'2
 			estadd scalar control_sd = r(sd) : `var'2
@@ -726,7 +737,7 @@ version 16							// define Stata version
             estadd local bl_control "Yes" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate control group mean
+            // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
@@ -756,7 +767,7 @@ tokenize `varlist'
 				fragment ///	
 				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
 				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "BL controls")) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles
@@ -856,7 +867,7 @@ version 16							// define Stata version
             estadd local bl_control "No" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate control group mean
+            // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
@@ -873,7 +884,7 @@ version 16							// define Stata version
             estadd local bl_control "Yes" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate control group mean
+            // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
@@ -924,6 +935,7 @@ reg investcom_benefit1 i.treatment i.strata if surveyround == 3, cluster(id_plat
 
 
 * Table: ecommerce mechanisms
+{
 reg dig_margins i.treatment i.strata if surveyround == 3, cluster(id_plateforme) // TE
 ivreg2 dig_margins i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) // TE
 
@@ -945,17 +957,10 @@ reg dig_barr6 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 dig_barr6 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
 reg dig_barr7 i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
 ivreg2 dig_barr7 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)  
-
-
-* Table firm performance: sales, profits, employees, 
-
-
-
-* Table export
+}
 
 
 }
-
 
 
 ***********************************************************************
@@ -1006,6 +1011,7 @@ ivreg2 w95_comp_benefice2024_ihs L2.profit i.miss_bl_profit_ihs i.strata (take_u
 * sales
 {
 	* 2023
+		* ATE
 reg sales i.treatment L2.sales miss_bl_sales i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 sales L2.sales i.miss_bl_sales i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
 
@@ -1021,7 +1027,24 @@ ivreg2 sales_rel_growth L2.sales_rel_growth i.miss_bl_sales_rel_growth i.strata 
 
 reg sales_abs_growth i.treatment L2.sales_abs_growth miss_bl_sales_abs_growth i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 sales_abs_growth L2.sales_abs_growth i.miss_bl_sales_abs_growth i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+			
+			* Heterogeneity
+		* More credit constrained
+reg w95_sales i.treatment L2.w95_sales i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 w95_sales i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
 
+reg w95_sales_ihs i.treatment L2.w95_sales_ihs i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+ivreg2 w95_sales_ihs i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+		* Less credit constrained
+reg w95_sales i.treatment L2.w95_sales i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 w95_sales i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+reg w95_sales_ihs i.treatment L2.w95_sales_ihs i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 w95_sales_ihs i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+			
+			
+			
 	* 2024
 reg comp_ca2024 i.treatment L2.sales miss_bl_sales i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 comp_ca2024 L2.sales i.miss_bl_sales i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
@@ -1053,6 +1076,77 @@ ivreg2 fte_rel_growth L2.fte miss_bl_fte i.strata (take_up = i.treatment) if sur
 reg fte_abs_growth i.treatment L2.fte miss_bl_fte i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 fte_abs_growth L2.fte miss_bl_fte i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
 }
+
+
+*** Firm performance table
+lab var w95_sales "Sales"
+lab var w95_sales_ihs "Sales"
+lab var w95_profit "Profit" 
+lab var w95_profit_ihs "Profit" 
+lab var fte "Employees"
+lab var w95_fte "Employees"
+
+capture program drop firm_perf // enables re-running
+program firm_perf
+version 16							// define Stata version
+	syntax varlist(min=1 numeric), GENerate(string)
+
+		* Loop over each variable & regress on treatment & take-up
+    foreach var in `varlist' {
+		
+	// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment L2.`var' i.strata i.miss_bl_`var' if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "Yes" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var'  L2.`var' i.strata i.miss_bl_`var' (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate Control mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+}
+
+				* Put everything into a latex table	
+tokenize `varlist'
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
+			prehead("\begin{table}[!h] \centering \\ \caption{Firm's Business Performance: Sales, Profits, and Employees} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}  \toprule") ///
+				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+				fragment ///
+				cells(b(star fmt(%-15.1fc)) se(par fmt(%-15.1fc))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels(, dep) /// use dep vars labels as model title "\shortstack{}"
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				collabels(none) ///	do not use statistics names below models
+				label 		/// specifies EVs have label
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* oL.*
+				noobs
+			
+			* Bottom panel: ITT
+		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
+				fragment ///	
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(%-15.1fc)) se(par fmt(%-15.1fc))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\addlinespace[0.3cm] \midrule") ///
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Sales, profits, and employees are measured annually at endline (2023) and baseline (2020). For sales and profits, the first column presents levels, winsorized at the 95th percentile. For employees, the first column present levels and the second one levels, winsorized at the 95th percentile. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				
+				
+end
+
+firm_perf w95_sales w95_sales_ihs w95_profit w95_profit_ihs fte w95_fte, gen(kpis)
+
 
 * export
 {
@@ -1104,6 +1198,112 @@ ivreg2 export_abs_growth L2.export_abs_growth i.miss_bl_export_abs_growth i.stra
 }
 
 
+*** Export performance table
+lab var exported "Export sales $>$ 0"
+lab var w95_export "Export sales"
+lab var w95_export_ihs "Export sales"
+lab var exp_dig "Online export"
+
+capture program drop export_perf // enables re-running
+program export_perf
+version 16							// define Stata version
+	syntax varlist(min=1 numeric), GENerate(string)
+
+		* Loop over each variable & regress on treatment & take-up
+    foreach var in `varlist' {
+		// with baseline control
+	sum L2.`var'
+	if r(N) == 0 {
+		
+	// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "No" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate Control mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2
+			
+	} // with baseline control
+	else {
+		
+		// ITT: ANCOVA plus stratification dummies
+            eststo `var'1: reg `var' i.treatment L2.`var' i.strata i.miss_bl_`var' if surveyround == 3, cluster(id_plateforme)
+            estadd local bl_control "Yes" : `var'1
+            estadd local strata "Yes" : `var'1
+
+            // ATT, IV
+            eststo `var'2: ivreg2 `var'  L2.`var' i.strata i.miss_bl_`var' (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2
+            estadd local strata "Yes" : `var'2
+            
+            // Calculate Control mean
+            sum `var' if treatment == 0 & surveyround == 3
+            estadd scalar control_mean = r(mean) : `var'2
+            estadd scalar control_sd = r(sd) : `var'2	
+	}
+}
+
+				* Put everything into a latex table	
+tokenize `varlist'
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1  // `6'1 `7'1 `10'1  adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
+			prehead("\begin{table}[!h] \centering \\ \caption{Export Performance} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}  \toprule") ///
+				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+				fragment ///
+				cells(b(star fmt(%-15.2fc)) se(par fmt(%-15.2fc))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels(, dep) /// use dep vars labels as model title "\shortstack{}"
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				collabels(none) ///	do not use statistics names below models
+				label 		/// specifies EVs have label
+				drop(_cons *.strata ?.miss_bl_* *L*.*) ///  L.* oL.*
+				noobs
+			
+			* Bottom panel: ITT
+		local regressions `1'2 `2'2 `3'2 `4'2 `5'2  // `6'2 `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
+				fragment ///	
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(%-15.2fc)) se(par fmt(%-15.2fc))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\addlinespace[0.3cm] \midrule") ///
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. All outcomes are measured at endline in 2023. 'Export readiness' is measured as an index constructed as in \citet{Anderson.2008}. Export sales are levels, winsorized at the 95th percentile in the first column and additionally ihs-transformed in the second column. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				
+				
+end
+
+export_perf eri exported exp_dig w95_export w95_export_ihs, gen(export)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 ***********************************************************************
 * 	PART 10: Endline results - Presentation
@@ -1125,7 +1325,7 @@ program rct_presentation_exp
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			
-			* calculate control group mean
+			* calculate Control mean
 				* take mean at endline to control for time trends
 sum `var' if treatment == 0 & surveyround == 3
 estadd scalar control_mean = r(mean)
@@ -1183,7 +1383,7 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 				fragment ///
 				posthead("\hline \\ \multicolumn{5}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
 				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) ci(fmt(2)) rw) ///
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "Y0 controls")) ///
 				drop(_cons *.strata) /// ?.missing_bl_* *_y0
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles
@@ -1252,7 +1452,7 @@ program rct_presentation_nb
 			estadd local bl_control "Yes"
 			estadd local strata "Yes"
 			
-			* calculate control group mean
+			* calculate Control mean
 				* take mean at endline to control for time trends
 sum `var' if treatment == 0 & surveyround == 3
 estadd scalar control_mean = r(mean)
@@ -1310,7 +1510,7 @@ esttab e(ci(fmt(2)) rw) using rw_`generate'.tex, replace
 				fragment ///
 				posthead("\hline \\ \multicolumn{5}{c}{\textbf{Panel B: Treatment Effect on the Treated (TOT)}} \\\\[-1ex]") ///
 				cells(b(star fmt(3)) se(par fmt(3)) p(fmt(3)) ci(fmt(2)) rw) ///
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control group mean" "Control group SD" "Observations" "Strata controls" "Y0 controls")) ///
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "Y0 controls")) ///
 				drop(_cons *.strata) /// ?.missing_bl_* *_y0
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles

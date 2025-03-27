@@ -214,6 +214,12 @@ replace ever_exported=1 if export2021=="oui" | export2020=="oui" | export2019 ==
 replace ever_exported=0 if exp_avant21==0
 lab var ever_exported "dummy if company has exported some time in the past 5 years"
 
+drop exported
+
+gen exported = (export > 0)
+	replace exported = . if export == .
+lab var exported "Export sales > 0"
+
 gen exported2 = (exp_pays > 0)
 	replace exported2 = . if exp_pays == .
 	replace exported2 = 0 if exported == 0 & surveyround == 3
@@ -601,7 +607,7 @@ local perception "dig_perception1 dig_perception2 dig_perception3 dig_perception
 
 		
 		* Export readiness
-local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_demande expprep_dummy"		
+local eri "exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_demande expprep_dummy expprep_responsable expprep_norme"		
 
 		* Business performance
 local bpi "fte sales profit comp_ca2024 comp_benefice2024"
@@ -702,7 +708,7 @@ egen dtai_manual = rowmean(t_entreprise_webz t_entreprise_socialz t_social_faceb
 egen perception = rowmean(t_dig_perception1z t_dig_perception2z t_dig_perception3z t_dig_perception4z t_dig_perception5z t_dig_barr1z t_dig_barr2z t_dig_barr3z t_dig_barr4z t_dig_barr5z t_dig_barr6z t_dig_barr7z)
 		
 		* Export readiness
-egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz)	
+egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz t_expprep_ciblez t_expprep_responsablez t_expprep_normez t_expprep_demandez t_expprep_dummyz)	
 		
 		* Business performance
 egen bpi = rowmean(t_ftez t_salesz t_profitz)
