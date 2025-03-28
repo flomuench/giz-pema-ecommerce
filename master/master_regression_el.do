@@ -662,18 +662,45 @@ egen bl_credit = min(t_bl_credit), by(id_plateforme)
 drop t_bl_credit
 
 		* More credit constrained
+			* TA index
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
 ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
 
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
 
+			* dig_dummy 
+reg dig_dummy i.treatment L2.dig_dummy i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 dig_dummy i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+			* dig_invest_extmargin2
+reg dig_invest_extmargin2 i.treatment i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 dig_invest_extmargin2 i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+			* dig_rev_extmargin2
+reg dig_rev_extmargin2 i.treatment L2.dig_rev_extmargin2 i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 dig_rev_extmargin2 L2.dig_rev_extmargin2 i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+		
 		* Less credit constrained
+			* TA index
 reg dtai_survey i.treatment L2.dtai_survey i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 ivreg2 dtai_survey i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 
 reg dtai_manual i.treatment L2.dtai_manual i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 ivreg2 dtai_manual i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+
+			* dig_dummy 
+reg dig_dummy i.treatment L2.dig_dummy i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+ivreg2 dig_dummy i.strata L2.dig_dummy (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+			* dig_invest_extmargin2
+reg dig_invest_extmargin2 i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+ivreg2 dig_invest_extmargin2 i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+			* dig_rev_extmargin2
+reg dig_rev_extmargin2 i.treatment L2.dig_rev_extmargin2 i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+ivreg2 dig_rev_extmargin2 i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 
 * there should be two } on the next lines
 }
@@ -970,6 +997,16 @@ ivreg2 dig_barr7 i.strata (take_up = i.treatment) if surveyround == 3, cluster(i
 reg bpi i.treatment L2.bpi miss_bl_bpi i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 bpi L2.bpi i.miss_bl_bpi i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
 
+		* Heterogenous treatment effects
+			* Heterogeneity
+		* More credit constrained
+reg bpi i.treatment i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 bpi i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)  
+
+		* Less credit constrained
+reg bpi i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 bpi i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
 
 * profit
 {
@@ -993,6 +1030,24 @@ ivreg2 profit_rel_growth L2.profit_rel_growth i.miss_bl_profit_rel_growth i.stra
 reg profit_abs_growth i.treatment L2.profit_abs_growth miss_bl_profit_abs_growth i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 profit_abs_growth L2.profit_abs_growth i.miss_bl_profit_abs_growth i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
 
+		* Heterogenous treatment effects
+			* Heterogeneity
+		* More credit constrained
+reg profit i.treatment i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 profit i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+reg profit_pos i.treatment i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 profit_pos i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+		* Less credit constrained
+reg profit i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 profit i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+reg profit_pos i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 profit_pos i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+reg profit_2024_category i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 profit_2024_category i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 
 
 	* 2024
@@ -1174,9 +1229,22 @@ ivreg2 export_1 L2.export miss_bl_export i.strata (take_up = i.treatment) if sur
 reg export_2 i.treatment L2.export miss_bl_export i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 export_2 L2.export miss_bl_export i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
 
-
+	* Digital Exports
+		* ATE
 reg exp_dig i.treatment L2.exported miss_bl_exported i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 exp_dig L2.exported miss_bl_exported i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+		* Heterogenous treatment effects
+			* Heterogeneity
+		* More credit constrained
+reg exp_dig i.treatment i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+ivreg2 exp_dig i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) 
+
+		* Less credit constrained
+reg exp_dig i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+ivreg2 exp_dig i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
+
+
 
 	* continuous measure (export sales)
 reg export i.treatment L2.export miss_bl_export i.strata if surveyround == 3, cluster(id_plateforme)
@@ -1290,7 +1358,169 @@ export_perf eri exported exp_dig w95_export w95_export_ihs, gen(export)
 
 
 
+***********************************************************************
+* 	PART 4: Heterogeneity table: More vs. less credit constrained
+***********************************************************************
+* Digital Technology Adoption
+capture program drop table1_het // enables re-running
+program table1_het
+version 16							// define Stata version
+	syntax varlist(min=1 numeric), GENerate(string)
+	
+		* Loop over each variable & regress on treatment & take-up
+    foreach var in `varlist' {
 
+		sum L2.`var'
+		if r(N) == 0  {
+			
+			// ITT: ANCOVA plus stratification dummies
+				* More credit constrained
+            eststo `var'1a: reg `var' i.treatment i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1a
+            estadd local strata "Yes" : `var'1a
+				* Less credit constrained
+			eststo `var'1b: reg `var' i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+            estadd local bl_control "No" : `var'1b
+            estadd local strata "Yes" : `var'1b
+
+
+			// ATT, IV
+				* More credit constrained
+            eststo `var'2a: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) first
+            estadd local bl_control "No" : `var'2a
+            estadd local strata "Yes" : `var'2a
+				
+				* Less credit constrained
+			eststo `var'2b: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) first
+            estadd local bl_control "No" : `var'2b
+            estadd local strata "Yes" : `var'2b
+            
+            // Calculate Control mean
+				* More credit constrained 
+            sum `var' if treatment == 0 & surveyround == 3 & bl_credit == 1
+            estadd scalar control_mean = r(mean) : `var'2a
+            estadd scalar control_sd = r(sd) : `var'2a
+			
+				* Less credit constrained
+			sum `var' if treatment == 0 & surveyround == 3 & bl_credit == 0
+            estadd scalar control_mean = r(mean) : `var'2b
+            estadd scalar control_sd = r(sd) : `var'2b
+			
+		}
+		
+		else if `var' == knowledge {
+			// ITT: ANCOVA plus stratification dummies
+				* More credit constrained
+			eststo `var'1a: reg `var' i.treatment L1.`var' i.miss_bl_`var' i.strata if surveyround == 2 & bl_credit == 1, cluster(id_plateforme)
+			estadd local bl_control "Yes" : `var'1a
+			estadd local strata "Yes" : `var'1a
+				
+				* Less credit constrained
+			eststo `var'1b: reg `var' i.treatment L1.`var' i.miss_bl_`var' i.strata if surveyround == 2 & bl_credit == 0, cluster(id_plateforme)
+			estadd local bl_control "Yes" : `var'1b
+			estadd local strata "Yes" : `var'1b
+
+			// ATT, IV
+				* More credit constrained
+			eststo `var'2a: ivreg2 `var' L1.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 2 & bl_credit == 1, cluster(id_plateforme) first
+			estadd local bl_control "Yes" : `var'2a
+			estadd local strata "Yes" : `var'2a
+
+				* Less credit constrained
+			eststo `var'2b: ivreg2 `var' L1.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 2 & bl_credit == 0, cluster(id_plateforme) first
+			estadd local bl_control "Yes" : `var'2b
+			estadd local strata "Yes" : `var'2b
+			
+			// Calculate Control mean
+				* More credit constrained 
+            sum `var' if treatment == 0 & surveyround == 2 & bl_credit == 1
+            estadd scalar control_mean = r(mean) : `var'2a
+            estadd scalar control_sd = r(sd) : `var'2a
+			
+				* Less credit constrained
+			sum `var' if treatment == 0 & surveyround == 2 & bl_credit == 0
+            estadd scalar control_mean = r(mean) : `var'2b
+            estadd scalar control_sd = r(sd) : `var'2b
+		}
+        else {
+			// ITT: ANCOVA plus stratification dummies
+				* More credit constrained
+            eststo `var'1a: reg `var' i.treatment L2.`var' i.miss_bl_`var' i.strata if surveyround == 3 & bl_credit == 1, cluster(id_plateforme)
+            estadd local bl_control "Yes" : `var'1a
+            estadd local strata "Yes" : `var'1a
+			
+				* Less credit constrained			
+			eststo `var'1b: reg `var' i.treatment L2.`var' i.miss_bl_`var' i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme)
+            estadd local bl_control "Yes" : `var'1b
+            estadd local strata "Yes" : `var'1b
+
+            // ATT, IV
+				* More credit constrained
+            eststo `var'2a: ivreg2 `var' L2.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2a
+            estadd local strata "Yes" : `var'2a
+			
+				* Less credit constrained		
+            eststo `var'2b: ivreg2 `var' L2.`var' i.miss_bl_`var' i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) first
+            estadd local bl_control "Yes" : `var'2b
+            estadd local strata "Yes" : `var'2b
+            
+            // Calculate Control mean
+				* More credit constrained 
+            sum `var' if treatment == 0 & surveyround == 3 & bl_credit == 1
+            estadd scalar control_mean = r(mean) : `var'2a
+            estadd scalar control_sd = r(sd) : `var'2a
+			
+				* Less credit constrained
+			sum `var' if treatment == 0 & surveyround == 3 & bl_credit == 0
+            estadd scalar control_mean = r(mean) : `var'2b
+            estadd scalar control_sd = r(sd) : `var'2b
+
+        }
+}
+
+				* Put everything into a latex table	
+tokenize `varlist'
+		local regressions `1'1a `1'1b `2'1a `2'1b `3'1a `3'1b `4'1a `4'1b `5'1a `5'1b `6'1a `6'1b `7'1a `7'1b // `7'1 `10'1  adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Heterogeneity by Baseline Credit-Constraint} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{14}{>{\centering\arraybackslash}X}} \toprule & \multicolumn{2}{c}{Knowledge} & \multicolumn{2}{c}{\shortstack{Adoption \\ Survey}} & \multicolumn{2}{c}{\shortstack{Adoption \\ Manual}} & \multicolumn{2}{c}{\shortstack{E-Employees \\ $>0$}} & \multicolumn{2}{c}{\shortstack{E-Investment \\ $>0$}} & \multicolumn{2}{c}{\shortstack{E-Revenue \\ $>0$}} & \multicolumn{2}{c}{E-Margins} \\ & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC \\ \midrule") ///
+				posthead("\toprule \\ \multicolumn{15}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+				fragment ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels(none) /// use dep vars labels as model title
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				nobaselevels ///
+				collabels(none) ///	do not use statistics names below models
+				label 		/// specifies EVs have label
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* oL.*
+				noobs
+			
+			* Bottom panel: ITT
+		local regressions `1'2a `1'2b `2'2a `2'2b `3'2a `3'2b `4'2a `4'2b `5'2a `5'2b `6'2a `6'2b `7'2a `7'2b // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
+				fragment ///	
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{15}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
+				star(* 0.1 ** 0.05 *** 0.01) ///
+				mlabels(none) nonumbers ///		do not use varnames as model titles
+				collabels(none) ///	do not use statistics names below models
+				nobaselevels ///
+				label 		/// specifies EVs have label
+				prefoot("\addlinespace[0.3cm] \midrule") ///
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{15}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Knowledge and adoption are average z-scores as defined in \citet{Anderson.2008}. Knowledge is measured at midline, while all other outcomes are measured at the endline. Adoption survey is based on survey responses, while adoption manual is based on manual scoring of firms websites and social media accounts. Columns(4)-(6) present dummy variables. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				
+				
+end
+
+table1_het knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_extmargin dig_margins, gen(ta_het)
+table1_het knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev_extmargin2 dig_margins, gen(ta_het) 
+// replacement with 0 instead of . for e-commerce investment & revenue (assumption: if firm said idk, put in 0)
+
+
+
+* Firm performance
 
 
 
