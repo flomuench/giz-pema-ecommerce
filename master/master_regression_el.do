@@ -78,6 +78,7 @@ foreach var of local outcomes {
 * 	PART 0.3:  balance table
 ***********************************************************************
 {
+{
 gen uni = (car_pdg_educ == 5)
 	replace uni = . if car_pdg_educ == .
 	
@@ -226,6 +227,7 @@ comp_benefice2020 knowledge dig_presence_weightedz webindexz social_media_indexz
   expprep if surveyround==1, grpvar(take_up) rowvarlabels format(%15.2fc) vce(robust) ftest savetex(bl_take_up_baltab_adj) replace
 
   }
+}
 
 ***********************************************************************
 * 	PART 1: Attrition
@@ -485,13 +487,13 @@ version 16							// define Stata version
 
 				* Put everything into a latex table	
 tokenize `varlist'
-		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 `7'1 // `7'1 `10'1  adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
-			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge, Technology Adoption, Performance} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}}  \toprule") ///
-				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge, Technology Adoption, Performance} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{7}{>{\centering\arraybackslash}X}}  \toprule") ///
+				posthead("\toprule \\ \multicolumn{8}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
 				fragment ///
-				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
-				mlabels("Knowledge"  "\shortstack{Adoption \\ Survey}" "\shortstack{Adoption \\ Manual}" "\shortstack{E-Employees\\ $> 0$}" "\shortstack{E-Investment\\ $> 0$}"  "\shortstack{E-Revenue\\ $> 0$}") /// use dep vars labels as model title
+				cells(b(star fmt(2)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels("Knowledge"  "\shortstack{Adoption \\ Survey}" "\shortstack{Adoption \\ Manual}" "\shortstack{E-Employees\\ $> 0$}" "\shortstack{E-Investment\\ $> 0$}"  "\shortstack{E-Revenue\\ $> 0$}" "E-Margin") /// use dep vars labels as model title
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				nobaselevels ///
 				collabels(none) ///	do not use statistics names below models
@@ -500,11 +502,11 @@ tokenize `varlist'
 				noobs
 			
 			* Bottom panel: ITT
-		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 `7'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
 				fragment ///	
-				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
-				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{8}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				cells(b(star fmt(2)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
 				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
@@ -513,13 +515,13 @@ tokenize `varlist'
 				nobaselevels ///
 				label 		/// specifies EVs have label
 				prefoot("\addlinespace[0.3cm] \midrule") ///
-				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Knowledge and adoption are average z-scores as defined in \citet{Anderson.2008}. Knowledge is measured at midline, while all other outcomes are measured at the endline. Adoption survey is based on survey responses, while adoption manual is based on manual scoring of firms websites and social media accounts. Columns(4)-(6) present dummy variables. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{8}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Knowledge and adoption are average z-scores as defined in \citet{Anderson.2008}. Knowledge is measured at midline, while all other outcomes are measured at the endline. Adoption survey is based on survey responses, while adoption manual is based on manual scoring of firms websites and social media accounts. Columns(4)-(6) present dummy variables. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
 				
 				
 end
 
-table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_extmargin, gen(tab1_paper_v1)
-table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev_extmargin2, gen(tab1_paper_v2) // replacement with 0 instead of . for e-commerce investment & revenue (assumption: if firm said idk, put in 0)
+table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_extmargin dig_margins, gen(tab1_paper_v1)
+table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev_extmargin2 dig_margins, gen(tab1_paper_v2) // replacement with 0 instead of . for e-commerce investment & revenue (assumption: if firm said idk, put in 0)
 
 
 * heterogeneity in TE on TA ?
@@ -776,11 +778,11 @@ version 16							// define Stata version
 tokenize `varlist'
 		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
-			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge Index Deep Dive} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}m{2cm} >{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}>{\centering\arraybackslash}m{2cm}}  \toprule") ///
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Knowledge Index Deep Dive} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{6}{>{\centering\arraybackslash}X}}  \toprule") ///
 				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
 				fragment ///
-				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
-				mlabels("\shortstack{Knowledge\\ Index"  "\shortstack{E-\\Payment}" "\shortstack{E-\\ Content}" "\shortstack{Google\\ Analytics}" "\shortstack{Engagement \\ Rate}"  "\shortstack{SEO \\ SEA}") /// use dep vars labels as model title
+				cells(b(star fmt(2)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				mlabels("\shortstack{Knowledge\\ Index}"  "\shortstack{E-\\Payment}" "\shortstack{E-\\ Content}" "\shortstack{Google\\ Analytics}" "\shortstack{Engagement \\ Rate}"  "\shortstack{SEO \\ SEA}") /// use dep vars labels as model title
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				nobaselevels ///
 				collabels(none) ///	do not use statistics names below models
@@ -793,7 +795,7 @@ tokenize `varlist'
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
 				fragment ///	
 				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
-				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				cells(b(star fmt(2)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
 				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
@@ -993,6 +995,7 @@ ivreg2 dig_barr7 i.strata (take_up = i.treatment) if surveyround == 3, cluster(i
 ***********************************************************************
 * 	PART 3: Firm performance regressions
 ***********************************************************************
+{
 * bpi
 reg bpi i.treatment L2.bpi miss_bl_bpi i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 bpi L2.bpi i.miss_bl_bpi i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
@@ -1356,7 +1359,7 @@ end
 export_perf eri exported exp_dig w95_export w95_export_ihs, gen(export)
 
 
-
+}
 
 ***********************************************************************
 * 	PART 4: Heterogeneity table: More vs. less credit constrained
@@ -1483,10 +1486,10 @@ version 16							// define Stata version
 tokenize `varlist'
 		local regressions `1'1a `1'1b `2'1a `2'1b `3'1a `3'1b `4'1a `4'1b `5'1a `5'1b `6'1a `6'1b `7'1a `7'1b // `7'1 `10'1  adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
-			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Heterogeneity by Baseline Credit-Constraint} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{14}{>{\centering\arraybackslash}X}} \toprule & \multicolumn{2}{c}{Knowledge} & \multicolumn{2}{c}{\shortstack{Adoption \\ Survey}} & \multicolumn{2}{c}{\shortstack{Adoption \\ Manual}} & \multicolumn{2}{c}{\shortstack{E-Employees \\ $>0$}} & \multicolumn{2}{c}{\shortstack{E-Investment \\ $>0$}} & \multicolumn{2}{c}{\shortstack{E-Revenue \\ $>0$}} & \multicolumn{2}{c}{E-Margins} \\ & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC \\ \midrule") ///
+			prehead("\begin{table}[!h] \centering \\ \caption{E-commerce: Heterogeneity by Baseline Credit-Constraint} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{14}{>{\centering\arraybackslash}X}} \toprule & \multicolumn{2}{c}{Knowledge} & \multicolumn{2}{c}{\shortstack{Adoption \\ Survey}} & \multicolumn{2}{c}{\shortstack{Adoption \\ Manual}} & \multicolumn{2}{c}{\shortstack{E-Employee \\ $>0$}} & \multicolumn{2}{c}{\shortstack{E-Invest \\ $>0$}} & \multicolumn{2}{c}{\shortstack{E-Revenue \\ $>0$}} & \multicolumn{2}{c}{E-Margin} \\ & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC & +CC & –CC \\ \midrule") ///
 				posthead("\toprule \\ \multicolumn{15}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
 				fragment ///
-				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
+				cells(b(star fmt(%6.2gc)) se(par fmt(%6.2gc))) /// p(fmt(3)) rw ci(fmt(2))
 				mlabels(none) /// use dep vars labels as model title
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				nobaselevels ///
@@ -1500,8 +1503,8 @@ tokenize `varlist'
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
 				fragment ///	
 				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{15}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
-				cells(b(star fmt(1)) se(par fmt(2))) /// p(fmt(3)) rw ci(fmt(2))
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				cells(b(star fmt(%6.2gc)) se(par fmt(%6.2gc))) /// p(fmt(3)) rw ci(fmt(2))
+				stats(control_mean control_sd N strata bl_control, fmt(%9.2gc %9.2gc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles
