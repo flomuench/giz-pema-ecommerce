@@ -835,6 +835,7 @@ reg use_sm_survey i.treatment L2.use_sm_survey i.strata if surveyround == 3, clu
 ivreg2 use_sm_survey L2.use_sm_survey i.miss_bl_use_sm_survey i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) 
 reg use_sm_manual i.treatment L2.use_sm_manual i.strata if surveyround == 3, cluster(id_plateforme) 
 
+ 
 
 	reg sm_use_contacts i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
 	ivreg2 sm_use_contacts i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
@@ -850,7 +851,55 @@ reg use_sm_manual i.treatment L2.use_sm_manual i.strata if surveyround == 3, clu
 	
 	reg sm_use_brand i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
 	ivreg2 sm_use_brand i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
-
+	
+	
+	
+	reg web_use_contacts i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_use_contacts i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_use_catalogue i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_use_catalogue i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_use_engagement i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_use_engagement i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_use_com i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_use_com i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_use_brand i.treatment i.strata if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_use_brand i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	
+	   web_aboutus web_norms web_externals web_languages web_coherent web_quality
+	
+	reg web_product i.treatment i.strata L2.web_product if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_product i.strata L2.web_product (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_logoname i.treatment i.strata L2.web_logoname if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_logoname i.strata L2.web_logoname (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_aboutus i.treatment i.strata L2.web_aboutus if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_aboutus i.strata L2.web_aboutus (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_norms i.treatment i.strata L2.web_norms if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_norms i.strata L2.web_norms (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_externals i.treatment i.strata L2.web_externals if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_externals i.strata L2.web_externals (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_languages i.treatment i.strata L2.web_languages if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_languages i.strata L2.web_languages (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	reg web_coherent i.treatment i.strata L2.web_coherent if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_coherent i.strata L2.web_coherent (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	
+	reg web_quality i.treatment i.strata L2.web_quality if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_quality i.strata L2.web_quality (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+	
+	
+	reg web_logoname i.treatment i.strata L2.web_logoname if surveyround == 3, cluster(id_plateforme) 
+	ivreg2 web_logoname i.strata L2.web_logoname (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
     
 
 reg use_fb_manual i.treatment L2.use_fb_manual i.strata if surveyround == 3, cluster(id_plateforme) 
@@ -997,6 +1046,7 @@ ivreg2 dig_barr7 i.strata (take_up = i.treatment) if surveyround == 3, cluster(i
 ***********************************************************************
 {
 * bpi
+{
 reg bpi i.treatment L2.bpi miss_bl_bpi i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 bpi L2.bpi i.miss_bl_bpi i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
 
@@ -1009,7 +1059,7 @@ ivreg2 bpi i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 1
 		* Less credit constrained
 reg bpi i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 ivreg2 bpi i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
-
+}
 
 * profit
 {
@@ -1248,7 +1298,6 @@ reg exp_dig i.treatment i.strata if surveyround == 3 & bl_credit == 0, cluster(i
 ivreg2 exp_dig i.strata (take_up = i.treatment) if surveyround == 3 & bl_credit == 0, cluster(id_plateforme) 
 
 
-
 	* continuous measure (export sales)
 reg export i.treatment L2.export miss_bl_export i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 export L2.export i.miss_bl_export i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
@@ -1265,6 +1314,24 @@ ivreg2 export_rel_growth L2.export_rel_growth i.miss_bl_export_rel_growth i.stra
 
 reg export_abs_growth i.treatment L2.export_abs_growth miss_bl_export_abs_growth i.strata if surveyround == 3, cluster(id_plateforme)
 ivreg2 export_abs_growth L2.export_abs_growth i.miss_bl_export_abs_growth i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+
+	* reasons for not exporting (only 27 firms...too little to be reliable)
+reg export_41 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 export_41 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+reg export_42 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 export_42 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+reg export_43 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 export_43 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+reg export_44 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 export_44 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
+reg export_45 i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
+ivreg2 export_45 i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme)
+
 
 }
 

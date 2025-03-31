@@ -663,9 +663,7 @@ foreach var of local web_vars {
 * export 
 foreach var in exp_pays exp_dig {
 	replace `var' = 0 if export_1 == 0 & export_2 == 0 & `var' == .
-} 
-
-
+}
 
 ***********************************************************************
 * 	PART 5: Clean financial variables MVs
