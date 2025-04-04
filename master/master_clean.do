@@ -19,7 +19,7 @@
 use "${master_raw}/ecommerce_master_raw", clear
 
 ***********************************************************************
-* 	PART 1:    clean merged analysis file (midline)
+* 	PART 2:    clean merged analysis file (midline)
 ***********************************************************************
 {
 *remove leading and trailing white space
@@ -36,8 +36,9 @@ replace `x' = stritrim(strtrim(`x'))
 
 
 ***********************************************************************
-* 	PART 2:    Put correct labels 
+* 	PART 3:    Put correct labels 
 ***********************************************************************
+{
 	* treatment status
 *replace treatment="0" if treatment== "Control"
 *replace treatment="1" if treatment== "Treatment"
@@ -96,8 +97,10 @@ format %td date
 *save e-commerce anaylsis
 save "${master_intermediate}/ecommerce_master_inter", replace
 
+}
+
 ***********************************************************************
-* 	PART 2:    Remove useless variables
+* 	PART 4:    Remove useless variables
 ***********************************************************************
 drop id_email id_candidates score matched_on correct_match dup_both dup_id_email programme id_admin_correct 
 drop rg_confidentialite rg_partage_donnees rg_enregistrement_coordonnees dateinscription full_dup 
@@ -108,7 +111,7 @@ rename dig_prix dig_margins
 save "${master_intermediate}/ecommerce_master_inter", replace
 
 ***********************************************************************
-* 	PART 3:    Add Tunis to rg_adresse using PII data 
+* 	PART 5:    Add Tunis to rg_adresse using PII data 
 ***********************************************************************
 use "${master_pii}/ecommerce_master_contact", clear
 

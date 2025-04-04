@@ -644,7 +644,7 @@ replace compexp_2024 = 3000000 if id_plateforme == 443  & surveyround == 3
 local vars "dig_description dig_miseajour dig_payment"
 forvalues x = 1(1)3 {
 	foreach var of local vars {
-	replace `var'`x' = 0 if dig_presence`x' == 0 & `var'`x' == .
+	replace `var'`x' = 0 if dig_presence`x' == 0 // the following condition would do it only for those with MV: & `var'`x' == .
 	}
 }
 
@@ -664,6 +664,7 @@ foreach var of local web_vars {
 foreach var in exp_pays exp_dig {
 	replace `var' = 0 if export_1 == 0 & export_2 == 0 & `var' == .
 }
+
 
 ***********************************************************************
 * 	PART 5: Clean financial variables MVs
@@ -693,8 +694,20 @@ replace compexp_2020 = 0 if compexp_2020 == 1
 
 replace comp_ca2020 = 0 if comp_ca2020 == 1
 
-		* Percentage digital revenue
-replace dig_rev_per = . if dig_rev_per == 12
+		* Percentage digital revenue 
+			* account for filter (at least 1 online presence)
+egen dig_presence_temp = rowtotal(dig_presence1 dig_presence2 dig_presence3)
+gen dig_presence = (dig_presence_temp > 0)
+replace dig_presence = . if attrited == 1
+lab var dig_presence "Firm visible online"
+
+replace dig_revenues_ecom = 0 if dig_presence == 0 & attrited == 0
+			
+			* Q asked in absolute amount at BL & % at EL (FM 4.4.25: decide to keep, but only analyis > 0 dummy, not continuous measure (otherwise changes in response rate can affect results))
+		
+
+	* specific corrections (FM & Kais 4.4.25)
+replace comp_benefice2023 = -300000 if id_plateforme == 549
 
 
 
