@@ -134,6 +134,7 @@ global output = "${gdrive}/Research_GIZ_Tunisia_exportpromotion/1. Intervention 
 	global tables = "${output}/tables"
 		global tab_tech = "${tables}/tech_adoption_knowledge"
 		global take_up = "${tables}/take_up_deep_dive"
+		global bal = "${tables}/balance"
 
 
 * paths within github

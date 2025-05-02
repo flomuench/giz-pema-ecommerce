@@ -48,14 +48,14 @@ local tech_adop_indexes "knowledge dtai_manual dtai_survey"
 
 local tech_adop_subindexes "presence_manual presence_survey payment_manual payment_survey use_manual use_survey use_website_manual use_website_survey use_sm_manual use_sm_survey use_fb_manual use_insta_manual dmi"
 
-local tech_perf "dig_empl dig_dummy dig_revenues_ecom dig_rev_extmargin ihs_dig_rev_w95 ihs_dig_rev_w97 ihs_dig_rev_w99 ihs_dig_empl_99 ihs_dig_empl_97 ihs_dig_empl_95 dig_rev_extmargin2"
+local tech_perf "dig_empl dig_dummy dig_revenues_ecom dig_rev_extmargin dig_revenues_ecom_w99 dig_revenues_ecom_w95 ihs_dig_revenues_ecom ihs_dig_empl dig_empl_w99 dig_empl_w95 dig_rev_extmargin2 dtai_survey_cont dtai_manual_cont"
 
 local tech_perc "perception investecom_benefit1 investecom_benefit2"
 
-local sales "sales w95_sales w95_sales_ihs sales_rel_growth sales_abs_growth "
-local profit "profit w95_profit w95_profit_ihs profit_rel_growth profit_abs_growth profit_pos profit_2024_pos"
-local export "eri exported export w95_export w95_export_ihs export_rel_growth export_abs_growth"
-local empl "fte w95_fte ihs_fte_95 fte_rel_growth fte_abs_growth"
+local sales "sales sales_w95 sales_w99 ihs_sales sales_rel_growth sales_abs_growth "
+local profit "profit profit_w95 profit_w99 ihs_profit profit_rel_growth profit_abs_growth profit_pos profit_2024_pos"
+local export "eri eri_cont exported export export_w95 export_w99 ihs_export export_rel_growth export_abs_growth"
+local empl "fte fte_w95 fte_w99 ihs_fte fte_rel_growth fte_abs_growth"
 local firm_perf "`sales' `profit' `export' `empl' bpi"
 
 	 	 
@@ -100,9 +100,54 @@ forvalues x = 1(1)3 {
 	}
 	
 }
+
+	* BASELINE Balance
+			*Business performance
+lab var fte "Employees"
+lab var fte_w99 "Employees, wins. 99th pct."
+lab var profit "Profit"
+lab var profit_w99 "Profit, wins. 1st & 99th pct."
+lab var sales "Sales"
+lab var sales_w99 "Sales, wins. 99th pct."
+lab var car_credit1 "Access to credit [1-10]"
+lab var dig_revenues_ecom "Online sales"
+lab var dig_revenues_ecom_w99 "Online sales, wins. 99th pct."
+lab var dig_empl "Employees working on online business"
+lab var dig_empl_w99 "Employees working on online business"
+lab var export "Export sales"
+
+			* KPIs
+local bpi "fte fte_w99 profit profit_w99 sales sales_w99 export exported car_credit1"
+
+			*Digital
+local dsi "presence_survey_cont presence_manual_cont use_survey_cont use_manual_cont payment_manual_cont payment_survey_cont knowledge_cont dig_revenues_ecom dig_revenues_ecom_w99 dig_empl dig_empl_w99"
+
+	
+*codebook `dsi' `bpi' if surveyround == 1
+
+*local all `bpi' `dsi'
+foreach fmt in tex xlsx {				
+					* KPIs
+iebaltab `bpi' if surveyround == 1, ///
+	grpvar(treatment) vce(robust) format(%12.2fc) replace ///
+	rowvarlabels ///
+	stats(desc(sd) pair(p)) ///
+	addnote("Significance: ***=.01, **=.05, *=.1. Errors are robust. 'Sales', 'Profit' and 'Export sales' are in Tunisian Dinar. 'Access to credit' is self-reported.") ///
+	save`fmt'("${bal}/bl_baltab_ecom_kpis.`fmt'")
+
+
+					* Digital
+iebaltab `dsi' if surveyround == 1, ///
+	grpvar(treatment) vce(robust) format(%12.2fc) replace ///
+	rowvarlabels ///
+	stats(desc(sd) pair(p)) ///
+	addnote("Significance: ***=.01, **=.05, *=.1. Errors are robust.'Survey' indicates data is collected in online baseline survey, while 'manual' indicates data is collected via manual scoring of firms digital profiles. 'Online sales' are in Tunisian Dinar.") ///
+	save`fmt'("${bal}/bl_baltab_ecom_digital.`fmt'")
+}
 	
 {
 	* endline by take_up: Do any BL covariates predict take-up?
+{
 * put variables into locals
 		* Digital Technology Adoption
 local dig_tech "knowledge dtai_manual dtai_survey presence_manual presence_survey use_website_survey use_website_manual use_sm_survey use_sm_manual use_fb_manual use_insta_manual dmi" // 
@@ -123,6 +168,7 @@ iebaltab `all' if surveyround == 1 & treatment == 1, ///
 	grpvar(take_up) vce(robust) format(%15.2fc) replace ///
 	rowvarlabels  ///
 	save`fmt'("${take_up}/takeup_bal_ecom_long.`fmt'")
+}
 }
 
 * add code for table for paper?
@@ -176,7 +222,6 @@ iebaltab `all_index_transformed' if surveyround == 3 & treatment == 1, ///
 
 * endline per treatment
 {
-	* baseline
 		* concern: F-test significant at baseline
 				* major outcome variables, untransformed
 			*Digital sales
@@ -522,6 +567,8 @@ end
 
 table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin dig_rev_extmargin dig_margins, gen(tab1_paper_v1)
 table1 knowledge dtai_survey dtai_manual dig_dummy dig_invest_extmargin2 dig_rev_extmargin2 dig_margins, gen(tab1_paper_v2) // replacement with 0 instead of . for e-commerce investment & revenue (assumption: if firm said idk, put in 0)
+
+table1 knowledge dtai_survey_cont dtai_manual_cont dig_dummy dig_invest_extmargin2 dig_rev_extmargin2 dig_margins, gen(tab1_paper_v2_cont) 
 
 
 * heterogeneity in TE on TA ?
@@ -1187,13 +1234,6 @@ ivreg2 fte_abs_growth L2.fte miss_bl_fte i.strata (take_up = i.treatment) if sur
 
 
 *** Firm performance table
-lab var w95_sales "Sales"
-lab var w95_sales_ihs "Sales"
-lab var w95_profit "Profit" 
-lab var w95_profit_ihs "Profit" 
-lab var fte "Employees"
-lab var w95_fte "Employees"
-
 capture program drop firm_perf // enables re-running
 program firm_perf
 version 16							// define Stata version
@@ -1206,27 +1246,46 @@ version 16							// define Stata version
             eststo `var'1: reg `var' i.treatment L2.`var' i.strata i.miss_bl_`var' if surveyround == 3, cluster(id_plateforme)
             estadd local bl_control "Yes" : `var'1
             estadd local strata "Yes" : `var'1
+			
+			local itt_`var' = r(table)[1,2]
+			local fmt_itt_`var' : display %3.2f `itt_`var''	
 
             // ATT, IV
             eststo `var'2: ivreg2 `var'  L2.`var' i.strata i.miss_bl_`var' (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
             estadd local bl_control "Yes" : `var'2
             estadd local strata "Yes" : `var'2
+			
+			local att_`var' = e(b)[1,1]
+			local fmt_att_`var' : display %3.2f `att_`var''	
             
             // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
+			
+			local ctl_m_`var' = r(mean)
+			local fmt_ctl_m_`var' : display  %3.2f `ctl_m_`var''
+			
+			// Calculate treatment effect
+			local `var'_per_itt = (`fmt_itt_`var'' / `fmt_ctl_m_`var'')*100			
+			local `var'_per_att = (`fmt_att_`var'' / `fmt_ctl_m_`var'')*100
+			
+			estadd scalar te_perc_itt = ``var'_per_itt' : `var'2
+			estadd scalar te_perc_att = ``var'_per_att' : `var'2
+			
+			
+			
 }
 
 				* Put everything into a latex table	
 tokenize `varlist'
-		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `7'1 `10'1  adjust manually to number of variables 
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 `7'1 `8'1 `9'1
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
-			prehead("\begin{table}[!h] \centering \\ \caption{Firm's Business Performance: Sales, Profits, and Employees} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}  \toprule") ///
-				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
+			prehead("\begin{table}[H] \centering \\ \caption{Impact on Firm's Business Performance} \label{tab:kpis}  \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{9}{>{\centering\arraybackslash}X}}  \toprule") ///
+				posthead("\toprule \\ \multicolumn{10}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
 				fragment ///
 				cells(b(star fmt(%-15.1fc)) se(par fmt(%-15.1fc))) /// p(fmt(3)) rw ci(fmt(2))
-				mlabels(, dep) /// use dep vars labels as model title "\shortstack{}"
+				mlabels("\shortstack{Sales \\ Abs.}"   "\shortstack{Sales \\ Wins.}" "\shortstack{Sales \\ IHS}"  "\shortstack{Profit \\ Abs.}"   "\shortstack{Profit \\ Wins.}" "\shortstack{Profit \\ IHS}" "\shortstack{Empl. \\ Abs.}"   "\shortstack{Empl. \\ Wins.}" "\shortstack{Growth \\ Index}") ///
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				nobaselevels ///
 				collabels(none) ///	do not use statistics names below models
@@ -1235,12 +1294,12 @@ tokenize `varlist'
 				noobs
 			
 			* Bottom panel: ITT
-		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 // `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		local regressions `1'2 `2'2 `3'2  `4'2 `5'2 `6'2 `7'2 `8'2 `9'2
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
 				fragment ///	
-				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
+				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{10}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
 				cells(b(star fmt(%-15.1fc)) se(par fmt(%-15.1fc))) /// p(fmt(3)) rw ci(fmt(2))
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc %9.2fc %9.0g) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				stats(te_perc_itt control_mean control_sd N strata bl_control, fmt(%9.0fc %12.2fc %12.2fc %9.0g) labels("TE in percent" "Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles
@@ -1248,12 +1307,12 @@ tokenize `varlist'
 				nobaselevels ///
 				label 		/// specifies EVs have label
 				prefoot("\addlinespace[0.3cm] \midrule") ///
-				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Sales, profits, and employees are measured annually at endline (2023) and baseline (2020). For sales and profits, the first column presents levels, winsorized at the 95th percentile. For employees, the first column present levels and the second one levels, winsorized at the 95th percentile. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{10}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. Sales, profits, and employees are measured annually at endline (2023) and baseline (2020). Sales and employees are winsorized at the 95\textsuperscript{th} percentile, while profit is also winsorized at the 1\textsuperscript{st} percentile to account for negative outliers. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
 				
 				
 end
 
-firm_perf w95_sales w95_sales_ihs w95_profit w95_profit_ihs fte w95_fte, gen(kpis)
+firm_perf sales sales_w95 ihs_sales profit profit_w95 ihs_profit fte fte_w99 bpi, gen(kpis)
 
 
 * export
@@ -1357,16 +1416,35 @@ version 16							// define Stata version
             eststo `var'1: reg `var' i.treatment i.strata if surveyround == 3, cluster(id_plateforme)
             estadd local bl_control "No" : `var'1
             estadd local strata "Yes" : `var'1
+			
+			local itt_`var' = r(table)[1,2]
+			local fmt_itt_`var' : display %3.2f `itt_`var''	
 
-            // ATT, IV
+        // ATT, IV
             eststo `var'2: ivreg2 `var' i.strata (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
             estadd local bl_control "No" : `var'2
             estadd local strata "Yes" : `var'2
             
-            // Calculate Control mean
+			local att_`var' = e(b)[1,1]
+			local fmt_att_`var' : display %3.2f `att_`var''	
+			
+			
+        // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
             estadd scalar control_mean = r(mean) : `var'2
             estadd scalar control_sd = r(sd) : `var'2
+			
+			local ctl_m_`var' = r(mean)
+			local fmt_ctl_m_`var' : display  %3.2f `ctl_m_`var''
+			
+		// Calculate treatment effect
+			local `var'_per_itt = (`fmt_itt_`var'' / `fmt_ctl_m_`var'')*100			
+			local `var'_per_att = (`fmt_att_`var'' / `fmt_ctl_m_`var'')*100
+			
+			estadd scalar te_perc_itt = ``var'_per_itt' : `var'2
+			estadd scalar te_perc_att = ``var'_per_att' : `var'2			
+
+			
 			
 	} // with baseline control
 	else {
@@ -1376,28 +1454,47 @@ version 16							// define Stata version
             estadd local bl_control "Yes" : `var'1
             estadd local strata "Yes" : `var'1
 
-            // ATT, IV
+			local itt_`var' = r(table)[1,2]
+			local fmt_itt_`var' : display %3.2f `itt_`var''	
+			
+        // ATT, IV
             eststo `var'2: ivreg2 `var'  L2.`var' i.strata i.miss_bl_`var' (take_up = i.treatment) if surveyround == 3, cluster(id_plateforme) first
             estadd local bl_control "Yes" : `var'2
             estadd local strata "Yes" : `var'2
+			
+			local att_`var' = e(b)[1,1]
+			local fmt_att_`var' : display %3.2f `att_`var''	
             
-            // Calculate Control mean
+         // Calculate Control mean
             sum `var' if treatment == 0 & surveyround == 3
+			
             estadd scalar control_mean = r(mean) : `var'2
-            estadd scalar control_sd = r(sd) : `var'2	
+            estadd scalar control_sd = r(sd) : `var'2
+			
+			local ctl_m_`var' = r(mean)
+			local fmt_ctl_m_`var' : display  %3.2f `ctl_m_`var''
+			
+		// Calculate treatment effect
+			local `var'_per_itt = (`fmt_itt_`var'' / `fmt_ctl_m_`var'')*100			
+			local `var'_per_att = (`fmt_att_`var'' / `fmt_ctl_m_`var'')*100
+			
+			estadd scalar te_perc_itt = ``var'_per_itt' : `var'2
+			estadd scalar te_perc_att = ``var'_per_att' : `var'2
+			
+			
+			
 	}
 }
 
 				* Put everything into a latex table	
 tokenize `varlist'
-		local regressions `1'1 `2'1 `3'1 `4'1 `5'1  // `6'1 `7'1 `10'1  adjust manually to number of variables 
+		local regressions `1'1 `2'1 `3'1 `4'1 `5'1 `6'1 // `6'1 `7'1 `10'1  adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", replace booktabs ///
-			prehead("\begin{table}[!h] \centering \\ \caption{Export Performance} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l >{\centering\arraybackslash}X >{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X>{\centering\arraybackslash}X}  \toprule") ///
+			prehead("\begin{table}[H] \centering \\ \caption{Impact on Export Performance} \label{tab:exp_perf} \\ \begin{adjustbox}{width=\columnwidth,center} \\ \begin{tabularx}{\linewidth}{l*{6}{>{\centering\arraybackslash}X}}  \toprule") ///
 				posthead("\toprule \\ \multicolumn{7}{c}{Panel A: Intention-to-treat (ITT)} \\\\[-1ex]") ///			
 				fragment ///
 				cells(b(star fmt(%-15.2fc)) se(par fmt(%-15.2fc))) /// p(fmt(3)) rw ci(fmt(2))
-				mlabels(, dep) /// use dep vars labels as model title "\shortstack{}"
-				star(* 0.1 ** 0.05 *** 0.01) ///
+			mlabels("\shortstack{Export \\ Readiness}"   "\shortstack{Exported \\ $>$ 0}" "\shortstack{Export Online \\ $>$ 0}"  "\shortstack{Export sales \\ Abs.}" "\shortstack{Export sales \\ Wins.}" "\shortstack{Export sales \\ IHS}") ///				star(* 0.1 ** 0.05 *** 0.01) ///
 				nobaselevels ///
 				collabels(none) ///	do not use statistics names below models
 				label 		/// specifies EVs have label
@@ -1405,12 +1502,12 @@ tokenize `varlist'
 				noobs
 			
 			* Bottom panel: ITT
-		local regressions `1'2 `2'2 `3'2 `4'2 `5'2  // `6'2 `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
+		local regressions `1'2 `2'2 `3'2 `4'2 `5'2 `6'2  // `6'2 `7'2 `4'2 `5'2 `6'2 `7'2 `8'2 `9'2 `10'2 adjust manually to number of variables 
 		esttab `regressions' using "${tab_tech}/ecom_`generate'.tex", append booktabs ///
 				fragment ///	
 				posthead("\addlinespace[0.3cm] \midrule \\ \multicolumn{7}{c}{Panel B: Treatment Effect on the Treated (TOT)} \\\\[-1ex]") ///
 				cells(b(star fmt(%-15.2fc)) se(par fmt(%-15.2fc))) /// p(fmt(3)) rw ci(fmt(2))
-				stats(control_mean control_sd N strata bl_control, fmt(%9.2fc) labels("Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
+				stats(te_perc_itt control_mean control_sd N strata bl_control, fmt(%9.0fc %12.2fc %12.2fc %9.0g) labels("TE in percent" "Control mean" "Control SD" "Observations" "Strata controls" "BL controls")) ///
 				drop(_cons *.strata ?.miss_bl_* L*.*) ///  L.* `5' `6'
 				star(* 0.1 ** 0.05 *** 0.01) ///
 				mlabels(none) nonumbers ///		do not use varnames as model titles
@@ -1418,12 +1515,12 @@ tokenize `varlist'
 				nobaselevels ///
 				label 		/// specifies EVs have label
 				prefoot("\addlinespace[0.3cm] \midrule") ///
-				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. All outcomes are measured at endline in 2023. 'Export readiness' is measured as an index constructed as in \citet{Anderson.2008}. Export sales are levels, winsorized at the 95th percentile in the first column and additionally ihs-transformed in the second column. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
+				postfoot("\bottomrule \addlinespace[0.2cm] \multicolumn{7}{@{}p{\textwidth}@{}}{ \footnotesize \parbox{\linewidth}{% \textit{Notes}: Panel A reports ANCOVA estimates as defined in \citet{Bruhn.2009}. Panel B documents IV estimates, instrumenting take-up with treatment assignment. All outcomes are measured at endline in 2023. 'Export readiness' is measured as an index constructed as in \citet{Anderson.2008}. Winsorization is at the 95\textsuperscript{th} percentile. Monetary values are in Tunisian Dinar. Standard errors are clustered on the firm-level and reported in parentheses. \sym{***} \(p<0.01\), \sym{**} \(p<0.05\), \sym{*} \(p<0.1\) denote the significance level.% \\ }} \\ \end{tabularx} \\ \end{adjustbox} \\ \end{table}")
 				
 				
 end
 
-export_perf eri exported exp_dig w95_export w95_export_ihs, gen(export)
+export_perf eri_cont exported exp_dig export export_w95 ihs_export, gen(export)
 
 
 }

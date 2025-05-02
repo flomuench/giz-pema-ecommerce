@@ -191,8 +191,21 @@ gr export el_car_carempl_div3_treat_kdens_`x'.png, width(5000) replace
 putpdf paragraph, halign(center) 
 putpdf image el_car_carempl_div3_treat_kdens_`x'.png, width(5000)
 putpdf pagebreak
+
+* Firms sectoral distribution
+lab def engl_secs 1 "Agriculture" 2 "Handicraft" 3 "Import-Export" 4 "Industry" 5 "Services" 6 "Digital", replace
+lab val sector engl_secs
+
+graph pie if surveyround == 1, over(sector) sort des ///
+		plabel(_all percent, format(%2.0f) size(medsmall) gap(21))
+graph export "${figures}/bl_sectors_pie.pdf", replace
+
+
+
+
 }
 }
+
 ***********************************************************************
 * 	PART 3: Digital Technology Adoption
 ***********************************************************************	
@@ -358,6 +371,7 @@ putpdf image el_mark_invest_treat_kdens_`x'.png, width(5000)
 putpdf pagebreak
 }
 }
+
 ***********************************************************************
 * 	PART 4: Digital Technology Perception
 ***********************************************************************	
@@ -463,6 +477,7 @@ graph pie if surveyround == 3, over(exp_dig) by(`x') plabel(_all percent, format
 	putpdf pagebreak
 }	
 }
+
 ***********************************************************************
 * 	PART 6: Accounting
 ***********************************************************************	
@@ -718,6 +733,7 @@ putpdf paragraph, halign(center)
 putpdf image el_ihs_profit_95.png
 putpdf pagebreak
 }
+
 ***********************************************************************
 * 	PART 7: Indices
 ***********************************************************************	

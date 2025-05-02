@@ -242,10 +242,101 @@ lab var dig_con6_bl "Correct answers to knowledge question on Google Analaytics"
 *Additional preparatory variables required for index generation (check bl_generate)	
 }
 
+***********************************************************************
+* PART 2: Generating a cost variable
+***********************************************************************	
+{
+gen cost_2020 = comp_ca2020 - comp_benefice2020 if surveyround ==1
+lab var cost_2020 "Total costs in 2020 in TND"
+
+gen cost = sales - profit if surveyround ==3
+lab var cost "Total costs in TND"
+
+gen cost_2024 = comp_ca2024 - comp_benefice2024 if surveyround ==3
+lab var cost_2024 "Total costs in 2024 in TND"
+
+}
 
 ***********************************************************************
 * PART 3: IHS-transformation & winsorization
 ***********************************************************************	
+{
+
+
+local all compexp_2020 comp_ca2020 comp_benefice2020 ///
+dig_revenues_ecom dig_invest mark_invest fte fte_femmes car_carempl_div2 ///
+clients_b2b dig_empl clients_b2c sales comp_ca2024 export compexp_2024 ///
+exp_pays cost_2020 cost cost_2024 profit comp_benefice2024
+
+local all_but_profit compexp_2020 comp_ca2020 comp_benefice2020 ///
+dig_revenues_ecom dig_invest mark_invest fte fte_femmes car_carempl_div2 ///
+clients_b2b dig_empl clients_b2c sales comp_ca2024 export compexp_2024 ///
+exp_pays cost_2020 cost cost_2024
+
+	
+foreach var of local all {
+		gen `var'_w99 = .
+		gen `var'_w95 = .
+		gen ihs_`var' = .
+}
+
+
+forvalues s = 1(1)3 {
+	
+	* over each var
+	foreach var of local all_but_profit {
+		* check if 
+		sum `var' if surveyround == `s'
+		if (`r(N)' > 0) {
+		
+		* Winsorisation
+			winsor2 `var' if surveyround == `s', suffix(`s'_w99) cuts(0 99)
+			winsor2 `var' if surveyround == `s', suffix(`s'_w95) cuts(0 95)
+			
+			replace `var'_w99 = `var'`s'_w99 if surveyround == `s'
+			replace `var'_w95 = `var'`s'_w95 if surveyround == `s'
+			
+			drop `var'`s'_w99 `var'`s'_w95
+		
+		* IHS-transformation
+			ihstrans `var' if surveyround == `s', prefix(ihs`s'_)
+			
+			replace ihs_`var' = ihs`s'_`var' if surveyround == `s'
+			
+			drop ihs`s'_`var'
+	}
+  }
+}
+
+
+
+		* profit
+foreach var in profit comp_benefice2024 {
+forvalues s = 1(1)3 {
+		sum `var' if surveyround == `s'
+		if (`r(N)' > 0) {
+	
+			* Winsorisation
+			winsor2 `var' if surveyround == `s', suffix(`s'_w99) cuts(1 99)
+			winsor2 `var' if surveyround == `s', suffix(`s'_w95) cuts(5 95)
+			
+			replace `var'_w99 = `var'`s'_w99 if surveyround == `s'
+			replace `var'_w95 = `var'`s'_w95 if surveyround == `s'
+			
+			drop `var'`s'_w99 `var'`s'_w95
+		
+		* IHS-transformation
+			ihstrans `var' if surveyround == `s', prefix(ihs`s'_)
+			
+			replace ihs_`var' = ihs`s'_`var' if surveyround == `s'
+			
+			drop ihs`s'_`var'
+		}
+	}
+}
+
+
+/*
 {
 	* pre-treatment (BL) financial values
 {
@@ -552,7 +643,7 @@ lab var ihs_w_facebook_subs "no. of FB followers, winsorized 99th and IHS transf
 lab var ihs_w_facebook_reviews "no. of FB reviews, winsorized 99th and IHS transformed"
 lab var ihs_insta_subs "no. of instagram followers, IHS transformed"
 }
-
+*/
 
 }
 
@@ -657,129 +748,243 @@ foreach s of local survey {
 	}
 }	
 		
-* Generate the index value: average of zscores
+* Generate the index value: average of absolute values, zscores, high dummies
 {
-		* E-commerce knowledge index
+* Knowledge Index
 drop knowledge
 egen knowledge = rowmean(t_dig_con1z t_dig_con2z t_dig_con3z t_dig_con4z t_dig_con5z t_dig_con1_mlz t_dig_con2_mlz t_dig_con3_mlz t_dig_con4_mlz t_dig_con5_mlz)
-		
-		* E-commerce adoption index
-				* Visibility/Presence
+
+egen knowledge_cont = rowtotal(dig_con1 dig_con2 dig_con3 dig_con4 dig_con5 dig_con1_ml dig_con2_ml dig_con3_ml dig_con4_ml dig_con5_ml), missing
+
+sum knowledge_cont if surveyround == 2, d
+gen knowledge_high = (knowledge_cont >= `r(p50)')
+	replace knowledge_high = . if knowledge_cont == .
+
+* Visibility/Presence
 egen presence_survey = rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z)
+
+egen presence_survey_cont = rowtotal(dig_presence1 dig_presence2 dig_presence3)
+
+sum presence_survey_cont if surveyround == 3, d
+gen presence_survey_high = (presence_survey_cont >= `r(p50)')
+replace presence_survey_high = . if presence_survey_cont == .
+
+
 egen presence_manual = rowmean(t_entreprise_webz t_entreprise_socialz t_social_facebookz t_social_instaz)
-					
-				* Use
-					* Social media
+
+egen presence_manual_cont = rowtotal(entreprise_web entreprise_social social_facebook social_insta), missing
+
+sum presence_manual_cont if surveyround == 3, d
+gen presence_manual_high = (presence_manual_cont >= `r(p50)')
+replace presence_manual_high = . if presence_manual_cont == .
+
+* Use - Social Media
 egen use_sm_survey = rowmean(t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour2z)
+egen use_sm_survey_cont = rowtotal(sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour2), missing
+
+sum use_sm_survey_cont if surveyround == 3, d
+gen use_sm_survey_high = (use_sm_survey_cont >= `r(p50)')
+replace use_sm_survey_high = . if use_sm_survey_cont == .
 
 egen use_sm_manual = rowmean(t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz)
+egen use_sm_manual_cont = rowmean(social_logoname social_external_website social_photos social_description)
+sum use_sm_manual_cont if surveyround == 3, d
+gen use_sm_manual_high = (use_sm_manual_cont >= `r(p50)')
+replace use_sm_manual_high = . if use_sm_manual_cont == .
 
-					* Website
+* Use - Website
 egen use_website_survey = rowmean(t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_dig_miseajour1z)
+egen use_website_survey_cont = rowtotal(web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand dig_miseajour1), missing
+
+sum use_website_survey_cont if surveyround == 3, d
+gen use_website_survey_high = (use_website_survey_cont >= `r(p50)')
+replace use_website_survey_high = . if use_website_survey_cont == .
 
 egen use_website_manual = rowmean(t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz)
+egen use_website_manual_cont = rowtotal(web_logoname web_product web_multimedia web_aboutus web_norms web_externals web_languages web_coherent web_quality), missing
 
-					* Facebook
+sum use_website_manual_cont if surveyround == 3, d
+gen use_website_manual_high = (use_website_manual_cont >= `r(p50)')
+replace use_website_manual_high = . if use_website_manual_cont == .
+
+* Use - Facebook
 egen use_fb_manual = rowmean(t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz)
 
-					* Insta
+
+* Use - Instagram
 egen use_insta_manual = rowmean(t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
 
 
+* Use - Overall
 egen use_survey = rowmean(t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
+
+egen use_survey_cont = rowtotal(web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing
+
+sum use_survey_cont if surveyround == 3, d
+gen use_survey_high = (use_survey_cont >= `r(p50)')
+	replace use_survey_high = . if use_survey_cont == .
 
 egen use_manual = rowmean(t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
 
-				* Payment: Website + Social media
-egen payment_survey = rowmean(t_dig_payment2z t_dig_payment3z) // t_dig_payment1z
+egen use_manual_cont = rowmean(social_logoname social_external_website social_photos social_description web_logoname web_product web_multimedia web_aboutus web_norms web_externals web_languages web_coherent web_quality insta_description insta_externals)
 
-egen payment_manual = rowmean(t_web_purchasez t_web_external_purchasez t_facebook_shopz)   
-		
-				* Digital Marketing
-egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_dig_marketing_scorez t_dig_dummyz t_dig_marketing_dummyz t_dig_marketing_num19_seaz t_dig_marketing_num19_seoz t_dig_marketing_num19_blgz t_dig_marketing_num19_pubz t_dig_marketing_num19_mailz t_dig_marketing_num19_prtnz t_dig_marketing_num19_socmz)
+sum use_manual_cont if surveyround == 3, d
+gen use_manual_high = (use_manual_cont >= `r(p50)')
+	replace use_manual_high = . if use_manual_cont == .
 
-				* Adoption = visibility/presence + payment + use + digital marketing
-egen dtai_survey = rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z t_dig_payment2z t_dig_payment3z  t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
+* Payment
+egen payment_survey = rowmean(t_dig_payment2z t_dig_payment3z)
+egen payment_survey_cont = rowtotal(dig_payment2 dig_payment3), missing
+
+sum payment_survey_cont if surveyround == 3, d
+gen payment_survey_high = (payment_survey_cont >= `r(p50)')
+	replace payment_survey_high = . if payment_survey_cont == .
+
+egen payment_manual = rowmean(t_web_purchasez t_web_external_purchasez t_facebook_shopz)
+egen payment_manual_cont = rowtotal(web_purchase web_external_purchase facebook_shop), missing
+
+sum payment_manual_cont if surveyround == 3, d
+gen payment_manual_high = (payment_manual_cont >= `r(p50)')
+	replace payment_manual_high = . if payment_manual_cont == .
+
+* Digital Marketing
+egen dmi = rowmean(t_mark_online1z t_mark_online2z t_mark_online3z t_mark_online4z t_dig_dummyz t_dig_marketing_dummyz t_dig_marketing_num19_seaz t_dig_marketing_num19_seoz t_dig_marketing_num19_blgz t_dig_marketing_num19_pubz t_dig_marketing_num19_mailz t_dig_marketing_num19_prtnz t_dig_marketing_num19_socmz)
+
+egen dmi_cont = rowtotal(mark_online1 mark_online2 mark_online3 mark_online4 dig_dummy dig_marketing_dummy dig_marketing_num19_sea dig_marketing_num19_seo dig_marketing_num19_blg dig_marketing_num19_pub dig_marketing_num19_mail dig_marketing_num19_prtn dig_marketing_num19_socm), missing
+
+sum dmi_cont if surveyround == 3, d
+gen dmi_high = (dmi_cont >= `r(p50)')
+replace dmi_high = . if dmi_cont == .
+
+* Adoption Index
+egen dtai_survey = rowmean(t_dig_presence1z t_dig_presence2z t_dig_presence3z t_dig_payment2z t_dig_payment3z t_web_use_contactsz t_web_use_cataloguez t_web_use_engagementz t_web_use_comz t_web_use_brandz t_sm_use_contactsz t_sm_use_cataloguez t_sm_use_engagementz t_sm_use_comz t_sm_use_brandz t_dig_miseajour1z t_dig_miseajour2z t_dig_miseajour3z)
+
+egen dtai_survey_cont = rowtotal(dig_presence1 dig_presence2 dig_presence3 dig_payment2 dig_payment3 web_use_contacts web_use_catalogue web_use_engagement web_use_com web_use_brand sm_use_contacts sm_use_catalogue sm_use_engagement sm_use_com sm_use_brand dig_miseajour1 dig_miseajour2 dig_miseajour3), missing
+
+sum dtai_survey_cont if surveyround == 3, d
+gen dtai_survey_high = (dtai_survey_cont >= `r(p50)')
+	replace dtai_survey_high = . if dtai_survey_cont == .
 
 egen dtai_manual = rowmean(t_entreprise_webz t_entreprise_socialz t_social_facebookz t_social_instaz t_social_logonamez t_social_external_websitez t_social_photosz t_social_descriptionz t_web_logonamez t_web_productz t_web_multimediaz t_web_aboutusz t_web_normsz t_web_externalsz t_web_languagesz t_web_coherentz t_web_qualityz t_facebook_likesz t_facebook_subsz t_facebook_reviewsz t_facebook_reviews_avgz t_insta_publicationsz t_insta_subsz t_insta_descriptionz t_insta_externalsz)
 
-			
-		* E-commerce perception
+egen dtai_manual_cont = rowmean(entreprise_web entreprise_social social_facebook social_insta social_logoname social_external_website social_photos social_description web_logoname web_product web_multimedia web_aboutus web_norms web_externals web_languages web_coherent web_quality insta_description insta_externals)
+
+sum dtai_manual_cont if surveyround == 3, d
+gen dtai_manual_high = (dtai_manual_cont >= `r(p50)')
+	replace dtai_manual_high = . if dtai_manual_cont == .
+
+* E-commerce perception
 egen perception = rowmean(t_dig_perception1z t_dig_perception2z t_dig_perception3z t_dig_perception4z t_dig_perception5z t_dig_barr1z t_dig_barr2z t_dig_barr3z t_dig_barr4z t_dig_barr5z t_dig_barr6z t_dig_barr7z)
-		
-		* Export readiness
-egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz t_expprep_ciblez t_expprep_responsablez t_expprep_normez t_expprep_demandez t_expprep_dummyz)	
-		
-		* Business performance
+egen perception_cont = rowmean(dig_perception1 dig_perception2 dig_perception3 dig_perception4 dig_perception5 dig_barr1 dig_barr2 dig_barr3 dig_barr4 dig_barr5 dig_barr6 dig_barr7)
+
+sum perception_cont if surveyround == 3, d
+gen perception_high = (perception_cont >= `r(p50)')
+	replace perception_high = . if perception_cont == .
+
+* Export readiness
+egen eri = rowmean(t_exp_pra_foirez t_exp_pra_sciz t_exp_pra_normez t_exp_pra_ventz t_exp_pra_achz t_expprep_ciblez t_expprep_responsablez t_expprep_normez t_expprep_demandez t_expprep_dummyz)
+
+egen eri_cont = rowtotal(exp_pra_foire exp_pra_sci exp_pra_norme exp_pra_vent exp_pra_ach expprep_cible expprep_responsable expprep_norme expprep_demande expprep_dummy), missing
+
+sum eri_cont if surveyround == 3, d
+gen eri_high = (eri_cont >= `r(p50)')
+	replace eri_high = . if eri_cont == .
+
+	
+* Business performance index
 egen bpi = rowmean(t_ftez t_salesz t_profitz)
 egen bpi_2024 = rowmean(t_ftez t_comp_ca2024z t_comp_benefice2024z)
 		
 		
 		* labeling
-lab var knowledge "E-commerce knowledge"	
-lab var presence_survey "E-commerce presence"
-lab var presence_manual "E-commerce presence"
+* Knowledge
+label var knowledge         "E-commerce knowledge"
+label var knowledge_cont     "E-commerce knowledge"
+label var knowledge_high    "E-commerce knowledge"
 
-lab var use_survey "E-commerce use"
-lab var use_manual "E-commerce use"
+* Presence / Visibility
+label var presence_survey       "E-commerce presence"
+label var presence_survey_cont   "E-commerce presence"
+label var presence_survey_high  "E-commerce presence"
 
-lab var use_sm_survey "Social media use"
-lab var use_website_survey "Website use"
-lab var payment_survey "E-commerce payment"
+label var presence_manual       "E-commerce presence"
+label var presence_manual_cont   "E-commerce presence"
+label var presence_manual_high  "E-commerce presence"
 
-lab var use_sm_manual "Social media use"
-lab var use_website_manual "Website use"
-lab var use_fb_manual "Facebook use"
-lab var use_insta_manual "Instagram use"
-lab var payment_manual "E-commerce payment"
+* Use - Overall
+label var use_survey        "E-commerce use"
+label var use_survey_cont    "E-commerce use"
+label var use_survey_high   "E-commerce use"
 
-lab var dmi "Digital marketing"
-label var dtai_survey "E-commerce adoption"
-label var dtai_manual "E-commerce adoption"
+label var use_manual        "E-commerce use"
+label var use_manual_cont    "E-commerce use"
+label var use_manual_high   "E-commerce use"
 
-lab var perception "E-commerce perception"
+* Use - Social Media
+label var use_sm_survey         "Social media use"
+label var use_sm_survey_cont     "Social media use"
+label var use_sm_survey_high    "Social media use"
+
+label var use_sm_manual         "Social media use"
+label var use_sm_manual_cont     "Social media use"
+label var use_sm_manual_high    "Social media use"
+
+* Use - Website
+label var use_website_survey        "Website use"
+label var use_website_survey_cont    "Website use"
+label var use_website_survey_high   "Website use"
+
+label var use_website_manual        "Website use"
+label var use_website_manual_cont    "Website use"
+label var use_website_manual_high   "Website use"
+
+* Use - Facebook
+label var use_fb_manual        "Facebook use"
+
+
+* Use - Instagram
+label var use_insta_manual        "Instagram use"
+
+
+* Payment
+label var payment_survey        "E-commerce payment"
+label var payment_survey_cont    "E-commerce payment"
+label var payment_survey_high   "E-commerce payment"
+
+label var payment_manual        "E-commerce payment"
+label var payment_manual_cont    "E-commerce payment"
+label var payment_manual_high   "E-commerce payment"
+
+* Digital Marketing
+label var dmi        "Digital marketing"
+label var dmi_cont    "Digital marketing"
+label var dmi_high   "Digital marketing"
+
+* Adoption Index
+label var dtai_survey        "E-commerce adoption"
+label var dtai_survey_cont    "E-commerce adoption"
+label var dtai_survey_high   "E-commerce adoption"
+
+label var dtai_manual        "E-commerce adoption"
+label var dtai_manual_cont    "E-commerce adoption"
+label var dtai_manual_high   "E-commerce adoption"
+
+* Perception
+label var perception         "E-commerce perception"
+label var perception_cont     "E-commerce perception"
+label var perception_high    "E-commerce perception"
+
+* Export Readiness
+label var eri        "Export readiness"
+label var eri_cont    "Export readiness"
+label var eri_high   "Export readiness"
+
 
 label var eri "Export readiness"
 label var bpi "BPI 2023"
 label var bpi_2024 "BPI 2024"
 }
 
-* Generate total points index
-{
-		* E-commerce knowledge index
-		
-		* E-commerce adoption index
-			* Survey response data
-				* Visibility/Presence
-egen presence_sum = rowtotal(dig_presence1 dig_presence2 dig_presence3), missing
-					
-				* Use: Website + Social media
-
-				
-				* Payment: Website + Social media
-				
-				* Digital Marketing
-
-
-				* Adoption = visibility/presence + payment + use
-			
-			* Manually collected data 
-
-			
-		* E-commerce perception
-		
-		* Export readiness
-		
-		* Business performance
-
-	
-		* labeling
-*label var dsi_points "Digital sales index points"
-*label var dmi_points "Digital marketing index points"
-*label var dtai_points "Digital technology adoption index points"
-*label var eri_points "Export readiness index points"
-
-}
 		
 *drop torary vars		  
 drop t_*
