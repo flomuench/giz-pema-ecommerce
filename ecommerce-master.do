@@ -45,7 +45,8 @@ if c(os) == "Windows" {
 
 }
 else if c(os) == "MacOSX" {
-	global gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+    global gdrive "/Users/`c(username)'/Library/CloudStorage/GoogleDrive-teo.firpo@gmail.com/My\ Drive/Research_GIZ_Tunisia_exportpromotion"
+	
 }
 		
 		* folder path to survey data sets

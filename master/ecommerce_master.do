@@ -85,7 +85,8 @@ if "`c(username)'" == "fmuench" {
 	global backup = "C:/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }
 else if c(os) == "MacOSX" {
-	global gdrive = "/Volumes/GoogleDrive/My Drive/Research_GIZ_Tunisia_exportpromotion/1. Intervention I – E-commerce/data"
+	global gdrive = "/Users/`c(username)'/Library/CloudStorage/GoogleDrive-teo.firpo@gmail.com/My Drive/Research_GIZ_Tunisia_exportpromotion"
+	global drive = "${gdrive}/1. Intervention I – E-commerce/data"
 	global github = "/Users/`c(username)'/Documents/GitHub/giz-pema-ecommerce"
 	global backup = "/Users/`c(username)'/Documents/e-commerce-email-back-up"
 }	
