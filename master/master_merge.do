@@ -182,6 +182,49 @@ keep if _merge==3
 drop _merge
 
 
+preserve
+	import excel "${drive}/webpage_performance_data/website_review_1.xlsx", firstrow clear
+	drop firmname
+	drop if id_plateforme==.
+	destring id_plateforme,replace
+	sort id_plateforme, stable
+	save "${drive}/webpage_performance_data/website_review_1.dta",replace
+restore
+
+merge m:1 id_plateforme using "${drive}/webpage_performance_data/website_review_1.dta", force
+/*
+    Result                           # of obs.
+    -----------------------------------------
+    not matched                             3
+        from master                         3  (_merge==1)
+        from using                          0  (_merge==2)
+
+    matched                               705  (_merge==3)
+    -----------------------------------------
+*/
+
+keep if _merge==3
+drop _merge
+
+preserve
+	import excel "${drive}/webpage_performance_data/website_review_2.xlsx", firstrow clear
+	drop firmname
+	drop if id_plateforme==.
+	destring id_plateforme,replace
+	sort id_plateforme, stable
+	save "${drive}/webpage_performance_data/website_review_2.dta",replace
+restore
+
+merge m:1 id_plateforme using "${drive}/webpage_performance_data/website_review_2.dta", force
+/*
+ Result                           # of obs.
+    -----------------------------------------
+    not matched                             0
+    matched                               705  (_merge==3)
+    -----------------------------------------
+*/
+keep if _merge==3
+drop _merge
 ***********************************************************************
 * 	PART 4: save finale analysis data set as raw
 ***********************************************************************
